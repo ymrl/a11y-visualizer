@@ -8,6 +8,7 @@ chrome.runtime.onInstalled.addListener((details) => {
       formControl: true,
       link: true,
       heading: true,
+      ariaHidden: true,
     };
     chrome.storage.local.set({
       settings,

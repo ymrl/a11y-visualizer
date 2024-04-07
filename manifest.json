@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "Accessibility Visualizer",
+  "version": "0.0.0",
+  "action": { "default_popup": "src/popup/index.html" },
+  "icons": {
+    "16": "src/assets/icon@16w.png",
+    "48": "src/assets/icon@48w.png",
+    "128": "src/assets/icon.png"
+  },
+  "content_scripts": [
+    {
+      "js": ["src/content/index.tsx"],
+      "matches": ["*://*/*"]
+    }
+  ],
+  "background": {
+    "service_worker": "src/background/index.ts",
+    "type": "module"
+  },
+  "permissions": ["storage"]
+}

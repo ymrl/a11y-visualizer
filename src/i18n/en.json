@@ -1,0 +1,30 @@
+{
+  "popup": {
+    "accessibilityInfo": "Show accessibility information",
+    "showImage": "Show about image",
+    "showFormControls": "Show about form-controls",
+    "showLinks": "Show about links",
+    "showHeadings": "Show about headings",
+    "showAriaHidden": "Show about aria-hidden",
+    "rerun": "Re-run"
+  },
+  "tip": {
+    "name": "Name",
+    "role": "Role",
+    "element": "Element",
+    "description": "Description",
+    "heading": "Heading",
+    "warning": "Warning",
+    "error": "Error"
+  },
+  "messages": {
+    "noAltImage": "No alt attribute",
+    "emptyAltImage": "Image has alt=\"\"",
+    "noName": "No name (label)",
+    "noHref": "No href attribute",
+    "emptyHeading": "Empty heading",
+    "noHeadingLevel": "No heading level",
+    "ariaHidden": "aria-hidden",
+    "headingLevel": "Heading Lv."
+  }
+}

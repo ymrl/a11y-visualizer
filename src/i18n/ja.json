@@ -1,0 +1,30 @@
+{
+  "popup": {
+    "accessibilityInfo": "アクセシビリティ情報を表示",
+    "showImage": "画像の情報を表示",
+    "showFormControls": "フォームコントロールの情報を表示",
+    "showLinks": "リンクの情報を表示",
+    "showHeadings": "見出しの情報を表示",
+    "showAriaHidden": "aria-hiddenの情報を表示",
+    "rerun": "再実行"
+  },
+  "tip": {
+    "name": "名前",
+    "role": "ロール",
+    "element": "要素",
+    "description": "説明",
+    "heading": "見出し",
+    "warning": "警告",
+    "error": "エラー"
+  },
+  "messages": {
+    "noAltImage": "alt属性のない画像",
+    "emptyAltImage": "alt=\"\"の画像",
+    "noName": "名前（ラベル）なし",
+    "noHref": "href属性なし",
+    "emptyHeading": "空の見出し",
+    "noHeadingLevel": "見出しレベルなし",
+    "ariaHidden": "aria-hidden",
+    "headingLevel": "見出しレベル"
+  }
+}

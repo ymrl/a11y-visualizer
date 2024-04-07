@@ -5,8 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:firefox": "vite --config vite.firefox.config.ts",
     "build": "tsc && vite build",
-    "clean": "rm -rf dist",
+    "build:firefox": "tsc && vite build --config vite.firefox.config.ts",
+    "clean": "rm -rf dist dist-firefox",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },

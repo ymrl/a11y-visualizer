@@ -15,8 +15,7 @@
     }
   ],
   "background": {
-    "service_worker": "src/background/index.ts",
-    "type": "module"
+    "scripts": ["src/background/index.ts"]
   },
   "permissions": ["storage", "activeTab"]
 }

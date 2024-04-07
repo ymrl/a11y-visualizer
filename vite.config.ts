@@ -5,5 +5,5 @@ import manifest from "./manifest.json";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), crx({ manifest: manifest as ManifestV3Export })],
+  plugins: [react(), crx({ manifest: manifest as ManifestV3Export, browser: 'firefox' })],
 });

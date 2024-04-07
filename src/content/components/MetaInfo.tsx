@@ -68,6 +68,7 @@ export const MetaInfo = ({
       <div
         style={{
           position: "absolute",
+          zIndex: 1,
           left: 0,
           top:
             category === "image"

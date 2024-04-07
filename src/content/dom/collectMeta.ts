@@ -139,15 +139,22 @@ const collectLink = (
     };
     const name = computeAccessibleName(el);
     const description = computeAccessibleDescription(el);
-    if (name) {
-      result.tips.push({ type: "name", content: name });
-    } else {
-      result.tips.push({ type: "error", content: "messages.noName" });
-    }
+    const role = el.getAttribute("role") || "";
     if (el.tagName === "A") {
-      el.getAttribute("href") ||
+      if (!el.hasAttribute("href")) {
         result.tips.push({ type: "warning", content: "messages.noHref" });
-    } else if (el.getAttribute("role") === "link") {
+      } else if (name && !role) {
+        result.tips.push({ type: "name", content: name });
+      } else {
+        result.tips.push({ type: "error", content: "messages.noName" });
+      }
+      if (role) result.tips.push({ type: "role", content: role });
+    } else if (role === "link") {
+      if (name) {
+        result.tips.push({ type: "name", content: name });
+      } else {
+        result.tips.push({ type: "error", content: "messages.noName" });
+      }
       result.tips.push({ type: "role", content: "link" });
       result.tips.push({ type: "tagName", content: el.tagName.toLowerCase() });
     }

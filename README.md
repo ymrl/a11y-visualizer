@@ -1,5 +1,7 @@
 # Accessibility Visualizer Browser Extension
 
+![Screenshot of 駒瑠市. Showing annotations of accessibility properties](./a11y-visualizer-komarushi.jpg)
+
 ## how to develop
 
 It is built with [CRXJS Vite Plugin](https://crxjs.dev/vite-plugin/).

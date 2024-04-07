@@ -14,5 +14,10 @@
       "matches": ["*://*/*"]
     }
   ],
-  "permissions": ["storage", "activeTab"]
+  "permissions": ["storage", "activeTab"],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "a11y-visualizer@ymrl.net"
+    }
+  }
 }

@@ -65,7 +65,7 @@ const colors = (
   }
 };
 const Icon = ({ type }: { type: TipType }) => {
-  const t = useLang();
+  const { t } = useLang();
   const iconStyle: React.CSSProperties = {
     width: "1.2em",
     height: "1.2em",
@@ -124,7 +124,7 @@ const Icon = ({ type }: { type: TipType }) => {
 };
 export const Tip = ({ tip }: { tip: ElementTip }) => {
   const { color, backgroundColor, border } = colors(tip.type);
-  const t = useLang();
+  const { t } = useLang();
   return (
     <div
       style={{

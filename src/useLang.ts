@@ -3,11 +3,14 @@ import i18n from "./i18n";
 import { useTranslation } from "react-i18next";
 
 export const useLang = () => {
+  const [lang, setLang] = React.useState<string>("en");
+
   React.useEffect(() => {
     const chromeLang = chrome.i18n.getUILanguage();
-    const lang = chromeLang.match(/^ja/) ? "ja" : "en";
-    i18n.changeLanguage(lang);
+    const uiLang = chromeLang.match(/^ja/) ? "ja" : "en";
+    setLang(uiLang);
+    i18n.changeLanguage(uiLang);
   }, []);
   const { t } = useTranslation();
-  return t;
+  return { t, lang };
 };

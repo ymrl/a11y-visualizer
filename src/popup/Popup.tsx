@@ -36,7 +36,7 @@ export const Popup = () => {
     heading: true,
     ariaHidden: true,
   });
-  const t = useLang();
+  const { t, lang } = useLang();
   React.useEffect(() => {
     chrome.storage.local.get("settings", (data) => {
       if (data.settings) {
@@ -66,7 +66,10 @@ export const Popup = () => {
   };
 
   return (
-    <div className="w-64 font-sans p-2 flex flex-col gap-2 items-start">
+    <div
+      className="w-64 font-sans p-2 flex flex-col gap-2 items-start"
+      lang={lang}
+    >
       <Checkbox
         onChange={(e) => {
           handleChange("accessibilityInfo", e);

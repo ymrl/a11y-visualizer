@@ -26,9 +26,6 @@ const MetaListRenderer = (
         left: 0,
         zIndex: 2147483647,
         pointerEvents: "none",
-        width: document.body.clientWidth,
-        height: document.body.clientHeight,
-        overflow: "hidden",
       }}
       ref={ref}
     >

@@ -20,10 +20,14 @@ export const App = () => {
   const containerRef = React.useRef<HTMLDivElement>(null);
 
   const updateInfo = React.useCallback(() => {
+    if (!containerRef.current) return;
+    const rootNode = containerRef.current.getRootNode();
+    if (!rootNode) return;
+    const body = (rootNode as Document).body;
     if (settings.accessibilityInfo) {
       setMetaList(
         collectMeta(
-          document.body,
+          body,
           settings,
           containerRef.current ? [containerRef.current] : [],
         ),

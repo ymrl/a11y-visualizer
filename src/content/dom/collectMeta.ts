@@ -22,6 +22,21 @@ export const collectMeta = (
   return result;
 };
 
+const baseMeta = (el: Element): ElementMeta | null => {
+  const d = el.ownerDocument;
+  const w = d.defaultView;
+  if (!w) return null;
+  const rect = el.getBoundingClientRect();
+  return {
+    x: rect.x + w.scrollX,
+    y: rect.y + w.scrollY,
+    width: rect.width,
+    height: rect.height,
+    hidden: isHidden(el),
+    tips: [],
+  };
+};
+
 const collectImage = (
   root: HTMLElement,
   excludes: HTMLElement[],
@@ -29,15 +44,8 @@ const collectImage = (
   [...root.querySelectorAll('img, svg, [role="img"]')].map((el: Element) => {
     if (excludes.some((exclude: HTMLElement) => exclude.contains(el)))
       return null;
-    const rect = el.getBoundingClientRect();
-    const result: ElementMeta = {
-      x: rect.x + window.scrollX,
-      y: rect.y + window.scrollY,
-      width: rect.width,
-      height: rect.height,
-      hidden: isHidden(el),
-      tips: [],
-    };
+    const result = baseMeta(el);
+    if (!result) return null;
     const name = computeAccessibleName(el);
     const description = computeAccessibleDescription(el);
     const role = el.getAttribute("role") || "";
@@ -95,15 +103,8 @@ const collectFormControl = (
   ].map((el: Element) => {
     if (excludes.some((exclude: HTMLElement) => exclude.contains(el)))
       return null;
-    const rect = el.getBoundingClientRect();
-    const result: ElementMeta = {
-      x: rect.x + window.scrollX,
-      y: rect.y + window.scrollY,
-      width: rect.width,
-      height: rect.height,
-      hidden: isHidden(el),
-      tips: [],
-    };
+    const result = baseMeta(el);
+    if (!result) return null;
     const name = computeAccessibleName(el);
     const description = computeAccessibleDescription(el);
     if (name) {
@@ -128,15 +129,8 @@ const collectLink = (
   [...root.querySelectorAll('a, [role="link"]')].map((el: Element) => {
     if (excludes.some((exclude: HTMLElement) => exclude.contains(el)))
       return null;
-    const rect = el.getBoundingClientRect();
-    const result: ElementMeta = {
-      x: rect.x + window.scrollX,
-      y: rect.y + window.scrollY,
-      width: rect.width,
-      height: rect.height,
-      hidden: isHidden(el),
-      tips: [],
-    };
+    const result = baseMeta(el);
+    if (!result) return null;
     const name = computeAccessibleName(el);
     const description = computeAccessibleDescription(el);
     const role = el.getAttribute("role") || "";
@@ -171,15 +165,8 @@ const collectHeading = (
     (el: Element) => {
       if (excludes.some((exclude: HTMLElement) => exclude.contains(el)))
         return null;
-      const rect = el.getBoundingClientRect();
-      const result: ElementMeta = {
-        x: rect.x + window.scrollX,
-        y: rect.y + window.scrollY,
-        width: rect.width,
-        height: rect.height,
-        hidden: isHidden(el),
-        tips: [],
-      };
+      const result = baseMeta(el);
+      if (!result) return null;
       const name = computeAccessibleName(el);
       const description = computeAccessibleDescription(el);
 
@@ -217,15 +204,8 @@ const collectAriaHidden = (
   [...root.querySelectorAll('[aria-hidden="true"]')].map((el: Element) => {
     if (excludes.some((exclude: HTMLElement) => exclude.contains(el)))
       return null;
-    const rect = el.getBoundingClientRect();
-    const result: ElementMeta = {
-      x: rect.x + window.scrollX,
-      y: rect.y + window.scrollY,
-      width: rect.width,
-      height: rect.height,
-      hidden: isHidden(el),
-      tips: [],
-    };
+    const result = baseMeta(el);
+    if (!result) return null;
     result.tips.push({ type: "warning", content: "messages.ariaHidden" });
     return result;
   });

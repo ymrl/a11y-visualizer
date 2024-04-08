@@ -46,7 +46,6 @@ export const App = () => {
     updateInfo();
     const listener = (message: Message) => {
       if (message.type === "updateAccessibilityInfo") {
-        console.log(message);
         setSettings({
           ...settings,
           ...message.settings,

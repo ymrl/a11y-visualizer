@@ -12,4 +12,4 @@ export const injectRoot = (w: Window) => {
       <Root />
     </React.StrictMode>,
   );
-}
+};

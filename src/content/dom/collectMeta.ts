@@ -138,12 +138,18 @@ const collectLink = (
     if (el.tagName === "A") {
       if (!el.hasAttribute("href")) {
         result.tips.push({ type: "warning", content: "messages.noHref" });
-      } else if (name && !role) {
+      } else if (name) {
         result.tips.push({ type: "name", content: name });
       } else {
         result.tips.push({ type: "error", content: "messages.noName" });
       }
-      if (role) result.tips.push({ type: "role", content: role });
+      if (role) {
+        result.tips.push({
+          type: "tagName",
+          content: el.tagName.toLowerCase(),
+        });
+        result.tips.push({ type: "role", content: role });
+      }
     } else if (role === "link") {
       if (name) {
         result.tips.push({ type: "name", content: name });

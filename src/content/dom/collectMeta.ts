@@ -177,9 +177,6 @@ const collectHeading = (
       const name = computeAccessibleName(el);
       const description = computeAccessibleDescription(el);
 
-      if (!name) {
-        result.tips.push({ type: "error", content: "messages.emptyHeading" });
-      }
       if (["H1", "H2", "H3", "H4", "H5", "H6"].includes(el.tagName)) {
         result.tips.push({ type: "level", content: `${el.tagName.slice(1)}` });
       } else {
@@ -198,6 +195,12 @@ const collectHeading = (
           });
         }
       }
+      if (name) {
+        result.tips.push({ type: "name", content: name });
+      } else {
+        result.tips.push({ type: "error", content: "messages.emptyHeading" });
+      }
+
       if (description)
         result.tips.push({ type: "description", content: description });
       return result;

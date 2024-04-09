@@ -3,8 +3,15 @@ import { collectMeta } from "./dom";
 import { Settings, Message } from "../types";
 import { Category, ElementMeta } from "./types";
 import { MetaList } from "./components/MetaList";
+import { injectRoot } from "./injectRoot";
 
-export const App = () => {
+const getBody = (el: HTMLElement): HTMLElement | null => {
+  const d = el.ownerDocument;
+  const root = d.getRootNode();
+  if (!root) return null;
+  return (root as Document).body;
+};
+export const Root = () => {
   const [metaList, setMetaList] = React.useState<
     Map<Category, (ElementMeta | null)[]>
   >(new Map());
@@ -18,13 +25,26 @@ export const App = () => {
     ariaHidden: true,
   });
   const containerRef = React.useRef<HTMLDivElement>(null);
+  const framesRef = React.useRef<Window[]>([]);
+
+  const injectToFrames = React.useCallback((el: HTMLElement) => {
+    const w = el.ownerDocument.defaultView;
+    if (w) {
+      const frames = Array.from(w.frames);
+      const prevFrames = framesRef.current;
+      frames.forEach((frame) => {
+        prevFrames.includes(frame) || injectRoot(frame);
+      });
+      framesRef.current = frames;
+    }
+  }, []);
 
   const updateInfo = React.useCallback(() => {
-    if (!containerRef.current) return;
-    const rootNode = containerRef.current.getRootNode();
-    if (!rootNode) return;
-    const body = (rootNode as Document).body;
-    if (settings.accessibilityInfo) {
+    const el = containerRef.current;
+    if (!el) return;
+    injectToFrames(el);
+    const body = getBody(el);
+    if (body && settings.accessibilityInfo) {
       setMetaList(
         collectMeta(
           body,
@@ -35,7 +55,7 @@ export const App = () => {
     } else {
       setMetaList(new Map());
     }
-  }, [settings]);
+  }, [settings, injectToFrames]);
 
   React.useEffect(() => {
     chrome.storage.local.get("settings", (data) => {
@@ -45,6 +65,22 @@ export const App = () => {
       }));
     });
   }, []);
+
+  React.useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const body = getBody(el);
+    if (!body) return;
+    const observer = new MutationObserver(() => {
+      updateInfo();
+    });
+    observer.observe(body, {
+      subtree: true,
+      childList: true,
+      attributes: true,
+    });
+    return () => observer.disconnect();
+  }, [updateInfo]);
 
   React.useEffect(() => {
     updateInfo();

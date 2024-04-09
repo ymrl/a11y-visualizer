@@ -49,11 +49,12 @@ const collectImage = (
     const name = computeAccessibleName(el);
     const description = computeAccessibleDescription(el);
     const role = el.getAttribute("role") || "";
+    const isAriaHidden = el.getAttribute("aria-hidden") === "true";
 
     if (el.tagName === "IMG") {
       const hasAlt = el.hasAttribute("alt");
       if (name) result.tips.push({ type: "name", content: name });
-      if (!hasAlt)
+      if (!hasAlt && !isAriaHidden)
         result.tips.push({ type: "error", content: "messages.noAltImage" });
       if (hasAlt && !name)
         result.tips.push({
@@ -63,7 +64,7 @@ const collectImage = (
     } else if (role === "img") {
       if (name) {
         result.tips.push({ type: "name", content: name });
-      } else {
+      } else if (!isAriaHidden) {
         result.tips.push({ type: "error", content: "messages.noName" });
       }
       result.tips.push({ type: "tagName", content: el.tagName.toLowerCase() });

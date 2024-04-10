@@ -7,9 +7,9 @@ import { isHidden } from "./isHidden";
 import { Settings } from "../../types";
 
 export const collectMeta = (
-  root: HTMLElement,
+  root: Element,
   settings: Omit<Settings, "accessibilityInfo">,
-  excludes: HTMLElement[],
+  excludes: Element[],
 ): Map<Category, (ElementMeta | null)[]> => {
   const result = new Map<Category, (ElementMeta | null)[]>();
   settings.image && result.set("image", collectImage(root, excludes));
@@ -22,14 +22,33 @@ export const collectMeta = (
   return result;
 };
 
-const baseMeta = (el: Element): ElementMeta | null => {
+const getPositionBaseElement = (
+  el: Element | null,
+  d: Document,
+  w: Window,
+): Element | null => {
+  if (!el) return null;
+  if (w.getComputedStyle(el).position !== "static") return el;
+  if (el === d.body) return null;
+  return getPositionBaseElement(el, d, w);
+};
+
+const baseMeta = (el: Element, root: Element): ElementMeta | null => {
   const d = el.ownerDocument;
   const w = d.defaultView;
   if (!w) return null;
   const rect = el.getBoundingClientRect();
+  const offsetRect = getPositionBaseElement(
+    root,
+    d,
+    w,
+  )?.getBoundingClientRect();
+  const offsetX = offsetRect?.x || 0;
+  const offsetY = offsetRect?.y || 0;
+
   return {
-    x: rect.x + w.scrollX,
-    y: rect.y + w.scrollY,
+    x: rect.x + w.scrollX - offsetX,
+    y: rect.y + w.scrollY - offsetY,
     width: rect.width,
     height: rect.height,
     hidden: isHidden(el),
@@ -38,13 +57,12 @@ const baseMeta = (el: Element): ElementMeta | null => {
 };
 
 const collectImage = (
-  root: HTMLElement,
-  excludes: HTMLElement[],
+  root: Element,
+  excludes: Element[],
 ): (ElementMeta | null)[] =>
   [...root.querySelectorAll('img, svg, [role="img"]')].map((el: Element) => {
-    if (excludes.some((exclude: HTMLElement) => exclude.contains(el)))
-      return null;
-    const result = baseMeta(el);
+    if (excludes.some((exclude: Element) => exclude.contains(el))) return null;
+    const result = baseMeta(el, root);
     if (!result) return null;
     const name = computeAccessibleName(el);
     const description = computeAccessibleDescription(el);
@@ -80,8 +98,8 @@ const collectImage = (
   });
 
 const collectFormControl = (
-  root: HTMLElement,
-  excludes: HTMLElement[],
+  root: Element,
+  excludes: Element[],
 ): (ElementMeta | null)[] =>
   [
     ...root.querySelectorAll(
@@ -102,9 +120,8 @@ const collectFormControl = (
       ].join(","),
     ),
   ].map((el: Element) => {
-    if (excludes.some((exclude: HTMLElement) => exclude.contains(el)))
-      return null;
-    const result = baseMeta(el);
+    if (excludes.some((exclude: Element) => exclude.contains(el))) return null;
+    const result = baseMeta(el, root);
     if (!result) return null;
     const name = computeAccessibleName(el);
     const description = computeAccessibleDescription(el);
@@ -124,13 +141,12 @@ const collectFormControl = (
   });
 
 const collectLink = (
-  root: HTMLElement,
-  excludes: HTMLElement[],
+  root: Element,
+  excludes: Element[],
 ): (ElementMeta | null)[] =>
   [...root.querySelectorAll('a, [role="link"]')].map((el: Element) => {
-    if (excludes.some((exclude: HTMLElement) => exclude.contains(el)))
-      return null;
-    const result = baseMeta(el);
+    if (excludes.some((exclude: Element) => exclude.contains(el))) return null;
+    const result = baseMeta(el, root);
     if (!result) return null;
     const name = computeAccessibleName(el);
     const description = computeAccessibleDescription(el);
@@ -165,14 +181,14 @@ const collectLink = (
   });
 
 const collectHeading = (
-  root: HTMLElement,
-  excludes: HTMLElement[],
+  root: Element,
+  excludes: Element[],
 ): (ElementMeta | null)[] =>
   [...root.querySelectorAll('h1, h2, h3, h4, h5, h6, [role="heading"]')].map(
     (el: Element) => {
-      if (excludes.some((exclude: HTMLElement) => exclude.contains(el)))
+      if (excludes.some((exclude: Element) => exclude.contains(el)))
         return null;
-      const result = baseMeta(el);
+      const result = baseMeta(el, root);
       if (!result) return null;
       const name = computeAccessibleName(el);
       const description = computeAccessibleDescription(el);
@@ -208,13 +224,12 @@ const collectHeading = (
   );
 
 const collectAriaHidden = (
-  root: HTMLElement,
-  excludes: HTMLElement[],
+  root: Element,
+  excludes: Element[],
 ): (ElementMeta | null)[] =>
   [...root.querySelectorAll('[aria-hidden="true"]')].map((el: Element) => {
-    if (excludes.some((exclude: HTMLElement) => exclude.contains(el)))
-      return null;
-    const result = baseMeta(el);
+    if (excludes.some((exclude: Element) => exclude.contains(el))) return null;
+    const result = baseMeta(el, root);
     if (!result) return null;
     result.tips.push({ type: "warning", content: "messages.ariaHidden" });
     return result;

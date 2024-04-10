@@ -1,2 +1,2 @@
 import { injectRoot } from "./injectRoot";
-injectRoot(window);
+injectRoot(window, window.document.body);

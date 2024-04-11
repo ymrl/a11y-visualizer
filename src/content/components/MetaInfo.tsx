@@ -1,3 +1,4 @@
+import { Settings } from "../../types";
 import { Category, ElementTip } from "../types";
 import { Tip } from "./Tip";
 
@@ -36,16 +37,30 @@ export const MetaInfo = ({
   width,
   height,
   tips,
-  category,
+  categories,
+  settings,
+  rootWidth,
 }: {
   x: number;
   y: number;
   width: number;
   height: number;
   tips: ElementTip[];
-  category: Category;
+  categories: Category[];
+  settings: Settings;
+  rootWidth: number;
+  rootHeight: number;
 }) => {
-  const { border } = colors(category);
+  if (!categories.some((category) => settings[category])) {
+    return;
+  }
+  const rightAligned = width < 160 && x + width > rootWidth - 160;
+  const verticalPosition = categories.includes("heading")
+    ? "outer-top"
+    : categories.includes("image")
+      ? "inner-top"
+      : "outer-bottom";
+
   return (
     <div
       style={{
@@ -56,37 +71,38 @@ export const MetaInfo = ({
         height,
       }}
     >
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          border,
-          boxShadow:
-            "0 0 0 1px rgba(255,255,255,0.8), inset 0 0 0 1px rgba(255,255,255,0.8)",
-        }}
-      />
+      {categories
+        .filter((category) => settings[category])
+        .map((category, i) => (
+          <div
+            key={i}
+            style={{
+              position: "absolute",
+              inset: 0,
+              ...colors(category),
+              boxShadow:
+                "0 0 0 1px rgba(255,255,255,0.8), inset 0 0 0 1px rgba(255,255,255,0.8)",
+            }}
+          />
+        ))}
       <div
         style={{
           position: "absolute",
           zIndex: 1,
-          left: 0,
+          left: rightAligned ? undefined : 0,
+          right: rightAligned ? 0 : undefined,
           top:
-            category === "image"
+            verticalPosition === "inner-top"
               ? 0
-              : category === "formControl" || category === "link"
+              : verticalPosition === "outer-bottom"
                 ? "100%"
                 : undefined,
-          bottom:
-            category === "heading"
-              ? "100%"
-              : category === "ariaHidden"
-                ? 0
-                : undefined,
+          bottom: verticalPosition === "outer-top" ? "100%" : undefined,
           display: "flex",
           alignItems: "flex-start",
-          justifyContent: "flex-start",
+          justifyContent: rightAligned ? "flex-end" : "flex-start",
           flexDirection: "row",
-          maxWidth: "160px",
+          maxWidth: "max(160px, 100%)",
           width: "max-content",
           flexWrap: "wrap",
         }}

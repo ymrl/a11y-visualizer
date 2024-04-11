@@ -19,6 +19,7 @@ export type ElementMeta = {
   height: number;
   tips: ElementTip[];
   hidden: boolean;
+  categories: Category[];
 };
 
 export type TipType =

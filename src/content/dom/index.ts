@@ -1,2 +1,3 @@
 export * from "./isHidden";
-export * from "./collectMeta";
+export * from "./getPositionBaseElement";
+export * from "./collectElements";

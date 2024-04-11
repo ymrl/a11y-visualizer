@@ -1,14 +1,14 @@
 import React from "react";
-import { collectMeta } from "./dom";
+import { collectElements } from "./dom";
 import { Settings, Message } from "../types";
-import { Category, ElementMeta } from "./types";
+import { ElementMeta } from "./types";
 import { MetaList } from "./components/MetaList";
 import { injectRoot } from "./injectRoot";
 
 export const Root = () => {
-  const [metaList, setMetaList] = React.useState<
-    Map<Category, (ElementMeta | null)[]>
-  >(new Map());
+  const [metaList, setMetaList] = React.useState<ElementMeta[]>([]);
+  const [width, setWidth] = React.useState<number>(0);
+  const [height, setHeight] = React.useState<number>(0);
 
   const [settings, setSettings] = React.useState<Settings>({
     accessibilityInfo: false,
@@ -64,21 +64,24 @@ export const Root = () => {
     const body = el.parentElement?.parentElement;
     if (body && settings.accessibilityInfo) {
       injectToDialogs(body);
-      setMetaList(
-        collectMeta(
-          body,
-          settings,
-          containerRef.current
-            ? [
-                containerRef.current,
-                ...popoversRef.current,
-                ...dialogsRef.current,
-              ]
-            : [],
-        ),
+      const { elements, rootHeight, rootWidth } = collectElements(
+        body,
+        containerRef.current
+          ? [
+              containerRef.current,
+              ...popoversRef.current,
+              ...dialogsRef.current,
+            ]
+          : [],
       );
+
+      setMetaList(elements);
+      setWidth(rootWidth);
+      setHeight(rootHeight);
     } else {
-      setMetaList(new Map());
+      setWidth(0);
+      setHeight(0);
+      setMetaList([]);
     }
   }, [settings, injectToFrames, injectToDialogs]);
 
@@ -124,12 +127,11 @@ export const Root = () => {
 
   return (
     <MetaList
-      image={metaList.get("image") || []}
-      formControl={metaList.get("formControl") || []}
-      link={metaList.get("link") || []}
-      heading={metaList.get("heading") || []}
-      ariaHidden={metaList.get("ariaHidden") || []}
+      list={metaList}
+      settings={settings}
       ref={containerRef}
+      width={width}
+      height={height}
     />
   );
 };

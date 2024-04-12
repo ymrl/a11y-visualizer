@@ -5,7 +5,7 @@ import { ElementMeta } from "./types";
 import { MetaList } from "./components/MetaList";
 import { injectRoot } from "./injectRoot";
 
-export const Root = () => {
+export const Root = ({ parent }: { parent: Element }) => {
   const [metaList, setMetaList] = React.useState<ElementMeta[]>([]);
   const [width, setWidth] = React.useState<number>(0);
   const [height, setHeight] = React.useState<number>(0);
@@ -23,27 +23,27 @@ export const Root = () => {
   const dialogsRef = React.useRef<Element[]>([]);
   const popoversRef = React.useRef<Element[]>([]);
 
-  const injectToFrames = React.useCallback((el: HTMLElement) => {
-    const w = el.ownerDocument.defaultView;
-    if (w) {
-      const frames = Array.from(w.frames);
-      const prevFrames = framesRef.current;
-      frames.forEach((frame) => {
-        if (!prevFrames.includes(frame)) {
-          try {
-            const d = frame.document;
-            injectRoot(frame, d.body);
-          } catch {
-            /* noop */
-          }
+  const injectToFrames = React.useCallback((el: Element) => {
+    const frames = [...el.querySelectorAll("iframe, frame")]
+      .map((f) => (f as HTMLFrameElement | HTMLIFrameElement).contentWindow)
+      .filter((f: Window | null): f is Window => f !== null);
+    const prevFrames = framesRef.current;
+    frames.forEach((frame) => {
+      if (!prevFrames.includes(frame)) {
+        try {
+          const d = frame.document;
+          injectRoot(frame, d.body);
+        } catch {
+          /* noop */
         }
-      });
-      framesRef.current = frames;
-    }
+      }
+    });
+    framesRef.current = frames;
   }, []);
-  const injectToDialogs = React.useCallback((body: HTMLElement) => {
-    const dialogs = body.querySelectorAll("dialog");
-    const popovers = body.querySelectorAll("[popover]");
+
+  const injectToDialogs = React.useCallback((el: Element) => {
+    const dialogs = el.querySelectorAll("dialog");
+    const popovers = el.querySelectorAll("[popover]");
     [...dialogs, ...popovers].forEach((el: Element) => {
       if (
         !dialogsRef.current.includes(el) &&
@@ -57,15 +57,12 @@ export const Root = () => {
   }, []);
 
   const updateInfo = React.useCallback(() => {
-    const el = containerRef.current;
-    if (!el) return;
-    injectToFrames(el);
+    injectToFrames(parent);
 
-    const body = el.parentElement?.parentElement;
-    if (body && settings.accessibilityInfo) {
-      injectToDialogs(body);
+    if (settings.accessibilityInfo) {
+      injectToDialogs(parent);
       const { elements, rootHeight, rootWidth } = collectElements(
-        body,
+        parent,
         containerRef.current
           ? [
               containerRef.current,
@@ -83,7 +80,7 @@ export const Root = () => {
       setHeight(0);
       setMetaList([]);
     }
-  }, [settings, injectToFrames, injectToDialogs]);
+  }, [injectToFrames, settings.accessibilityInfo, injectToDialogs, parent]);
 
   React.useEffect(() => {
     chrome.storage.local.get("settings", (data) => {
@@ -96,20 +93,16 @@ export const Root = () => {
 
   React.useEffect(() => {
     updateInfo();
-    const el = containerRef.current;
-    if (!el) return;
-    const body = el.parentElement?.parentElement;
-    if (!body) return;
     const observer = new MutationObserver(() => {
       updateInfo();
     });
-    observer.observe(body, {
+    observer.observe(parent, {
       subtree: true,
       childList: true,
       attributes: true,
     });
     return () => observer.disconnect();
-  }, [updateInfo]);
+  }, [updateInfo, parent]);
 
   React.useEffect(() => {
     const listener = (message: Message) => {

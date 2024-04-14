@@ -55,10 +55,12 @@ export const collectElements = (
   const d = root.ownerDocument;
   const w = d.defaultView;
   const rootWidth =
-    root.tagName === "BODY" ? d.documentElement.offsetWidth : root.scrollWidth;
+    root.tagName === "BODY"
+      ? Math.max(d.documentElement.offsetWidth, root.scrollWidth)
+      : root.scrollWidth;
   const rootHeight =
     root.tagName === "BODY"
-      ? d.documentElement.offsetHeight
+      ? Math.max(d.documentElement.offsetHeight, root.scrollHeight)
       : root.scrollHeight;
   if (!w) return { elements: [], rootWidth, rootHeight };
   const positionBaseElement = getPositionBaseElement(root, d, w);

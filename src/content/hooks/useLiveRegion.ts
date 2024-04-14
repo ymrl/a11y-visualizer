@@ -50,8 +50,30 @@ export const useLiveRegion = () => {
       return;
     }
     const observer = new MutationObserver((records) => {
-      const content = records
-        .map((r) => (r.target.textContent || "").trim())
+      const content: string[] = records
+        .map((r) => {
+          const isAtomic =
+            (r.target as Element).getAttribute?.("aria-atomic") === "true";
+          const relevant = (
+            (r.target as Element).getAttribute?.("aria-relevant") ||
+            "additions text"
+          ).split(/\s/);
+          const removals =
+            relevant.includes("removals") || relevant.includes("all");
+          const additions =
+            relevant.includes("additions") || relevant.includes("all");
+          if (isAtomic) {
+            return r.target.textContent || "";
+          }
+          return [
+            ...[...(removals ? r.removedNodes : [])].map(
+              (n) => n.textContent || "",
+            ),
+            ...[...(additions ? r.addedNodes : [])].map(
+              (n) => n.textContent || "",
+            ),
+          ].join(" ");
+        })
         .filter(Boolean);
       setAnnouncements((prev) => [...prev, ...content]);
       content.forEach((c) => {

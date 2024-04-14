@@ -1,23 +1,16 @@
 import React from "react";
 import { collectElements } from "./dom";
-import { Settings, Message } from "../types";
 import { ElementMeta } from "./types";
 import { MetaList } from "./components/MetaList";
 import { injectRoot } from "./injectRoot";
 import { Announcements } from "./components/Announcements";
+import { SettingsContext } from "./components/SettingsProvider";
 
 export const Root = ({ parent }: { parent: Element }) => {
   const [metaList, setMetaList] = React.useState<ElementMeta[]>([]);
   const [width, setWidth] = React.useState<number>(0);
   const [height, setHeight] = React.useState<number>(0);
-  const [settings, setSettings] = React.useState<Settings>({
-    accessibilityInfo: false,
-    image: true,
-    formControl: true,
-    link: true,
-    heading: true,
-    ariaHidden: true,
-  });
+  const settings = React.useContext(SettingsContext);
   const containerRef = React.useRef<HTMLDivElement>(null);
   const announcementsRef = React.useRef<HTMLDivElement>(null);
   const framesRef = React.useRef<Window[]>([]);
@@ -130,15 +123,6 @@ export const Root = ({ parent }: { parent: Element }) => {
   }, [injectToFrames, parent, settings, observeLiveRegion, injectToDialogs]);
 
   React.useEffect(() => {
-    chrome.storage.local.get("settings", (data) => {
-      setSettings((prev) => ({
-        ...prev,
-        ...data.settings,
-      }));
-    });
-  }, []);
-
-  React.useEffect(() => {
     updateInfo();
     const observer = new MutationObserver(() => {
       updateInfo();
@@ -150,20 +134,6 @@ export const Root = ({ parent }: { parent: Element }) => {
     });
     return () => observer.disconnect();
   }, [updateInfo, parent]);
-
-  React.useEffect(() => {
-    const listener = (message: Message) => {
-      if (message.type === "updateAccessibilityInfo") {
-        setSettings({
-          ...settings,
-          ...message.settings,
-        });
-        updateInfo();
-      }
-    };
-    chrome.runtime.onMessage.addListener(listener);
-    return () => chrome.runtime.onMessage.removeListener(listener);
-  }, [settings, updateInfo]);
 
   return (
     <>

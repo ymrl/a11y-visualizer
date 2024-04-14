@@ -54,8 +54,12 @@ export const collectElements = (
 } => {
   const d = root.ownerDocument;
   const w = d.defaultView;
-  const rootWidth = root.scrollWidth;
-  const rootHeight = root.scrollHeight;
+  const rootWidth =
+    root.tagName === "BODY" ? d.documentElement.offsetWidth : root.scrollWidth;
+  const rootHeight =
+    root.tagName === "BODY"
+      ? d.documentElement.offsetHeight
+      : root.scrollHeight;
   if (!w) return { elements: [], rootWidth, rootHeight };
   const positionBaseElement = getPositionBaseElement(root, d, w);
   const offsetRect = positionBaseElement?.getBoundingClientRect();

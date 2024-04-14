@@ -40,6 +40,7 @@ export const MetaInfo = ({
   categories,
   settings,
   rootWidth,
+  rootHeight,
 }: {
   x: number;
   y: number;
@@ -56,10 +57,14 @@ export const MetaInfo = ({
   }
   const rightAligned = width < 160 && x + width > rootWidth - 160;
   const verticalPosition = categories.includes("heading")
-    ? "outer-top"
+    ? y < 24
+      ? "inner-top"
+      : "outer-top"
     : categories.includes("image")
       ? "inner-top"
-      : "outer-bottom";
+      : y + height > rootHeight - 24
+        ? "inner-bottom"
+        : "outer-bottom";
 
   return (
     <div
@@ -97,7 +102,12 @@ export const MetaInfo = ({
               : verticalPosition === "outer-bottom"
                 ? "100%"
                 : undefined,
-          bottom: verticalPosition === "outer-top" ? "100%" : undefined,
+          bottom:
+            verticalPosition === "inner-bottom"
+              ? 0
+              : verticalPosition === "outer-top"
+                ? "100%"
+                : undefined,
           display: "flex",
           alignItems: "flex-start",
           justifyContent: rightAligned ? "flex-end" : "flex-start",

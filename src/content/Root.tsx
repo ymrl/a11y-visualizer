@@ -5,6 +5,7 @@ import { MetaList } from "./components/MetaList";
 import { injectRoot } from "./injectRoot";
 import { Announcements } from "./components/Announcements";
 import { SettingsContext } from "./components/SettingsProvider";
+import { useLiveRegion } from "./hooks/useLiveRegion";
 
 export const Root = ({ parent }: { parent: Element }) => {
   const [metaList, setMetaList] = React.useState<ElementMeta[]>([]);
@@ -16,6 +17,7 @@ export const Root = ({ parent }: { parent: Element }) => {
   const framesRef = React.useRef<Window[]>([]);
   const dialogsRef = React.useRef<Element[]>([]);
   const popoversRef = React.useRef<Element[]>([]);
+  const { announcements, observeLiveRegion } = useLiveRegion();
 
   const injectToFrames = React.useCallback((el: Element) => {
     const frames = [...el.querySelectorAll("iframe, frame")]
@@ -49,86 +51,6 @@ export const Root = ({ parent }: { parent: Element }) => {
     dialogsRef.current = Array.from(dialogs);
     popoversRef.current = Array.from(popovers);
   }, []);
-
-  const liveRegionsRef = React.useRef<Element[]>([]);
-  const liveRegionObserverRef = React.useRef<MutationObserver | null>(null);
-  const [announcements, setAnnouncements] = React.useState<string[]>([]);
-
-  const connectLiveRegion = React.useCallback(
-    (observer: MutationObserver, el: Element) => {
-      observer.observe(el, {
-        subtree: true,
-        childList: true,
-        characterData: true,
-      });
-    },
-    [],
-  );
-
-  const {
-    showLiveRegions,
-    announcementMaxSeconds,
-    announcementSecondsPerCharacter,
-  } = settings;
-  React.useEffect(() => {
-    if (!showLiveRegions) {
-      if (liveRegionObserverRef.current) {
-        liveRegionObserverRef.current.disconnect();
-      }
-      return;
-    }
-    const observer = new MutationObserver((records) => {
-      const content = records
-        .map((r) => (r.target.textContent || "").trim())
-        .filter(Boolean);
-      setAnnouncements((prev) => [...prev, ...content]);
-      content.forEach((c) => {
-        setTimeout(
-          () => {
-            setAnnouncements((prev) => {
-              const idx = prev.indexOf(c);
-              return idx === -1
-                ? prev
-                : [...prev.slice(0, idx), ...prev.slice(idx + 1)];
-            });
-          },
-          Math.min(
-            c.length * announcementSecondsPerCharacter * 1000,
-            announcementMaxSeconds * 1000,
-          ),
-        );
-      });
-    });
-    liveRegionsRef.current.forEach((el) => connectLiveRegion(observer, el));
-    liveRegionObserverRef.current = observer;
-    return () => observer.disconnect();
-  }, [
-    showLiveRegions,
-    announcementMaxSeconds,
-    announcementSecondsPerCharacter,
-    connectLiveRegion,
-  ]);
-
-  const observeLiveRegion = React.useCallback(
-    (el: Element) => {
-      if (!liveRegionObserverRef.current) {
-        return;
-      }
-      const liveRegions = el.querySelectorAll(
-        "output, [role='status'], [role='alert'], [role='log'], [aria-live]:not([aria-live='off'])",
-      );
-      [...liveRegions].forEach((el) => {
-        if (
-          liveRegionObserverRef.current &&
-          !liveRegionsRef.current.includes(el)
-        ) {
-          connectLiveRegion(liveRegionObserverRef.current, el);
-        }
-      });
-      liveRegionsRef.current = Array.from(liveRegions);
-    },
-    [connectLiveRegion],
-  );
 
   const updateInfo = React.useCallback(() => {
     injectToFrames(parent);

@@ -1,11 +1,14 @@
 {
   "popup": {
-    "accessibilityInfo": "Show accessibility information",
+    "accessibilityInfo": "Show tips",
     "showImage": "Show about image",
     "showFormControls": "Show about form-controls",
     "showLinks": "Show about links",
     "showHeadings": "Show about headings",
     "showAriaHidden": "Show about aria-hidden",
+    "showLiveRegions": "Announce live regions",
+    "announcementSecondsPerCharacter": "Announcement speed (seconds/char)",
+    "announcementMaxSeconds": "Max announcement seconds",
     "rerun": "Re-run"
   },
   "tip": {

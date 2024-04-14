@@ -2,6 +2,7 @@ import React from "react";
 import "./index.css";
 import { Settings } from "../types";
 import { useLang } from "../useLang";
+import { initialSettings } from "../initialSettings";
 
 const Checkbox = ({
   children,
@@ -28,30 +29,45 @@ const Checkbox = ({
 };
 
 export const Popup = () => {
-  const [settings, setSettings] = React.useState<Settings>({
-    accessibilityInfo: false,
-    image: true,
-    formControl: true,
-    link: true,
-    heading: true,
-    ariaHidden: true,
-  });
+  const [settings, setSettings] = React.useState<Settings>(initialSettings);
   const { t, lang } = useLang();
   React.useEffect(() => {
     chrome.storage.local.get("settings", (data) => {
       if (data.settings) {
-        setSettings(data.settings);
+        setSettings((prev) => ({
+          ...prev,
+          ...data.settings,
+        }));
       }
     });
   }, []);
 
-  const handleChange = (
+  const handleChangeCheckbox = (
     key: keyof Settings,
     e: React.ChangeEvent<HTMLInputElement>,
   ) => {
     const newSettings = {
       ...settings,
       [key]: e.target.checked,
+    };
+    setSettings(newSettings);
+    chrome.storage.local.set({ settings: newSettings });
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      if (tabs[0].id) {
+        chrome.tabs.sendMessage(tabs[0].id, {
+          type: "updateAccessibilityInfo",
+          settings: newSettings,
+        });
+      }
+    });
+  };
+  const handleChangeNumber = (
+    key: keyof Settings,
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const newSettings = {
+      ...settings,
+      [key]: parseInt(e.target.value, 10),
     };
     setSettings(newSettings);
     chrome.storage.local.set({ settings: newSettings });
@@ -72,16 +88,17 @@ export const Popup = () => {
     >
       <Checkbox
         onChange={(e) => {
-          handleChange("accessibilityInfo", e);
+          handleChangeCheckbox("accessibilityInfo", e);
         }}
         checked={settings.accessibilityInfo}
       >
         {t("popup.accessibilityInfo")}
       </Checkbox>
+
       <div className="flex flex-col gap-2 pl-3">
         <Checkbox
           onChange={(e) => {
-            handleChange("image", e);
+            handleChangeCheckbox("image", e);
           }}
           checked={settings.image}
           disabled={!settings.accessibilityInfo}
@@ -90,7 +107,7 @@ export const Popup = () => {
         </Checkbox>
         <Checkbox
           onChange={(e) => {
-            handleChange("formControl", e);
+            handleChangeCheckbox("formControl", e);
           }}
           checked={settings.formControl}
           disabled={!settings.accessibilityInfo}
@@ -99,7 +116,7 @@ export const Popup = () => {
         </Checkbox>
         <Checkbox
           onChange={(e) => {
-            handleChange("link", e);
+            handleChangeCheckbox("link", e);
           }}
           checked={settings.link}
           disabled={!settings.accessibilityInfo}
@@ -108,7 +125,7 @@ export const Popup = () => {
         </Checkbox>
         <Checkbox
           onChange={(e) => {
-            handleChange("heading", e);
+            handleChangeCheckbox("heading", e);
           }}
           checked={settings.heading}
           disabled={!settings.accessibilityInfo}
@@ -117,13 +134,49 @@ export const Popup = () => {
         </Checkbox>
         <Checkbox
           onChange={(e) => {
-            handleChange("ariaHidden", e);
+            handleChangeCheckbox("ariaHidden", e);
           }}
           checked={settings.ariaHidden}
           disabled={!settings.accessibilityInfo}
         >
           {t("popup.showAriaHidden")}
         </Checkbox>
+      </div>
+      <Checkbox
+        onChange={(e) => {
+          handleChangeCheckbox("showLiveRegions", e);
+        }}
+        checked={settings.showLiveRegions}
+      >
+        {t("popup.showLiveRegions")}
+      </Checkbox>
+      <div className="flex flex-col gap-2 pl-3 w-full">
+        <label className="flex flex-col gap-1 items-stretch">
+          <span className="srhink-0">{t("popup.announcementMaxSeconds")}</span>
+          <input
+            className="border-slate-400 border-solid border rounded-md p-1 text-right"
+            type="number"
+            value={settings.announcementMaxSeconds}
+            onChange={(e) => handleChangeNumber("announcementMaxSeconds", e)}
+            min={1}
+            step={1}
+          />
+        </label>
+        <label className="flex flex-col gap-1 items-stretch">
+          <span className="shrink-0">
+            {t("popup.announcementSecondsPerCharacter")}
+          </span>
+          <input
+            className="border-slate-400 border-solid border rounded-md p-1 text-right"
+            type="number"
+            value={settings.announcementSecondsPerCharacter}
+            onChange={(e) =>
+              handleChangeNumber("announcementSecondsPerCharacter", e)
+            }
+            min={0.1}
+            step={0.1}
+          />
+        </label>
       </div>
       <button
         type="button"

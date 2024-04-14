@@ -54,7 +54,29 @@ export const Root = ({ parent }: { parent: Element }) => {
   const liveRegionObserverRef = React.useRef<MutationObserver | null>(null);
   const [announcements, setAnnouncements] = React.useState<string[]>([]);
 
+  const connectLiveRegion = React.useCallback(
+    (observer: MutationObserver, el: Element) => {
+      observer.observe(el, {
+        subtree: true,
+        childList: true,
+        characterData: true,
+      });
+    },
+    [],
+  );
+
+  const {
+    showLiveRegions,
+    announcementMaxSeconds,
+    announcementSecondsPerCharacter,
+  } = settings;
   React.useEffect(() => {
+    if (!showLiveRegions) {
+      if (liveRegionObserverRef.current) {
+        liveRegionObserverRef.current.disconnect();
+      }
+      return;
+    }
     const observer = new MutationObserver((records) => {
       const content = records
         .map((r) => (r.target.textContent || "").trim())
@@ -70,32 +92,43 @@ export const Root = ({ parent }: { parent: Element }) => {
                 : [...prev.slice(0, idx), ...prev.slice(idx + 1)];
             });
           },
-          Math.min(c.length * 500, 30000),
+          Math.min(
+            c.length * announcementSecondsPerCharacter * 1000,
+            announcementMaxSeconds * 1000,
+          ),
         );
       });
     });
+    liveRegionsRef.current.forEach((el) => connectLiveRegion(observer, el));
     liveRegionObserverRef.current = observer;
     return () => observer.disconnect();
-  }, []);
+  }, [
+    showLiveRegions,
+    announcementMaxSeconds,
+    announcementSecondsPerCharacter,
+    connectLiveRegion,
+  ]);
 
-  const observeLiveRegion = React.useCallback((el: Element) => {
-    if (!liveRegionObserverRef.current) {
-      return;
-    }
-    const liveRegions = el.querySelectorAll(
-      "output, [role='status'], [role='alert'], [role='log'], [aria-live]:not([aria-live='off'])",
-    );
-    [...liveRegions].forEach((el) => {
-      if (!liveRegionsRef.current.includes(el)) {
-        liveRegionObserverRef.current?.observe(el, {
-          subtree: true,
-          childList: true,
-          characterData: true,
-        });
+  const observeLiveRegion = React.useCallback(
+    (el: Element) => {
+      if (!liveRegionObserverRef.current) {
+        return;
       }
-    });
-    liveRegionsRef.current = Array.from(liveRegions);
-  }, []);
+      const liveRegions = el.querySelectorAll(
+        "output, [role='status'], [role='alert'], [role='log'], [aria-live]:not([aria-live='off'])",
+      );
+      [...liveRegions].forEach((el) => {
+        if (
+          liveRegionObserverRef.current &&
+          !liveRegionsRef.current.includes(el)
+        ) {
+          connectLiveRegion(liveRegionObserverRef.current, el);
+        }
+      });
+      liveRegionsRef.current = Array.from(liveRegions);
+    },
+    [connectLiveRegion],
+  );
 
   const updateInfo = React.useCallback(() => {
     injectToFrames(parent);

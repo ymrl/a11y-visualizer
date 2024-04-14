@@ -5,6 +5,9 @@ export type Settings = {
   link: boolean;
   heading: boolean;
   ariaHidden: boolean;
+  showLiveRegions: boolean;
+  announcementMaxSeconds: number;
+  announcementSecondsPerCharacter: number;
 };
 
 export type Message =

@@ -1,14 +1,8 @@
 import React from "react";
 import { Settings } from "../../types";
+import { initialSettings } from "../../initialSettings";
 
-export const SettingsContext = React.createContext<Settings>({
-  accessibilityInfo: false,
-  image: true,
-  formControl: true,
-  link: true,
-  heading: true,
-  ariaHidden: true,
-});
+export const SettingsContext = React.createContext<Settings>(initialSettings);
 
 export const SettingsProvider = ({
   children,

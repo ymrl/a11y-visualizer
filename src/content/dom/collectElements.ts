@@ -56,11 +56,19 @@ export const collectElements = (
   const w = d.defaultView;
   const rootWidth =
     root.tagName === "BODY"
-      ? Math.max(d.documentElement.offsetWidth, root.scrollWidth)
+      ? Math.max(
+          d.documentElement.offsetWidth,
+          d.documentElement.scrollWidth,
+          root.scrollWidth,
+        )
       : root.scrollWidth;
   const rootHeight =
     root.tagName === "BODY"
-      ? Math.max(d.documentElement.offsetHeight, root.scrollHeight)
+      ? Math.max(
+          d.documentElement.offsetHeight,
+          d.documentElement.scrollHeight,
+          root.scrollHeight,
+        )
       : root.scrollHeight;
   if (!w) return { elements: [], rootWidth, rootHeight };
   const positionBaseElement = getPositionBaseElement(root, d, w);

@@ -67,7 +67,7 @@ export const Popup = () => {
   ) => {
     const newSettings = {
       ...settings,
-      [key]: e.target.value + 0,
+      [key]: parseFloat(e.target.value),
     };
     setSettings(newSettings);
     chrome.storage.local.set({ settings: newSettings });

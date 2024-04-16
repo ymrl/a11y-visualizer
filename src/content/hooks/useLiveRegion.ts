@@ -95,7 +95,10 @@ export const useLiveRegion = () => {
     });
     liveRegionsRef.current.forEach((el) => connectLiveRegion(observer, el));
     liveRegionObserverRef.current = observer;
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      liveRegionObserverRef.current = null;
+    };
   }, [
     showLiveRegions,
     announcementMaxSeconds,

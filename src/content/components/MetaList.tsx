@@ -28,6 +28,7 @@ const MetaListRenderer = (
         width,
         height,
         overflow: "hidden",
+        opacity: settings.tipOpacityPercent / 100,
       }}
       ref={ref}
     >

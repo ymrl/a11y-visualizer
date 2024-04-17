@@ -85,8 +85,7 @@ export const MetaInfo = ({
               position: "absolute",
               inset: 0,
               ...colors(category),
-              boxShadow:
-                "0 0 0 1px rgba(255,255,255,0.8), inset 0 0 0 1px rgba(255,255,255,0.8)",
+              boxShadow: "0 0 0 1px #fff, inset 0 0 0 1px #fff",
             }}
           />
         ))}

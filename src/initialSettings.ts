@@ -9,4 +9,6 @@ export const initialSettings: Settings = {
   showLiveRegions: true,
   announcementMaxSeconds: 30,
   announcementSecondsPerCharacter: 0.5,
+  tipOpacityPercent: 80,
+  liveRegionOpacityPercent: 80,
 } as const;

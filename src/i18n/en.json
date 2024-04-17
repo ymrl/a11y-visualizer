@@ -9,6 +9,8 @@
     "showLiveRegions": "Announce live regions",
     "announcementSecondsPerCharacter": "Announcement speed (seconds/char)",
     "announcementMaxSeconds": "Max announcement seconds",
+    "tipOpacityPercent": "Tips opacity (%)",
+    "liveRegionOpacityPercent": "Live region opacity (%)",
     "rerun": "Re-run"
   },
   "tip": {

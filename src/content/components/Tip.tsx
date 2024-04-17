@@ -16,37 +16,37 @@ const colors = (
   switch (type) {
     case "name":
       return {
-        backgroundColor: "rgba(119,217,168,0.8)",
+        backgroundColor: "rgb(119,217,168)",
         color: "#000",
         border: "1px solid rgb(3,175,122)",
       };
     case "role":
       return {
-        backgroundColor: "rgba(255,202,191,0.8)",
+        backgroundColor: "rgb(255,202,191)",
         color: "#000",
         border: "1px solid rgb(255,128,130)",
       };
     case "tagName":
       return {
-        backgroundColor: "rgba(201,172,2,0.8)",
+        backgroundColor: "rgb(201,172,2)",
         color: "#000",
         border: "1px solid rgb(153,0,153)",
       };
     case "description":
       return {
-        backgroundColor: "rgba(200,200,203,0.8)",
+        backgroundColor: "rgb(200,200,203)",
         color: "#000",
         border: "1px solid rgb(132,145,158)",
       };
     case "level":
       return {
-        backgroundColor: "rgba(191,228,255,0.8)",
+        backgroundColor: "rgb(191,228,255)",
         color: "#000",
         border: "1px solid rgb(0,90,255)",
       };
     case "warning":
       return {
-        backgroundColor: "rgba(255,241,0,0.8)",
+        backgroundColor: "rgb(255,241,0)",
         color: "#000",
         border: "1px solid rgb(0,0,0)",
       };
@@ -59,7 +59,7 @@ const colors = (
     default:
       return {
         color: "white",
-        backgroundColor: "rgba(0,0,0,.8)",
+        backgroundColor: "rgb(0,0,0)",
         border: "0",
       };
   }

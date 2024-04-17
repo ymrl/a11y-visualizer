@@ -8,6 +8,8 @@ export type Settings = {
   showLiveRegions: boolean;
   announcementMaxSeconds: number;
   announcementSecondsPerCharacter: number;
+  tipOpacityPercent: number;
+  liveRegionOpacityPercent: number;
 };
 
 export type Message =

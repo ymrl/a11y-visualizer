@@ -145,6 +145,17 @@ export const Popup = () => {
         >
           {t("popup.showAriaHidden")}
         </Checkbox>
+        <label className="flex flex-col gap-1 items-stretch">
+          <span className="shrink-0">{t("popup.tipOpacityPercent")}</span>
+          <input
+            type="range"
+            min={0}
+            max={100}
+            step={1}
+            value={settings.tipOpacityPercent}
+            onChange={(e) => handleChangeNumber("tipOpacityPercent", e)}
+          />
+        </label>
       </div>
       <Checkbox
         onChange={(e) => {
@@ -179,6 +190,19 @@ export const Popup = () => {
             }
             min={0.1}
             step={0.1}
+          />
+        </label>
+        <label className="flex flex-col gap-1 items-stretch">
+          <span className="shrink-0">
+            {t("popup.liveRegionOpacityPercent")}
+          </span>
+          <input
+            type="range"
+            min={0}
+            max={100}
+            step={1}
+            value={settings.liveRegionOpacityPercent}
+            onChange={(e) => handleChangeNumber("liveRegionOpacityPercent", e)}
           />
         </label>
       </div>

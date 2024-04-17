@@ -4,7 +4,8 @@ const AnnouncementsRenderer = (
   { contents }: { contents: string[] },
   ref: React.Ref<HTMLDivElement>,
 ) => {
-  const { showLiveRegions } = React.useContext(SettingsContext);
+  const { showLiveRegions, liveRegionOpacityPercent } =
+    React.useContext(SettingsContext);
   return (
     showLiveRegions && (
       <div
@@ -14,14 +15,14 @@ const AnnouncementsRenderer = (
           margin: "auto",
           zIndex: 2147483647,
           pointerEvents: "none",
-          background: "rgba(0, 0, 0, 0.8)",
+          background: "#000",
           color: "#fff",
           fontSize: "48px",
           lineHeight: "1.5",
           fontFamily: "sans-serif",
           fontWeight: "normal",
           padding: "24px",
-          opacity: contents.length > 0 ? 1 : 0,
+          opacity: contents.length > 0 ? liveRegionOpacityPercent / 100 : 0,
           width: "fit-content",
           maxWidth: "90vw",
           height: "fit-content",

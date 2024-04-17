@@ -28,7 +28,14 @@ export const Root = ({ parent }: { parent: Element }) => {
       if (!prevFrames.includes(frame)) {
         try {
           const d = frame.document;
-          injectRoot(frame, d.body);
+          const { readyState } = d;
+          if (readyState === "complete") {
+            injectRoot(frame, d.body);
+          } else {
+            frame.addEventListener("load", () => {
+              injectRoot(frame, d.body);
+            });
+          }
         } catch {
           /* noop */
         }

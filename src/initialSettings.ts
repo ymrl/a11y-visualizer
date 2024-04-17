@@ -4,6 +4,7 @@ export const initialSettings: Settings = {
   image: true,
   formControl: true,
   link: true,
+  button: true,
   heading: true,
   ariaHidden: true,
   showLiveRegions: true,

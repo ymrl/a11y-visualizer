@@ -12,6 +12,10 @@ const colors = (category: Category): { border: string } => {
       return {
         border: "2px dashed rgb(255,128,130)",
       };
+    case "button":
+      return {
+        border: "2px dashed rgb(77,196,255)",
+      };
     case "link":
       return {
         border: "2px dashed rgb(153,0,153)",

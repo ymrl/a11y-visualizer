@@ -3,6 +3,7 @@
     "accessibilityInfo": "Show tips",
     "showImage": "Show about image",
     "showFormControls": "Show about form-controls",
+    "showButtons": "Show about buttons",
     "showLinks": "Show about links",
     "showHeadings": "Show about headings",
     "showAriaHidden": "Show about aria-hidden",
@@ -30,6 +31,7 @@
     "emptyHeading": "Empty heading",
     "noHeadingLevel": "No heading level",
     "ariaHidden": "aria-hidden",
-    "headingLevel": "Heading Lv."
+    "headingLevel": "Heading Lv.",
+    "notFocusable": "Not focusable"
   }
 }

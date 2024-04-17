@@ -3,6 +3,7 @@ export type Settings = {
   image: boolean;
   formControl: boolean;
   link: boolean;
+  button: boolean;
   heading: boolean;
   ariaHidden: boolean;
   showLiveRegions: boolean;

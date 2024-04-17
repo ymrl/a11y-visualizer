@@ -38,6 +38,7 @@ export type ElementTip = {
 export type Category =
   | "image"
   | "formControl"
+  | "button"
   | "link"
   | "heading"
   | "ariaHidden";

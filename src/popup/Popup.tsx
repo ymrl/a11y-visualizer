@@ -111,12 +111,12 @@ export const Popup = () => {
         </Checkbox>
         <Checkbox
           onChange={(e) => {
-            handleChangeCheckbox("formControl", e);
+            handleChangeCheckbox("button", e);
           }}
-          checked={settings.formControl}
+          checked={settings.button}
           disabled={!settings.accessibilityInfo}
         >
-          {t("popup.showFormControls")}
+          {t("popup.showButtons")}
         </Checkbox>
         <Checkbox
           onChange={(e) => {
@@ -126,6 +126,15 @@ export const Popup = () => {
           disabled={!settings.accessibilityInfo}
         >
           {t("popup.showLinks")}
+        </Checkbox>
+        <Checkbox
+          onChange={(e) => {
+            handleChangeCheckbox("formControl", e);
+          }}
+          checked={settings.formControl}
+          disabled={!settings.accessibilityInfo}
+        >
+          {t("popup.showFormControls")}
         </Checkbox>
         <Checkbox
           onChange={(e) => {

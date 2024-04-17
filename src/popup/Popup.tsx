@@ -52,13 +52,15 @@ export const Popup = () => {
     };
     setSettings(newSettings);
     chrome.storage.local.set({ settings: newSettings });
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      if (tabs[0].id) {
-        chrome.tabs.sendMessage(tabs[0].id, {
-          type: "updateAccessibilityInfo",
-          settings: newSettings,
-        });
-      }
+    chrome.tabs.query({ active: true }, (tabs) => {
+      tabs.forEach(
+        ({ id }) =>
+          id &&
+          chrome.tabs.sendMessage(id, {
+            type: "updateAccessibilityInfo",
+            settings: newSettings,
+          }),
+      );
     });
   };
   const handleChangeNumber = (
@@ -71,13 +73,15 @@ export const Popup = () => {
     };
     setSettings(newSettings);
     chrome.storage.local.set({ settings: newSettings });
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      if (tabs[0].id) {
-        chrome.tabs.sendMessage(tabs[0].id, {
-          type: "updateAccessibilityInfo",
-          settings: newSettings,
-        });
-      }
+    chrome.tabs.query({ active: true }, (tabs) => {
+      tabs.forEach(
+        ({ id }) =>
+          id &&
+          chrome.tabs.sendMessage(id, {
+            type: "updateAccessibilityInfo",
+            settings: newSettings,
+          }),
+      );
     });
   };
 

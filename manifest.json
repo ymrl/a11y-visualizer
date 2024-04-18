@@ -13,7 +13,8 @@
   "content_scripts": [
     {
       "js": ["src/content/index.ts"],
-      "matches": ["*://*/*"]
+      "matches": ["*://*/*"],
+      "exclude_matches": ["*://docs.google.com/*"]
     }
   ],
   "permissions": ["storage", "activeTab"],

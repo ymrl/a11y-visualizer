@@ -194,7 +194,7 @@ const addFormControlInfo = ({
   if (
     (tagName === "input" &&
       typeAttr &&
-      !["button", "submit", "reset", "hidden"].includes(typeAttr)) ||
+      !["button", "submit", "reset", "image", "hidden"].includes(typeAttr)) ||
     tagName === "textarea" ||
     tagName === "select"
   ) {
@@ -253,7 +253,7 @@ const addButtonInfo = ({
     tagName === "button" ||
     (tagName === "input" &&
       typeAttr &&
-      ["button", "submit", "reset"].includes(typeAttr))
+      ["button", "submit", "reset", "image"].includes(typeAttr))
   ) {
     meta.categories.push("button");
     if (name) {

@@ -9,7 +9,7 @@ export const getElementPosition = (
   width: number;
   height: number;
 } => {
-  if (el.tagName === "AREA") {
+  if (el.tagName.toLowerCase() === "area") {
     return getAreaElementPosition(el, w, offsetX, offsetY);
   }
   const rect = el.getBoundingClientRect();

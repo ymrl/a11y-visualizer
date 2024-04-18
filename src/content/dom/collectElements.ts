@@ -8,13 +8,13 @@ import { isHidden } from "./isHidden";
 import { getElementPosition } from "./getElementPoistion";
 
 const FOCUSABLE_TAGNAMES = [
-  "A",
-  "AREA",
-  "BUTTON",
-  "INPUT",
-  "OBJECT",
-  "SELECT",
-  "TEXTAREA",
+  "a",
+  "area",
+  "button",
+  "input",
+  "object",
+  "select",
+  "textarea",
 ];
 
 const Selectors = [
@@ -67,7 +67,7 @@ export const collectElements = (
   const d = root.ownerDocument;
   const w = d.defaultView;
   const rootWidth =
-    root.tagName === "BODY"
+    root.tagName.toLowerCase() === "body"
       ? Math.max(
           d.documentElement.offsetWidth,
           d.documentElement.scrollWidth,
@@ -75,7 +75,7 @@ export const collectElements = (
         )
       : root.scrollWidth;
   const rootHeight =
-    root.tagName === "BODY"
+    root.tagName.toLowerCase() === "body"
       ? Math.max(
           d.documentElement.offsetHeight,
           d.documentElement.scrollHeight,
@@ -104,11 +104,12 @@ export const collectElements = (
         const description = computeAccessibleDescription(el);
         const roleAttr = el.getAttribute("role") || "";
         const isAriaHidden = el.getAttribute("aria-hidden") === "true";
-        addImageInfo({ meta, el, name, roleAttr, isAriaHidden });
-        addFormControlInfo({ meta, el, name, roleAttr, isAriaHidden });
-        addButtonInfo({ meta, el, name, roleAttr, isAriaHidden });
-        addLinkInfo({ meta, el, name, roleAttr, isAriaHidden });
-        addHeadingInfo({ meta, el, name, roleAttr, isAriaHidden });
+        const tagName = el.tagName.toLowerCase();
+        addImageInfo({ meta, el, tagName, name, roleAttr, isAriaHidden });
+        addFormControlInfo({ meta, el, tagName, name, roleAttr, isAriaHidden });
+        addButtonInfo({ meta, el, tagName, name, roleAttr, isAriaHidden });
+        addLinkInfo({ meta, el, tagName, name, roleAttr, isAriaHidden });
+        addHeadingInfo({ meta, el, tagName, name, roleAttr, isAriaHidden });
         addAriaHiddenInfo({ meta, isAriaHidden });
 
         if (roleAttr) {
@@ -130,16 +131,18 @@ const addImageInfo = ({
   meta,
   el,
   name,
+  tagName,
   roleAttr,
   isAriaHidden,
 }: {
   meta: ElementMeta;
   el: Element;
+  tagName: string;
   name: string;
   roleAttr: string;
   isAriaHidden: boolean;
 }) => {
-  if (el.tagName === "IMG") {
+  if (tagName === "img") {
     meta.categories.push("image");
     const hasAlt = el.hasAttribute("alt");
     if (name) {
@@ -159,11 +162,14 @@ const addImageInfo = ({
     } else if (!isAriaHidden) {
       meta.tips.push({ type: "error", content: "messages.noName" });
     }
-    meta.tips.push({ type: "tagName", content: el.tagName.toLowerCase() });
-  } else if (el.tagName === "SVG") {
+    meta.tips.push({ type: "tagName", content: tagName });
+  } else if (el.tagName === "svg") {
     meta.categories.push("image");
+    console.log(el);
     if (name) {
       meta.tips.push({ type: "name", content: name });
+    } else if (!isAriaHidden) {
+      meta.tips.push({ type: "error", content: "messages.noName" });
     }
     meta.tips.push({ type: "tagName", content: "svg" });
   }
@@ -172,24 +178,25 @@ const addImageInfo = ({
 const addFormControlInfo = ({
   meta,
   el,
+  tagName,
   name,
   roleAttr,
   isAriaHidden,
 }: {
   meta: ElementMeta;
   el: Element;
+  tagName: string;
   name: string;
   roleAttr: string;
   isAriaHidden: boolean;
 }) => {
-  const tagName = el.tagName;
   const typeAttr = el.getAttribute("type");
   if (
-    (tagName === "INPUT" &&
+    (tagName === "input" &&
       typeAttr &&
       !["button", "submit", "reset", "hidden"].includes(typeAttr)) ||
-    tagName === "TEXTAREA" ||
-    tagName === "SELECT"
+    tagName === "textarea" ||
+    tagName === "select"
   ) {
     meta.categories.push("formControl");
     if (name) {
@@ -215,10 +222,10 @@ const addFormControlInfo = ({
     } else if (!isAriaHidden) {
       meta.tips.push({ type: "error", content: "messages.noName" });
     }
-    meta.tips.push({ type: "tagName", content: el.tagName.toLowerCase() });
+    meta.tips.push({ type: "tagName", content: tagName });
     if (
-      (tagName === "A" && !el.hasAttribute("href")) ||
-      (tagName === "AREA" && el.closest("map") && !el.hasAttribute("href")) ||
+      (tagName === "a" && !el.hasAttribute("href")) ||
+      (tagName === "area" && el.closest("map") && !el.hasAttribute("href")) ||
       (!FOCUSABLE_TAGNAMES.includes(tagName) && !el.hasAttribute("tabindex"))
     ) {
       meta.tips.push({ type: "error", content: "messages.notFocusable" });
@@ -229,21 +236,22 @@ const addFormControlInfo = ({
 const addButtonInfo = ({
   meta,
   el,
+  tagName,
   name,
   roleAttr,
   isAriaHidden,
 }: {
   meta: ElementMeta;
   el: Element;
+  tagName: string;
   name: string;
   roleAttr: string;
   isAriaHidden: boolean;
 }) => {
-  const tagName = el.tagName;
   const typeAttr = el.getAttribute("type");
   if (
-    tagName === "BUTTON" ||
-    (tagName === "INPUT" &&
+    tagName === "button" ||
+    (tagName === "input" &&
       typeAttr &&
       ["button", "submit", "reset"].includes(typeAttr))
   ) {
@@ -261,8 +269,8 @@ const addButtonInfo = ({
       meta.tips.push({ type: "error", content: "messages.noName" });
     }
     if (
-      (tagName === "A" && !el.hasAttribute("href")) ||
-      (tagName === "AREA" && !el.hasAttribute("href")) ||
+      (tagName === "a" && !el.hasAttribute("href")) ||
+      (tagName === "area" && !el.hasAttribute("href")) ||
       (!FOCUSABLE_TAGNAMES.includes(tagName) && !el.hasAttribute("tabindex"))
     ) {
       meta.tips.push({ type: "error", content: "messages.notFocusable" });
@@ -273,17 +281,19 @@ const addButtonInfo = ({
 const addLinkInfo = ({
   meta,
   el,
+  tagName,
   name,
   roleAttr,
   isAriaHidden,
 }: {
   meta: ElementMeta;
   el: Element;
+  tagName: string;
   name: string;
   roleAttr: string;
   isAriaHidden: boolean;
 }) => {
-  if (el.tagName === "A") {
+  if (tagName === "a") {
     meta.categories.push("link");
     if (name) {
       meta.tips.push({ type: "name", content: name });
@@ -293,7 +303,7 @@ const addLinkInfo = ({
     if (!el.hasAttribute("href")) {
       meta.tips.push({ type: "warning", content: "messages.noHref" });
     }
-  } else if (el.tagName === "AREA") {
+  } else if (tagName === "area") {
     meta.categories.push("link");
     if (name) {
       meta.tips.push({ type: "name", content: name });
@@ -310,26 +320,28 @@ const addLinkInfo = ({
     } else if (!isAriaHidden) {
       meta.tips.push({ type: "error", content: "messages.noName" });
     }
-    meta.tips.push({ type: "tagName", content: el.tagName.toLowerCase() });
+    meta.tips.push({ type: "tagName", content: tagName });
   }
 };
 
 const addHeadingInfo = ({
   meta,
   el,
+  tagName,
   name,
   roleAttr,
   isAriaHidden,
 }: {
   meta: ElementMeta;
   el: Element;
+  tagName: string;
   name: string;
   roleAttr: string;
   isAriaHidden: boolean;
 }) => {
-  if (["H1", "H2", "H3", "H4", "H5", "H6"].includes(el.tagName)) {
+  if (["h1", "h2", "h3", "h4", "h5", "h6"].includes(tagName)) {
     meta.categories.push("heading");
-    meta.tips.push({ type: "level", content: `${el.tagName.slice(1)}` });
+    meta.tips.push({ type: "level", content: `${tagName.slice(1)}` });
     if (name) {
       meta.tips.push({ type: "name", content: name });
     } else if (!isAriaHidden) {
@@ -351,7 +363,7 @@ const addHeadingInfo = ({
     } else if (!isAriaHidden) {
       meta.tips.push({ type: "error", content: "messages.noName" });
     }
-    meta.tips.push({ type: "tagName", content: el.tagName.toLowerCase() });
+    meta.tips.push({ type: "tagName", content: tagName });
   }
 };
 

@@ -58,6 +58,9 @@
     "*.{ts,tsx}": [
       "prettier --write",
       "eslint"
+    ],
+    "*.{md}" : [
+      "prettier --write"
     ]
   }
 }

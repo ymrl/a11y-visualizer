@@ -3,6 +3,10 @@
 ![Screenshot of 駒瑠市. Showing annotations of accessibility properties](./a11y-visualizer-komarushi.jpg)
 (This screenshot from [駒瑠市〜アクセシビリティ上の問題の体験サイト〜](https://a11yc.com/city-komaru/))
 
+## Users' Guide
+
+- [Accessibility Visualizer ユーザーズガイド (Japanese)](./docs/ja/UsersGuide.md)
+
 ## How to develop
 
 It is built with [CRXJS Vite Plugin](https://crxjs.dev/vite-plugin/).
@@ -21,7 +25,6 @@ $ npm run dev
 
 And in your browser, turn on Developer mode, and load the `dist` directory with "Load unpacked" button.
 
-
 ## How to build
 
 ```
@@ -34,3 +37,4 @@ $ npm run build
 
 # Build zip files to upload to the stores
 $ npm run package
+```

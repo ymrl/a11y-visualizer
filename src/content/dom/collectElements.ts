@@ -165,7 +165,6 @@ const addImageInfo = ({
     meta.tips.push({ type: "tagName", content: tagName });
   } else if (el.tagName === "svg") {
     meta.categories.push("image");
-    console.log(el);
     if (name) {
       meta.tips.push({ type: "name", content: name });
     } else if (!isAriaHidden) {

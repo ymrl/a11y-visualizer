@@ -15,6 +15,7 @@ const FOCUSABLE_TAGNAMES = [
   "object",
   "select",
   "textarea",
+  "summary",
 ];
 
 const LABELABLE_SELECTORS = [

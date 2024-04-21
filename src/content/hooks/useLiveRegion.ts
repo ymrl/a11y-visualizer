@@ -1,5 +1,20 @@
 import React from "react";
 import { SettingsContext } from "../components/SettingsProvider";
+
+const LIVEREGION_SELECTOR =
+  "output, [role='status'], [role='alert'], [role='log'], [aria-live]:not([aria-live='off'])";
+
+const closestNodeOfSelector = (node: Node, selector: string): Node | null => {
+  const parent = node.parentNode;
+  if (!parent) {
+    return null;
+  }
+  if (parent.nodeType === 1 && (parent as Element).matches(selector)) {
+    return parent;
+  }
+  return closestNodeOfSelector(node.parentNode, selector);
+};
+
 export const useLiveRegion = () => {
   const {
     showLiveRegions,
@@ -26,9 +41,7 @@ export const useLiveRegion = () => {
       if (!liveRegionObserverRef.current) {
         return;
       }
-      const liveRegions = el.querySelectorAll(
-        "output, [role='status'], [role='alert'], [role='log'], [aria-live]:not([aria-live='off'])",
-      );
+      const liveRegions = el.querySelectorAll(LIVEREGION_SELECTOR);
       [...liveRegions].forEach((el) => {
         if (
           liveRegionObserverRef.current &&
@@ -52,10 +65,12 @@ export const useLiveRegion = () => {
     const observer = new MutationObserver((records) => {
       const content: string[] = records
         .map((r) => {
+          const node =
+            closestNodeOfSelector(r.target, LIVEREGION_SELECTOR) || r.target;
           const isAtomic =
-            (r.target as Element).getAttribute?.("aria-atomic") === "true";
+            (node as Element).getAttribute?.("aria-atomic") === "true";
           const relevant = (
-            (r.target as Element).getAttribute?.("aria-relevant") ||
+            (node as Element).getAttribute?.("aria-relevant") ||
             "additions text"
           ).split(/\s/);
           const removals =
@@ -63,7 +78,7 @@ export const useLiveRegion = () => {
           const additions =
             relevant.includes("additions") || relevant.includes("all");
           if (isAtomic) {
-            return r.target.textContent || "";
+            return node.textContent || "";
           }
           return [
             ...[...(removals ? r.removedNodes : [])].map(
@@ -75,6 +90,7 @@ export const useLiveRegion = () => {
           ].join(" ");
         })
         .filter(Boolean);
+
       setAnnouncements((prev) => [...prev, ...content]);
       content.forEach((c) => {
         setTimeout(

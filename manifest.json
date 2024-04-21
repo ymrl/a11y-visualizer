@@ -8,7 +8,8 @@
   "icons": {
     "16": "src/assets/icon@16w.png",
     "48": "src/assets/icon@48w.png",
-    "128": "src/assets/icon.png"
+    "128": "src/assets/icon@128w.png",
+    "192": "src/assets/icon.png"
   },
   "content_scripts": [
     {

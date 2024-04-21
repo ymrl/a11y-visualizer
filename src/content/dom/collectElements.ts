@@ -17,7 +17,17 @@ const FOCUSABLE_TAGNAMES = [
   "textarea",
 ];
 
-const Selectors = [
+const LABELABLE_SELECTORS = [
+  "button",
+  "input:not([type='hidden'])",
+  "meter",
+  "output",
+  "progress",
+  "select",
+  "textarea",
+] as const;
+
+const Selector = [
   // images
   "img",
   "svg",
@@ -37,6 +47,7 @@ const Selectors = [
   '[role="spinbutton"]',
   '[role="switch"]',
   '[role="textbox"]',
+  "label",
 
   // links
   "a",
@@ -90,7 +101,7 @@ export const collectElements = (
   return {
     rootHeight,
     rootWidth,
-    elements: [...root.querySelectorAll(Selectors)]
+    elements: [...root.querySelectorAll(Selector)]
       .map((el: Element) => {
         if (excludes.some((exclude: Element) => exclude.contains(el)))
           return null;
@@ -228,6 +239,22 @@ const addFormControlInfo = ({
       (!FOCUSABLE_TAGNAMES.includes(tagName) && !el.hasAttribute("tabindex"))
     ) {
       meta.tips.push({ type: "error", content: "messages.notFocusable" });
+    }
+  } else if (tagName === "label") {
+    const forAttr = el.getAttribute("for");
+    const controlByFor = forAttr
+      ? el.ownerDocument.querySelector(
+          LABELABLE_SELECTORS.map((e) => `${e}#${forAttr}`).join(","),
+        )
+      : null;
+    const controlInside = el.querySelector(LABELABLE_SELECTORS.join(","));
+    if (
+      (!controlByFor && !controlInside) ||
+      (controlByFor && isHidden(controlByFor)) ||
+      (controlInside && isHidden(controlInside))
+    ) {
+      meta.categories.push("formControl");
+      meta.tips.push({ type: "error", content: "messages.noControlForLabel" });
     }
   }
 };

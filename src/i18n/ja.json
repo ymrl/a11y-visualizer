@@ -32,6 +32,7 @@
     "noHeadingLevel": "見出しレベルなし",
     "ariaHidden": "aria-hidden",
     "headingLevel": "見出しレベル",
-    "notFocusable": "フォーカスできない"
+    "notFocusable": "フォーカスできない",
+    "noControlForLabel": "フォームコントロールなしのラベル"
   }
 }

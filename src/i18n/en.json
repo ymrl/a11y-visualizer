@@ -32,6 +32,7 @@
     "noHeadingLevel": "No heading level",
     "ariaHidden": "aria-hidden",
     "headingLevel": "Heading Lv.",
-    "notFocusable": "Not focusable"
+    "notFocusable": "Not focusable",
+    "noControlForLabel": "No control for label"
   }
 }

@@ -12,7 +12,7 @@ It is currently distributed for Google Chrome at [Chrome Web Store](https://chro
 - A warning message will be displayed for any of these that are clearly problematic or should be used with caution.
 - `role="status"` `role="alert"` `role="log"` `aria-live` attribute, to notify visually of changes in the live region created by the `<output>` element To do
 
-Until now, this information has only been available through reading the accessibility tree (Accessibility Object Model) in the browser's developer tools, reading the source code, or actually interacting with it using a screen reader. There was no.
+Until now, this information has only been available through reading the accessibility tree (Accessibility Object Model) in the browser's developer tools, reading the source code, or actually interacting with it using a screen reader.
 
 Knowledge is required to decipher the accessibility tree and the source code. Screen readers are unfamiliar to most people, and their unique controls can be confusing.
 The goal of Accessibility Visualizer is to visualize this information to eliminate these barriers and enable everyone to be aware of accessibility when coding or checking operation.
@@ -32,11 +32,11 @@ When you click the Accessibility Visualizer item in the extension menu or the Ac
 
 ### Tip display
 
-If you check the "Show tip" checkbox in the popup, various information will be displayed as a "tip" on the web page you are viewing.
+If you check the "Show tips" checkbox in the popup, various information will be displayed as a "tip" on the web page you are viewing.
 
 !["Komaru City" logo and the heading "Global Warming Prevention Division." The logo is surrounded by a green dotted line and covered by a red chip that says ``Image without alt attribute.'' The logo and headline are surrounded by a blue dotted line, and above them are a blue tip for ``Heading level 1'' and a green tip for ``Global Warming Prevention Division''](./images/tip_example_komaru_city.png )
 
-(Screenshots are from [Komaru City - Experience site for accessibility issues -] (https://a11yc.com/city-komaru/). /city-komaru/practice/?preset=ng-terrible1&wcagver=22)
+(The screenshots is from [たいへんな駒瑠市 (Very difficult Komaru City)](https://a11yc.com/city-komaru/practice/?preset=ng-terrible1&wcagver=22) of [駒瑠市〜アクセシビリティ上の問題の体験サイト〜 (Komaru City - Experience site for accessibility issues -)](https://a11yc.com/city-komaru/))
 
 You can change the target for which tips are displayed using the checkboxes in the popup. If you want to check a specific target in detail, or if you find it difficult to browse the web if it is left open, uncheck it and make adjustments.
 
@@ -47,16 +47,16 @@ You can change the target for which tips are displayed using the checkboxes in t
 - Heading
 - aria-hidden
 
-The "Chip opacity" slider allows you to adjust the color intensity of the chip display. If the display is distracting, lower the opacity.
+The "Tips opacity" slider allows you to adjust the color intensity of the tip display. If the display is distracting, lower the opacity.
 
 ## Live region announcement
 
-When "Announce live region" was checked in the popup, there was a change in [ARIA live regions](https://developer.mozilla.org/ja/docs/Web/Accessibility/ARIA/ARIA_Live_Regions) The content will now be displayed near the center of the screen.
+When "Announce live regions" was checked in the popup, there was a change in [ARIA live regions](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Live_Regions) The content will now be displayed near the center of the screen.
 This is a function that allows users of assistive technology such as screen readers to experience and check the operation of the live region function, which is used to inform users of changes in screen status, etc., without using screen readers. .
 
 ![A large message "Download now! Speed up your PC!" is displayed in the center of the browser](./images/a11y_visualizer_live_region.png)
 
-(The screenshot is from [aria-live is noisy (ARIA-Barriers)](https://shuaruta.github.io/ARIA-Barriers/2023/12/22/aria-live.html), which displays the announcement. )
+(The screenshot is from ["aria-live がうるさい (aria-live is noisy)" (ARIA-Barriers)](https://shuaruta.github.io/ARIA-Barriers/2023/12/22/aria-live.html), which displays the announcement. )
 
 The longer the number of characters in a live region announcement, the longer it will be displayed.
 Within the popup, you can now change the number of seconds per character and the maximum length of the announcement. If live region announcements are a nuisance, please adjust each value to a smaller value.
@@ -64,16 +64,16 @@ You can also change the color intensity of live region announcements.
 
 ## Usage notes
 
-- The display position of the chip may sometimes shift. In that case, please press the "Refresh" button in the popup
+- The display position of the tip may sometimes shift. In that case, please press the "Refresh" button in the popup
 - There are some websites that slow down when displaying tips or announcements. When viewing such sites, please uncheck "Show tip" and "Announce live region".
 - For some sites that are unavoidably slow, extension developers may take measures to prevent them from working.
 - Live region announcements may not be possible due to technical limitations where frames are used.
 
-## Chip display details
+## Tip display details
 
-Here we briefly explain the points you should check regarding the information displayed on the chip.
+Here we briefly explain the points you should check regarding the information displayed on the tip.
 
-There are following types of chips
+There are following types of tips
 
 - Name: Appears in green with a humanoid icon. Please check that the content is appropriate and that there are no omissions.
 - Description: Appears in gray with a document icon. Please check that the content is appropriate and that there are no omissions.
@@ -83,13 +83,13 @@ There are following types of chips
 - Role: pink and displayed with a tag icon
 - Element: brown and displayed with a `</>` icon that mimics an HTML tag
 
-"Name" is "[Accessible Name](https://developer.mozilla.org/ja/docs/Glossary/Accessible_name)" and "Description" is "[Accessible Description]( https://developer.mozilla.org/ja/docs/Glossary/Accessible_description)" value is displayed. These are pieces of information that help users of assistive technologies, such as screen readers, recognize the element.
+"Name" is "[Accessible Name](https://developer.mozilla.org/en-US/docs/Glossary/Accessible_name)" and "Description" is "[Accessible Description](https://developer.mozilla.org/en-US/docs/Glossary/Accessible_description)" value is displayed. These are pieces of information that help users of assistive technologies, such as screen readers, recognize the element.
 
 ### image
 
-When "Show image information" is checked, tips are displayed for `<img>` elements, `<svg>` elements, and elements with the `role="img"` attribute.
+When "Show about image" is checked, tips are displayed for `<img>` elements, `<svg>` elements, and elements with the `role="img"` attribute.
 
-- So-called alternative text (alt text) is displayed in the name chip
+- So-called alternative text (alt text) is displayed in the name tip
    - Image alt text should be a concise description that conveys much of the same information even if the image were displayed instead.
    - For `<img>` elements, the `alt` attribute is usually used
    - For `<svg>` element, `<title>` element, `aria-label` attribute, `aria-labelledby` attribute may be used
@@ -99,23 +99,23 @@ When "Show image information" is checked, tips are displayed for `<img>` element
 
 ### button
 
-When "Show button information" is checked, `<button>` element, `<input>` element with `type` attribute of `button` `submit` `reset` `image`, `role= Display a tip for elements with the "button" attribute.
+When "Show about buttons" is checked, tips are displayed for`<button>` element, `<input>` element with `type` attribute of `button` `submit` `reset` `image`, and any elements with `role="button"` attribute. 
 
-- The name chip displays the button label. Please check if there are any omissions or if the labels are appropriate.
+- The name tip displays the button label. Please check if there are any omissions or if the labels are appropriate.
 - If no name is given, a **``No name (label)'' error tip** will be displayed. In this case, assistive technologies such as screen readers cannot predict the behavior of the button. **Modification required**
 - If the element has the `role="button"` attribute and is not focusable by default, and the `tabindex` attribute is not specified, a **``Unfocusable'' error tip** will be displayed. In this state, you cannot operate with the keyboard, so **Modification is required**
 
 ### Link
 
-When "Show link information" is checked, tips are displayed for `<a>` elements, `<area>` elements, and elements with the `role="link"` attribute.
+When "Show about links" is checked, tips are displayed for `<a>` elements, `<area>` elements, and elements with the `role="link"` attribute.
 
 - The text of the link will be displayed in the name tip. Please check if there are any omissions or if the text is appropriate.
 - If the link name becomes empty, a **"No name (label)" error tip** will be displayed. In this case, assistive technologies such as screen readers cannot perceive the purpose of the link. **Modification required**
-- If the `<a>` or `<area>` element does not have the `href` attribute, the browser will not treat it as a link. You will see a warning chip with "No href attribute". If an interaction such as clicking is set for the `<a>` element in this state, keyboard operations may not be possible, or users of assistive technology such as screen readers may not be able to recognize that it is the target of the operation. **In that case, modification is required**
+- If the `<a>` or `<area>` element does not have the `href` attribute, the browser will not treat it as a link. You will see a warning tip with "No href attribute". If an interaction such as clicking is set for the `<a>` element in this state, keyboard operations may not be possible, or users of assistive technology such as screen readers may not be able to recognize that it is the target of the operation. **In that case, modification is required**
 
 ### Form controls
 
-When "Show form control information" is checked, `<input>` elements whose `type` attribute is `hidden` `button` `submit` `reset` `image`, `<textarea>` Displays a tip for elements, `<select>` elements, and elements whose `role` attribute specifies `textbox`, `combobox`, `checkbox`, `radio`, or `switch`.
+When "Show about form-controls" is checked, tips are displayed for `<input>` elements whose `type` attribute is `hidden` `button` `submit` `reset` `image`, `<textarea>` elements, `<select>` elements, and elements whose `role` attribute specifies `textbox`, `combobox`, `checkbox`, `radio`, or `switch`.
 
 - Name tip displays form control labels. Please check if there are any omissions or if the labels are appropriate.
    - Typically, the `<label>` element is used for the `<input>` `<select>` `<textarea>` element
@@ -124,7 +124,7 @@ When "Show form control information" is checked, `<input>` elements whose `type`
 
 ### Heading
 
-When "Show heading information" is checked, tips are displayed for elements `<h1>` to `<h6>` and elements with the `role="heading"` attribute.
+When "Show about headings" is checked, tips are displayed for elements `<h1>` to `<h6>` and elements with the `role="heading"` attribute.
 
 - The heading level tip displays the heading level. Please make sure it is at the appropriate level.
    - `<h1>` to `<h6>` elements are used to indicate heading levels
@@ -135,6 +135,6 @@ When "Show heading information" is checked, tips are displayed for elements `<h1
 
 ### aria-hidden
 
-When "Show aria-hidden information" is checked, a tip is displayed for elements with the `aria-hidden="true"` attribute.
+When "Show about aria-hidden" is checked, tips are displayed for elements with the `aria-hidden="true"` attribute.
 
-- A warning tip indicates that the `aria-hidden="true"` attribute is present. Elements with this attribute are invisible to users of assistive technologies such as screen readers. If there is information displayed on the screen that the user can perceive, but `aria-hidden="ture"` is specified, only users of assistive technology such as screen readers will not be able to perceive that information. Masu. If there is an element that is visually visible but marked as `aria-hidden` except for decorative elements, **needs modification**
+- A warning tip indicates that the `aria-hidden="true"` attribute is present. Elements with this attribute are invisible to users of assistive technologies such as screen readers. If there is information displayed on the screen that the user can perceive, but `aria-hidden="true"` is specified, only users of assistive technology such as screen readers will not be able to perceive that information. If there is an element that is visually visible but marked as `aria-hidden` except for decorative elements, **needs modification**

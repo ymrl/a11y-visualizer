@@ -5,9 +5,14 @@ import { Settings, Message } from "../types";
 import { SettingsProvider } from "./components/SettingsProvider";
 import { initialSettings } from "../initialSettings";
 
+let counter = 0;
+
 export const injectRoot = (w: Window, parent: Element) => {
   const rootDiv = w.document.createElement("div");
   parent.append(rootDiv);
+  rootDiv.setAttribute("role", "region");
+  rootDiv.setAttribute("aria-label", `Accessibility Visualizer ${counter++}`);
+
   const root = ReactDOM.createRoot(rootDiv);
 
   const render = (settings: Settings, parent: Element) =>

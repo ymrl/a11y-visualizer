@@ -48,6 +48,8 @@ const Selector = [
   '[role="spinbutton"]',
   '[role="switch"]',
   '[role="textbox"]',
+  '[role="menuitemcheckbox"]',
+  '[role="menuitemradio"]',
   "label",
 
   // links
@@ -225,6 +227,8 @@ const addFormControlInfo = ({
       "spinbutton",
       "switch",
       "textbox",
+      "menuitemcheckbox",
+      "menuitemradio",
     ].includes(roleAttr)
   ) {
     meta.categories.push("formControl");

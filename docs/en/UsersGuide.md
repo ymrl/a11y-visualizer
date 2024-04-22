@@ -34,7 +34,7 @@ When you click the Accessibility Visualizer item in the extension menu or the Ac
 
 If you check the "Show tips" checkbox in the popup, various information will be displayed as a "tip" on the web page you are viewing.
 
-!["Komaru City" logo and the heading "Global Warming Prevention Division." The logo is surrounded by a green dotted line and covered by a red chip that says ``Image without alt attribute.'' The logo and headline are surrounded by a blue dotted line, and above them are a blue tip for ``Heading level 1'' and a green tip for ``Global Warming Prevention Division''](./images/tip_example_komaru_city.png )
+!["Komaru City" logo and the heading "Global Warming Prevention Division." The logo is surrounded by a green dotted line and covered by a red chip that says ``Image without alt attribute.'' The logo and headline are surrounded by a blue dotted line, and above them are a blue tip for ``Heading level 1'' and a green tip for ``Global Warming Prevention Division''](./images/tip_example_komaru_city.png)
 
 (The screenshots is from [たいへんな駒瑠市 (Very difficult Komaru City)](https://a11yc.com/city-komaru/practice/?preset=ng-terrible1&wcagver=22) of [駒瑠市〜アクセシビリティ上の問題の体験サイト〜 (Komaru City - Experience site for accessibility issues -)](https://a11yc.com/city-komaru/))
 
@@ -90,16 +90,16 @@ There are following types of tips
 When "Show about image" is checked, tips are displayed for `<img>` elements, `<svg>` elements, and elements with the `role="img"` attribute.
 
 - So-called alternative text (alt text) is displayed in the name tip
-   - Image alt text should be a concise description that conveys much of the same information even if the image were displayed instead.
-   - For `<img>` elements, the `alt` attribute is usually used
-   - For `<svg>` element, `<title>` element, `aria-label` attribute, `aria-labelledby` attribute may be used
-   - For elements with `role="img"` attribute, `aria-label` attribute, `aria-labelledby` attribute may be used
+  - Image alt text should be a concise description that conveys much of the same information even if the image were displayed instead.
+  - For `<img>` elements, the `alt` attribute is usually used
+  - For `<svg>` element, `<title>` element, `aria-label` attribute, `aria-labelledby` attribute may be used
+  - For elements with `role="img"` attribute, `aria-label` attribute, `aria-labelledby` attribute may be used
 - If `alt=""` is specified in the `<img>` element, a warning tip "Image with alt="" will be displayed. Images in this state cannot be perceived by assistive technologies such as screen readers. **Please provide alt text unless this image is placed for decorative purposes**
-- If no alternative text is specified and it is not `aria-hidden` or `alt=""`, the error tip ``Image without alt attribute'' or ``No name (label)'' will be displayed. . In this case, **Modification is required**
+- If no alternative text is specified and it is not `aria-hidden` or `alt=""`, the error tip `Image without alt attribute'' or `No name (label)'' will be displayed. . In this case, **Modification is required**
 
 ### button
 
-When "Show about buttons" is checked, tips are displayed for`<button>` element, `<input>` element with `type` attribute of `button` `submit` `reset` `image`, and any elements with `role="button"` attribute. 
+When "Show about buttons" is checked, tips are displayed for`<button>` element, `<input>` element with `type` attribute of `button` `submit` `reset` `image`, and any elements with `role="button"` attribute.
 
 - The name tip displays the button label. Please check if there are any omissions or if the labels are appropriate.
 - If no name is given, a **``No name (label)'' error tip** will be displayed. In this case, assistive technologies such as screen readers cannot predict the behavior of the button. **Modification required**
@@ -115,20 +115,21 @@ When "Show about links" is checked, tips are displayed for `<a>` elements, `<are
 
 ### Form controls
 
-When "Show about form-controls" is checked, tips are displayed for `<input>` elements whose `type` attribute is `hidden` `button` `submit` `reset` `image`, `<textarea>` elements, `<select>` elements, and elements whose `role` attribute specifies `textbox`, `combobox`, `checkbox`, `radio`, or `switch`.
+When "Show about form-controls" is checked, tips are displayed for `<input>` elements whose `type` attribute is `hidden` `button` `submit` `reset` `image`, `<textarea>` elements, `<select>` elements, `<label>` elements, and elements whose `role` attribute specifies `textbox`, `combobox`, `checkbox`, `radio`, `switch`, `menuitemcheckbox` or `menuitemradio` .
 
 - Name tip displays form control labels. Please check if there are any omissions or if the labels are appropriate.
-   - Typically, the `<label>` element is used for the `<input>` `<select>` `<textarea>` element
+  - Typically, the `<label>` element is used for the `<input>` `<select>` `<textarea>` element
 - If no name is given, a **``No name (label)'' error tip** will be displayed. In this case, assistive technologies such as screen readers cannot perceive the purpose of the form control. **Modification required**
 - If the element is not focusable by default and the `tabindex` attribute is not specified, a **``Unfocusable'' error tip** will be displayed. In this state, you cannot operate with the keyboard, so **Modification is required**
+- If `<label>` element does not have an associated form control or is hidden, a **"No control for label" warning tip** will be displayed. Especially when hidden for styling checkboxes or radio buttons, the possibility of not being able to operate with the keyboard is high. **Please check**
 
 ### Heading
 
 When "Show about headings" is checked, tips are displayed for elements `<h1>` to `<h6>` and elements with the `role="heading"` attribute.
 
 - The heading level tip displays the heading level. Please make sure it is at the appropriate level.
-   - `<h1>` to `<h6>` elements are used to indicate heading levels
-   - Elements with the `role="heading"` attribute use the `aria-level` attribute to indicate the heading level
+  - `<h1>` to `<h6>` elements are used to indicate heading levels
+  - Elements with the `role="heading"` attribute use the `aria-level` attribute to indicate the heading level
 - If an element has the `role="heading"` attribute and the `aria-level` attribute does not exist, a **``No heading level'' error tip** will be displayed. In this case, assistive technologies such as screen readers cannot perceive the level of the heading. **Modification required**
 - The name tip displays the heading text. Please check if there are any omissions or if the text is appropriate.
 - If a heading is not given a name, a ``No name (label)'' error tip will be displayed. In this case, assistive technologies such as screen readers will not be able to perceive the heading. **Modification required**

@@ -27,6 +27,7 @@ const LABELABLE_SELECTORS = [
   "select",
   "textarea",
 ] as const;
+const LABELABLE_SELECTOR = LABELABLE_SELECTORS.join(",");
 
 const Selector = [
   // images
@@ -247,12 +248,10 @@ const addFormControlInfo = ({
     }
   } else if (tagName === "label") {
     const forAttr = el.getAttribute("for");
-    const controlByFor = forAttr
-      ? el.ownerDocument.querySelector(
-          LABELABLE_SELECTORS.map((e) => `${e}#${forAttr}`).join(","),
-        )
-      : null;
-    const controlInside = el.querySelector(LABELABLE_SELECTORS.join(","));
+    const forElement = forAttr && el.ownerDocument.getElementById(forAttr);
+    const controlByFor =
+      forElement && forElement.matches(LABELABLE_SELECTOR) ? forElement : null;
+    const controlInside = el.querySelector(LABELABLE_SELECTOR);
     if (
       (!controlByFor && !controlInside) ||
       (controlByFor && isHidden(controlByFor)) ||

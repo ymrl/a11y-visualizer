@@ -255,7 +255,10 @@ const addFormControlInfo = ({
       (controlInside && isHidden(controlInside))
     ) {
       meta.categories.push("formControl");
-      meta.tips.push({ type: "error", content: "messages.noControlForLabel" });
+      meta.tips.push({
+        type: "warning",
+        content: "messages.noControlForLabel",
+      });
     }
   }
 };

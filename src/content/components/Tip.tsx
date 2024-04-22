@@ -52,9 +52,9 @@ const colors = (
       };
     case "error":
       return {
-        backgroundColor: "rgb(255,75,0)",
+        backgroundColor: "rgb(214,64,0)",
         color: "#FFF",
-        border: "1px solid rgb(255,75,0)",
+        border: "1px solid rgb(214,64,0)",
       };
     default:
       return {

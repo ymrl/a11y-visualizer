@@ -70,6 +70,7 @@ const Icon = ({ type }: { type: TipType }) => {
     width: "1.2em",
     height: "1.2em",
     flexShrink: 0,
+    backgroundColor: "transparent",
   };
   switch (type) {
     case "name":

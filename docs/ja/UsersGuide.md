@@ -81,7 +81,7 @@ Accessibility Visualizerをインストールすると、拡張機能メニュ�
 - 警告: 黄色で、警告の三角形のアイコンとともに表示されます。問題があるかもしれない箇所を示しています
 - エラー: 赤色で、エラーの三角形のアイコンとともに表示されます。確実に問題のある箇所を示しています
 - ロール: ピンク色で、荷札のアイコンとともに表示されます
-- 要素: 茶色で、 HTMLタグを模した `</>` のアイコンとともに表示されます
+- 要素: 紫色で、 HTMLタグを模した `</>` のアイコンとともに表示されます
 
 「名前」は「[アクセシブルな名前 (Accessible Name)](https://developer.mozilla.org/ja/docs/Glossary/Accessible_name)」、「説明」は「[アクセシブルな説明 (Accessible Description)](https://developer.mozilla.org/ja/docs/Glossary/Accessible_description)」の値が表示されます。これらは、スクリーンリーダー等の支援技術のユーザーが、その要素を認識するために使われる情報です。
 

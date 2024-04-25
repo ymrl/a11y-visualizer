@@ -50,7 +50,6 @@ const getAreaElementPosition = (
       height: rect.height,
     };
   }
-  console.log(map, img, rect, shape, coords);
   if (shape === "rect" && coords.length === 4) {
     return {
       x: rect.x + coords[0] + w.scrollX - offsetX,

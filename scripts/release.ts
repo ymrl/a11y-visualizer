@@ -9,6 +9,7 @@ if (
   releaseLevel !== "minor" &&
   releaseLevel !== "patch"
 ) {
+  // eslint-disable-next-line no-console
   console.error(
     "Invalid release level. Please use one of major, minor, or patch",
   );

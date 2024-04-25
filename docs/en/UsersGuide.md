@@ -121,6 +121,7 @@ When "Show about form-controls" is checked, tips are displayed for `<input>` ele
   - Typically, the `<label>` element is used for the `<input>` `<select>` `<textarea>` element
 - If no name is given, a **``No name (label)'' error tip** will be displayed. In this case, assistive technologies such as screen readers cannot perceive the purpose of the form control. **Modification required**
 - If the element is not focusable by default and the `tabindex` attribute is not specified, a **``Unfocusable'' error tip** will be displayed. In this state, you cannot operate with the keyboard, so **Modification is required**
+- If the radio button (`<input type="radio">`) does not have the same `name` attribute, a **"No name attribute" error tip** will be displayed. If there are no radio buttons with the same `name` attribute in the same `<form>` element or the same document, a **"No radio button group" error tip** will be displayed. These are not grouped as radio buttons, so users cannot select them with the keyboard or predict movement with the Tab key, and users may not be able to recognize which radio buttons are in the same group. **Modification required**
 - If `<label>` element does not have an associated form control or is hidden, a **"No control for label" warning tip** will be displayed. Especially when hidden for styling checkboxes or radio buttons, the possibility of not being able to operate with the keyboard is high. **Please check**
 
 ### Heading

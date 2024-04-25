@@ -16,7 +16,9 @@
     "zip:firefox": "cd dist-firefox && zip -r ../a11y-visualizer-firefox.zip *",
     "zip:chrome": "cd dist && zip -r ../a11y-visualizer-chrome.zip *",
     "package": "run-s clean build zip",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "lint": "run-s lint:*",
+    "lint:eslint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "lint:prettier": "prettier --check .",
     "release": "tsx scripts/release.ts",
     "preview": "vite preview",
     "prepare": "husky"

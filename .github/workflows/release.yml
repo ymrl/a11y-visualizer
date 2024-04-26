@@ -42,7 +42,7 @@ jobs:
 
       - name: Get version
         id: get_version
-        run: echo "::set-output name=VERSION::$(node -e \"console.log(require('./package.json').version)\")"
+        run: echo "::set-output name=VERSION::$(jq -r .version package.json)"
 
       - name: Create Release
         id: create_release

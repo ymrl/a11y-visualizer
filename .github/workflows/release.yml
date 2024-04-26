@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
     inputs:
       release_type:
-        description: 'Release type (patch, minor, major)'
+        description: "Release type (patch, minor, major)"
         required: true
-        default: 'patch'
+        default: "patch"
 
 jobs:
   release:
@@ -19,7 +19,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '21'
+          node-version: "21"
           cache: "npm"
 
       - name: Install dependencies
@@ -37,7 +37,7 @@ jobs:
 
       - name: Get version
         id: get_version
-        run: echo "::set-output name=VERSION::$(jq -r .version package.json)"
+        run: echo "::set-output name=VERSION::$(node -e \"console.log(require('./package.json').version)\")"
 
       - name: Create Release
         id: create_release
@@ -45,7 +45,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ steps.get_version.outputs.VERSION }}
+          tag_name: v${{ steps.get_version.outputs.VERSION }}
           release_name: Release ${{ steps.get_version.outputs.VERSION }}
           draft: true
           prerelease: false

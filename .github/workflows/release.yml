@@ -25,13 +25,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Release
-        run: npm run release -- ${{ github.event.inputs.release_type }}
-
       - name: Git config
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
+
+      - name: Release
+        run: npm run release -- ${{ github.event.inputs.release_type }}
 
       - name: Push changes
         uses: ad-m/github-push-action@v0.6.0

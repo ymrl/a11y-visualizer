@@ -33,6 +33,8 @@
     "ariaHidden": "aria-hidden",
     "headingLevel": "Heading Lv.",
     "notFocusable": "Not focusable",
-    "noControlForLabel": "No control for label"
+    "noControlForLabel": "No control for label",
+    "noNameAttr": "No name attribute",
+    "noRadioGroup": "No radiobutton group"
   }
 }

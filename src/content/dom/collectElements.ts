@@ -218,6 +218,21 @@ const addFormControlInfo = ({
     } else if (!isAriaHidden) {
       meta.tips.push({ type: "error", content: "messages.noName" });
     }
+
+    if (typeAttr === "radio") {
+      const nameAttr = el.getAttribute("name");
+      if (!nameAttr) {
+        meta.tips.push({ type: "error", content: "messages.noNameAttr" });
+      } else {
+        const form = el.closest("form");
+        const radios = (form || el.ownerDocument).querySelectorAll(
+          `input[type="radio"][name="${nameAttr}"]`,
+        );
+        if (radios.length < 2) {
+          meta.tips.push({ type: "error", content: "messages.noRadioGroup" });
+        }
+      }
+    }
   } else if (
     [
       "checkbox",

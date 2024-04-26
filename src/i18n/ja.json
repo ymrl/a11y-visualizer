@@ -33,6 +33,8 @@
     "ariaHidden": "aria-hidden",
     "headingLevel": "見出しレベル",
     "notFocusable": "フォーカスできない",
-    "noControlForLabel": "フォームコントロールなしのラベル"
+    "noControlForLabel": "フォームコントロールなしのラベル",
+    "noNameAttr": "name属性なし",
+    "noRadioGroup": "ラジオボタングループなし"
   }
 }

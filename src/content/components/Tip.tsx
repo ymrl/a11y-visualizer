@@ -28,7 +28,7 @@ const colors = (
       };
     case "tagName":
       return {
-        backgroundColor: "rgb(201,172,2)",
+        backgroundColor: "rgb(201,172,230)",
         color: "#000",
         border: "1px solid rgb(153,0,153)",
       };

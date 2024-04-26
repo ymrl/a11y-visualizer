@@ -81,7 +81,7 @@ There are following types of tips
 - Warning: Displayed in yellow with a warning triangle icon. Indicates where there may be a problem
 - Error: Displayed in red with an error triangle icon. Definitely indicates where the problem is
 - Role: pink and displayed with a tag icon
-- Element: brown and displayed with a `</>` icon that mimics an HTML tag
+- Element: Purple and displayed with a `</>` icon that mimics an HTML tag
 
 "Name" is "[Accessible Name](https://developer.mozilla.org/en-US/docs/Glossary/Accessible_name)" and "Description" is "[Accessible Description](https://developer.mozilla.org/en-US/docs/Glossary/Accessible_description)" value is displayed. These are pieces of information that help users of assistive technologies, such as screen readers, recognize the element.
 

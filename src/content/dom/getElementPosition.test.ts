@@ -67,8 +67,13 @@ describe("getElementPosition", () => {
       const w = { scrollX: 0, scrollY: 0 } as Window;
       const area = document.createElement("area");
       map.appendChild(area);
-      area.setAttribute("coords", "5,5,10,10");
-      expect(getElementPosition(area, w)).toEqual(position);
+      area.setAttribute("coords", "5,6,10,12");
+      expect(getElementPosition(area, w)).toEqual({
+        x: position.x + 5,
+        y: position.y + 6,
+        width: 5,
+        height: 6,
+      });
     });
     test("without coords", () => {
       const w = { scrollX: 0, scrollY: 0 } as Window;

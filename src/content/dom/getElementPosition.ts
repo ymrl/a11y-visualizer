@@ -33,15 +33,7 @@ const getAreaElementPosition = (
   const coords = el.getAttribute("coords")?.split(",").map(Number);
   const shape = el.getAttribute("shape");
 
-  if (!coords || !shape) {
-    return {
-      x: rect.x + w.scrollX - offsetX,
-      y: rect.y + w.scrollY - offsetY,
-      width: rect.width,
-      height: rect.height,
-    };
-  }
-  if (shape === "rect" && coords.length === 4) {
+  if (coords && (shape === "rect" || !shape) && coords.length >= 4) {
     return {
       x: rect.x + coords[0] + w.scrollX - offsetX,
       y: rect.y + coords[1] + w.scrollY - offsetY,
@@ -49,7 +41,7 @@ const getAreaElementPosition = (
       height: coords[3] - coords[1],
     };
   }
-  if (shape === "circle" && coords.length === 3) {
+  if (coords && shape === "circle" && coords.length >= 3) {
     return {
       x: rect.x + coords[0] - coords[2] + w.scrollX - offsetX,
       y: rect.y + coords[1] - coords[2] + w.scrollY - offsetY,
@@ -57,7 +49,7 @@ const getAreaElementPosition = (
       height: coords[2] * 2,
     };
   }
-  if (shape === "poly" && coords.length >= 6) {
+  if (coords && shape === "poly" && coords.length >= 6) {
     return {
       x:
         rect.x +

@@ -10,7 +10,7 @@ export const imageTips = (el: Element): ElementTip[] => {
     const name = computeAccessibleName(el);
     if (name) {
       result.push({ type: "name", content: name });
-    } else if (!isAriaHidden(el) || roleAttr !== "presentation") {
+    } else if (!isAriaHidden(el) && roleAttr !== "presentation") {
       if (tagName === "img") {
         const hasAlt = el.hasAttribute("alt");
         if (hasAlt) {

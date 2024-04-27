@@ -1,33 +1,14 @@
-import {
-  computeAccessibleName,
-  computeAccessibleDescription,
-} from "dom-accessibility-api";
-import { ElementMeta } from "../types";
+import { ElementMeta, Category } from "../types";
 import { getPositionBaseElement } from "./getPositionBaseElement";
 import { isHidden } from "./isHidden";
-import { getElementPosition } from "./getElementPoistion";
-
-const FOCUSABLE_TAGNAMES = [
-  "a",
-  "area",
-  "button",
-  "input",
-  "object",
-  "select",
-  "textarea",
-  "summary",
-];
-
-const LABELABLE_SELECTORS = [
-  "button",
-  "input:not([type='hidden'])",
-  "meter",
-  "output",
-  "progress",
-  "select",
-  "textarea",
-] as const;
-const LABELABLE_SELECTOR = LABELABLE_SELECTORS.join(",");
+import { getElementPosition } from "./getElementPosition";
+import { globalTips } from "./tips/globalTips";
+import { ariaHiddenTips } from "./tips/ariaHiddenTips";
+import { headingTips } from "./tips/headingTips";
+import { linkTips } from "./tips/linkTips";
+import { buttonTips } from "./tips/buttonTips";
+import { formTips } from "./tips/formTips";
+import { imageTips } from "./tips/imageTips";
 
 const Selector = [
   // images
@@ -102,6 +83,7 @@ export const collectElements = (
   const offsetRect = positionBaseElement?.getBoundingClientRect();
   const offsetX = offsetRect?.left || 0;
   const offsetY = offsetRect?.top || 0;
+
   return {
     rootHeight,
     rootWidth,
@@ -109,321 +91,35 @@ export const collectElements = (
       .map((el: Element) => {
         if (excludes.some((exclude: Element) => exclude.contains(el)))
           return null;
-        const meta: ElementMeta = {
+        const images = imageTips(el);
+        const forms = formTips(el);
+        const buttons = buttonTips(el);
+        const links = linkTips(el);
+        const heading = headingTips(el);
+        const ariaHidden = ariaHiddenTips(el);
+        const global = globalTips(el);
+        return {
           ...getElementPosition(el, w, offsetX, offsetY),
           hidden: isHidden(el),
-          categories: [],
-          tips: [],
+          categories: [
+            images.length > 0 ? "image" : "",
+            forms.length > 0 ? "formControl" : "",
+            buttons.length > 0 ? "button" : "",
+            links.length > 0 ? "link" : "",
+            heading.length > 0 ? "heading" : "",
+            ariaHidden.length > 0 ? "ariaHidden" : "",
+          ].filter(Boolean) as Category[],
+          tips: [
+            ...images,
+            ...forms,
+            ...buttons,
+            ...links,
+            ...heading,
+            ...ariaHidden,
+            ...global,
+          ],
         };
-        const name = computeAccessibleName(el);
-        const description = computeAccessibleDescription(el);
-        const roleAttr = el.getAttribute("role") || "";
-        const isAriaHidden = el.getAttribute("aria-hidden") === "true";
-        const tagName = el.tagName.toLowerCase();
-        addImageInfo({ meta, el, tagName, name, roleAttr, isAriaHidden });
-        addFormControlInfo({ meta, el, tagName, name, roleAttr, isAriaHidden });
-        addButtonInfo({ meta, el, tagName, name, roleAttr, isAriaHidden });
-        addLinkInfo({ meta, el, tagName, name, roleAttr, isAriaHidden });
-        addHeadingInfo({ meta, el, tagName, name, roleAttr, isAriaHidden });
-        addAriaHiddenInfo({ meta, isAriaHidden });
-
-        if (roleAttr) {
-          meta.tips.push({ type: "role", content: roleAttr });
-        }
-        if (description) {
-          meta.tips.push({
-            type: "description",
-            content: description,
-          });
-        }
-        return meta;
       })
       .filter((el): el is ElementMeta => el !== null),
   };
-};
-
-const addImageInfo = ({
-  meta,
-  el,
-  name,
-  tagName,
-  roleAttr,
-  isAriaHidden,
-}: {
-  meta: ElementMeta;
-  el: Element;
-  tagName: string;
-  name: string;
-  roleAttr: string;
-  isAriaHidden: boolean;
-}) => {
-  if (tagName === "img") {
-    meta.categories.push("image");
-    const hasAlt = el.hasAttribute("alt");
-    if (name) {
-      meta.tips.push({ type: "name", content: name });
-    } else if (hasAlt) {
-      meta.tips.push({
-        type: "warning",
-        content: "messages.emptyAltImage",
-      });
-    } else if (!isAriaHidden) {
-      meta.tips.push({ type: "error", content: "messages.noAltImage" });
-    }
-  } else if (roleAttr === "img") {
-    meta.categories.push("image");
-    if (name) {
-      meta.tips.push({ type: "name", content: name });
-    } else if (!isAriaHidden) {
-      meta.tips.push({ type: "error", content: "messages.noName" });
-    }
-    meta.tips.push({ type: "tagName", content: tagName });
-  } else if (el.tagName === "svg") {
-    meta.categories.push("image");
-    if (name) {
-      meta.tips.push({ type: "name", content: name });
-    } else if (!isAriaHidden) {
-      meta.tips.push({ type: "error", content: "messages.noName" });
-    }
-    meta.tips.push({ type: "tagName", content: "svg" });
-  }
-};
-
-const addFormControlInfo = ({
-  meta,
-  el,
-  tagName,
-  name,
-  roleAttr,
-  isAriaHidden,
-}: {
-  meta: ElementMeta;
-  el: Element;
-  tagName: string;
-  name: string;
-  roleAttr: string;
-  isAriaHidden: boolean;
-}) => {
-  const typeAttr = el.getAttribute("type");
-  if (
-    (tagName === "input" &&
-      typeAttr &&
-      !["button", "submit", "reset", "image", "hidden"].includes(typeAttr)) ||
-    tagName === "textarea" ||
-    tagName === "select"
-  ) {
-    meta.categories.push("formControl");
-    if (name) {
-      meta.tips.push({ type: "name", content: name });
-    } else if (!isAriaHidden) {
-      meta.tips.push({ type: "error", content: "messages.noName" });
-    }
-
-    if (typeAttr === "radio") {
-      const nameAttr = el.getAttribute("name");
-      if (!nameAttr) {
-        meta.tips.push({ type: "error", content: "messages.noNameAttr" });
-      } else {
-        const form = el.closest("form");
-        const radios = (form || el.ownerDocument).querySelectorAll(
-          `input[type="radio"][name="${nameAttr}"]`,
-        );
-        if (radios.length < 2) {
-          meta.tips.push({ type: "error", content: "messages.noRadioGroup" });
-        }
-      }
-    }
-  } else if (
-    [
-      "checkbox",
-      "combobox",
-      "radio",
-      "searchbox",
-      "slider",
-      "spinbutton",
-      "switch",
-      "textbox",
-      "menuitemcheckbox",
-      "menuitemradio",
-    ].includes(roleAttr)
-  ) {
-    meta.categories.push("formControl");
-    if (name) {
-      meta.tips.push({ type: "name", content: name });
-    } else if (!isAriaHidden) {
-      meta.tips.push({ type: "error", content: "messages.noName" });
-    }
-    meta.tips.push({ type: "tagName", content: tagName });
-    if (
-      (tagName === "a" && !el.hasAttribute("href")) ||
-      (tagName === "area" && el.closest("map") && !el.hasAttribute("href")) ||
-      (!FOCUSABLE_TAGNAMES.includes(tagName) && !el.hasAttribute("tabindex"))
-    ) {
-      meta.tips.push({ type: "error", content: "messages.notFocusable" });
-    }
-  } else if (tagName === "label") {
-    const forAttr = el.getAttribute("for");
-    const forElement = forAttr && el.ownerDocument.getElementById(forAttr);
-    const controlByFor =
-      forElement && forElement.matches(LABELABLE_SELECTOR) ? forElement : null;
-    const controlInside = el.querySelector(LABELABLE_SELECTOR);
-    if (
-      (!controlByFor && !controlInside) ||
-      (controlByFor && isHidden(controlByFor)) ||
-      (controlInside && isHidden(controlInside))
-    ) {
-      meta.categories.push("formControl");
-      meta.tips.push({
-        type: "warning",
-        content: "messages.noControlForLabel",
-      });
-    }
-  }
-};
-
-const addButtonInfo = ({
-  meta,
-  el,
-  tagName,
-  name,
-  roleAttr,
-  isAriaHidden,
-}: {
-  meta: ElementMeta;
-  el: Element;
-  tagName: string;
-  name: string;
-  roleAttr: string;
-  isAriaHidden: boolean;
-}) => {
-  const typeAttr = el.getAttribute("type");
-  if (
-    tagName === "button" ||
-    (tagName === "input" &&
-      typeAttr &&
-      ["button", "submit", "reset", "image"].includes(typeAttr))
-  ) {
-    meta.categories.push("button");
-    if (name) {
-      meta.tips.push({ type: "name", content: name });
-    } else if (!isAriaHidden) {
-      meta.tips.push({ type: "error", content: "messages.noName" });
-    }
-  } else if (roleAttr === "button") {
-    meta.categories.push("button");
-    if (name) {
-      meta.tips.push({ type: "name", content: name });
-    } else if (!isAriaHidden) {
-      meta.tips.push({ type: "error", content: "messages.noName" });
-    }
-    if (
-      (tagName === "a" && !el.hasAttribute("href")) ||
-      (tagName === "area" && !el.hasAttribute("href")) ||
-      (!FOCUSABLE_TAGNAMES.includes(tagName) && !el.hasAttribute("tabindex"))
-    ) {
-      meta.tips.push({ type: "error", content: "messages.notFocusable" });
-    }
-  }
-};
-
-const addLinkInfo = ({
-  meta,
-  el,
-  tagName,
-  name,
-  roleAttr,
-  isAriaHidden,
-}: {
-  meta: ElementMeta;
-  el: Element;
-  tagName: string;
-  name: string;
-  roleAttr: string;
-  isAriaHidden: boolean;
-}) => {
-  if (tagName === "a") {
-    meta.categories.push("link");
-    if (name) {
-      meta.tips.push({ type: "name", content: name });
-    } else if (!isAriaHidden) {
-      meta.tips.push({ type: "error", content: "messages.noName" });
-    }
-    if (!el.hasAttribute("href")) {
-      meta.tips.push({ type: "warning", content: "messages.noHref" });
-    }
-  } else if (tagName === "area") {
-    meta.categories.push("link");
-    if (name) {
-      meta.tips.push({ type: "name", content: name });
-    } else if (!isAriaHidden) {
-      meta.tips.push({ type: "error", content: "messages.noName" });
-    }
-    if (!el.hasAttribute("href")) {
-      meta.tips.push({ type: "warning", content: "messages.noHref" });
-    }
-  } else if (roleAttr === "link") {
-    meta.categories.push("link");
-    if (name) {
-      meta.tips.push({ type: "name", content: name });
-    } else if (!isAriaHidden) {
-      meta.tips.push({ type: "error", content: "messages.noName" });
-    }
-    meta.tips.push({ type: "tagName", content: tagName });
-  }
-};
-
-const addHeadingInfo = ({
-  meta,
-  el,
-  tagName,
-  name,
-  roleAttr,
-  isAriaHidden,
-}: {
-  meta: ElementMeta;
-  el: Element;
-  tagName: string;
-  name: string;
-  roleAttr: string;
-  isAriaHidden: boolean;
-}) => {
-  if (["h1", "h2", "h3", "h4", "h5", "h6"].includes(tagName)) {
-    meta.categories.push("heading");
-    meta.tips.push({ type: "level", content: `${tagName.slice(1)}` });
-    if (name) {
-      meta.tips.push({ type: "name", content: name });
-    } else if (!isAriaHidden) {
-      meta.tips.push({ type: "error", content: "messages.noName" });
-    }
-  } else if (roleAttr === "heading") {
-    meta.categories.push("heading");
-    const ariaLevel = el.getAttribute("aria-level");
-    if (ariaLevel) {
-      meta.tips.push({ type: "level", content: `${ariaLevel}` });
-    } else {
-      meta.tips.push({
-        type: "error",
-        content: "messages.noHeadingLevel",
-      });
-    }
-    if (name) {
-      meta.tips.push({ type: "name", content: name });
-    } else if (!isAriaHidden) {
-      meta.tips.push({ type: "error", content: "messages.noName" });
-    }
-    meta.tips.push({ type: "tagName", content: tagName });
-  }
-};
-
-const addAriaHiddenInfo = ({
-  meta,
-  isAriaHidden,
-}: {
-  meta: ElementMeta;
-  isAriaHidden: boolean;
-}) => {
-  if (isAriaHidden) {
-    meta.categories.push("ariaHidden");
-    meta.tips.push({ type: "warning", content: "messages.ariaHidden" });
-  }
 };

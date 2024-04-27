@@ -6,28 +6,7 @@ import { ElementMeta } from "../types";
 import { getPositionBaseElement } from "./getPositionBaseElement";
 import { isHidden } from "./isHidden";
 import { getElementPosition } from "./getElementPosition";
-
-const FOCUSABLE_TAGNAMES = [
-  "a",
-  "area",
-  "button",
-  "input",
-  "object",
-  "select",
-  "textarea",
-  "summary",
-];
-
-const LABELABLE_SELECTORS = [
-  "button",
-  "input:not([type='hidden'])",
-  "meter",
-  "output",
-  "progress",
-  "select",
-  "textarea",
-] as const;
-const LABELABLE_SELECTOR = LABELABLE_SELECTORS.join(",");
+import { isFocusable } from "./isFocusable";
 
 const Selector = [
   // images
@@ -189,6 +168,16 @@ const addImageInfo = ({
   }
 };
 
+const LABELABLE_SELECTOR = [
+  "button",
+  "input:not([type='hidden'])",
+  "meter",
+  "output",
+  "progress",
+  "select",
+  "textarea",
+].join(",");
+
 const addFormControlInfo = ({
   meta,
   el,
@@ -254,11 +243,7 @@ const addFormControlInfo = ({
       meta.tips.push({ type: "error", content: "messages.noName" });
     }
     meta.tips.push({ type: "tagName", content: tagName });
-    if (
-      (tagName === "a" && !el.hasAttribute("href")) ||
-      (tagName === "area" && el.closest("map") && !el.hasAttribute("href")) ||
-      (!FOCUSABLE_TAGNAMES.includes(tagName) && !el.hasAttribute("tabindex"))
-    ) {
+    if (!isFocusable(el)) {
       meta.tips.push({ type: "error", content: "messages.notFocusable" });
     }
   } else if (tagName === "label") {
@@ -316,11 +301,7 @@ const addButtonInfo = ({
     } else if (!isAriaHidden) {
       meta.tips.push({ type: "error", content: "messages.noName" });
     }
-    if (
-      (tagName === "a" && !el.hasAttribute("href")) ||
-      (tagName === "area" && !el.hasAttribute("href")) ||
-      (!FOCUSABLE_TAGNAMES.includes(tagName) && !el.hasAttribute("tabindex"))
-    ) {
+    if (!isFocusable(el)) {
       meta.tips.push({ type: "error", content: "messages.notFocusable" });
     }
   }

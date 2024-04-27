@@ -51,4 +51,16 @@ describe("imageTips()", () => {
       content: "messages.noName",
     });
   });
+
+  test("aria-hidden svg", () => {
+    const element = document.createElement("svg");
+    element.setAttribute("aria-hidden", "true");
+    document.body.appendChild(element);
+    const result = imageTips(element);
+    expect(result).toHaveLength(1);
+    expect(
+      result.find((e) => e.type === "tagName" && e.content === "svg"),
+    ).toBeDefined();
+    expect(result.find((e) => e.type === "error")).toBeUndefined();
+  });
 });

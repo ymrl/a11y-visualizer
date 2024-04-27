@@ -1,11 +1,14 @@
 export type ElementMeta = {
+  tips: ElementTip[];
+  hidden: boolean;
+  categories: Category[];
+} & ElementPosition;
+
+export type ElementPosition = {
   x: number;
   y: number;
   width: number;
   height: number;
-  tips: ElementTip[];
-  hidden: boolean;
-  categories: Category[];
 };
 
 export type TipType =

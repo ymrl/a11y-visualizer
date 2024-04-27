@@ -5,7 +5,7 @@ import {
 import { ElementMeta } from "../types";
 import { getPositionBaseElement } from "./getPositionBaseElement";
 import { isHidden } from "./isHidden";
-import { getElementPosition } from "./getElementPoistion";
+import { getElementPosition } from "./getElementPosition";
 
 const FOCUSABLE_TAGNAMES = [
   "a",

@@ -1,14 +1,10 @@
+import { ElementPosition } from "../types";
 export const getElementPosition = (
   el: Element,
   w: Window,
   offsetX: number = 0,
   offsetY: number = 0,
-): {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-} => {
+): ElementPosition => {
   if (el.tagName.toLowerCase() === "area") {
     return getAreaElementPosition(el, w, offsetX, offsetY);
   }
@@ -26,12 +22,7 @@ const getAreaElementPosition = (
   w: Window,
   offsetX: number = 0,
   offsetY: number = 0,
-): {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-} => {
+): ElementPosition => {
   const map = el.closest("map");
   const img = map?.id
     ? map.ownerDocument.querySelector(`img[usemap="#${map.id}"]`)

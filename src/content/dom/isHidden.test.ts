@@ -32,6 +32,11 @@ const dom = new JSDOM(`<!DOCTYPE html>
       <summary id="details-summary">Summary</summary>
       <div id="details-content">Details</div>
     </details>
+
+    <details id="details-open" open>
+      <summary id="details-open-summary">Summary</summary>
+      <div id="details-open-content">Details</div>
+    </details>
   </body>
 `);
 
@@ -79,7 +84,27 @@ test("isHidden", async () => {
   expect(details).not.toBeNull();
   details && expect(isHidden(details)).toBe(false);
 
+  const summary = dom.window.document.getElementById("details-summary");
+  expect(summary).not.toBeNull();
+  summary && expect(isHidden(summary)).toBe(false);
+
   const detailsContent = dom.window.document.getElementById("details-content");
   expect(detailsContent).not.toBeNull();
   detailsContent && expect(isHidden(detailsContent)).toBe(true);
+
+  const detailsOpen = dom.window.document.getElementById("details-open");
+  expect(detailsOpen).not.toBeNull();
+  detailsOpen && expect(isHidden(detailsOpen)).toBe(false);
+
+  const detailsOpenSummary = dom.window.document.getElementById(
+    "details-open-summary",
+  );
+  expect(detailsOpenSummary).not.toBeNull();
+  detailsOpenSummary && expect(isHidden(detailsOpenSummary)).toBe(false);
+
+  const detailsOpenContent = dom.window.document.getElementById(
+    "details-open-content",
+  );
+  expect(detailsOpenContent).not.toBeNull();
+  detailsOpenContent && expect(isHidden(detailsOpenContent)).toBe(false);
 });

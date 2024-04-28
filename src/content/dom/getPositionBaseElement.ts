@@ -4,7 +4,8 @@ export const getPositionBaseElement = (
   w: Window,
 ): Element | null => {
   if (!el) return null;
-  if (w.getComputedStyle(el).position !== "static") return el;
+  const position = w.getComputedStyle(el).position;
+  if (position && position !== "static") return el;
   if (el === d.body) return null;
-  return getPositionBaseElement(el, d, w);
+  return getPositionBaseElement(el.parentElement, d, w);
 };

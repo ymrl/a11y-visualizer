@@ -3,6 +3,15 @@ import { ElementTip } from "../../types";
 import { isAriaHidden } from "../isAriaHidden";
 import { isFocusable } from "../isFocusable";
 
+export const ButtonSelectors = [
+  "button",
+  '[role="button"]',
+  'input[type="button"]',
+  'input[type="submit"]',
+  'input[type="reset"]',
+  'input[type="image"]',
+] as const;
+
 export const buttonTips = (el: Element): ElementTip[] => {
   const result: ElementTip[] = [];
   const tagName = el.tagName.toLowerCase();

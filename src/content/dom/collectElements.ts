@@ -3,53 +3,20 @@ import { getPositionBaseElement } from "./getPositionBaseElement";
 import { isHidden } from "./isHidden";
 import { getElementPosition } from "./getElementPosition";
 import { globalTips } from "./tips/globalTips";
-import { ariaHiddenTips } from "./tips/ariaHiddenTips";
-import { headingTips } from "./tips/headingTips";
-import { linkTips } from "./tips/linkTips";
-import { buttonTips } from "./tips/buttonTips";
-import { formTips } from "./tips/formTips";
-import { imageTips } from "./tips/imageTips";
+import { AriraHiddenSelectors, ariaHiddenTips } from "./tips/ariaHiddenTips";
+import { HeadingSelectors, headingTips } from "./tips/headingTips";
+import { LinkSelectors, linkTips } from "./tips/linkTips";
+import { ButtonSelectors, buttonTips } from "./tips/buttonTips";
+import { FormSelectors, formTips } from "./tips/formTips";
+import { imageTips, isImage, ImageSelectors } from "./tips/imageTips";
 
 const Selector = [
-  // images
-  "img",
-  "svg",
-  '[role="img"]',
-
-  // form controls
-  "input:not([type='hidden'])",
-  "textarea",
-  "select",
-  "button",
-  '[role="button"]',
-  '[role="checkbox"]',
-  '[role="combobox"]',
-  '[role="radio"]',
-  '[role="searchbox"]',
-  '[role="slider"]',
-  '[role="spinbutton"]',
-  '[role="switch"]',
-  '[role="textbox"]',
-  '[role="menuitemcheckbox"]',
-  '[role="menuitemradio"]',
-  "label",
-
-  // links
-  "a",
-  "map area",
-  '[role="link"]',
-
-  // headings
-  "h1",
-  "h2",
-  "h3",
-  "h4",
-  "h5",
-  "h6",
-  '[role="heading"]',
-
-  // aria-hidden
-  '[aria-hidden="true"]',
+  ...(ImageSelectors || []),
+  ...(FormSelectors || []),
+  ...(LinkSelectors || []),
+  ...(HeadingSelectors || []),
+  ...(ButtonSelectors || []),
+  ...(AriraHiddenSelectors || []),
 ].join(",");
 
 export const collectElements = (
@@ -102,7 +69,7 @@ export const collectElements = (
           ...getElementPosition(el, w, offsetX, offsetY),
           hidden: isHidden(el),
           categories: [
-            images.length > 0 ? "image" : "",
+            isImage(el) ? "image" : "",
             forms.length > 0 ? "formControl" : "",
             buttons.length > 0 ? "button" : "",
             links.length > 0 ? "link" : "",

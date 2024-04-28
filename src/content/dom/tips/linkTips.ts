@@ -2,6 +2,9 @@ import { computeAccessibleName } from "dom-accessibility-api";
 import { ElementTip } from "../../types";
 import { isAriaHidden } from "../isAriaHidden";
 import { isFocusable } from "../isFocusable";
+
+export const LinkSelectors = ["a", "area", '[role="link"]'] as const;
+
 export const linkTips = (el: Element): ElementTip[] => {
   const result: ElementTip[] = [];
   const tagName = el.tagName.toLowerCase();

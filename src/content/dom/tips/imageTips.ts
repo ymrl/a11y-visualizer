@@ -2,11 +2,20 @@ import { computeAccessibleName } from "dom-accessibility-api";
 import { ElementTip } from "../../types";
 import { isAriaHidden } from "../index";
 
+export const ImageSelectors = ["img", "svg", '[role="img"]'] as const;
+
+export const isImage = (el: Element): boolean => {
+  const tagName = el.tagName.toLowerCase();
+  return (
+    tagName === "img" || tagName === "svg" || el.getAttribute("role") === "img"
+  );
+};
+
 export const imageTips = (el: Element): ElementTip[] => {
   const result: ElementTip[] = [];
   const tagName = el.tagName.toLowerCase();
   const roleAttr = el.getAttribute("role") || "";
-  if (tagName === "img" || roleAttr === "img" || tagName === "svg") {
+  if (isImage(el)) {
     const name = computeAccessibleName(el);
     if (name) {
       result.push({ type: "name", content: name });

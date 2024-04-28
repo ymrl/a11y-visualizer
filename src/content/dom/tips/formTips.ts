@@ -2,6 +2,23 @@ import { computeAccessibleName } from "dom-accessibility-api";
 import { ElementTip } from "../../types";
 import { isAriaHidden, isFocusable, isHidden } from "../index";
 
+export const FormSelectors = [
+  "input:not([type='hidden'])",
+  "textarea",
+  "select",
+  '[role="checkbox"]',
+  '[role="combobox"]',
+  '[role="radio"]',
+  '[role="searchbox"]',
+  '[role="slider"]',
+  '[role="spinbutton"]',
+  '[role="switch"]',
+  '[role="textbox"]',
+  '[role="menuitemcheckbox"]',
+  '[role="menuitemradio"]',
+  "label",
+] as const;
+
 const LABELABLE_SELECTOR = [
   "button",
   "input:not([type='hidden'])",

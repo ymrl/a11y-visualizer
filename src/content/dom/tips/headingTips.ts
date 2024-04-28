@@ -2,6 +2,16 @@ import { computeAccessibleName } from "dom-accessibility-api";
 import { ElementTip } from "../../types";
 import { isAriaHidden } from "../isAriaHidden";
 
+export const HeadingSelectors = [
+  "h1",
+  "h2",
+  "h3",
+  "h4",
+  "h5",
+  "h6",
+  '[role="heading"]',
+] as const;
+
 export const headingTips = (el: Element): ElementTip[] => {
   const result: ElementTip[] = [];
   const tagName = el.tagName.toLowerCase();

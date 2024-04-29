@@ -4,7 +4,7 @@
   padding-left: 1.75rem;
   position: relative;
 }
-.cool-checkbox input{
+.cool-checkbox input {
   display: none;
 }
 .cool-checkbox input + label::before {

@@ -47,9 +47,16 @@ export const collectElements = (
       : root.scrollHeight;
   if (!w) return { elements: [], rootWidth, rootHeight };
   const positionBaseElement = getPositionBaseElement(root, d, w);
-  const offsetRect = positionBaseElement?.getBoundingClientRect();
-  const offsetX = offsetRect?.left || 0;
-  const offsetY = offsetRect?.top || 0;
+  const offsetPosition = positionBaseElement
+    ? getElementPosition(positionBaseElement, w, 0, 0)
+    : {
+        x: 0,
+        y: 0,
+        width: 0,
+        height: 0,
+      };
+  const offsetX = offsetPosition.x;
+  const offsetY = offsetPosition.y;
 
   return {
     rootHeight,

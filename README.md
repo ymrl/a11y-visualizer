@@ -26,6 +26,8 @@ $ npm run dev
 
 And in your browser, turn on Developer mode, and load the `dist` directory with "Load unpacked" button.
 
+There is a test page in `src/test/` directroy. You can use it to test the extension with http://localhost:5173/src/test/index.html .
+
 ## How to build
 
 ```

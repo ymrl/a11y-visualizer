@@ -67,7 +67,7 @@ jobs:
         uses: myrotvorets/set-commit-status-action@v2.0.1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          state: pending
+          status: pending
           context: lint
           description: "Running lint"
           sha: ${{ steps.set_commit_sha.outputs.SHA }}
@@ -89,9 +89,8 @@ jobs:
         if: ${{ always() }}
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          state: ${{ job.status }}
+          status: ${{ job.status }}
           context: lint
-          description: "Lint passed"
           sha: ${{ steps.set_commit_sha.outputs.SHA }}
 
   test:
@@ -112,7 +111,7 @@ jobs:
         uses: myrotvorets/set-commit-status-action@v2.0.1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          state: pending
+          status: pending
           context: test
           description: "Running test"
           sha: ${{ steps.set_commit_sha.outputs.SHA }}
@@ -134,9 +133,8 @@ jobs:
         if: ${{ always() }}
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          state: ${{ job.status }}
+          status: ${{ job.status }}
           context: test
-          description: "Test passed"
           sha: ${{ steps.set_commit_sha.outputs.SHA }}
 
   release:

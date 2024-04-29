@@ -19,6 +19,7 @@
     "lint": "run-s lint:*",
     "lint:eslint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "lint:prettier": "prettier --check .",
+    "format": "prettier --write .",
     "release": "tsx scripts/release.ts",
     "preview": "vite preview",
     "prepare": "husky",
@@ -66,7 +67,7 @@
       "prettier --write",
       "eslint"
     ],
-    "*.{md,json,yml}": [
+    "*.{md,json,yml,html}": [
       "prettier --write"
     ]
   }

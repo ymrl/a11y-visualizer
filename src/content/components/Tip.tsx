@@ -141,12 +141,30 @@ export const Tip = ({ tip }: { tip: ElementTip }) => {
         gap: "4px",
       }}
     >
-      <Icon type={tip.type} />
-      {tip.type === "level"
-        ? `${t("messages.headingLevel")}${tip.content}`
-        : tip.type === "warning" || tip.type === "error"
-          ? t(tip.content)
-          : tip.content}
+      <dt
+        style={{
+          margin: 0,
+          padding: 0,
+          border: 0,
+          background: "none",
+        }}
+      >
+        <Icon type={tip.type} />
+      </dt>
+      <dd
+        style={{
+          margin: 0,
+          padding: 0,
+          border: 0,
+          background: "none",
+        }}
+      >
+        {tip.type === "level"
+          ? `${t("messages.headingLevel")}${tip.content}`
+          : tip.type === "warning" || tip.type === "error"
+            ? t(tip.content)
+            : tip.content}
+      </dd>
     </div>
   );
 };

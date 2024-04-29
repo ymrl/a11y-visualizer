@@ -1,6 +1,7 @@
 import { Settings } from "../../types";
 import { Category, ElementTip } from "../types";
 import { Tip } from "./Tip";
+import { VisuallyHidden } from "./VisuallyHidden";
 
 const colors = (category: Category): { border: string } => {
   switch (category) {
@@ -42,6 +43,7 @@ export const MetaInfo = ({
   height,
   tips,
   categories,
+  nickName,
   settings,
   rootWidth,
   rootHeight,
@@ -51,6 +53,7 @@ export const MetaInfo = ({
   width: number;
   height: number;
   tips: ElementTip[];
+  nickName: string;
   categories: Category[];
   settings: Settings;
   rootWidth: number;
@@ -80,6 +83,9 @@ export const MetaInfo = ({
         height,
       }}
     >
+      <VisuallyHidden>
+        <h3>{nickName}</h3>
+      </VisuallyHidden>
       {categories
         .filter((category) => settings[category])
         .map((category, i) => (
@@ -91,9 +97,10 @@ export const MetaInfo = ({
               ...colors(category),
               boxShadow: "0 0 0 1px #fff, inset 0 0 0 1px #fff",
             }}
+            aria-hidden="true"
           />
         ))}
-      <div
+      <dl
         style={{
           position: "absolute",
           zIndex: 1,
@@ -118,12 +125,16 @@ export const MetaInfo = ({
           maxWidth: "max(160px, 100%)",
           width: "max-content",
           flexWrap: "wrap",
+          margin: 0,
+          padding: 0,
+          border: 0,
+          background: "none",
         }}
       >
         {tips.map((tip, i) => (
           <Tip key={i} tip={tip} />
         ))}
-      </div>
+      </dl>
     </div>
   );
 };

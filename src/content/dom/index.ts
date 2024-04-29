@@ -3,3 +3,4 @@ export * from "./getPositionBaseElement";
 export * from "./collectElements";
 export * from "./isFocusable";
 export * from "./isAriaHidden";
+export * from "./elementNickName";

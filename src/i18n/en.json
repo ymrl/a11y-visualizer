@@ -36,5 +36,9 @@
     "noControlForLabel": "No control for label",
     "noNameAttr": "No name attribute",
     "noRadioGroup": "No radiobutton group"
+  },
+  "content": {
+    "elements": "Elements",
+    "liveRegions": "Live Regions"
   }
 }

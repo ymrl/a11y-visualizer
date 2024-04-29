@@ -1,11 +1,13 @@
 import React from "react";
-import { collectElements } from "./dom";
+import { collectElements, elementNickName } from "./dom";
 import { ElementMeta } from "./types";
 import { MetaList } from "./components/MetaList";
 import { injectRoot } from "./injectRoot";
 import { Announcements } from "./components/Announcements";
 import { SettingsContext } from "./components/SettingsProvider";
 import { useLiveRegion } from "./hooks/useLiveRegion";
+import { VisuallyHidden } from "./components/VisuallyHidden";
+import { useLang } from "../useLang";
 
 export const Root = ({ parent }: { parent: Element }) => {
   const [metaList, setMetaList] = React.useState<ElementMeta[]>([]);
@@ -97,16 +99,26 @@ export const Root = ({ parent }: { parent: Element }) => {
     return () => observer.disconnect();
   }, [updateInfo, parent]);
 
+  const { t } = useLang();
+
   return (
-    <>
+    <div ref={containerRef}>
+      <VisuallyHidden>
+        <h1>Accessibility Visualizer {elementNickName(parent)}</h1>
+      </VisuallyHidden>
+      <VisuallyHidden>
+        <h2>{t("content.elements")}</h2>
+      </VisuallyHidden>
       <MetaList
         list={metaList}
         settings={settings}
-        ref={containerRef}
         width={width}
         height={height}
       />
+      <VisuallyHidden>
+        <h2>{t("content.liveRegions")}</h2>
+      </VisuallyHidden>
       <Announcements contents={announcements} ref={announcementsRef} />
-    </>
+    </div>
   );
 };

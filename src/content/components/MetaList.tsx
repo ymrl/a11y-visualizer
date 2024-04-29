@@ -38,12 +38,7 @@ const MetaListRenderer = (
           !meta.hidden && (
             <MetaInfo
               key={i}
-              x={meta.x}
-              y={meta.y}
-              width={meta.width}
-              height={meta.height}
-              tips={meta.tips}
-              categories={meta.categories}
+              {...meta}
               settings={settings}
               rootHeight={height}
               rootWidth={width}

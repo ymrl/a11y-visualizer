@@ -9,6 +9,7 @@ import { LinkSelectors, linkTips } from "./tips/linkTips";
 import { ButtonSelectors, buttonTips } from "./tips/buttonTips";
 import { FormSelectors, formTips } from "./tips/formTips";
 import { imageTips, isImage, ImageSelectors } from "./tips/imageTips";
+import { elementNickName } from "./elementNickName";
 
 const Selector = [
   ...(ImageSelectors || []),
@@ -62,7 +63,7 @@ export const collectElements = (
     rootHeight,
     rootWidth,
     elements: [...root.querySelectorAll(Selector)]
-      .map((el: Element) => {
+      .map((el: Element): ElementMeta | null => {
         if (excludes.some((exclude: Element) => exclude.contains(el)))
           return null;
         const images = imageTips(el);
@@ -92,6 +93,7 @@ export const collectElements = (
             ...ariaHidden,
             ...global,
           ],
+          nickName: elementNickName(el),
         };
       })
       .filter((el): el is ElementMeta => el !== null),

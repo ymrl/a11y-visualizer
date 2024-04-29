@@ -36,5 +36,9 @@
     "noControlForLabel": "フォームコントロールなしのラベル",
     "noNameAttr": "name属性なし",
     "noRadioGroup": "ラジオボタングループなし"
+  },
+  "content": {
+    "elements": "要素",
+    "liveRegions": "ライブリージョン"
   }
 }

@@ -2,6 +2,7 @@ export type ElementMeta = {
   tips: ElementTip[];
   hidden: boolean;
   categories: Category[];
+  nickName: string;
 } & ElementPosition;
 
 export type ElementPosition = {

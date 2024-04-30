@@ -80,19 +80,20 @@ export const MetaInfo = ({
         height,
       }}
     >
-      {categories
-        .filter((category) => settings[category])
-        .map((category, i) => (
-          <div
-            key={i}
-            style={{
-              position: "absolute",
-              inset: 0,
-              ...colors(category),
-              boxShadow: "0 0 0 1px #fff, inset 0 0 0 1px #fff",
-            }}
-          />
-        ))}
+      {tips.length > 0 &&
+        categories
+          .filter((category) => settings[category])
+          .map((category, i) => (
+            <div
+              key={i}
+              style={{
+                position: "absolute",
+                inset: 0,
+                ...colors(category),
+                boxShadow: "0 0 0 1px #fff, inset 0 0 0 1px #fff",
+              }}
+            />
+          ))}
       <div
         style={{
           position: "absolute",

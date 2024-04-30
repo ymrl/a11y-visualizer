@@ -1,5 +1,33 @@
 import { describe, test, expect, afterEach } from "vitest";
-import { formTips } from "./formTips";
+import { formTips, isFormControl } from "./formTips";
+
+describe("isFormControl()", () => {
+  test("div", () => {
+    const element = document.createElement("div");
+    expect(isFormControl(element)).toBe(false);
+  });
+
+  test("input", () => {
+    const element = document.createElement("input");
+    expect(isFormControl(element)).toBe(true);
+  });
+
+  test("input hidden", () => {
+    const element = document.createElement("input");
+    element.setAttribute("type", "hidden");
+    expect(isFormControl(element)).toBe(false);
+  });
+
+  test("textarea", () => {
+    const element = document.createElement("textarea");
+    expect(isFormControl(element)).toBe(true);
+  });
+
+  test("select", () => {
+    const element = document.createElement("select");
+    expect(isFormControl(element)).toBe(true);
+  });
+});
 
 describe("formTips()", () => {
   afterEach(() => {
@@ -7,7 +35,7 @@ describe("formTips()", () => {
   });
   test("div", () => {
     const element = document.createElement("div");
-    expect(formTips(element)).toEqual([]);
+    expect(formTips(element)).toHaveLength(0);
   });
 
   test("empty input", () => {
@@ -15,10 +43,9 @@ describe("formTips()", () => {
     document.body.appendChild(element);
     const result = formTips(element);
     expect(result).toHaveLength(1);
-    expect(result.find((t) => t.type === "error")).toEqual({
-      type: "error",
-      content: "messages.noName",
-    });
+    expect(
+      result.find((t) => t.type === "error" && t.content === "messages.noName"),
+    ).toBeDefined();
   });
 
   test("labeled input", () => {
@@ -48,8 +75,9 @@ describe("formTips()", () => {
       result.find(
         (t) => t.type === "error" && t.content === "messages.noNameAttribute",
       ),
-    ).not.toBeUndefined;
+    ).toBeDefined;
   });
+
   test("input type = radio, nogropup", () => {
     const element = document.createElement("input");
     element.setAttribute("type", "radio");
@@ -68,10 +96,11 @@ describe("formTips()", () => {
     document.body.appendChild(label);
     const result = formTips(element);
     expect(result).toHaveLength(1);
-    expect(result.find((t) => t.type === "error")).toEqual({
-      type: "error",
-      content: "messages.noRadioGroup",
-    });
+    expect(
+      result.find(
+        (t) => t.type === "error" && t.content === "messages.noRadioGroup",
+      ),
+    ).toBeDefined();
   });
 
   test("input type = radio", () => {
@@ -117,10 +146,12 @@ describe("formTips()", () => {
     document.body.appendChild(label);
     const result = formTips(label);
     expect(result).toHaveLength(1);
-    expect(result.find((t) => t.type === "warning")).toEqual({
-      type: "warning",
-      content: "messages.noControlForLabel",
-    });
+    expect(
+      result.find(
+        (t) =>
+          t.type === "warning" && t.content === "messages.noControlForLabel",
+      ),
+    ).toBeDefined();
   });
 
   test("label for no input", () => {
@@ -129,9 +160,11 @@ describe("formTips()", () => {
     document.body.appendChild(label);
     const result = formTips(label);
     expect(result).toHaveLength(1);
-    expect(result.find((t) => t.type === "warning")).toEqual({
-      type: "warning",
-      content: "messages.noControlForLabel",
-    });
+    expect(
+      result.find(
+        (t) =>
+          t.type === "warning" && t.content === "messages.noControlForLabel",
+      ),
+    ).toBeDefined();
   });
 });

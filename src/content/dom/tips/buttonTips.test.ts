@@ -1,5 +1,53 @@
 import { afterEach, describe, expect, test } from "vitest";
-import { buttonTips } from "./buttonTips";
+import { buttonTips, isButton } from "./buttonTips";
+
+describe("isButton()", () => {
+  test("div", () => {
+    const element = document.createElement("div");
+    expect(isButton(element)).toBe(false);
+  });
+
+  test("button element", () => {
+    const element = document.createElement("button");
+    expect(isButton(element)).toBe(true);
+  });
+
+  test("input type = button", () => {
+    const element = document.createElement("input");
+    element.setAttribute("type", "button");
+    expect(isButton(element)).toBe(true);
+  });
+
+  test("input type = submit", () => {
+    const element = document.createElement("input");
+    element.setAttribute("type", "submit");
+    expect(isButton(element)).toBe(true);
+  });
+
+  test("input type = reset", () => {
+    const element = document.createElement("input");
+    element.setAttribute("type", "reset");
+    expect(isButton(element)).toBe(true);
+  });
+
+  test("input type = image", () => {
+    const element = document.createElement("input");
+    element.setAttribute("type", "image");
+    expect(isButton(element)).toBe(true);
+  });
+
+  test("input type = text", () => {
+    const element = document.createElement("input");
+    element.setAttribute("type", "text");
+    expect(isButton(element)).toBe(false);
+  });
+
+  test("role = button", () => {
+    const element = document.createElement("div");
+    element.setAttribute("role", "button");
+    expect(isButton(element)).toBe(true);
+  });
+});
 
 describe("buttonTips()", () => {
   afterEach(() => {
@@ -7,7 +55,7 @@ describe("buttonTips()", () => {
   });
   test("div", () => {
     const element = document.createElement("div");
-    expect(buttonTips(element)).toEqual([]);
+    expect(buttonTips(element)).toHaveLength(0);
   });
 
   test("empty button", () => {
@@ -15,10 +63,9 @@ describe("buttonTips()", () => {
     document.body.appendChild(element);
     const result = buttonTips(element);
     expect(result).toHaveLength(1);
-    expect(result.find((t) => t.type === "error")).toEqual({
-      type: "error",
-      content: "messages.noName",
-    });
+    expect(
+      result.find((t) => t.type === "error" && t.content === "messages.noName"),
+    ).toBeDefined();
   });
 
   test("button element", () => {
@@ -44,10 +91,9 @@ describe("buttonTips()", () => {
     document.body.appendChild(element);
     const result = buttonTips(element);
     expect(result).toHaveLength(1);
-    expect(result.find((t) => t.type === "error")).toEqual({
-      type: "error",
-      content: "messages.noName",
-    });
+    expect(
+      result.find((t) => t.type === "error" && t.content === "messages.noName"),
+    ).toBeDefined();
   });
 
   test("input type = submit", () => {
@@ -118,10 +164,9 @@ describe("buttonTips()", () => {
     document.body.appendChild(element);
     const result = buttonTips(element);
     expect(result).toHaveLength(1);
-    expect(result.find((t) => t.type === "error")).toEqual({
-      type: "error",
-      content: "messages.noName",
-    });
+    expect(
+      result.find((t) => t.type === "error" && t.content === "messages.noName"),
+    ).toBeDefined();
   });
 
   test("role = button without tabindex", () => {
@@ -131,10 +176,11 @@ describe("buttonTips()", () => {
     document.body.appendChild(element);
     const result = buttonTips(element);
     expect(result).toHaveLength(1);
-    expect(result.find((t) => t.type === "error")).toEqual({
-      type: "error",
-      content: "messages.notFocusable",
-    });
+    expect(
+      result.find(
+        (t) => t.type === "error" && t.content === "messages.notFocusable",
+      ),
+    ).toBeDefined();
   });
 
   test("role = button without namae and tabindex", () => {
@@ -145,21 +191,22 @@ describe("buttonTips()", () => {
     expect(result).toHaveLength(2);
     expect(
       result.find((t) => t.type === "error" && t.content === "messages.noName"),
-    ).not.toBeUndefined();
+    ).toBeDefined();
     expect(
       result.find(
         (t) => t.type === "error" && t.content === "messages.notFocusable",
       ),
-    ).not.toBeUndefined();
+    ).toBeDefined();
   });
 
   test("role = button with aria-hidden", () => {
     const element = document.createElement("div");
     element.setAttribute("role", "button");
     element.setAttribute("aria-hidden", "true");
+    element.setAttribute("tabindex", "0");
     element.textContent = "Hello";
     document.body.appendChild(element);
     const result = buttonTips(element);
-    expect(result).toHaveLength(1);
+    expect(result).toHaveLength(0);
   });
 });

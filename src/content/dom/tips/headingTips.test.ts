@@ -1,5 +1,48 @@
 import { afterEach, describe, expect, test } from "vitest";
-import { headingTips } from "./headingTips";
+import { headingTips, isHeading } from "./headingTips";
+
+describe("isHeading()", () => {
+  test("div", () => {
+    const element = document.createElement("div");
+    expect(isHeading(element)).toBe(false);
+  });
+
+  test("h1", () => {
+    const element = document.createElement("h1");
+    expect(isHeading(element)).toBe(true);
+  });
+
+  test("h2", () => {
+    const element = document.createElement("h2");
+    expect(isHeading(element)).toBe(true);
+  });
+
+  test("h3", () => {
+    const element = document.createElement("h3");
+    expect(isHeading(element)).toBe(true);
+  });
+
+  test("h4", () => {
+    const element = document.createElement("h4");
+    expect(isHeading(element)).toBe(true);
+  });
+
+  test("h5", () => {
+    const element = document.createElement("h5");
+    expect(isHeading(element)).toBe(true);
+  });
+
+  test("h6", () => {
+    const element = document.createElement("h6");
+    expect(isHeading(element)).toBe(true);
+  });
+
+  test("role=heading", () => {
+    const element = document.createElement("div");
+    element.setAttribute("role", "heading");
+    expect(isHeading(element)).toBe(true);
+  });
+});
 
 describe("headingTips()", () => {
   afterEach(() => {
@@ -8,7 +51,7 @@ describe("headingTips()", () => {
 
   test("div", () => {
     const element = document.createElement("div");
-    expect(headingTips(element)).toEqual([]);
+    expect(headingTips(element)).toHaveLength(0);
   });
 
   test("empty h1", () => {
@@ -16,14 +59,12 @@ describe("headingTips()", () => {
     document.body.appendChild(element);
     const result = headingTips(element);
     expect(result).toHaveLength(2);
-    expect(result.find((t) => t.type === "level")).toEqual({
-      type: "level",
-      content: "1",
-    });
-    expect(result.find((t) => t.type === "error")).toEqual({
-      type: "error",
-      content: "messages.noName",
-    });
+    expect(
+      result.find((t) => t.type === "level" && t.content === "1"),
+    ).toBeDefined();
+    expect(
+      result.find((t) => t.type === "error" && t.content === "messages.noName"),
+    ).toBeDefined();
   });
 
   test("h1 with name", () => {
@@ -32,10 +73,9 @@ describe("headingTips()", () => {
     document.body.appendChild(element);
     const result = headingTips(element);
     expect(result).toHaveLength(1);
-    expect(result.find((t) => t.type === "level")).toEqual({
-      type: "level",
-      content: "1",
-    });
+    expect(
+      result.find((t) => t.type === "level" && t.content === "1"),
+    ).toBeDefined();
   });
 
   test("levels", () => {
@@ -71,14 +111,12 @@ describe("headingTips()", () => {
     element.setAttribute("aria-level", "2");
     document.body.appendChild(element);
     const result = headingTips(element);
-    expect(result.find((t) => t.type === "level")).toEqual({
-      type: "level",
-      content: "2",
-    });
-    expect(result.find((t) => t.type === "error")).toEqual({
-      type: "error",
-      content: "messages.noName",
-    });
+    expect(
+      result.find((t) => t.type === "level" && t.content === "2"),
+    ).toBeDefined();
+    expect(
+      result.find((t) => t.type === "error" && t.content === "messages.noName"),
+    ).toBeDefined;
   });
 
   test("no aria-level", () => {
@@ -86,10 +124,11 @@ describe("headingTips()", () => {
     element.setAttribute("role", "heading");
     document.body.appendChild(element);
     const result = headingTips(element);
-    expect(result.find((t) => t.type === "error")).toEqual({
-      type: "error",
-      content: "messages.noHeadingLevel",
-    });
+    expect(
+      result.find(
+        (t) => t.type === "error" && t.content === "messages.noHeadingLevel",
+      ),
+    ).toBeDefined();
   });
 
   test("aria-level, name", () => {
@@ -99,9 +138,8 @@ describe("headingTips()", () => {
     element.textContent = "Hello";
     document.body.appendChild(element);
     const result = headingTips(element);
-    expect(result.find((t) => t.type === "level")).toEqual({
-      type: "level",
-      content: "2",
-    });
+    expect(
+      result.find((t) => t.type === "level" && t.content === "2"),
+    ).toBeDefined();
   });
 });

@@ -15,7 +15,6 @@ describe("formTips()", () => {
     document.body.appendChild(element);
     const result = formTips(element);
     expect(result).toHaveLength(1);
-    expect(result.find((t) => t.type === "name")).toBeUndefined();
     expect(result.find((t) => t.type === "error")).toEqual({
       type: "error",
       content: "messages.noName",
@@ -31,11 +30,7 @@ describe("formTips()", () => {
     label.htmlFor = "name";
     document.body.appendChild(label);
     const result = formTips(element);
-    expect(result).toHaveLength(1);
-    expect(result.find((t) => t.type === "name")).toEqual({
-      type: "name",
-      content: "Name",
-    });
+    expect(result).toHaveLength(0);
   });
 
   test("input type = radio, noname", () => {
@@ -48,16 +43,12 @@ describe("formTips()", () => {
     label.htmlFor = "name";
     document.body.appendChild(label);
     const result = formTips(element);
-    expect(result).toHaveLength(2);
+    expect(result).toHaveLength(1);
     expect(
       result.find(
         (t) => t.type === "error" && t.content === "messages.noNameAttribute",
       ),
     ).not.toBeUndefined;
-    expect(result.find((t) => t.type === "name")).toEqual({
-      type: "name",
-      content: "Name",
-    });
   });
   test("input type = radio, nogropup", () => {
     const element = document.createElement("input");
@@ -76,11 +67,7 @@ describe("formTips()", () => {
     label.htmlFor = "name1";
     document.body.appendChild(label);
     const result = formTips(element);
-    expect(result).toHaveLength(2);
-    expect(result.find((t) => t.type === "name")).toEqual({
-      type: "name",
-      content: "Name1",
-    });
+    expect(result).toHaveLength(1);
     expect(result.find((t) => t.type === "error")).toEqual({
       type: "error",
       content: "messages.noRadioGroup",
@@ -104,11 +91,7 @@ describe("formTips()", () => {
     label.htmlFor = "name1";
     document.body.appendChild(label);
     const result = formTips(element);
-    expect(result).toHaveLength(1);
-    expect(result.find((t) => t.type === "name")).toEqual({
-      type: "name",
-      content: "Name1",
-    });
+    expect(result).toHaveLength(0);
   });
 
   test("label for visible input", () => {

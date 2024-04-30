@@ -12,8 +12,7 @@ export const ButtonSelectors = [
   'input[type="image"]',
 ] as const;
 
-export const buttonTips = (el: Element): ElementTip[] => {
-  const result: ElementTip[] = [];
+export const isButton = (el: Element): boolean => {
   const tagName = el.tagName.toLowerCase();
   const typeAttr = el.getAttribute("type");
   const hasButtonTag =
@@ -22,12 +21,15 @@ export const buttonTips = (el: Element): ElementTip[] => {
       !!typeAttr &&
       ["button", "submit", "reset", "image"].includes(typeAttr));
   const hasButtonRole = el.getAttribute("role") === "button";
+  return hasButtonTag || hasButtonRole;
+};
 
-  if (hasButtonTag || hasButtonRole) {
+export const buttonTips = (el: Element): ElementTip[] => {
+  const result: ElementTip[] = [];
+
+  if (isButton(el)) {
     const name = computeAccessibleName(el);
-    if (name) {
-      result.push({ type: "name", content: name });
-    } else if (!isAriaHidden(el)) {
+    if (!name && !isAriaHidden(el)) {
       result.push({ type: "error", content: "messages.noName" });
     }
     if (!isFocusable(el)) {

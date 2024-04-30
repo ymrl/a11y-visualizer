@@ -15,7 +15,6 @@ describe("buttonTips()", () => {
     document.body.appendChild(element);
     const result = buttonTips(element);
     expect(result).toHaveLength(1);
-    expect(result.find((t) => t.type === "name")).toBeUndefined();
     expect(result.find((t) => t.type === "error")).toEqual({
       type: "error",
       content: "messages.noName",
@@ -27,12 +26,7 @@ describe("buttonTips()", () => {
     element.textContent = "Hello";
     document.body.appendChild(element);
     const result = buttonTips(element);
-    expect(result).toHaveLength(1);
-    expect(result.find((t) => t.type === "name")).toEqual({
-      type: "name",
-      content: "Hello",
-    });
-    expect(result.find((t) => t.type === "error")).toBeUndefined();
+    expect(result).toHaveLength(0);
   });
 
   test("input type = button", () => {
@@ -41,11 +35,7 @@ describe("buttonTips()", () => {
     element.value = "Hello";
     document.body.appendChild(element);
     const result = buttonTips(element);
-    expect(result).toHaveLength(1);
-    expect(result.find((t) => t.type === "name")).toEqual({
-      type: "name",
-      content: "Hello",
-    });
+    expect(result).toHaveLength(0);
   });
 
   test("input type = button without name", () => {
@@ -54,7 +44,6 @@ describe("buttonTips()", () => {
     document.body.appendChild(element);
     const result = buttonTips(element);
     expect(result).toHaveLength(1);
-    expect(result.find((t) => t.type === "name")).toBeUndefined();
     expect(result.find((t) => t.type === "error")).toEqual({
       type: "error",
       content: "messages.noName",
@@ -67,11 +56,7 @@ describe("buttonTips()", () => {
     element.value = "Hello";
     document.body.appendChild(element);
     const result = buttonTips(element);
-    expect(result).toHaveLength(1);
-    expect(result.find((t) => t.type === "name")).toEqual({
-      type: "name",
-      content: "Hello",
-    });
+    expect(result).toHaveLength(0);
   });
 
   test("input type = reset", () => {
@@ -80,11 +65,7 @@ describe("buttonTips()", () => {
     element.value = "Hello";
     document.body.appendChild(element);
     const result = buttonTips(element);
-    expect(result).toHaveLength(1);
-    expect(result.find((t) => t.type === "name")).toEqual({
-      type: "name",
-      content: "Hello",
-    });
+    expect(result).toHaveLength(0);
   });
 
   test("input type = submit without value", () => {
@@ -92,8 +73,7 @@ describe("buttonTips()", () => {
     element.setAttribute("type", "submit");
     document.body.appendChild(element);
     const result = buttonTips(element);
-    expect(result).toHaveLength(1);
-    expect(result.find((t) => t.type === "name")).not.toBeUndefined;
+    expect(result).toHaveLength(0);
   });
 
   test("input type = reset without value", () => {
@@ -101,8 +81,7 @@ describe("buttonTips()", () => {
     element.setAttribute("type", "reset");
     document.body.appendChild(element);
     const result = buttonTips(element);
-    expect(result).toHaveLength(1);
-    expect(result.find((t) => t.type === "name")).not.toBeUndefined;
+    expect(result).toHaveLength(0);
   });
 
   test("input type = image", () => {
@@ -111,11 +90,7 @@ describe("buttonTips()", () => {
     element.setAttribute("alt", "Hello");
     document.body.appendChild(element);
     const result = buttonTips(element);
-    expect(result).toHaveLength(1);
-    expect(result.find((t) => t.type === "name")).toEqual({
-      type: "name",
-      content: "Hello",
-    });
+    expect(result).toHaveLength(0);
   });
 
   test("input type = image without alt", () => {
@@ -123,8 +98,7 @@ describe("buttonTips()", () => {
     element.setAttribute("type", "image");
     document.body.appendChild(element);
     const result = buttonTips(element);
-    expect(result).toHaveLength(1);
-    expect(result.find((t) => t.type === "name")).not.toBeUndefined;
+    expect(result).toHaveLength(0);
   });
 
   test("role = button", () => {
@@ -134,11 +108,7 @@ describe("buttonTips()", () => {
     element.tabIndex = 0;
     document.body.appendChild(element);
     const result = buttonTips(element);
-    expect(result).toHaveLength(1);
-    expect(result.find((t) => t.type === "name")).toEqual({
-      type: "name",
-      content: "Hello",
-    });
+    expect(result).toHaveLength(0);
   });
 
   test("role = button without name", () => {
@@ -148,7 +118,6 @@ describe("buttonTips()", () => {
     document.body.appendChild(element);
     const result = buttonTips(element);
     expect(result).toHaveLength(1);
-    expect(result.find((t) => t.type === "name")).toBeUndefined();
     expect(result.find((t) => t.type === "error")).toEqual({
       type: "error",
       content: "messages.noName",
@@ -161,11 +130,7 @@ describe("buttonTips()", () => {
     element.textContent = "Hello";
     document.body.appendChild(element);
     const result = buttonTips(element);
-    expect(result).toHaveLength(2);
-    expect(result.find((t) => t.type === "name")).toEqual({
-      type: "name",
-      content: "Hello",
-    });
+    expect(result).toHaveLength(1);
     expect(result.find((t) => t.type === "error")).toEqual({
       type: "error",
       content: "messages.notFocusable",
@@ -196,6 +161,5 @@ describe("buttonTips()", () => {
     document.body.appendChild(element);
     const result = buttonTips(element);
     expect(result).toHaveLength(1);
-    expect(result.find((t) => t.type === "name")).toBeUndefined();
   });
 });

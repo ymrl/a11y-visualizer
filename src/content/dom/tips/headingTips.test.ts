@@ -31,14 +31,10 @@ describe("headingTips()", () => {
     element.textContent = "Hello";
     document.body.appendChild(element);
     const result = headingTips(element);
-    expect(result).toHaveLength(2);
+    expect(result).toHaveLength(1);
     expect(result.find((t) => t.type === "level")).toEqual({
       type: "level",
       content: "1",
-    });
-    expect(result.find((t) => t.type === "name")).toEqual({
-      type: "name",
-      content: "Hello",
     });
   });
 
@@ -106,10 +102,6 @@ describe("headingTips()", () => {
     expect(result.find((t) => t.type === "level")).toEqual({
       type: "level",
       content: "2",
-    });
-    expect(result.find((t) => t.type === "name")).toEqual({
-      type: "name",
-      content: "Hello",
     });
   });
 });

@@ -5,28 +5,34 @@ import { isFocusable } from "../isFocusable";
 
 export const LinkSelectors = ["a", "area", '[role="link"]'] as const;
 
+export const isLink = (el: Element): boolean =>
+  hasLinkRole(el) || hasLinkTag(el);
+
+const hasLinkRole = (el: Element): boolean =>
+  el.getAttribute("role") === "link";
+
+const hasLinkTag = (el: Element): boolean =>
+  ["a", "area"].includes(el.tagName.toLowerCase());
+
 export const linkTips = (el: Element): ElementTip[] => {
   const result: ElementTip[] = [];
-  const tagName = el.tagName.toLowerCase();
   const hidden = isAriaHidden(el);
-  const hasLinkTag = ["a", "area"].includes(tagName);
-  const hasLinkRole = el.getAttribute("role") === "link";
+  const hasTag = hasLinkTag(el);
+  const hasRole = hasLinkRole(el);
   const href = el.getAttribute("href");
 
-  if (hasLinkTag || hasLinkRole) {
+  if (hasTag || hasRole) {
     const name = computeAccessibleName(el);
-    if (name) {
-      result.push({ type: "name", content: name });
-    } else if ((hasLinkRole || href) && !hidden) {
+    if (!name && (hasRole || href) && !hidden) {
       result.push({ type: "error", content: "messages.noName" });
     }
   }
-  if (hasLinkTag) {
+  if (hasTag) {
     if (!el.hasAttribute("href")) {
       result.push({ type: "warning", content: "messages.noHref" });
     }
   }
-  if (hasLinkRole && !isFocusable(el)) {
+  if (hasRole && !isFocusable(el)) {
     result.push({ type: "error", content: "messages.notFocusable" });
   }
   return result;

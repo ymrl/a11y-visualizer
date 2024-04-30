@@ -16,7 +16,6 @@ describe("linkTips()", () => {
     document.body.appendChild(element);
     const result = linkTips(element);
     expect(result).toHaveLength(1);
-    expect(result.find((t) => t.type === "name")).toBeUndefined();
     expect(result.find((t) => t.type === "warning")).toEqual({
       type: "warning",
       content: "messages.noHref",
@@ -29,12 +28,7 @@ describe("linkTips()", () => {
     element.href = "https://example.com";
     document.body.appendChild(element);
     const result = linkTips(element);
-    expect(result).toHaveLength(1);
-    expect(result.find((t) => t.type === "name")).toEqual({
-      type: "name",
-      content: "Hello",
-    });
-    expect(result.find((t) => t.type === "error")).toBeUndefined();
+    expect(result).toHaveLength(0);
   });
 
   test("a without href", () => {
@@ -54,7 +48,6 @@ describe("linkTips()", () => {
     document.body.appendChild(element);
     const result = linkTips(element);
     expect(result).toHaveLength(1);
-    expect(result.find((t) => t.type === "name")).toBeUndefined();
     expect(result.find((t) => t.type === "error")).toEqual({
       type: "error",
       content: "messages.noName",
@@ -69,11 +62,7 @@ describe("linkTips()", () => {
     document.body.appendChild(mapElement);
     mapElement.appendChild(element);
     const result = linkTips(element);
-    expect(result).toHaveLength(1);
-    expect(result.find((t) => t.type === "name")).toEqual({
-      type: "name",
-      content: "Hello",
-    });
+    expect(result).toHaveLength(0);
   });
 
   test("area without href", () => {
@@ -83,11 +72,7 @@ describe("linkTips()", () => {
     document.body.appendChild(mapElement);
     mapElement.appendChild(element);
     const result = linkTips(element);
-    expect(result).toHaveLength(2);
-    expect(result.find((t) => t.type === "name")).toEqual({
-      type: "name",
-      content: "Hello",
-    });
+    expect(result).toHaveLength(1);
     expect(result.find((t) => t.type === "warning")).toEqual({
       type: "warning",
       content: "messages.noHref",
@@ -101,11 +86,7 @@ describe("linkTips()", () => {
     element.textContent = "Hello";
     element.tabIndex = 0;
     const result = linkTips(element);
-    expect(result).toHaveLength(1);
-    expect(result.find((t) => t.type === "name")).toEqual({
-      type: "name",
-      content: "Hello",
-    });
+    expect(result).toHaveLength(0);
   });
 
   test("invalid role = link", () => {

@@ -29,7 +29,16 @@ export const imageTips = (el: Element): ElementTip[] => {
           result.push({ type: "error", content: "messages.noAltImage" });
         }
       } else {
-        result.push({ type: "error", content: "messages.noName" });
+        // FIXME: more roles should be checked
+        const ancestorControls = el.closest(
+          "a[href], button, [role=button], [role=link]",
+        );
+        const ancestorName = ancestorControls
+          ? computeAccessibleName(ancestorControls)
+          : "";
+        if (!ancestorName) {
+          result.push({ type: "error", content: "messages.noName" });
+        }
       }
     }
     if (tagName === "svg" && roleAttr === "") {

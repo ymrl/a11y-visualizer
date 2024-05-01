@@ -4,10 +4,11 @@ import { Root } from "./Root";
 import { Settings, Message } from "../types";
 import { SettingsProvider } from "./components/SettingsProvider";
 import { initialSettings } from "../initialSettings";
+import { getAsync } from "../chrome/localStorage";
 
 let counter = 0;
 
-export const injectRoot = (w: Window, parent: Element) => {
+export const injectRoot = async (w: Window, parent: Element) => {
   const rootDiv = w.document.createElement("div");
   parent.append(rootDiv);
   rootDiv.setAttribute("role", "region");
@@ -24,13 +25,8 @@ export const injectRoot = (w: Window, parent: Element) => {
       </React.StrictMode>,
     );
 
-  chrome.storage.local.get("settings", (data) => {
-    const newSettings = {
-      ...initialSettings,
-      ...data.settings,
-    };
-    render(newSettings, parent);
-  });
+  const newSettings = await getAsync("settings", initialSettings);
+  render(newSettings, parent);
 
   const listener = (message: Message) => {
     if (message.type === "updateAccessibilityInfo") {
@@ -42,6 +38,4 @@ export const injectRoot = (w: Window, parent: Element) => {
     }
   };
   chrome.runtime.onMessage.addListener(listener);
-
-  render(initialSettings, parent);
 };

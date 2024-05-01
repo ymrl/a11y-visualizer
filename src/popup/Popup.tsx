@@ -3,6 +3,8 @@ import "./index.css";
 import { Settings } from "../types";
 import { useLang } from "../useLang";
 import { initialSettings } from "../initialSettings";
+import { getAsync } from "../chrome/localStorage";
+import { sendMessageToActiveTab } from "../chrome/tabs";
 
 const Checkbox = ({
   children,
@@ -31,16 +33,23 @@ const Checkbox = ({
 export const Popup = () => {
   const [settings, setSettings] = React.useState<Settings>(initialSettings);
   const { t, lang } = useLang();
+
   React.useEffect(() => {
-    chrome.storage.local.get("settings", (data) => {
-      if (data.settings) {
-        setSettings((prev) => ({
-          ...prev,
-          ...data.settings,
-        }));
-      }
-    });
+    const getSettings = async () => {
+      const newSettings = await getAsync("settings", initialSettings);
+      setSettings(newSettings);
+    };
+    getSettings();
   }, []);
+
+  const updateSettings = async (newSettings: Settings) => {
+    setSettings(newSettings);
+    chrome.storage.local.set({ settings: newSettings });
+    sendMessageToActiveTab({
+      type: "updateAccessibilityInfo",
+      settings: newSettings,
+    });
+  };
 
   const handleChangeCheckbox = (
     key: keyof Settings,
@@ -50,18 +59,7 @@ export const Popup = () => {
       ...settings,
       [key]: e.target.checked,
     };
-    setSettings(newSettings);
-    chrome.storage.local.set({ settings: newSettings });
-    chrome.tabs.query({ active: true }, (tabs) => {
-      tabs.forEach(
-        ({ id }) =>
-          id &&
-          chrome.tabs.sendMessage(id, {
-            type: "updateAccessibilityInfo",
-            settings: newSettings,
-          }),
-      );
-    });
+    updateSettings(newSettings);
   };
   const handleChangeNumber = (
     key: keyof Settings,
@@ -71,18 +69,7 @@ export const Popup = () => {
       ...settings,
       [key]: parseFloat(e.target.value),
     };
-    setSettings(newSettings);
-    chrome.storage.local.set({ settings: newSettings });
-    chrome.tabs.query({ active: true }, (tabs) => {
-      tabs.forEach(
-        ({ id }) =>
-          id &&
-          chrome.tabs.sendMessage(id, {
-            type: "updateAccessibilityInfo",
-            settings: newSettings,
-          }),
-      );
-    });
+    updateSettings(newSettings);
   };
 
   return (
@@ -222,13 +209,9 @@ export const Popup = () => {
           px-4 py-1 rounded-full
           bg-slate-100 hover:bg-slate-200 transition-colors"
         onClick={() => {
-          chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-            if (tabs[0].id) {
-              chrome.tabs.sendMessage(tabs[0].id, {
-                type: "updateAccessibilityInfo",
-                settings,
-              });
-            }
+          sendMessageToActiveTab({
+            type: "updateAccessibilityInfo",
+            settings: settings,
           });
         }}
       >

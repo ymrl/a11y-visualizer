@@ -1,14 +1,16 @@
-import { ElementMeta, Category } from "../types";
+import { ElementMeta, Category, ElementTip } from "../types";
 import { getPositionBaseElement } from "./getPositionBaseElement";
 import { isHidden } from "./isHidden";
 import { getElementPosition } from "./getElementPosition";
 import { globalTips } from "./tips/globalTips";
 import { AriraHiddenSelectors, ariaHiddenTips } from "./tips/ariaHiddenTips";
-import { HeadingSelectors, headingTips } from "./tips/headingTips";
-import { LinkSelectors, linkTips } from "./tips/linkTips";
-import { ButtonSelectors, buttonTips } from "./tips/buttonTips";
-import { FormSelectors, formTips } from "./tips/formTips";
+import { HeadingSelectors, headingTips, isHeading } from "./tips/headingTips";
+import { LinkSelectors, isLink, linkTips } from "./tips/linkTips";
+import { ButtonSelectors, buttonTips, isButton } from "./tips/buttonTips";
+import { FormSelectors, formTips, isFormControl } from "./tips/formTips";
 import { imageTips, isImage, ImageSelectors } from "./tips/imageTips";
+import { computeAccessibleName } from "dom-accessibility-api";
+import { isAriaHidden } from "./isAriaHidden";
 
 const Selector = [
   ...(ImageSelectors || []),
@@ -65,6 +67,10 @@ export const collectElements = (
       .map((el: Element) => {
         if (excludes.some((exclude: Element) => exclude.contains(el)))
           return null;
+        const name = computeAccessibleName(el);
+        const nameTips: ElementTip[] = name
+          ? [{ type: "name", content: name }]
+          : [];
         const images = imageTips(el);
         const forms = formTips(el);
         const buttons = buttonTips(el);
@@ -77,18 +83,19 @@ export const collectElements = (
           hidden: isHidden(el),
           categories: [
             isImage(el) ? "image" : "",
-            forms.length > 0 ? "formControl" : "",
-            buttons.length > 0 ? "button" : "",
-            links.length > 0 ? "link" : "",
-            heading.length > 0 ? "heading" : "",
-            ariaHidden.length > 0 ? "ariaHidden" : "",
+            isFormControl(el) ? "formControl" : "",
+            isButton(el) ? "button" : "",
+            isLink(el) ? "link" : "",
+            isHeading(el) ? "heading" : "",
+            isAriaHidden(el) ? "ariaHidden" : "",
           ].filter(Boolean) as Category[],
           tips: [
+            ...heading,
+            ...nameTips,
             ...images,
             ...forms,
             ...buttons,
             ...links,
-            ...heading,
             ...ariaHidden,
             ...global,
           ],

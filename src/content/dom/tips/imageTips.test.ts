@@ -38,14 +38,14 @@ describe("imageTips()", () => {
   test("div", () => {
     const element = document.createElement("div");
     document.body.appendChild(element);
-    expect(imageTips(element)).toEqual([]);
+    expect(imageTips(element)).toHaveLength(0);
   });
   test("img with alt", () => {
     const element = document.createElement("img");
     element.setAttribute("alt", "Hello");
     element.setAttribute("src", "hello.png");
     document.body.appendChild(element);
-    expect(imageTips(element)).toEqual([{ type: "name", content: "Hello" }]);
+    expect(imageTips(element)).toHaveLength(0);
   });
 
   test("img without alt", () => {
@@ -75,7 +75,6 @@ describe("imageTips()", () => {
       type: "tagName",
       content: "svg",
     });
-    expect(result.find((e) => e.type === "name")).toBeUndefined();
     expect(result.find((e) => e.type === "error")).toEqual({
       type: "error",
       content: "messages.noName",

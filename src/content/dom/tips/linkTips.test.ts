@@ -1,5 +1,25 @@
 import { afterEach, describe, expect, test } from "vitest";
-import { linkTips } from "./linkTips";
+import { linkTips, isLink } from "./linkTips";
+
+describe("isLink()", () => {
+  test("div", () => {
+    const element = document.createElement("div");
+    expect(isLink(element)).toBe(false);
+  });
+  test("a", () => {
+    const element = document.createElement("a");
+    expect(isLink(element)).toBe(true);
+  });
+  test("area", () => {
+    const element = document.createElement("area");
+    expect(isLink(element)).toBe(true);
+  });
+  test("role=link", () => {
+    const element = document.createElement("div");
+    element.setAttribute("role", "link");
+    expect(isLink(element)).toBe(true);
+  });
+});
 
 describe("linkTips()", () => {
   afterEach(() => {
@@ -16,7 +36,6 @@ describe("linkTips()", () => {
     document.body.appendChild(element);
     const result = linkTips(element);
     expect(result).toHaveLength(1);
-    expect(result.find((t) => t.type === "name")).toBeUndefined();
     expect(result.find((t) => t.type === "warning")).toEqual({
       type: "warning",
       content: "messages.noHref",
@@ -29,12 +48,7 @@ describe("linkTips()", () => {
     element.href = "https://example.com";
     document.body.appendChild(element);
     const result = linkTips(element);
-    expect(result).toHaveLength(1);
-    expect(result.find((t) => t.type === "name")).toEqual({
-      type: "name",
-      content: "Hello",
-    });
-    expect(result.find((t) => t.type === "error")).toBeUndefined();
+    expect(result).toHaveLength(0);
   });
 
   test("a without href", () => {
@@ -54,7 +68,6 @@ describe("linkTips()", () => {
     document.body.appendChild(element);
     const result = linkTips(element);
     expect(result).toHaveLength(1);
-    expect(result.find((t) => t.type === "name")).toBeUndefined();
     expect(result.find((t) => t.type === "error")).toEqual({
       type: "error",
       content: "messages.noName",
@@ -69,11 +82,7 @@ describe("linkTips()", () => {
     document.body.appendChild(mapElement);
     mapElement.appendChild(element);
     const result = linkTips(element);
-    expect(result).toHaveLength(1);
-    expect(result.find((t) => t.type === "name")).toEqual({
-      type: "name",
-      content: "Hello",
-    });
+    expect(result).toHaveLength(0);
   });
 
   test("area without href", () => {
@@ -83,11 +92,7 @@ describe("linkTips()", () => {
     document.body.appendChild(mapElement);
     mapElement.appendChild(element);
     const result = linkTips(element);
-    expect(result).toHaveLength(2);
-    expect(result.find((t) => t.type === "name")).toEqual({
-      type: "name",
-      content: "Hello",
-    });
+    expect(result).toHaveLength(1);
     expect(result.find((t) => t.type === "warning")).toEqual({
       type: "warning",
       content: "messages.noHref",
@@ -101,11 +106,7 @@ describe("linkTips()", () => {
     element.textContent = "Hello";
     element.tabIndex = 0;
     const result = linkTips(element);
-    expect(result).toHaveLength(1);
-    expect(result.find((t) => t.type === "name")).toEqual({
-      type: "name",
-      content: "Hello",
-    });
+    expect(result).toHaveLength(0);
   });
 
   test("invalid role = link", () => {

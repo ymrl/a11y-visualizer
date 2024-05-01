@@ -29,22 +29,8 @@ const LABELABLE_SELECTOR = [
   "textarea",
 ].join(",");
 
-export const formTips = (el: Element): ElementTip[] => {
-  const result: ElementTip[] = [];
-  const tagName = el.tagName.toLowerCase();
-  const typeAttr = el.getAttribute("type");
-  const roleAttr = el.getAttribute("role") || "";
-  const hasInputTag =
-    (tagName === "input" &&
-      (typeAttr === null ||
-        (typeAttr &&
-          !["button", "submit", "reset", "image", "hidden"].includes(
-            typeAttr,
-          )))) ||
-    tagName === "textarea" ||
-    tagName === "select";
-
-  const hasInputRole = [
+const hasInputRole = (el: Element): boolean =>
+  [
     "checkbox",
     "combobox",
     "radio",
@@ -55,13 +41,38 @@ export const formTips = (el: Element): ElementTip[] => {
     "textbox",
     "menuitemcheckbox",
     "menuitemradio",
-  ].includes(roleAttr);
+  ].includes(el.getAttribute("role") || "");
 
-  if (hasInputTag || hasInputRole) {
+const hasInputTag = (el: Element): boolean => {
+  const tagName = el.tagName.toLowerCase();
+  const typeAttr = el.getAttribute("type");
+  return (
+    (tagName === "input" &&
+      (typeAttr === null ||
+        (typeAttr &&
+          !["button", "submit", "reset", "image", "hidden"].includes(
+            typeAttr,
+          )))) ||
+    tagName === "textarea" ||
+    tagName === "select"
+  );
+};
+
+const isLabel = (el: Element): boolean => el.tagName.toLowerCase() === "label";
+
+export const isFormControl = (el: Element): boolean =>
+  hasInputRole(el) || hasInputTag(el) || isLabel(el);
+
+export const formTips = (el: Element): ElementTip[] => {
+  const result: ElementTip[] = [];
+  const tagName = el.tagName.toLowerCase();
+  const typeAttr = el.getAttribute("type");
+  const hasTag = hasInputTag(el);
+  const hasRole = hasInputRole(el);
+
+  if (hasTag || hasRole) {
     const name = computeAccessibleName(el);
-    if (name) {
-      result.push({ type: "name", content: name });
-    } else if (!isAriaHidden(el)) {
+    if (!name && !isAriaHidden(el)) {
       result.push({ type: "error", content: "messages.noName" });
     }
     if (!isFocusable(el)) {

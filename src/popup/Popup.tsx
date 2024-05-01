@@ -3,8 +3,8 @@ import "./index.css";
 import { Settings } from "../types";
 import { useLang } from "../useLang";
 import { initialSettings } from "../initialSettings";
-import { getAsync, setAsync } from "../chrome/localStorage";
-import { queryAsync, sendMessageAsync } from "../chrome/tabs";
+import { getAsync } from "../chrome/localStorage";
+import { sendMessageToActiveTab } from "../chrome/tabs";
 
 const Checkbox = ({
   children,
@@ -44,20 +44,11 @@ export const Popup = () => {
 
   const updateSettings = async (newSettings: Settings) => {
     setSettings(newSettings);
-    setAsync("settings", newSettings);
-    applySettingsToActiveTab(newSettings);
-  };
-
-  const applySettingsToActiveTab = async (newSettings: Settings) => {
-    const tabs = await queryAsync({ active: true });
-    tabs.forEach(
-      ({ id }) =>
-        id &&
-        sendMessageAsync(id, {
-          type: "updateAccessibilityInfo",
-          settings: newSettings,
-        }),
-    );
+    chrome.storage.local.set({ settings: newSettings });
+    sendMessageToActiveTab({
+      type: "updateAccessibilityInfo",
+      settings: newSettings,
+    });
   };
 
   const handleChangeCheckbox = (
@@ -218,7 +209,10 @@ export const Popup = () => {
           px-4 py-1 rounded-full
           bg-slate-100 hover:bg-slate-200 transition-colors"
         onClick={() => {
-          applySettingsToActiveTab(settings);
+          sendMessageToActiveTab({
+            type: "updateAccessibilityInfo",
+            settings: settings,
+          });
         }}
       >
         {t("popup.rerun")}

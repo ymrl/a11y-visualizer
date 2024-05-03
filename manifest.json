@@ -18,6 +18,9 @@
       "exclude_matches": ["*://docs.google.com/*"]
     }
   ],
+  "options_ui": {
+    "page": "src/options/index.html"
+  },
   "permissions": ["storage", "activeTab"],
   "browser_specific_settings": {
     "gecko": {

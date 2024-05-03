@@ -57,7 +57,7 @@ export const SettingsEditor = ({
   return (
     <form
       onSubmit={(e) => e.preventDefault()}
-      className="font-sans flex flex-col gap-2 items-start"
+      className="font-sans flex flex-col gap-2 items-stretch w-full"
       lang={lang}
     >
       <Checkbox

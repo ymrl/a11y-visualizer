@@ -9,6 +9,13 @@ import { getAsync } from "../chrome/localStorage";
 let counter = 0;
 
 export const injectRoot = async (w: Window, parent: Element) => {
+  if (!location.href.startsWith("http")) {
+    return;
+  }
+  const host = location.host;
+  const baseSettings = await getAsync("settings", initialSettings);
+  const hostSettings = await getAsync(host, baseSettings);
+
   const rootDiv = w.document.createElement("div");
   parent.append(rootDiv);
   rootDiv.setAttribute("role", "region");
@@ -25,8 +32,7 @@ export const injectRoot = async (w: Window, parent: Element) => {
       </React.StrictMode>,
     );
 
-  const newSettings = await getAsync("settings", initialSettings);
-  render(newSettings, parent);
+  render(hostSettings, parent);
 
   const listener = (message: Message) => {
     if (message.type === "updateAccessibilityInfo") {

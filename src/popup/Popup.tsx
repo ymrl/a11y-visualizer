@@ -13,15 +13,31 @@ export const Popup = () => {
 
   React.useEffect(() => {
     const getSettings = async () => {
-      const newSettings = await getAsync("settings", initialSettings);
-      setSettings(newSettings);
+      const baseSettings = await getAsync("settings", initialSettings);
+      const tabs = await chrome.tabs.query({
+        active: true,
+        currentWindow: true,
+      });
+      if (tabs[0] && tabs[0].url && tabs[0].url.startsWith("http")) {
+        const url = new URL(tabs[0].url);
+        const host = url.host;
+        const hostSettings = await getAsync(host, baseSettings);
+        setSettings(hostSettings);
+      } else {
+        setSettings(baseSettings);
+      }
     };
     getSettings();
   }, []);
 
   const updateSettings = async (newSettings: Settings) => {
     setSettings(newSettings);
-    chrome.storage.local.set({ settings: newSettings });
+    const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
+    if (tabs[0] && tabs[0].url && tabs[0].url.startsWith("http")) {
+      const url = new URL(tabs[0].url);
+      const host = url.host;
+      chrome.storage.local.set({ [host]: newSettings });
+    }
     sendMessageToActiveTab({
       type: "updateAccessibilityInfo",
       settings: newSettings,

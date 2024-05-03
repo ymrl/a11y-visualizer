@@ -12,7 +12,8 @@
     "announcementMaxSeconds": "Max announcement seconds",
     "tipOpacityPercent": "Tips opacity (%)",
     "liveRegionOpacityPercent": "Live region opacity (%)",
-    "rerun": "Re-run"
+    "rerun": "Re-run",
+    "reset": "Reset to defaults"
   },
   "tip": {
     "name": "Name",

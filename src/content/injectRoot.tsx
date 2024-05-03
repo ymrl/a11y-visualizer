@@ -13,8 +13,8 @@ export const injectRoot = async (w: Window, parent: Element) => {
     return;
   }
   const host = location.host;
-  const baseSettings = await getAsync("settings", initialSettings);
-  const hostSettings = await getAsync(host, baseSettings);
+  const [baseSettings] = await getAsync("settings", initialSettings);
+  const [hostSettings] = await getAsync(host, baseSettings);
 
   const rootDiv = w.document.createElement("div");
   parent.append(rootDiv);

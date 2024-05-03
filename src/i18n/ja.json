@@ -12,7 +12,8 @@
     "announcementMaxSeconds": "アナウンスの最長の長さ（秒）",
     "tipOpacityPercent": "チップの不透明度（%）",
     "liveRegionOpacityPercent": "ライブリージョンの不透明度（%）",
-    "rerun": "再実行"
+    "rerun": "再実行",
+    "reset": "設定をリセット"
   },
   "tip": {
     "name": "名前",

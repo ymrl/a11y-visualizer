@@ -10,7 +10,7 @@ export const OptionsPage = () => {
 
   React.useEffect(() => {
     const getSettings = async () => {
-      const newSettings = await getAsync("settings", initialSettings);
+      const [newSettings] = await getAsync("settings", initialSettings);
       setSettings(newSettings);
     };
     getSettings();

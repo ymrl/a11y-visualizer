@@ -97,6 +97,7 @@ export const Popup = () => {
           {t("popup.reset")}
         </button>
       </div>
+      <p className="text-xs text-slate-500">{t("popup.hostDesc")}</p>
     </div>
   );
 };

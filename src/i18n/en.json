@@ -13,7 +13,8 @@
     "tipOpacityPercent": "Tips opacity (%)",
     "liveRegionOpacityPercent": "Live region opacity (%)",
     "rerun": "Re-run",
-    "reset": "Reset to defaults"
+    "reset": "Reset to defaults",
+    "hostDesc": "Settings on this popup are saved per host. Default values for new hosts can be set in the extension options."
   },
   "tip": {
     "name": "Name",
@@ -37,5 +38,8 @@
     "noControlForLabel": "No control for label",
     "noNameAttr": "No name attribute",
     "noRadioGroup": "No radiobutton group"
+  },
+  "optionsPage": {
+    "description": "Settings changed from the popup are saved per host of the web page, and will be applied to other pages on the same host. Changing settings here does not affect those values."
   }
 }

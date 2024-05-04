@@ -11,3 +11,10 @@ export const getAsync = async <T extends object>(
     key in data,
   ];
 };
+
+export const setAsync = async <T extends object>(
+  key: string,
+  data: T,
+): Promise<void> => {
+  await chrome.storage.local.set({ [key]: data });
+};

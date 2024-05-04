@@ -1,25 +1,28 @@
 import React from "react";
-import { getAsync } from "../chrome/localStorage";
-import { initialSettings } from "../initialSettings";
-import { Settings } from "../types";
+import {
+  Settings,
+  initialSettings,
+  loadDefaultSettings,
+  saveDefaultSettings,
+} from "../settings";
 import { sendMessageToActiveTab } from "../chrome/tabs";
 import { SettingsEditor } from "../components/SettingsEditor";
 import { useLang } from "../useLang";
 
 export const OptionsPage = () => {
   const [settings, setSettings] = React.useState<Settings>(initialSettings);
+  const getSettings = async () => {
+    const [newSettings] = await loadDefaultSettings();
+    setSettings(newSettings);
+  };
 
   React.useEffect(() => {
-    const getSettings = async () => {
-      const [newSettings] = await getAsync("settings", initialSettings);
-      setSettings(newSettings);
-    };
     getSettings();
   }, []);
 
   const updateSettings = async (newSettings: Settings) => {
     setSettings(newSettings);
-    chrome.storage.local.set({ settings: newSettings });
+    saveDefaultSettings(newSettings);
     sendMessageToActiveTab({
       type: "updateAccessibilityInfo",
       settings: newSettings,

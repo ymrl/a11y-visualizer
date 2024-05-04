@@ -1,4 +1,4 @@
-import { Settings } from "../types";
+import { Settings } from "../settings/types";
 import { useLang } from "../useLang";
 
 const Checkbox = ({

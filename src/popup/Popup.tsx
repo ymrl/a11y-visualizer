@@ -1,9 +1,12 @@
 import React from "react";
 import "./index.css";
-import { Settings } from "../types";
+import {
+  Settings,
+  initialSettings,
+  loadHostSettings,
+  saveHostSettings,
+} from "../settings";
 import { useLang } from "../useLang";
-import { initialSettings } from "../initialSettings";
-import { getAsync } from "../chrome/localStorage";
 import { sendMessageToActiveTab } from "../chrome/tabs";
 import { SettingsEditor } from "../components/SettingsEditor";
 
@@ -12,40 +15,26 @@ export const Popup = () => {
   const [hostSetting, setHostSetting] = React.useState<boolean>(false);
   const { t, lang } = useLang();
 
-  const getSettings = async (applyToTab: boolean = false) => {
-    const [baseSettings] = await getAsync("settings", initialSettings);
-    const tabs = await chrome.tabs.query({
-      active: true,
-      currentWindow: true,
-    });
-    let currentSettings = baseSettings;
-    let hostFound = false;
-    if (tabs[0] && tabs[0].url && tabs[0].url.startsWith("http")) {
-      const url = new URL(tabs[0].url);
-      const host = url.host;
-      [currentSettings, hostFound] = await getAsync(host, baseSettings);
-    }
-    setHostSetting(hostFound);
-    setSettings(currentSettings);
+  const loadSettings = async (applyToTab: boolean = false) => {
+    const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
+    const [newSettings, found] = await loadHostSettings(tabs[0]?.url);
+    setHostSetting(found);
+    setSettings(newSettings);
     applyToTab &&
       sendMessageToActiveTab({
         type: "updateAccessibilityInfo",
-        settings: currentSettings,
+        settings: newSettings,
       });
   };
+
   React.useEffect(() => {
-    getSettings();
+    loadSettings();
   }, []);
 
   const updateSettings = async (newSettings: Settings) => {
     setSettings(newSettings);
     const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
-    if (tabs[0] && tabs[0].url && tabs[0].url.startsWith("http")) {
-      const url = new URL(tabs[0].url);
-      const host = url.host;
-      setHostSetting(true);
-      chrome.storage.local.set({ [host]: newSettings });
-    }
+    saveHostSettings(tabs[0]?.url, newSettings);
     sendMessageToActiveTab({
       type: "updateAccessibilityInfo",
       settings: newSettings,
@@ -89,7 +78,7 @@ export const Popup = () => {
               const url = new URL(tabs[0].url);
               const host = url.host;
               await chrome.storage.local.remove(host);
-              getSettings(true);
+              loadSettings(true);
             }
           }}
           disabled={!hostSetting}

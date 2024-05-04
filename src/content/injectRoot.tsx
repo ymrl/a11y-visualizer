@@ -1,14 +1,22 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { Root } from "./Root";
-import { Settings, Message } from "../types";
+import {
+  Settings,
+  Message,
+  initialSettings,
+  loadHostSettings,
+} from "../settings";
 import { SettingsProvider } from "./components/SettingsProvider";
-import { initialSettings } from "../initialSettings";
-import { getAsync } from "../chrome/localStorage";
 
 let counter = 0;
 
 export const injectRoot = async (w: Window, parent: Element) => {
+  if (!location.href.startsWith("http")) {
+    return;
+  }
+  const [settings] = await loadHostSettings(location.href);
+
   const rootDiv = w.document.createElement("div");
   parent.append(rootDiv);
   rootDiv.setAttribute("role", "region");
@@ -25,8 +33,7 @@ export const injectRoot = async (w: Window, parent: Element) => {
       </React.StrictMode>,
     );
 
-  const newSettings = await getAsync("settings", initialSettings);
-  render(newSettings, parent);
+  render(settings, parent);
 
   const listener = (message: Message) => {
     if (message.type === "updateAccessibilityInfo") {

@@ -12,7 +12,9 @@
     "announcementMaxSeconds": "アナウンスの最長の長さ（秒）",
     "tipOpacityPercent": "チップの不透明度（%）",
     "liveRegionOpacityPercent": "ライブリージョンの不透明度（%）",
-    "rerun": "再実行"
+    "rerun": "再実行",
+    "reset": "設定をリセット",
+    "hostDesc": "この画面で設定した内容は、Webページのホストごとに保存されます。設定のデフォルト値は、拡張機能のオプションで設定できます。"
   },
   "tip": {
     "name": "名前",
@@ -36,5 +38,8 @@
     "noControlForLabel": "フォームコントロールなしのラベル",
     "noNameAttr": "name属性なし",
     "noRadioGroup": "ラジオボタングループなし"
+  },
+  "optionsPage": {
+    "description": "拡張機能のポップアップから設定を変更すると、閲覧中のWebページのホストごとに設定が保存され、同じホストのWebページに対して適用されます。この画面で設定を変更しても、それらの設定値は変更されません。"
   }
 }

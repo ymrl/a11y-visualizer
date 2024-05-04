@@ -1,4 +1,4 @@
-import { Settings } from "../../types";
+import { Settings } from "../../settings/types";
 import { Category, ElementTip } from "../types";
 import { Tip } from "./Tip";
 

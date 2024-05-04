@@ -1,222 +1,92 @@
 import React from "react";
 import "./index.css";
-import { Settings } from "../types";
+import {
+  Settings,
+  initialSettings,
+  loadHostSettings,
+  saveHostSettings,
+} from "../settings";
 import { useLang } from "../useLang";
-import { initialSettings } from "../initialSettings";
-import { getAsync } from "../chrome/localStorage";
 import { sendMessageToActiveTab } from "../chrome/tabs";
-
-const Checkbox = ({
-  children,
-  onChange,
-  checked,
-  disabled,
-}: {
-  children: React.ReactNode;
-  onChange?: React.ChangeEventHandler<HTMLInputElement>;
-  checked?: boolean;
-  disabled?: boolean;
-}) => {
-  return (
-    <label className="flex flex-row gap-1 items-center">
-      <input
-        type="checkbox"
-        onChange={onChange}
-        checked={checked}
-        disabled={disabled}
-      />
-      {children}
-    </label>
-  );
-};
+import { SettingsEditor } from "../components/SettingsEditor";
 
 export const Popup = () => {
   const [settings, setSettings] = React.useState<Settings>(initialSettings);
+  const [hostSetting, setHostSetting] = React.useState<boolean>(false);
   const { t, lang } = useLang();
 
+  const loadSettings = async (applyToTab: boolean = false) => {
+    const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
+    const [newSettings, found] = await loadHostSettings(tabs[0]?.url);
+    setHostSetting(found);
+    setSettings(newSettings);
+    applyToTab &&
+      sendMessageToActiveTab({
+        type: "updateAccessibilityInfo",
+        settings: newSettings,
+      });
+  };
+
   React.useEffect(() => {
-    const getSettings = async () => {
-      const newSettings = await getAsync("settings", initialSettings);
-      setSettings(newSettings);
-    };
-    getSettings();
+    loadSettings();
   }, []);
 
   const updateSettings = async (newSettings: Settings) => {
     setSettings(newSettings);
-    chrome.storage.local.set({ settings: newSettings });
+    const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
+    saveHostSettings(tabs[0]?.url, newSettings);
     sendMessageToActiveTab({
       type: "updateAccessibilityInfo",
       settings: newSettings,
     });
   };
 
-  const handleChangeCheckbox = (
-    key: keyof Settings,
-    e: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    const newSettings = {
-      ...settings,
-      [key]: e.target.checked,
-    };
-    updateSettings(newSettings);
-  };
-  const handleChangeNumber = (
-    key: keyof Settings,
-    e: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    const newSettings = {
-      ...settings,
-      [key]: parseFloat(e.target.value),
-    };
-    updateSettings(newSettings);
-  };
-
   return (
-    <div
-      className="w-64 font-sans p-2 flex flex-col gap-2 items-start"
-      lang={lang}
-    >
-      <Checkbox
-        onChange={(e) => {
-          handleChangeCheckbox("accessibilityInfo", e);
-        }}
-        checked={settings.accessibilityInfo}
-      >
-        {t("popup.accessibilityInfo")}
-      </Checkbox>
+    <div className="w-64 p-2 flex flex-col gap-2 items-start" lang={lang}>
+      <SettingsEditor settings={settings} onChange={updateSettings} />
+      <div className="w-full flex flex-row gap-2 items-center">
+        <button
+          type="button"
+          className="
+            border-slate-400 border-solid border
+            px-4 py-1 rounded-full
+            bg-slate-100 hover:enabled:bg-slate-200 transition-colors
+            disabled:border-slate-200 disabled:text-slate-600 disabled:cursor-not-allowed"
+          onClick={() => {
+            sendMessageToActiveTab({
+              type: "updateAccessibilityInfo",
+              settings: settings,
+            });
+          }}
+        >
+          {t("popup.rerun")}
+        </button>
 
-      <div className="flex flex-col gap-2 pl-3">
-        <Checkbox
-          onChange={(e) => {
-            handleChangeCheckbox("image", e);
-          }}
-          checked={settings.image}
-          disabled={!settings.accessibilityInfo}
-        >
-          {t("popup.showImage")}
-        </Checkbox>
-        <Checkbox
-          onChange={(e) => {
-            handleChangeCheckbox("button", e);
-          }}
-          checked={settings.button}
-          disabled={!settings.accessibilityInfo}
-        >
-          {t("popup.showButtons")}
-        </Checkbox>
-        <Checkbox
-          onChange={(e) => {
-            handleChangeCheckbox("link", e);
-          }}
-          checked={settings.link}
-          disabled={!settings.accessibilityInfo}
-        >
-          {t("popup.showLinks")}
-        </Checkbox>
-        <Checkbox
-          onChange={(e) => {
-            handleChangeCheckbox("formControl", e);
-          }}
-          checked={settings.formControl}
-          disabled={!settings.accessibilityInfo}
-        >
-          {t("popup.showFormControls")}
-        </Checkbox>
-        <Checkbox
-          onChange={(e) => {
-            handleChangeCheckbox("heading", e);
-          }}
-          checked={settings.heading}
-          disabled={!settings.accessibilityInfo}
-        >
-          {t("popup.showHeadings")}
-        </Checkbox>
-        <Checkbox
-          onChange={(e) => {
-            handleChangeCheckbox("ariaHidden", e);
-          }}
-          checked={settings.ariaHidden}
-          disabled={!settings.accessibilityInfo}
-        >
-          {t("popup.showAriaHidden")}
-        </Checkbox>
-        <label className="flex flex-col gap-1 items-stretch">
-          <span className="shrink-0">{t("popup.tipOpacityPercent")}</span>
-          <input
-            type="range"
-            min={0}
-            max={100}
-            step={1}
-            value={settings.tipOpacityPercent}
-            onChange={(e) => handleChangeNumber("tipOpacityPercent", e)}
-          />
-        </label>
-      </div>
-      <Checkbox
-        onChange={(e) => {
-          handleChangeCheckbox("showLiveRegions", e);
-        }}
-        checked={settings.showLiveRegions}
-      >
-        {t("popup.showLiveRegions")}
-      </Checkbox>
-      <div className="flex flex-col gap-2 pl-3 w-full">
-        <label className="flex flex-col gap-1 items-stretch">
-          <span className="srhink-0">{t("popup.announcementMaxSeconds")}</span>
-          <input
-            className="border-slate-400 border-solid border rounded-md p-1 text-right"
-            type="number"
-            value={settings.announcementMaxSeconds}
-            onChange={(e) => handleChangeNumber("announcementMaxSeconds", e)}
-            min={1}
-            step={1}
-          />
-        </label>
-        <label className="flex flex-col gap-1 items-stretch">
-          <span className="shrink-0">
-            {t("popup.announcementSecondsPerCharacter")}
-          </span>
-          <input
-            className="border-slate-400 border-solid border rounded-md p-1 text-right"
-            type="number"
-            value={settings.announcementSecondsPerCharacter}
-            onChange={(e) =>
-              handleChangeNumber("announcementSecondsPerCharacter", e)
+        <button
+          type="button"
+          className="
+            border-slate-400 border-solid border
+            px-4 py-1 rounded-full
+            bg-slate-100 hover:enabled:bg-slate-200 transition-colors
+            disabled:border-slate-200 disabled:text-slate-500 disabled:cursor-not-allowed"
+          onClick={async () => {
+            const tabs = await chrome.tabs.query({
+              active: true,
+              currentWindow: true,
+            });
+            if (tabs[0] && tabs[0].url && tabs[0].url.startsWith("http")) {
+              const url = new URL(tabs[0].url);
+              const host = url.host;
+              await chrome.storage.local.remove(host);
+              loadSettings(true);
             }
-            min={0.1}
-            step={0.1}
-          />
-        </label>
-        <label className="flex flex-col gap-1 items-stretch">
-          <span className="shrink-0">
-            {t("popup.liveRegionOpacityPercent")}
-          </span>
-          <input
-            type="range"
-            min={0}
-            max={100}
-            step={1}
-            value={settings.liveRegionOpacityPercent}
-            onChange={(e) => handleChangeNumber("liveRegionOpacityPercent", e)}
-          />
-        </label>
+          }}
+          disabled={!hostSetting}
+        >
+          {t("popup.reset")}
+        </button>
       </div>
-      <button
-        type="button"
-        className="
-          border-slate-400 border-solid border
-          px-4 py-1 rounded-full
-          bg-slate-100 hover:bg-slate-200 transition-colors"
-        onClick={() => {
-          sendMessageToActiveTab({
-            type: "updateAccessibilityInfo",
-            settings: settings,
-          });
-        }}
-      >
-        {t("popup.rerun")}
-      </button>
+      <p className="text-xs text-slate-500">{t("popup.hostDesc")}</p>
     </div>
   );
 };

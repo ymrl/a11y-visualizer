@@ -1,7 +1,7 @@
 import React from "react";
 import { ElementMeta } from "../types";
 import { MetaInfo } from "./MetaInfo";
-import { Settings } from "../../types";
+import { Settings } from "../../settings/types";
 
 const MetaListRenderer = (
   {

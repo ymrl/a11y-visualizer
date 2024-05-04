@@ -22,8 +22,13 @@
     "page": "src/options/index.html"
   },
   "background": {
-    "service_worker": "src/background.ts",
+    "scripts": ["src/background.ts"],
     "type": "module"
   },
-  "permissions": ["storage", "activeTab"]
+  "permissions": ["storage", "activeTab"],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "a11y-visualizer@ymrl.net"
+    }
+  }
 }

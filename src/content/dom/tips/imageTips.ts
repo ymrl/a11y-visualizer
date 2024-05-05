@@ -1,6 +1,6 @@
 import { computeAccessibleName } from "dom-accessibility-api";
 import { ElementTip } from "../../types";
-import { isAriaHidden } from "../index";
+import { getClosestByRoles, isAriaHidden } from "../index";
 
 export const ImageSelectors = ["img", "svg", '[role="img"]'] as const;
 
@@ -29,14 +29,28 @@ export const imageTips = (el: Element): ElementTip[] => {
           result.push({ type: "error", content: "messages.noAltImage" });
         }
       } else {
-        // FIXME: more roles should be checked
-        const ancestorControls = el.closest(
-          "a[href], button, [role=button], [role=link]",
-        );
+        const ancestorControls = getClosestByRoles(el, [
+          "link",
+          "button",
+          "checkbox",
+          "img",
+          "menuitemcheckbox",
+          "menuitemradio",
+          "meter",
+          "option",
+          "progressbar",
+          "radio",
+          "scrollbar",
+          "separator",
+          "slider",
+          "switch",
+          "tab",
+        ]);
+        const nameNotRequired = ["scrollbar", "separator", "tab"];
         const ancestorName = ancestorControls
           ? computeAccessibleName(ancestorControls)
           : "";
-        if (!ancestorName) {
+        if (!ancestorName && !nameNotRequired.includes(roleAttr)) {
           result.push({ type: "error", content: "messages.noName" });
         }
       }

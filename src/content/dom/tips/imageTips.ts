@@ -1,6 +1,6 @@
 import { computeAccessibleName } from "dom-accessibility-api";
 import { ElementTip } from "../../types";
-import { isAriaHidden } from "../index";
+import { getClosestByRoles, isAriaHidden } from "../index";
 
 export const ImageSelectors = ["img", "svg", '[role="img"]'] as const;
 
@@ -29,7 +29,30 @@ export const imageTips = (el: Element): ElementTip[] => {
           result.push({ type: "error", content: "messages.noAltImage" });
         }
       } else {
-        result.push({ type: "error", content: "messages.noName" });
+        const ancestorControl = getClosestByRoles(el, [
+          "link",
+          "button",
+          "checkbox",
+          "img",
+          "menuitemcheckbox",
+          "menuitemradio",
+          "meter",
+          "option",
+          "progressbar",
+          "radio",
+          "scrollbar",
+          "separator",
+          "slider",
+          "switch",
+          "tab",
+        ]);
+        const nameNotRequired = ["scrollbar", "separator", "tab"];
+        const ancestorName = ancestorControl
+          ? computeAccessibleName(ancestorControl)
+          : "";
+        if (!ancestorName && !nameNotRequired.includes(roleAttr)) {
+          result.push({ type: "error", content: "messages.noName" });
+        }
       }
     }
     if (tagName === "svg" && roleAttr === "") {

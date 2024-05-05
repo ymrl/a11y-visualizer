@@ -67,6 +67,27 @@ describe("imageTips()", () => {
     ]);
   });
 
+  test("img inside link", () => {
+    const link = document.createElement("a");
+    link.setAttribute("href", "hello.html");
+    const img = document.createElement("img");
+    link.appendChild(img);
+    document.body.appendChild(link);
+    expect(imageTips(img)).toEqual([
+      { type: "error", content: "messages.noAltImage" },
+    ]);
+  });
+
+  test("svg inside link", () => {
+    const link = document.createElement("a");
+    link.setAttribute("href", "hello.html");
+    link.setAttribute("aria-label", "Hello");
+    const svg = document.createElement("svg");
+    link.appendChild(svg);
+    document.body.appendChild(link);
+    expect(imageTips(svg)).toEqual([{ type: "tagName", content: "svg" }]);
+  });
+
   test("svg", () => {
     const element = document.createElement("svg");
     document.body.appendChild(element);

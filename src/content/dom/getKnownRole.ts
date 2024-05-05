@@ -99,9 +99,6 @@ const knownRoles = [
 
 export type KnownRole = (typeof knownRoles)[number];
 export const getKnownRole = (el: Element): KnownRole | null => {
-  if (!(el instanceof HTMLElement)) {
-    return null;
-  }
   const role = getRole(el);
   if (role && knownRoles.includes(role as KnownRole)) {
     return role as KnownRole;

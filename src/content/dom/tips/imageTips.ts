@@ -29,7 +29,7 @@ export const imageTips = (el: Element): ElementTip[] => {
           result.push({ type: "error", content: "messages.noAltImage" });
         }
       } else {
-        const ancestorControls = getClosestByRoles(el, [
+        const ancestorControl = getClosestByRoles(el, [
           "link",
           "button",
           "checkbox",
@@ -47,8 +47,8 @@ export const imageTips = (el: Element): ElementTip[] => {
           "tab",
         ]);
         const nameNotRequired = ["scrollbar", "separator", "tab"];
-        const ancestorName = ancestorControls
-          ? computeAccessibleName(ancestorControls)
+        const ancestorName = ancestorControl
+          ? computeAccessibleName(ancestorControl)
           : "";
         if (!ancestorName && !nameNotRequired.includes(roleAttr)) {
           result.push({ type: "error", content: "messages.noName" });

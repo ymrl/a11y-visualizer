@@ -8,12 +8,10 @@ export const getClosestByRoles = (
   if (!parent) {
     return null;
   }
-  if (parent && parent instanceof HTMLElement) {
-    const role = getKnownRole(parent);
-    if (role) {
-      if (roles.includes(role)) {
-        return parent;
-      }
+  const role = getKnownRole(parent);
+  if (role) {
+    if (roles.includes(role)) {
+      return parent;
     }
   }
   return getClosestByRoles(parent, roles);

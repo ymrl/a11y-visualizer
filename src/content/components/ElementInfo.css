@@ -1,6 +1,6 @@
 .ElementInfo {
   position: absolute;
-  transition-duration: .3s;
+  transition-duration: 0.3s;
   transition-property: opacity;
 }
 .ElementInfo__overlay {

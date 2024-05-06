@@ -33,6 +33,7 @@ export const Popup = () => {
 
   const updateSettings = async (newSettings: Settings) => {
     setSettings(newSettings);
+    setHostSetting(true);
     const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
     saveHostSettings(tabs[0]?.url, newSettings);
     sendMessageToActiveTab({

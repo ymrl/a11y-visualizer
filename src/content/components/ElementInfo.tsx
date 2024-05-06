@@ -81,7 +81,9 @@ export const ElementInfo = ({
       ? "inner-top"
       : "outer-top"
     : categories.includes("image")
-      ? "inner-top"
+      ? y > 24 && height < 32
+        ? "outer-top"
+        : "inner-top"
       : y + height > rootHeight - 24
         ? "inner-bottom"
         : "outer-bottom";

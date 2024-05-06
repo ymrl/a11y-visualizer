@@ -12,6 +12,8 @@ export const getElementPosition = (
   return {
     x: rect.x + w.scrollX - offsetX,
     y: rect.y + w.scrollY - offsetY,
+    absoluteX: rect.x + w.scrollX,
+    absoluteY: rect.y + w.scrollY,
     width: rect.width,
     height: rect.height,
   };
@@ -37,6 +39,8 @@ const getAreaElementPosition = (
     return {
       x: rect.x + coords[0] + w.scrollX - offsetX,
       y: rect.y + coords[1] + w.scrollY - offsetY,
+      absoluteX: rect.x + coords[0] + w.scrollX,
+      absoluteY: rect.y + coords[1] + w.scrollY,
       width: coords[2] - coords[0],
       height: coords[3] - coords[1],
     };
@@ -45,22 +49,22 @@ const getAreaElementPosition = (
     return {
       x: rect.x + coords[0] - coords[2] + w.scrollX - offsetX,
       y: rect.y + coords[1] - coords[2] + w.scrollY - offsetY,
+      absoluteX: rect.x + coords[0] - coords[2] + w.scrollX,
+      absoluteY: rect.y + coords[1] - coords[2] + w.scrollY,
       width: coords[2] * 2,
       height: coords[2] * 2,
     };
   }
   if (coords && shape === "poly" && coords.length >= 6) {
+    const absoluteX =
+      rect.x + Math.min(...coords.filter((_, i) => i % 2 === 0)) + w.scrollX;
+    const absoluteY =
+      rect.y + Math.min(...coords.filter((_, i) => i % 2 === 1)) + w.scrollY;
     return {
-      x:
-        rect.x +
-        Math.min(...coords.filter((_, i) => i % 2 === 0)) +
-        w.scrollX -
-        offsetX,
-      y:
-        rect.y +
-        Math.min(...coords.filter((_, i) => i % 2 === 1)) +
-        w.scrollY -
-        offsetY,
+      x: absoluteX - offsetX,
+      y: absoluteY - offsetY,
+      absoluteX,
+      absoluteY,
       width:
         Math.max(...coords.filter((_, i) => i % 2 === 0)) -
         Math.min(...coords.filter((_, i) => i % 2 === 0)),
@@ -72,6 +76,8 @@ const getAreaElementPosition = (
   return {
     x: rect.x + w.scrollX - offsetX,
     y: rect.y + w.scrollY - offsetY,
+    absoluteX: rect.x + w.scrollX,
+    absoluteY: rect.y + w.scrollY,
     width: rect.width,
     height: rect.height,
   };

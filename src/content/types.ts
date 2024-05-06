@@ -7,6 +7,8 @@ export type ElementMeta = {
 export type ElementPosition = {
   x: number;
   y: number;
+  absoluteX: number;
+  absoluteY: number;
   width: number;
   height: number;
 };

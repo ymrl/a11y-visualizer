@@ -4,6 +4,8 @@ import { getElementPosition } from "./getElementPosition";
 const position = {
   x: 10,
   y: 20,
+  absoluteX: 10,
+  absoluteY: 20,
   width: 30,
   height: 40,
 };
@@ -22,6 +24,8 @@ describe("getElementPosition", () => {
     expect(getElementPosition(el, w)).toEqual({
       x: 110,
       y: 220,
+      absoluteX: 110,
+      absoluteY: 220,
       width: 30,
       height: 40,
     });
@@ -33,6 +37,8 @@ describe("getElementPosition", () => {
     expect(getElementPosition(el, w, offsetX, offsetY)).toEqual({
       x: 100,
       y: 200,
+      absoluteX: 110,
+      absoluteY: 220,
       width: 30,
       height: 40,
     });
@@ -71,6 +77,8 @@ describe("getElementPosition", () => {
       expect(getElementPosition(area, w)).toEqual({
         x: position.x + 5,
         y: position.y + 6,
+        absoluteX: position.x + 5,
+        absoluteY: position.y + 6,
         width: 5,
         height: 6,
       });
@@ -91,6 +99,8 @@ describe("getElementPosition", () => {
       expect(getElementPosition(area, w)).toEqual({
         x: position.x + 5,
         y: position.y + 6,
+        absoluteX: position.x + 5,
+        absoluteY: position.y + 6,
         width: 5,
         height: 6,
       });
@@ -104,6 +114,8 @@ describe("getElementPosition", () => {
       expect(getElementPosition(area, w)).toEqual({
         x: position.x + 2,
         y: position.y + 1,
+        absoluteX: position.x + 2,
+        absoluteY: position.y + 1,
         width: 14,
         height: 14,
       });
@@ -117,6 +129,8 @@ describe("getElementPosition", () => {
       expect(getElementPosition(area, w)).toEqual({
         x: position.x + 5,
         y: position.y + 6,
+        absoluteX: position.x + 5,
+        absoluteY: position.y + 6,
         width: 5,
         height: 6,
       });

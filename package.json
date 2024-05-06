@@ -32,7 +32,8 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-i18next": "^14.1.0",
-    "react-icons": "^5.0.1"
+    "react-icons": "^5.0.1",
+    "react-shadow": "^20.4.0"
   },
   "devDependencies": {
     "@crxjs/vite-plugin": "^2.0.0-beta.23",
@@ -67,7 +68,7 @@
       "prettier --write",
       "eslint"
     ],
-    "*.{md,json,yml,html}": [
+    "*.{md,json,yml,html,css}": [
       "prettier --write"
     ]
   }

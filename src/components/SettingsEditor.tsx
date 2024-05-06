@@ -135,6 +135,14 @@ export const SettingsEditor = ({
             onChange={(e) => handleChangeNumber("tipOpacityPercent", e)}
           />
         </label>
+        <Checkbox
+          onChange={(e) => {
+            handleChangeCheckbox("interactiveMode", e);
+          }}
+          checked={settings.interactiveMode}
+        >
+          {t("popup.interactiveMode")}
+        </Checkbox>
       </div>
       <Checkbox
         onChange={(e) => {

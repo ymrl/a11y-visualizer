@@ -6,6 +6,7 @@ export type Settings = {
   button: boolean;
   heading: boolean;
   ariaHidden: boolean;
+  interactiveMode: boolean;
   showLiveRegions: boolean;
   announcementMaxSeconds: number;
   announcementSecondsPerCharacter: number;

@@ -7,7 +7,11 @@ export const useLang = () => {
 
   React.useEffect(() => {
     const chromeLang = chrome.i18n.getUILanguage();
-    const uiLang = chromeLang.match(/^ja/) ? "ja" : "en";
+    const uiLang = chromeLang.match(/^ja/)
+      ? "ja"
+      : chromeLang.match(/^ko/)
+        ? "ko"
+        : "en";
     setLang(uiLang);
     i18n.changeLanguage(uiLang);
   }, []);

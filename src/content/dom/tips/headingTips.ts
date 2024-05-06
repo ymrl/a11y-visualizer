@@ -32,8 +32,7 @@ export const headingTips = (el: Element): ElementTip[] => {
 
   if (hasTag) {
     result.push({ type: "level", content: `${tagName.slice(1)}` });
-  }
-  if (hasRole) {
+  } else if (hasRole) {
     const ariaLevel = el.getAttribute("aria-level");
     if (ariaLevel) {
       result.push({ type: "level", content: `${ariaLevel}` });

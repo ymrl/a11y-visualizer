@@ -1,5 +1,6 @@
 import React from "react";
 import { SettingsContext } from "../components/SettingsProvider";
+import { isHidden, isInAriaHidden } from "../dom";
 
 const LIVEREGION_SELECTOR =
   "output, [role='status'], [role='alert'], [role='log'], [aria-live]:not([aria-live='off'])";
@@ -67,6 +68,10 @@ export const useLiveRegion = () => {
         .map((r) => {
           const node =
             closestNodeOfSelector(r.target, LIVEREGION_SELECTOR) || r.target;
+
+          if (isHidden(node as Element) || isInAriaHidden(node as Element)) {
+            return "";
+          }
           const isAtomic =
             (node as Element).getAttribute?.("aria-atomic") === "true";
           const relevant = (

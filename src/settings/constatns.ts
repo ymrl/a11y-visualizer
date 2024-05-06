@@ -4,17 +4,17 @@ export const DEFAULT_SETTING_KEY = "__default__";
 export const OBSOLETE_SETTING_KEY = "settings";
 
 export const initialSettings: Settings = {
-  accessibilityInfo: false,
+  accessibilityInfo: true,
   image: true,
-  formControl: true,
-  link: true,
-  button: true,
+  formControl: false,
+  link: false,
+  button: false,
   heading: true,
   ariaHidden: true,
   interactiveMode: true,
   showLiveRegions: true,
-  announcementMaxSeconds: 30,
+  announcementMaxSeconds: 10,
   announcementSecondsPerCharacter: 0.5,
-  tipOpacityPercent: 80,
-  liveRegionOpacityPercent: 80,
+  tipOpacityPercent: 50,
+  liveRegionOpacityPercent: 50,
 } as const;

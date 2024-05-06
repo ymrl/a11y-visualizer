@@ -1,7 +1,7 @@
 import React from "react";
 import { collectElements } from "./dom";
 import { ElementMeta } from "./types";
-import { MetaList } from "./components/MetaList";
+import { ElementList } from "./components/ElementList";
 import { injectRoot } from "./injectRoot";
 import { Announcements } from "./components/Announcements";
 import { SettingsContext } from "./components/SettingsProvider";
@@ -98,15 +98,9 @@ export const Root = ({ parent }: { parent: Element }) => {
   }, [updateInfo, parent]);
 
   return (
-    <>
-      <MetaList
-        list={metaList}
-        settings={settings}
-        ref={containerRef}
-        width={width}
-        height={height}
-      />
+    <div ref={containerRef}>
+      <ElementList list={metaList} width={width} height={height} />
       <Announcements contents={announcements} ref={announcementsRef} />
-    </>
+    </div>
   );
 };

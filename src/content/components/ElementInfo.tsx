@@ -1,5 +1,6 @@
-import { Settings } from "../../settings/types";
+import React from "react";
 import { Category, ElementTip } from "../types";
+import { SettingsContext } from "./SettingsProvider";
 import { Tip } from "./Tip";
 
 const colors = (category: Category): { border: string } => {
@@ -35,27 +36,42 @@ const colors = (category: Category): { border: string } => {
   }
 };
 
-export const MetaInfo = ({
+export const ElementInfo = ({
   x,
   y,
+  absoluteX,
+  absoluteY,
   width,
   height,
   tips,
   categories,
-  settings,
   rootWidth,
   rootHeight,
 }: {
   x: number;
   y: number;
+  absoluteX: number;
+  absoluteY: number;
   width: number;
   height: number;
   tips: ElementTip[];
   categories: Category[];
-  settings: Settings;
   rootWidth: number;
   rootHeight: number;
 }) => {
+  const { interactiveMode, ...settings } = React.useContext(SettingsContext);
+  const [hovered, setHovered] = React.useState(false);
+  const selfRef = React.useRef<HTMLDivElement>(null);
+  const listenerRef = React.useRef<((e: MouseEvent) => void) | null>(null);
+  React.useEffect(() => {
+    const w = selfRef.current?.ownerDocument?.defaultView;
+    return () => {
+      if (listenerRef.current && w) {
+        w.removeEventListener("mousemove", listenerRef.current);
+      }
+    };
+  }, []);
+
   if (!categories.some((category) => settings[category])) {
     return;
   }
@@ -70,16 +86,60 @@ export const MetaInfo = ({
         ? "inner-bottom"
         : "outer-bottom";
 
+  const handleHovered = () => {
+    if ((!interactiveMode && hovered) || listenerRef.current) {
+      return;
+    }
+    setHovered(true);
+    if (!selfRef.current) {
+      return;
+    }
+    const d = selfRef.current.ownerDocument;
+    const w = d.defaultView;
+    const listener = (ew: MouseEvent) => {
+      const mx = ew.pageX;
+      const my = ew.pageY;
+      if (
+        mx < absoluteX ||
+        mx > absoluteX + width ||
+        my < absoluteY ||
+        my > absoluteY + height
+      ) {
+        setHovered(false);
+        listenerRef.current = null;
+      }
+    };
+    if (w) {
+      w.addEventListener("mousemove", listener);
+      listenerRef.current = listener;
+    }
+  };
   return (
     <div
+      className="ElementInfo"
       style={{
-        position: "absolute",
         top: y,
         left: x,
         width,
         height,
+        opacity:
+          interactiveMode && hovered ? 1 : settings.tipOpacityPercent / 100,
       }}
+      ref={selfRef}
     >
+      {interactiveMode && (
+        <div
+          className="ElementInfo__overlay"
+          style={{
+            position: "absolute",
+            inset: 0,
+            zIndex: 2,
+            pointerEvents: hovered ? "none" : "auto",
+          }}
+          onMouseEnter={handleHovered}
+          onMouseMove={handleHovered}
+        />
+      )}
       {tips.length > 0 &&
         categories
           .filter((category) => settings[category])

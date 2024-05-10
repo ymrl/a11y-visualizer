@@ -7,6 +7,7 @@
 
 - [Accessibility Visualizer ユーザーズガイド (Japanese)](./docs/ja/UsersGuide.md)
 - [Accessibility Visualizer User's Guide (English)](./docs/en/UsersGuide.md)
+- [Accessibility Visualizer 사용자 가이드 (Korean)](./docs/ko/UsersGuide.md)
 
 ## How to develop
 

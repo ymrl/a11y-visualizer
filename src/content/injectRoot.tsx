@@ -8,6 +8,7 @@ import {
   loadHostSettings,
 } from "../settings";
 import { SettingsProvider } from "./components/SettingsProvider";
+import { loadEnabled } from "../enabled";
 
 let counter = 0;
 
@@ -16,6 +17,7 @@ export const injectRoot = async (w: Window, parent: Element) => {
     return;
   }
   const [settings] = await loadHostSettings(location.href);
+  const enabled = await loadEnabled();
 
   const rootDiv = w.document.createElement("div");
   parent.append(rootDiv);
@@ -24,16 +26,16 @@ export const injectRoot = async (w: Window, parent: Element) => {
 
   const root = ReactDOM.createRoot(rootDiv);
 
-  const render = (settings: Settings, parent: Element) =>
+  const render = (settings: Settings, parent: Element, enabled: boolean) =>
     root.render(
       <React.StrictMode>
         <SettingsProvider settings={settings}>
-          <Root parent={parent} />
+          <Root parent={parent} enabled={enabled} />
         </SettingsProvider>
       </React.StrictMode>,
     );
 
-  render(settings, parent);
+  render(settings, parent, enabled);
 
   const listener = (message: Message) => {
     if (message.type === "updateAccessibilityInfo") {
@@ -41,7 +43,7 @@ export const injectRoot = async (w: Window, parent: Element) => {
         ...initialSettings,
         ...message.settings,
       };
-      render(newSettings, parent);
+      render(newSettings, parent, message.enabled);
     }
   };
   chrome.runtime.onMessage.addListener(listener);

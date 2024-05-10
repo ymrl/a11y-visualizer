@@ -5,7 +5,6 @@ import {
   loadDefaultSettings,
   saveDefaultSettings,
 } from "../settings";
-import { sendMessageToActiveTab } from "../chrome/tabs";
 import { SettingsEditor } from "../components/SettingsEditor";
 import { useLang } from "../useLang";
 
@@ -23,10 +22,6 @@ export const OptionsPage = () => {
   const updateSettings = async (newSettings: Settings) => {
     setSettings(newSettings);
     saveDefaultSettings(newSettings);
-    sendMessageToActiveTab({
-      type: "updateAccessibilityInfo",
-      settings: newSettings,
-    });
   };
 
   const { t, lang } = useLang();

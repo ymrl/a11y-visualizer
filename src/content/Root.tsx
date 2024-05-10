@@ -7,7 +7,13 @@ import { Announcements } from "./components/Announcements";
 import { SettingsContext } from "./components/SettingsProvider";
 import { useLiveRegion } from "./hooks/useLiveRegion";
 
-export const Root = ({ parent }: { parent: Element }) => {
+export const Root = ({
+  parent,
+  enabled,
+}: {
+  parent: Element;
+  enabled: boolean;
+}) => {
   const [metaList, setMetaList] = React.useState<ElementMeta[]>([]);
   const [width, setWidth] = React.useState<number>(0);
   const [height, setHeight] = React.useState<number>(0);
@@ -62,7 +68,7 @@ export const Root = ({ parent }: { parent: Element }) => {
   const updateInfo = React.useCallback(() => {
     injectToFrames(parent);
     observeLiveRegion(parent);
-    if (settings.accessibilityInfo) {
+    if (enabled && settings.accessibilityInfo) {
       injectToDialogs(parent);
       const { elements, rootHeight, rootWidth } = collectElements(
         parent,
@@ -82,7 +88,14 @@ export const Root = ({ parent }: { parent: Element }) => {
       setHeight(0);
       setMetaList([]);
     }
-  }, [injectToFrames, parent, settings, observeLiveRegion, injectToDialogs]);
+  }, [
+    injectToFrames,
+    parent,
+    settings,
+    observeLiveRegion,
+    injectToDialogs,
+    enabled,
+  ]);
 
   React.useEffect(() => {
     updateInfo();
@@ -98,9 +111,11 @@ export const Root = ({ parent }: { parent: Element }) => {
   }, [updateInfo, parent]);
 
   return (
-    <div ref={containerRef}>
-      <ElementList list={metaList} width={width} height={height} />
-      <Announcements contents={announcements} ref={announcementsRef} />
-    </div>
+    enabled && (
+      <div ref={containerRef}>
+        <ElementList list={metaList} width={width} height={height} />
+        <Announcements contents={announcements} ref={announcementsRef} />
+      </div>
+    )
   );
 };

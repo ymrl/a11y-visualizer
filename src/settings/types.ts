@@ -18,6 +18,7 @@ export type Message =
   | {
       type: "updateAccessibilityInfo";
       settings: Settings;
+      enabled: boolean;
     }
   | {
       type: "getSettings";

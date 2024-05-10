@@ -78,6 +78,7 @@ export const Root = ({
           ...popoversRef.current,
           ...dialogsRef.current,
         ].filter((el): el is Element => !!el),
+        settings,
       );
 
       setMetaList(elements);

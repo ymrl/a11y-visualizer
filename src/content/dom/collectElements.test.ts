@@ -52,7 +52,10 @@ describe("collectElements()", () => {
       notImage,
       exclude,
     ]);
-    const result = collectElements(document.body, [exclude]);
+    const emptyResult = collectElements(document.body, [], {});
+    expect(emptyResult.elements).toHaveLength(0);
+
+    const result = collectElements(document.body, [exclude], { image: true });
     expect(result.elements).toHaveLength(5);
 
     //noAlt
@@ -138,7 +141,9 @@ describe("collectElements()", () => {
       noFor,
       notFormControl,
     ]);
-    const result = collectElements(document.body, []);
+    const emptyResult = collectElements(document.body, [], {});
+    expect(emptyResult.elements).toHaveLength(0);
+    const result = collectElements(document.body, [], { formControl: true });
     expect(result.elements).toHaveLength(5);
     // noLabel
     expect(result.elements[0].categories).toContain("formControl");
@@ -192,7 +197,9 @@ describe("collectElements()", () => {
       roleLinkEmpty,
       notLink,
     ]);
-    const result = collectElements(document.body, []);
+    const emptyResult = collectElements(document.body, [], {});
+    expect(emptyResult.elements).toHaveLength(0);
+    const result = collectElements(document.body, [], { link: true });
     expect(result.elements).toHaveLength(4);
   });
 
@@ -233,7 +240,9 @@ describe("collectElements()", () => {
       inputReset,
       inputImage,
     ]);
-    const result = collectElements(document.body, []);
+    const emptyResult = collectElements(document.body, [], {});
+    expect(emptyResult.elements).toHaveLength(0);
+    const result = collectElements(document.body, [], { button: true });
     expect(result.elements).toHaveLength(6);
   });
 
@@ -248,7 +257,9 @@ describe("collectElements()", () => {
     const notHeading = document.createElement("div");
     notHeading.textContent = "not heading";
     appendChildren(document.body, [h1, roleHeading, notHeading]);
-    const result = collectElements(document.body, []);
+    const emptyResult = collectElements(document.body, [], {});
+    expect(emptyResult.elements).toHaveLength(0);
+    const result = collectElements(document.body, [], { heading: true });
     expect(result.elements).toHaveLength(2);
   });
 
@@ -258,7 +269,9 @@ describe("collectElements()", () => {
     const notAriaHidden = document.createElement("div");
     notAriaHidden.textContent = "not aria-hidden";
     appendChildren(document.body, [ariaHidden, notAriaHidden]);
-    const result = collectElements(document.body, []);
+    const emptyResult = collectElements(document.body, [], {});
+    expect(emptyResult.elements).toHaveLength(0);
+    const result = collectElements(document.body, [], { ariaHidden: true });
     expect(result.elements).toHaveLength(1);
   });
 });

@@ -9,13 +9,18 @@ import {
 import { useLang } from "../useLang";
 import { sendMessageToActiveTab } from "../chrome/tabs";
 import { SettingsEditor } from "../components/SettingsEditor";
+import { loadEnabled, saveEnabled } from "../enabled";
+import { Checkbox } from "../components/Checkbox";
 
 export const Popup = () => {
   const [settings, setSettings] = React.useState<Settings>(initialSettings);
+  const [enabled, setEnabled] = React.useState<boolean>(false);
   const [hostSetting, setHostSetting] = React.useState<boolean>(false);
   const { t, lang } = useLang();
 
   const loadSettings = async (applyToTab: boolean = false) => {
+    const loadedEnabled = await loadEnabled();
+    setEnabled(loadedEnabled);
     const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
     const [newSettings, found] = await loadHostSettings(tabs[0]?.url);
     setHostSetting(found);
@@ -24,6 +29,7 @@ export const Popup = () => {
       sendMessageToActiveTab({
         type: "updateAccessibilityInfo",
         settings: newSettings,
+        enabled: loadedEnabled,
       });
   };
 
@@ -39,12 +45,32 @@ export const Popup = () => {
     sendMessageToActiveTab({
       type: "updateAccessibilityInfo",
       settings: newSettings,
+      enabled: enabled,
     });
   };
 
   return (
     <div className="w-64 p-2 flex flex-col gap-2 items-start" lang={lang}>
-      <SettingsEditor settings={settings} onChange={updateSettings} />
+      <Checkbox
+        onChange={async (e) => {
+          setEnabled(e.target.checked);
+          saveEnabled(e.target.checked);
+          sendMessageToActiveTab({
+            type: "updateAccessibilityInfo",
+            settings: settings,
+            enabled: e.target.checked,
+          });
+        }}
+        checked={enabled}
+      >
+        {t("popup.enabled")}
+      </Checkbox>
+
+      <SettingsEditor
+        settings={settings}
+        onChange={updateSettings}
+        disabled={!enabled}
+      />
       <div className="w-full flex flex-row gap-2 items-center">
         <button
           type="button"
@@ -57,8 +83,10 @@ export const Popup = () => {
             sendMessageToActiveTab({
               type: "updateAccessibilityInfo",
               settings: settings,
+              enabled: enabled,
             });
           }}
+          disabled={!enabled}
         >
           {t("popup.rerun")}
         </button>
@@ -82,7 +110,7 @@ export const Popup = () => {
               loadSettings(true);
             }
           }}
-          disabled={!hostSetting}
+          disabled={!enabled || !hostSetting}
         >
           {t("popup.reset")}
         </button>

@@ -1,5 +1,6 @@
 {
   "popup": {
+    "enabled": "Accessibility Visualizer 활성화",
     "accessibilityInfo": "팁 보기",
     "showImage": "이미지 정보 보기",
     "showFormControls": "폼 컨트롤 정보 보기",

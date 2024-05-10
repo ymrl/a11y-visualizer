@@ -1,5 +1,6 @@
 {
   "popup": {
+    "enabled": "Accessibility Visualizerを有効にする",
     "accessibilityInfo": "チップを表示",
     "showImage": "画像の情報を表示",
     "showFormControls": "フォームコントロールの情報を表示",

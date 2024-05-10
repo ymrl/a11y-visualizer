@@ -1,36 +1,15 @@
 import { Settings } from "../settings/types";
 import { useLang } from "../useLang";
-
-const Checkbox = ({
-  children,
-  onChange,
-  checked,
-  disabled,
-}: {
-  children: React.ReactNode;
-  onChange?: React.ChangeEventHandler<HTMLInputElement>;
-  checked?: boolean;
-  disabled?: boolean;
-}) => {
-  return (
-    <label className="flex flex-row gap-1 items-center">
-      <input
-        type="checkbox"
-        onChange={onChange}
-        checked={checked}
-        disabled={disabled}
-      />
-      {children}
-    </label>
-  );
-};
+import { Checkbox } from "./Checkbox";
 
 export const SettingsEditor = ({
   settings,
   onChange,
+  disabled,
 }: {
   settings: Settings;
   onChange: (settings: Settings) => void;
+  disabled?: boolean;
 }) => {
   const { t, lang } = useLang();
   const handleChangeCheckbox = (
@@ -65,6 +44,7 @@ export const SettingsEditor = ({
           handleChangeCheckbox("accessibilityInfo", e);
         }}
         checked={settings.accessibilityInfo}
+        disabled={disabled}
       >
         {t("popup.accessibilityInfo")}
       </Checkbox>
@@ -75,7 +55,7 @@ export const SettingsEditor = ({
             handleChangeCheckbox("image", e);
           }}
           checked={settings.image}
-          disabled={!settings.accessibilityInfo}
+          disabled={disabled || !settings.accessibilityInfo}
         >
           {t("popup.showImage")}
         </Checkbox>
@@ -84,7 +64,7 @@ export const SettingsEditor = ({
             handleChangeCheckbox("button", e);
           }}
           checked={settings.button}
-          disabled={!settings.accessibilityInfo}
+          disabled={disabled || !settings.accessibilityInfo}
         >
           {t("popup.showButtons")}
         </Checkbox>
@@ -93,7 +73,7 @@ export const SettingsEditor = ({
             handleChangeCheckbox("link", e);
           }}
           checked={settings.link}
-          disabled={!settings.accessibilityInfo}
+          disabled={disabled || !settings.accessibilityInfo}
         >
           {t("popup.showLinks")}
         </Checkbox>
@@ -102,7 +82,7 @@ export const SettingsEditor = ({
             handleChangeCheckbox("formControl", e);
           }}
           checked={settings.formControl}
-          disabled={!settings.accessibilityInfo}
+          disabled={disabled || !settings.accessibilityInfo}
         >
           {t("popup.showFormControls")}
         </Checkbox>
@@ -111,7 +91,7 @@ export const SettingsEditor = ({
             handleChangeCheckbox("heading", e);
           }}
           checked={settings.heading}
-          disabled={!settings.accessibilityInfo}
+          disabled={disabled || !settings.accessibilityInfo}
         >
           {t("popup.showHeadings")}
         </Checkbox>
@@ -120,7 +100,7 @@ export const SettingsEditor = ({
             handleChangeCheckbox("ariaHidden", e);
           }}
           checked={settings.ariaHidden}
-          disabled={!settings.accessibilityInfo}
+          disabled={disabled || !settings.accessibilityInfo}
         >
           {t("popup.showAriaHidden")}
         </Checkbox>
@@ -133,6 +113,7 @@ export const SettingsEditor = ({
             step={1}
             value={settings.tipOpacityPercent}
             onChange={(e) => handleChangeNumber("tipOpacityPercent", e)}
+            disabled={disabled}
           />
         </label>
         <Checkbox
@@ -140,6 +121,7 @@ export const SettingsEditor = ({
             handleChangeCheckbox("interactiveMode", e);
           }}
           checked={settings.interactiveMode}
+          disabled={disabled}
         >
           {t("popup.interactiveMode")}
         </Checkbox>
@@ -149,6 +131,7 @@ export const SettingsEditor = ({
           handleChangeCheckbox("showLiveRegions", e);
         }}
         checked={settings.showLiveRegions}
+        disabled={disabled}
       >
         {t("popup.showLiveRegions")}
       </Checkbox>
@@ -162,6 +145,7 @@ export const SettingsEditor = ({
             onChange={(e) => handleChangeNumber("announcementMaxSeconds", e)}
             min={1}
             step={1}
+            disabled={disabled}
           />
         </label>
         <label className="flex flex-col gap-1 items-stretch">
@@ -177,6 +161,7 @@ export const SettingsEditor = ({
             }
             min={0.1}
             step={0.1}
+            disabled={disabled}
           />
         </label>
         <label className="flex flex-col gap-1 items-stretch">
@@ -190,6 +175,7 @@ export const SettingsEditor = ({
             step={1}
             value={settings.liveRegionOpacityPercent}
             onChange={(e) => handleChangeNumber("liveRegionOpacityPercent", e)}
+            disabled={disabled}
           />
         </label>
       </div>

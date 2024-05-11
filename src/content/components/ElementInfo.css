@@ -4,5 +4,74 @@
 .ElementInfo__overlay {
   position: absolute;
   inset: 0;
+  z-index: 2;
+}
+
+.ElementInfo__border {
+  position: absolute;
+  inset: 0;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.5),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+  border: 2px dashed rgb(132, 145, 158);
+}
+
+.ElementInfo__border--image {
+  border-color: rgb(3, 175, 122);
+}
+.ElementInfo__border--formControl {
+  border-color: rgb(255, 128, 130);
+}
+
+.ElementInfo__border--button {
+  border-color: rgb(77, 196, 255);
+}
+
+.ElementInfo__border--link {
+  border-color: rgb(153, 0, 153);
+}
+
+.ElementInfo__border--heading {
+  border-color: rgb(0, 90, 255);
+}
+
+.ElementInfo__border--ariaHidden {
+  border-color: rgb(255, 75, 0);
+}
+
+.ElementInfo__tips {
+  position: absolute;
   z-index: 1;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: row;
+  max-width: max(160px, 100%);
+  width: max-content;
+  flex-wrap: wrap;
+}
+
+.ElementInfo__tips--left-aligned {
+  left: 0;
+  justify-content: flex-start;
+}
+
+.ElementInfo__tips--right-aligned {
+  right: 0;
+  justify-content: flex-end;
+}
+
+.ElementInfo__tips--inner-top {
+  top: 0;
+}
+
+.ElementInfo__tips--inner-bottom {
+  bottom: 0;
+}
+
+.ElementInfo__tips--outer-top {
+  bottom: 100%;
+}
+
+.ElementInfo__tips--outer-bottom {
+  top: 100%;
 }

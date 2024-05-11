@@ -11,19 +11,30 @@ import { FormSelectors, formTips, isFormControl } from "./tips/formTips";
 import { imageTips, isImage, ImageSelectors } from "./tips/imageTips";
 import { computeAccessibleName } from "dom-accessibility-api";
 import { isAriaHidden } from "./isAriaHidden";
+import { CategorySettings } from "../../settings";
 
-const Selector = [
-  ...(ImageSelectors || []),
-  ...(FormSelectors || []),
-  ...(LinkSelectors || []),
-  ...(HeadingSelectors || []),
-  ...(ButtonSelectors || []),
-  ...(AriraHiddenSelectors || []),
-].join(",");
+const getSelector = (settings: Partial<CategorySettings>) => {
+  return [
+    ...(settings.image ? ImageSelectors : []),
+    ...(settings.formControl ? FormSelectors : []),
+    ...(settings.link ? LinkSelectors : []),
+    ...(settings.heading ? HeadingSelectors : []),
+    ...(settings.button ? ButtonSelectors : []),
+    ...(settings.ariaHidden ? AriraHiddenSelectors : []),
+  ].join(",");
+};
 
 export const collectElements = (
   root: Element,
   excludes: Element[],
+  settings: Partial<CategorySettings> = {
+    image: true,
+    formControl: true,
+    link: true,
+    button: true,
+    heading: true,
+    ariaHidden: true,
+  },
 ): {
   elements: ElementMeta[];
   rootWidth: number;
@@ -60,47 +71,51 @@ export const collectElements = (
   const offsetX = offsetPosition.x;
   const offsetY = offsetPosition.y;
 
+  const selector = getSelector(settings);
+
   return {
     rootHeight,
     rootWidth,
-    elements: [...root.querySelectorAll(Selector)]
-      .map((el: Element) => {
-        if (excludes.some((exclude: Element) => exclude.contains(el)))
-          return null;
-        const name = computeAccessibleName(el);
-        const nameTips: ElementTip[] = name
-          ? [{ type: "name", content: name }]
-          : [];
-        const images = imageTips(el);
-        const forms = formTips(el);
-        const buttons = buttonTips(el);
-        const links = linkTips(el);
-        const heading = headingTips(el);
-        const ariaHidden = ariaHiddenTips(el);
-        const global = globalTips(el);
-        return {
-          ...getElementPosition(el, w, offsetX, offsetY),
-          hidden: isHidden(el),
-          categories: [
-            isImage(el) ? "image" : "",
-            isFormControl(el) ? "formControl" : "",
-            isButton(el) ? "button" : "",
-            isLink(el) ? "link" : "",
-            isHeading(el) ? "heading" : "",
-            isAriaHidden(el) ? "ariaHidden" : "",
-          ].filter(Boolean) as Category[],
-          tips: [
-            ...heading,
-            ...nameTips,
-            ...images,
-            ...forms,
-            ...buttons,
-            ...links,
-            ...ariaHidden,
-            ...global,
-          ],
-        };
-      })
-      .filter((el): el is ElementMeta => el !== null),
+    elements: selector
+      ? [...root.querySelectorAll(getSelector(settings))]
+          .map((el: Element) => {
+            if (excludes.some((exclude: Element) => exclude.contains(el)))
+              return null;
+            const name = computeAccessibleName(el);
+            const nameTips: ElementTip[] = name
+              ? [{ type: "name", content: name }]
+              : [];
+            const images = imageTips(el);
+            const forms = formTips(el);
+            const buttons = buttonTips(el);
+            const links = linkTips(el);
+            const heading = headingTips(el);
+            const ariaHidden = ariaHiddenTips(el);
+            const global = globalTips(el);
+            return {
+              ...getElementPosition(el, w, offsetX, offsetY),
+              hidden: isHidden(el),
+              categories: [
+                isImage(el) ? "image" : "",
+                isFormControl(el) ? "formControl" : "",
+                isButton(el) ? "button" : "",
+                isLink(el) ? "link" : "",
+                isHeading(el) ? "heading" : "",
+                isAriaHidden(el) ? "ariaHidden" : "",
+              ].filter(Boolean) as Category[],
+              tips: [
+                ...heading,
+                ...nameTips,
+                ...images,
+                ...forms,
+                ...buttons,
+                ...links,
+                ...ariaHidden,
+                ...global,
+              ],
+            };
+          })
+          .filter((el): el is ElementMeta => el !== null)
+      : [],
   };
 };

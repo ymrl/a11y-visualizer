@@ -3,39 +3,11 @@ import { Category, ElementTip } from "../types";
 import { SettingsContext } from "./SettingsProvider";
 import { Tip } from "./Tip";
 
-const colors = (category: Category): { border: string } => {
-  switch (category) {
-    case "image":
-      return {
-        border: "2px dashed rgb(3,175,122)",
-      };
-    case "formControl":
-      return {
-        border: "2px dashed rgb(255,128,130)",
-      };
-    case "button":
-      return {
-        border: "2px dashed rgb(77,196,255)",
-      };
-    case "link":
-      return {
-        border: "2px dashed rgb(153,0,153)",
-      };
-    case "heading":
-      return {
-        border: "2px dashed rgb(0,90,255)",
-      };
-    case "ariaHidden":
-      return {
-        border: "2px dashed rgb(255,75,0)",
-      };
-    default:
-      return {
-        border: "2px dashed rgb(132,145,158)",
-      };
-  }
-};
-
+type VerticalPosition =
+  | "inner-top"
+  | "inner-bottom"
+  | "outer-top"
+  | "outer-bottom";
 export const ElementInfo = ({
   x,
   y,
@@ -75,8 +47,8 @@ export const ElementInfo = ({
   if (!categories.some((category) => settings[category])) {
     return;
   }
-  const rightAligned = width < 160 && x + width > rootWidth - 160;
-  const verticalPosition = categories.includes("heading")
+  const rightAligned: boolean = width < 160 && x + width > rootWidth - 160;
+  const verticalPosition: VerticalPosition = categories.includes("heading")
     ? y < 24
       ? "inner-top"
       : "outer-top"
@@ -133,9 +105,6 @@ export const ElementInfo = ({
         <div
           className="ElementInfo__overlay"
           style={{
-            position: "absolute",
-            inset: 0,
-            zIndex: 2,
             pointerEvents: hovered ? "none" : "auto",
           }}
           onMouseEnter={handleHovered}
@@ -148,40 +117,17 @@ export const ElementInfo = ({
           .map((category, i) => (
             <div
               key={i}
-              style={{
-                position: "absolute",
-                inset: 0,
-                ...colors(category),
-                boxShadow: "0 0 0 1px #fff, inset 0 0 0 1px #fff",
-              }}
+              className={`ElementInfo__border ElementInfo__border--${category}`}
             />
           ))}
       <div
-        style={{
-          position: "absolute",
-          zIndex: 1,
-          left: rightAligned ? undefined : 0,
-          right: rightAligned ? 0 : undefined,
-          top:
-            verticalPosition === "inner-top"
-              ? 0
-              : verticalPosition === "outer-bottom"
-                ? "100%"
-                : undefined,
-          bottom:
-            verticalPosition === "inner-bottom"
-              ? 0
-              : verticalPosition === "outer-top"
-                ? "100%"
-                : undefined,
-          display: "flex",
-          alignItems: "flex-start",
-          justifyContent: rightAligned ? "flex-end" : "flex-start",
-          flexDirection: "row",
-          maxWidth: "max(160px, 100%)",
-          width: "max-content",
-          flexWrap: "wrap",
-        }}
+        className={[
+          "ElementInfo__tips",
+          `ElementInfo__tips--${verticalPosition}`,
+          rightAligned
+            ? "ElementInfo__tips--right-aligned"
+            : "ElementInfo__tips--left-aligned",
+        ].join(" ")}
       >
         {tips.map((tip, i) => (
           <Tip key={i} tip={tip} />

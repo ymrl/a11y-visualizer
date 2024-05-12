@@ -115,7 +115,10 @@ export const Root = ({
     enabled && (
       <div ref={containerRef}>
         <ElementList list={metaList} width={width} height={height} />
-        <Announcements contents={announcements} ref={announcementsRef} />
+        <Announcements
+          contents={announcements.map((a) => a.content)}
+          ref={announcementsRef}
+        />
       </div>
     )
   );

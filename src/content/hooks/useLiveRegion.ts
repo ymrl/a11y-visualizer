@@ -24,7 +24,13 @@ export const useLiveRegion = () => {
   } = React.useContext(SettingsContext);
   const liveRegionsRef = React.useRef<Element[]>([]);
   const liveRegionObserverRef = React.useRef<MutationObserver | null>(null);
-  const [announcements, setAnnouncements] = React.useState<string[]>([]);
+  const [announcements, setAnnouncements] = React.useState<
+    { content: string; until: number }[]
+  >([]);
+  const [stoppedAnnouncements, setStoppedAnnouncements] = React.useState<
+    { content: string; rest: number }[]
+  >([]);
+  const timeoutIdsRef = React.useRef<number[]>([]);
 
   const connectLiveRegion = React.useCallback(
     (observer: MutationObserver, el: Element) => {
@@ -56,6 +62,24 @@ export const useLiveRegion = () => {
     [connectLiveRegion],
   );
 
+  const addAnnouncement = React.useCallback((content: string, msec: number) => {
+    const until = new Date().getTime() + msec;
+    const announcement = { content, until };
+    const timeoutId = window.setTimeout(() => {
+      setAnnouncements((prev) => {
+        const idx = prev.indexOf(announcement);
+        return idx === -1
+          ? prev
+          : [...prev.slice(0, idx), ...prev.slice(idx + 1)];
+      });
+      timeoutIdsRef.current = timeoutIdsRef.current.filter(
+        (id) => id !== timeoutId,
+      );
+    }, msec);
+    timeoutIdsRef.current.push(timeoutId);
+    setAnnouncements((prev) => [...prev, announcement]);
+  }, []);
+
   React.useEffect(() => {
     if (!showLiveRegions) {
       if (liveRegionObserverRef.current) {
@@ -85,33 +109,32 @@ export const useLiveRegion = () => {
           if (isAtomic) {
             return node.textContent || "";
           }
-          return [
+          const content = [
+            (r.removedNodes.length === 0 &&
+              r.addedNodes.length === 0 &&
+              node.textContent) ||
+              "",
             ...[...(removals ? r.removedNodes : [])].map(
               (n) => n.textContent || "",
             ),
             ...[...(additions ? r.addedNodes : [])].map(
               (n) => n.textContent || "",
             ),
-          ].join(" ");
+          ]
+            .filter(Boolean)
+            .join(" ");
+          return content;
         })
         .filter(Boolean);
-
-      setAnnouncements((prev) => [...prev, ...content]);
+      if (content.length > 0 && stoppedAnnouncements.length > 0) {
+        setStoppedAnnouncements([]);
+      }
       content.forEach((c) => {
-        setTimeout(
-          () => {
-            setAnnouncements((prev) => {
-              const idx = prev.indexOf(c);
-              return idx === -1
-                ? prev
-                : [...prev.slice(0, idx), ...prev.slice(idx + 1)];
-            });
-          },
-          Math.min(
-            c.length * announcementSecondsPerCharacter * 1000,
-            announcementMaxSeconds * 1000,
-          ),
+        const msec = Math.min(
+          c.length * announcementSecondsPerCharacter * 1000,
+          announcementMaxSeconds * 1000,
         );
+        addAnnouncement(c, msec);
       });
     });
     liveRegionsRef.current.forEach((el) => connectLiveRegion(observer, el));
@@ -125,7 +148,42 @@ export const useLiveRegion = () => {
     announcementMaxSeconds,
     announcementSecondsPerCharacter,
     connectLiveRegion,
+    addAnnouncement,
+    stoppedAnnouncements,
   ]);
+
+  React.useEffect(() => {
+    if (announcements.length === 0 && stoppedAnnouncements.length === 0) {
+      return;
+    }
+    const eventType = "keydown";
+    const listener = (e: KeyboardEvent) => {
+      if (e.key !== "Control") {
+        return;
+      }
+      if (announcements.length > 0) {
+        const stoppedAt = new Date().getTime();
+        timeoutIdsRef.current.forEach((id) => window.clearTimeout(id));
+        timeoutIdsRef.current = [];
+        setStoppedAnnouncements(
+          announcements
+            .map((a) => ({
+              content: a.content,
+              rest: a.until - stoppedAt,
+            }))
+            .filter((a) => a.rest > 0),
+        );
+        setAnnouncements([]);
+      } else if (stoppedAnnouncements.length > 0) {
+        stoppedAnnouncements.forEach((a) => addAnnouncement(a.content, a.rest));
+        setStoppedAnnouncements([]);
+      }
+    };
+    window.addEventListener(eventType, listener);
+    return () => {
+      window.removeEventListener(eventType, listener);
+    };
+  }, [addAnnouncement, announcements, stoppedAnnouncements]);
 
   return {
     observeLiveRegion,

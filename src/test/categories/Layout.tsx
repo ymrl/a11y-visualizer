@@ -29,7 +29,7 @@ export const Layout = () => {
       <CategorySectionTitle>"popover" attribute</CategorySectionTitle>
       <button
         className="bg-blue-600 text-white p-2 rounded-lg inline-block"
-        popovertarget="layout-popover"
+        popoverTarget="layout-popover"
       >
         Click me
       </button>
@@ -38,13 +38,14 @@ export const Layout = () => {
         className="bg-white p-3 w-80 rounded-xl shadow-lg"
         popover="auto"
       >
-        <h4 className="text-2xl font-bold">Hello from popover</h4>
+        <h1 className="text-2xl font-bold">Hello from popover</h1>
       </div>
       <CategorySectionTitle>&lt;iframe&gt; element</CategorySectionTitle>
       <iframe
         src="/src/test/iframe.html"
         title="iframe"
         className="mt-3 h-48 w-10/12 mx-auto border-gray-300 border-solid border-2"
+        loading="lazy"
       ></iframe>
     </>
   );

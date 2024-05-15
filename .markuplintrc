@@ -1,0 +1,33 @@
+{
+  "specs": {
+    "\\.[jt]sx?$": "@markuplint/react-spec"
+  },
+  "parser": {
+    "\\.[jt]sx?$": "@markuplint/jsx-parser"
+  },
+  "extends": [
+    "markuplint:recommended"
+  ],
+  "nodeRules": [
+    {
+      "selector": ".intentional-violation",
+      "rules": {
+        "require-accessible-name": false,
+        "label-has-control": false
+      }
+    }
+  ],
+  "overrideMode": "merge",
+  "overrides": {
+    "**/*.html": {
+      "rules": {
+        "required-h1": false
+      }
+    },
+    "src/test/components/**/*.tsx": {
+      "rules": {
+        "heading-levels": false
+      }
+    }
+  }
+}

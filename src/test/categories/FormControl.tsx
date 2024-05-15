@@ -55,7 +55,7 @@ export const FormControl = () => (
         },
         {
           title: "Textarea",
-          body: <textarea />,
+          body: <textarea className="intentional-violation" />,
         },
         {
           title: "Textarea with label",
@@ -88,11 +88,21 @@ export const FormControl = () => (
           body: (
             <div className="flex flex-wrap gap-3">
               <span>
-                <input type="radio" id="radioWithoutLabel1" name="radio" />
+                <input
+                  type="radio"
+                  id="radioWithoutLabel1"
+                  name="radio"
+                  className="intentional-violation"
+                />
                 Radio 1
               </span>
               <span>
-                <input type="radio" id="radioWithoutLabel2" name="radio" />
+                <input
+                  type="radio"
+                  id="radioWithoutLabel2"
+                  name="radio"
+                  className="intentional-violation"
+                />
                 Radio 2
               </span>
             </div>
@@ -156,11 +166,19 @@ export const FormControl = () => (
           body: (
             <div className="flex flex-wrap gap-3">
               <span>
-                <input type="checkbox" id="checkboxWithoutLabel1" />
+                <input
+                  type="checkbox"
+                  id="checkboxWithoutLabel1"
+                  className="intentional-violation"
+                />
                 Checkbox 1
               </span>
               <span>
-                <input type="checkbox" id="checkboxWithoutLabel2" />
+                <input
+                  type="checkbox"
+                  id="checkboxWithoutLabel2"
+                  className="intentional-violation"
+                />
                 Checkbox 2
               </span>
             </div>
@@ -172,7 +190,7 @@ export const FormControl = () => (
         },
         {
           title: "Single Label",
-          body: <label>Single Label</label>,
+          body: <label className="intentional-violation">Single Label</label>,
         },
       ]}
     />

@@ -13,7 +13,15 @@ export const Image = () => (
       examples={[
         {
           title: "with alt",
-          body: <img className="w-full" src={bigsight} alt="Tokyo Big Sight" />,
+          body: (
+            <img
+              className="w-full"
+              src={bigsight}
+              alt="Tokyo Big Sight"
+              width="160"
+              height="120"
+            />
+          ),
         },
         {
           title: "<img> element with alt and title",
@@ -23,22 +31,40 @@ export const Image = () => (
               src={bigsight}
               alt="Tokyo Big Sight"
               title="Tokyo Big Sight"
+              width="160"
+              height="120"
             />
           ),
         },
         {
           title: "without alt",
-          body: <img className="w-full" src={bigsight} />,
+          body: (
+            <img className="w-full" src={bigsight} width="160" height="120" />
+          ),
         },
         {
           title: "with title",
           body: (
-            <img className="w-full" src={bigsight} title="Tokyo Big Sight" />
+            <img
+              className="w-full"
+              src={bigsight}
+              title="Tokyo Big Sight"
+              width="160"
+              height="120"
+            />
           ),
         },
         {
           title: "with empty alt",
-          body: <img className="w-full" src={bigsight} alt="" />,
+          body: (
+            <img
+              className="w-full"
+              src={bigsight}
+              alt=""
+              width="160"
+              height="120"
+            />
+          ),
         },
         {
           title: "with empty alt and title",
@@ -48,6 +74,8 @@ export const Image = () => (
               src={bigsight}
               alt=""
               title="Tokyo Big Sight"
+              width="160"
+              height="120"
             />
           ),
         },
@@ -59,6 +87,8 @@ export const Image = () => (
               src={bigsight}
               alt="Tokyo Big Sight"
               aria-hidden="true"
+              width="160"
+              height="120"
             />
           ),
         },
@@ -71,7 +101,12 @@ export const Image = () => (
         {
           title: "with title element",
           body: (
-            <svg width="100" height="100" viewBox="0 0 100 100">
+            <svg
+              width="100"
+              height="100"
+              viewBox="0 0 100 100"
+              className="intentional-violation"
+            >
               <title>Blue circle</title>
               <circle cx="50" cy="50" r="40" fill="blue" />
             </svg>
@@ -129,7 +164,7 @@ export const Image = () => (
         {
           title: "inside link",
           body: (
-            <a href="https://example.com" role="link">
+            <a href="https://example.com">
               <svg width="100" height="100" viewBox="0 0 100 100" id="debug">
                 <circle cx="50" cy="50" r="40" fill="blue" />
               </svg>

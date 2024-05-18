@@ -35,11 +35,14 @@ export const ElementInfo = ({
   const [hovered, setHovered] = React.useState(false);
   const selfRef = React.useRef<HTMLDivElement>(null);
   const listenerRef = React.useRef<((e: MouseEvent) => void) | null>(null);
+
   React.useEffect(() => {
     const w = selfRef.current?.ownerDocument?.defaultView;
     return () => {
       if (listenerRef.current && w) {
+        setHovered(false);
         w.removeEventListener("mousemove", listenerRef.current);
+        listenerRef.current = null;
       }
     };
   }, []);
@@ -60,16 +63,20 @@ export const ElementInfo = ({
         ? "inner-bottom"
         : "outer-bottom";
 
-  const handleHovered = () => {
-    if ((!interactiveMode && hovered) || listenerRef.current) {
-      return;
-    }
-    setHovered(true);
-    if (!selfRef.current) {
-      return;
-    }
+  const disappear = () => {
+    setHovered(false);
+    if (!selfRef.current) return;
     const d = selfRef.current.ownerDocument;
     const w = d.defaultView;
+    if (listenerRef.current)
+      w?.removeEventListener("mousemove", listenerRef.current);
+    listenerRef.current = null;
+  };
+  const appear = () => {
+    if (!selfRef.current || listenerRef.current) return;
+    const d = selfRef.current.ownerDocument;
+    const w = d.defaultView;
+    setHovered(true);
     const listener = (ew: MouseEvent) => {
       const mx = ew.pageX;
       const my = ew.pageY;
@@ -79,14 +86,18 @@ export const ElementInfo = ({
         my < absoluteY ||
         my > absoluteY + height
       ) {
-        setHovered(false);
-        listenerRef.current = null;
+        disappear();
       }
     };
-    if (w) {
-      w.addEventListener("mousemove", listener);
-      listenerRef.current = listener;
+    w?.addEventListener("mousemove", listener);
+    listenerRef.current = listener;
+  };
+
+  const handleHovered = () => {
+    if (!interactiveMode || hovered) {
+      return;
     }
+    appear();
   };
   return (
     <div

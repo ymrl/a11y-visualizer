@@ -125,6 +125,17 @@ export const SettingsEditor = ({
         >
           {t("popup.interactiveMode")}
         </Checkbox>
+        <div className="flex flex-col gap-2 pl-3">
+          <Checkbox
+            onChange={(e) => {
+              handleChangeCheckbox("hideTips", e);
+            }}
+            checked={settings.hideTips}
+            disabled={disabled || !settings.interactiveMode}
+          >
+            {t("popup.hideTipLabels")}
+          </Checkbox>
+        </div>
       </div>
       <Checkbox
         onChange={(e) => {

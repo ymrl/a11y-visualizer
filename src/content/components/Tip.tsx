@@ -71,16 +71,23 @@ const Icon = ({ type }: { type: TipType }) => {
       );
   }
 };
-export const Tip = ({ tip }: { tip: ElementTip }) => {
+export const Tip = ({
+  tip,
+  hideLabel = false,
+}: {
+  tip: ElementTip;
+  hideLabel: boolean;
+}) => {
   const { t } = useLang();
   return (
     <div className={["Tip", `Tip--${tip.type}`].join(" ")}>
       <Icon type={tip.type} />
-      {tip.type === "level"
-        ? `${t("messages.headingLevel")}${tip.content}`
-        : tip.type === "warning" || tip.type === "error"
-          ? t(tip.content)
-          : tip.content}
+      {!hideLabel &&
+        (tip.type === "level"
+          ? `${t("messages.headingLevel")}${tip.content}`
+          : tip.type === "warning" || tip.type === "error"
+            ? t(tip.content)
+            : tip.content)}
     </div>
   );
 };

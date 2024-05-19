@@ -10,6 +10,7 @@
     "showAriaHidden": "Show about aria-hidden",
     "tipOpacityPercent": "Tips opacity (%)",
     "interactiveMode": "Interactive mode",
+    "hideTipLabels": "Hide tip labels until mouseover",
     "showLiveRegions": "Announce live regions",
     "announcementSecondsPerCharacter": "Announcement speed (seconds/char)",
     "announcementMaxSeconds": "Max announcement seconds",

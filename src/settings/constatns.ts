@@ -12,6 +12,7 @@ export const initialSettings: Settings = {
   heading: true,
   ariaHidden: true,
   interactiveMode: true,
+  hideTips: true,
   showLiveRegions: true,
   announcementMaxSeconds: 10,
   announcementSecondsPerCharacter: 0.5,

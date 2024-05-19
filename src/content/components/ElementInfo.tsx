@@ -31,7 +31,8 @@ export const ElementInfo = ({
   rootWidth: number;
   rootHeight: number;
 }) => {
-  const { interactiveMode, ...settings } = React.useContext(SettingsContext);
+  const { interactiveMode, hideTips, ...settings } =
+    React.useContext(SettingsContext);
   const [hovered, setHovered] = React.useState(false);
   const selfRef = React.useRef<HTMLDivElement>(null);
   const listenerRef = React.useRef<((e: MouseEvent) => void) | null>(null);
@@ -81,10 +82,10 @@ export const ElementInfo = ({
       const mx = ew.pageX;
       const my = ew.pageY;
       if (
-        mx < absoluteX ||
-        mx > absoluteX + width ||
-        my < absoluteY ||
-        my > absoluteY + height
+        mx < absoluteX - 4 ||
+        mx > absoluteX + width + 4 ||
+        my < absoluteY - 4 ||
+        my > absoluteY + height + 4
       ) {
         disappear();
       }
@@ -101,14 +102,12 @@ export const ElementInfo = ({
   };
   return (
     <div
-      className="ElementInfo"
+      className={`ElementInfo${hovered ? " ElementInfo--hovered" : ""}`}
       style={{
         top: y,
         left: x,
         width,
         height,
-        opacity:
-          interactiveMode && hovered ? 1 : settings.tipOpacityPercent / 100,
       }}
       ref={selfRef}
     >
@@ -129,6 +128,12 @@ export const ElementInfo = ({
             <div
               key={i}
               className={`ElementInfo__border ElementInfo__border--${category}`}
+              style={{
+                opacity:
+                  interactiveMode && hovered
+                    ? 1
+                    : settings.tipOpacityPercent / 100,
+              }}
             />
           ))}
       <div
@@ -139,9 +144,17 @@ export const ElementInfo = ({
             ? "ElementInfo__tips--right-aligned"
             : "ElementInfo__tips--left-aligned",
         ].join(" ")}
+        style={{
+          opacity:
+            interactiveMode && hovered ? 1 : settings.tipOpacityPercent / 100,
+        }}
       >
         {tips.map((tip, i) => (
-          <Tip key={i} tip={tip} />
+          <Tip
+            hideLabel={interactiveMode && hideTips ? !hovered : false}
+            key={i}
+            tip={tip}
+          />
         ))}
       </div>
     </div>

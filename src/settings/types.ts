@@ -10,6 +10,7 @@ export type CategorySettings = {
 export type Settings = {
   accessibilityInfo: boolean;
   interactiveMode: boolean;
+  hideTips: boolean;
   showLiveRegions: boolean;
   announcementMaxSeconds: number;
   announcementSecondsPerCharacter: number;

@@ -1,10 +1,15 @@
 .ElementInfo {
   position: absolute;
 }
+.ElementInfo--hovered {
+  z-index: 2;
+}
 .ElementInfo__overlay {
   position: absolute;
-  inset: 0;
-  z-index: 2;
+  inset: -4px;
+  min-width: 8px;
+  min-height: 8px;
+  z-index: 3;
 }
 
 .ElementInfo__border {

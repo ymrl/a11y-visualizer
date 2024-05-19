@@ -10,6 +10,7 @@
     "showAriaHidden": "aria-hiddenの情報を表示",
     "tipOpacityPercent": "チップの不透明度（%）",
     "interactiveMode": "インタラクティブモード",
+    "hideTipLabels": "マウスオーバーするまでチップのラベルを非表示",
     "showLiveRegions": "ライブリージョンをアナウンス",
     "announcementSecondsPerCharacter": "アナウンスのスピード（秒/文字）",
     "announcementMaxSeconds": "アナウンスの最長の長さ（秒）",

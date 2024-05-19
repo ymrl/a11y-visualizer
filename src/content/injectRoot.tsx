@@ -23,6 +23,7 @@ export const injectRoot = async (w: Window, parent: Element) => {
   parent.append(rootDiv);
   rootDiv.setAttribute("role", "region");
   rootDiv.setAttribute("aria-label", `Accessibility Visualizer ${counter++}`);
+  rootDiv.setAttribute("aria-hidden", "true");
 
   const root = ReactDOM.createRoot(rootDiv);
 

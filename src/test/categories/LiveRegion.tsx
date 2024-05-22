@@ -22,15 +22,57 @@ const ClockExample = ({
   );
 };
 
+const AutoAnnounceExample = () => {
+  const [time, setTime] = React.useState(new Date().toLocaleTimeString());
+  const [playing, setPlaying] = React.useState(false);
+  const intervalRef = React.useRef<number | null>(null);
+
+  const update = () => {
+    setTime(new Date().toLocaleTimeString());
+  };
+  React.useEffect(() => {
+    return () => {
+      intervalRef.current && clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    };
+  }, []);
+
+  return (
+    <div className="mt-3 flex flex-row items-center gap-2">
+      <button
+        onClick={() => {
+          if (playing) {
+            intervalRef.current && clearInterval(intervalRef.current);
+            intervalRef.current = null;
+          } else {
+            intervalRef.current = window.setInterval(update, 1000);
+          }
+          setPlaying(!playing);
+        }}
+        className="bg-blue-600 text-white p-2 rounded-lg inline-block"
+      >
+        {playing ? "stop" : "start"}
+      </button>
+      <div className="text-lg font-bold">
+        <span aria-live="polite" aria-atomic="true">
+          {time}
+        </span>
+      </div>
+    </div>
+  );
+};
+
 export const LiveRegion = () => {
   return (
     <>
       <CategoryTitle>Live Region</CategoryTitle>
+      <CategorySectionTitle>Auto Announce</CategorySectionTitle>
+      <AutoAnnounceExample />
       <CategorySectionTitle>Normal Live Region</CategorySectionTitle>
       <ClockExample
         renderExample={(time) => (
           <span aria-live="polite" aria-atomic="true">
-            {time}
+            polite {time}
           </span>
         )}
       />
@@ -38,6 +80,7 @@ export const LiveRegion = () => {
       <ClockExample
         renderExample={(time) => (
           <span aria-live="assertive" aria-atomic="true">
+            assertive!
             {time}
           </span>
         )}

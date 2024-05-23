@@ -5,6 +5,8 @@ import { isHidden, isInAriaHidden } from "../dom";
 const LIVEREGION_SELECTOR =
   "output, [role='status'], [role='alert'], [role='log'], [aria-live]:not([aria-live='off'])";
 
+type LiveLevel = "polite" | "assertive";
+
 const closestNodeOfSelector = (node: Node, selector: string): Node | null => {
   const parent = node.parentNode;
   if (!parent) {
@@ -25,10 +27,10 @@ export const useLiveRegion = () => {
   const liveRegionsRef = React.useRef<Element[]>([]);
   const liveRegionObserverRef = React.useRef<MutationObserver | null>(null);
   const [announcements, setAnnouncements] = React.useState<
-    { content: string; until: number }[]
+    { content: string; level: LiveLevel; until: number }[]
   >([]);
   const [stoppedAnnouncements, setStoppedAnnouncements] = React.useState<
-    { content: string; rest: number }[]
+    { content: string; level: LiveLevel; rest: number }[]
   >([]);
   const timeoutIdsRef = React.useRef<number[]>([]);
 
@@ -62,23 +64,26 @@ export const useLiveRegion = () => {
     [connectLiveRegion],
   );
 
-  const addAnnouncement = React.useCallback((content: string, msec: number) => {
-    const until = new Date().getTime() + msec;
-    const announcement = { content, until };
-    const timeoutId = window.setTimeout(() => {
-      setAnnouncements((prev) => {
-        const idx = prev.indexOf(announcement);
-        return idx === -1
-          ? prev
-          : [...prev.slice(0, idx), ...prev.slice(idx + 1)];
-      });
-      timeoutIdsRef.current = timeoutIdsRef.current.filter(
-        (id) => id !== timeoutId,
-      );
-    }, msec);
-    timeoutIdsRef.current.push(timeoutId);
-    setAnnouncements((prev) => [...prev, announcement]);
-  }, []);
+  const addAnnouncement = React.useCallback(
+    (content: string, level: LiveLevel, msec: number) => {
+      const until = new Date().getTime() + msec;
+      const announcement = { content, level, until };
+      const timeoutId = window.setTimeout(() => {
+        setAnnouncements((prev) => {
+          const idx = prev.indexOf(announcement);
+          return idx === -1
+            ? prev
+            : [...prev.slice(0, idx), ...prev.slice(idx + 1)];
+        });
+        timeoutIdsRef.current = timeoutIdsRef.current.filter(
+          (id) => id !== timeoutId,
+        );
+      }, msec);
+      timeoutIdsRef.current.push(timeoutId);
+      setAnnouncements((prev) => [...prev, announcement]);
+    },
+    [],
+  );
 
   React.useEffect(() => {
     if (!showLiveRegions) {
@@ -88,14 +93,18 @@ export const useLiveRegion = () => {
       return;
     }
     const observer = new MutationObserver((records) => {
-      const content: string[] = records
+      const updates: { content: string; level: LiveLevel }[] = records
         .map((r) => {
           const node =
             closestNodeOfSelector(r.target, LIVEREGION_SELECTOR) || r.target;
 
           if (isHidden(node as Element) || isInAriaHidden(node as Element)) {
-            return "";
+            return null;
           }
+          const isAssertive =
+            (node as Element).getAttribute?.("aria-live") === "assertive" ||
+            (node as Element).getAttribute?.("role") === "alert";
+          const level = isAssertive ? "assertive" : "polite";
           const isAtomic =
             (node as Element).getAttribute?.("aria-atomic") === "true";
           const relevant = (
@@ -107,8 +116,9 @@ export const useLiveRegion = () => {
           const additions =
             relevant.includes("additions") || relevant.includes("all");
           if (isAtomic) {
-            return node.textContent || "";
+            return { content: node.textContent || "", level };
           }
+
           const content = [
             (r.removedNodes.length === 0 &&
               r.addedNodes.length === 0 &&
@@ -123,18 +133,22 @@ export const useLiveRegion = () => {
           ]
             .filter(Boolean)
             .join(" ");
-          return content;
+          return { content, level };
         })
-        .filter(Boolean);
-      if (content.length > 0 && stoppedAnnouncements.length > 0) {
+        .filter((e): e is { content: string; level: LiveLevel } => e !== null);
+
+      if (updates.length > 0 && stoppedAnnouncements.length > 0) {
         setStoppedAnnouncements([]);
       }
-      content.forEach((c) => {
+      if (updates.some((u) => u.level === "assertive")) {
+        setAnnouncements([]);
+      }
+      updates.forEach((c) => {
         const msec = Math.min(
-          c.length * announcementSecondsPerCharacter * 1000,
+          c.content.length * announcementSecondsPerCharacter * 1000,
           announcementMaxSeconds * 1000,
         );
-        addAnnouncement(c, msec);
+        addAnnouncement(c.content, c.level, msec);
       });
     });
     liveRegionsRef.current.forEach((el) => connectLiveRegion(observer, el));
@@ -158,10 +172,11 @@ export const useLiveRegion = () => {
     }
     const eventType = "keydown";
     const listener = (e: KeyboardEvent) => {
-      if (e.key !== "Control") {
-        return;
+      if (e.key === "Control") {
+        setAnnouncements([]);
+        setStoppedAnnouncements([]);
       }
-      if (announcements.length > 0) {
+      if (e.key === "Shift" && announcements.length > 0) {
         const stoppedAt = new Date().getTime();
         timeoutIdsRef.current.forEach((id) => window.clearTimeout(id));
         timeoutIdsRef.current = [];
@@ -169,13 +184,16 @@ export const useLiveRegion = () => {
           announcements
             .map((a) => ({
               content: a.content,
+              level: a.level,
               rest: a.until - stoppedAt,
             }))
             .filter((a) => a.rest > 0),
         );
         setAnnouncements([]);
       } else if (stoppedAnnouncements.length > 0) {
-        stoppedAnnouncements.forEach((a) => addAnnouncement(a.content, a.rest));
+        stoppedAnnouncements.forEach((a) =>
+          addAnnouncement(a.content, a.level, a.rest),
+        );
         setStoppedAnnouncements([]);
       }
     };

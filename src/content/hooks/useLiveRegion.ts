@@ -29,7 +29,7 @@ export const useLiveRegion = () => {
   const [announcements, setAnnouncements] = React.useState<
     { content: string; level: LiveLevel; until: number }[]
   >([]);
-  const [stoppedAnnouncements, setStoppedAnnouncements] = React.useState<
+  const [pausedAnnouncements, setPausedAnnouncements] = React.useState<
     { content: string; level: LiveLevel; rest: number }[]
   >([]);
   const timeoutIdsRef = React.useRef<number[]>([]);
@@ -84,6 +84,37 @@ export const useLiveRegion = () => {
     },
     [],
   );
+  const pauseAnnouncements = React.useCallback(() => {
+    const stoppedAt = new Date().getTime();
+    timeoutIdsRef.current.forEach((id) => window.clearTimeout(id));
+    timeoutIdsRef.current = [];
+    setPausedAnnouncements(
+      announcements
+        .map((a) => ({
+          content: a.content,
+          level: a.level,
+          rest: a.until - stoppedAt,
+        }))
+        .filter((a) => a.rest > 0),
+    );
+    setAnnouncements([]);
+  }, [announcements]);
+
+  const resumeAnnouncements = React.useCallback(() => {
+    pausedAnnouncements.forEach((a) =>
+      addAnnouncement(a.content, a.level, a.rest),
+    );
+    setPausedAnnouncements([]);
+  }, [addAnnouncement, pausedAnnouncements]);
+
+  const clearAnnouncements = React.useCallback(() => {
+    if (timeoutIdsRef.current.length > 0) {
+      timeoutIdsRef.current.forEach((id) => window.clearTimeout(id));
+      timeoutIdsRef.current = [];
+    }
+    setAnnouncements((prev) => (prev.length > 0 ? [] : prev));
+    setPausedAnnouncements((prev) => (prev.length > 0 ? [] : prev));
+  }, []);
 
   React.useEffect(() => {
     if (!showLiveRegions) {
@@ -137,11 +168,11 @@ export const useLiveRegion = () => {
         })
         .filter((e): e is { content: string; level: LiveLevel } => e !== null);
 
-      if (updates.length > 0 && stoppedAnnouncements.length > 0) {
-        setStoppedAnnouncements([]);
+      if (updates.length > 0 && pausedAnnouncements.length > 0) {
+        setPausedAnnouncements([]);
       }
       if (updates.some((u) => u.level === "assertive")) {
-        setAnnouncements([]);
+        clearAnnouncements();
       }
       updates.forEach((c) => {
         const msec = Math.min(
@@ -163,45 +194,46 @@ export const useLiveRegion = () => {
     announcementSecondsPerCharacter,
     connectLiveRegion,
     addAnnouncement,
-    stoppedAnnouncements,
+    clearAnnouncements,
+    pausedAnnouncements,
   ]);
 
   React.useEffect(() => {
-    if (announcements.length === 0 && stoppedAnnouncements.length === 0) {
+    if (announcements.length === 0 && pausedAnnouncements.length === 0) {
       return;
     }
-    const eventType = "keydown";
+
     const listener = (e: KeyboardEvent) => {
-      if (e.key === "Control") {
-        setAnnouncements([]);
-        setStoppedAnnouncements([]);
-      }
-      if (e.key === "Shift" && announcements.length > 0) {
-        const stoppedAt = new Date().getTime();
-        timeoutIdsRef.current.forEach((id) => window.clearTimeout(id));
-        timeoutIdsRef.current = [];
-        setStoppedAnnouncements(
-          announcements
-            .map((a) => ({
-              content: a.content,
-              level: a.level,
-              rest: a.until - stoppedAt,
-            }))
-            .filter((a) => a.rest > 0),
-        );
-        setAnnouncements([]);
-      } else if (stoppedAnnouncements.length > 0) {
-        stoppedAnnouncements.forEach((a) =>
-          addAnnouncement(a.content, a.level, a.rest),
-        );
-        setStoppedAnnouncements([]);
+      if (e.key === "Shift") {
+        if (announcements.length > 0) {
+          pauseAnnouncements();
+        } else if (pausedAnnouncements.length > 0) {
+          resumeAnnouncements();
+        }
+      } else if (e.key === "Control") {
+        clearAnnouncements();
       }
     };
-    window.addEventListener(eventType, listener);
+    window.addEventListener("keydown", listener);
+    const clearEvents = ["focusin"];
+    clearEvents.forEach((eventType) =>
+      window.addEventListener(eventType, clearAnnouncements),
+    );
+
     return () => {
-      window.removeEventListener(eventType, listener);
+      window.removeEventListener("keydown", listener);
+      clearEvents.forEach((eventType) =>
+        window.removeEventListener(eventType, clearAnnouncements),
+      );
     };
-  }, [addAnnouncement, announcements, stoppedAnnouncements]);
+  }, [
+    addAnnouncement,
+    announcements,
+    pausedAnnouncements,
+    pauseAnnouncements,
+    resumeAnnouncements,
+    clearAnnouncements,
+  ]);
 
   return {
     observeLiveRegion,

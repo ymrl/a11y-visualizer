@@ -18,13 +18,29 @@ export type Settings = {
   liveRegionOpacityPercent: number;
 } & CategorySettings;
 
-export type Message =
+export type SettingsMessage =
   | {
       type: "updateAccessibilityInfo";
       settings: Settings;
       enabled: boolean;
     }
   | {
-      type: "getSettings";
+      type: "updateHostSettings";
       settings: Settings;
+      enabled: boolean;
+      host: string;
+    }
+  | {
+      type: "updateEnabled";
+      enabled: boolean;
+    }
+  | {
+      type: "updateDefaultSettings";
+      settings: Settings;
+      enabled: boolean;
+    }
+  | {
+      type: "applySettings";
+      settings: Settings;
+      enabled: boolean;
     };

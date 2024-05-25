@@ -1,13 +1,17 @@
 import React from "react";
 import "./index.css";
 import {
+  SettingsMessage,
   Settings,
   initialSettings,
   loadHostSettings,
   saveHostSettings,
 } from "../settings";
 import { useLang } from "../useLang";
-import { sendMessageToActiveTab } from "../chrome/tabs";
+import {
+  sendMessageToActiveTab,
+  sendMessageToActiveTabs,
+} from "../chrome/tabs";
 import { SettingsEditor } from "../components/SettingsEditor";
 import { loadEnabled, saveEnabled } from "../enabled";
 import { Checkbox } from "../components/Checkbox";
@@ -18,19 +22,16 @@ export const Popup = () => {
   const [hostSetting, setHostSetting] = React.useState<boolean>(false);
   const { t, lang } = useLang();
 
-  const loadSettings = async (applyToTab: boolean = false) => {
+  const loadSettings = async () => {
     const loadedEnabled = await loadEnabled();
     setEnabled(loadedEnabled);
     const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
-    const [newSettings, found] = await loadHostSettings(tabs[0]?.url);
+    const url = tabs[0]?.url;
+    const host = url ? new URL(url).host : undefined;
+    const [newSettings, found] = await loadHostSettings(host);
     setHostSetting(found);
     setSettings(newSettings);
-    applyToTab &&
-      sendMessageToActiveTab({
-        type: "updateAccessibilityInfo",
-        settings: newSettings,
-        enabled: loadedEnabled,
-      });
+    return newSettings;
   };
 
   React.useEffect(() => {
@@ -39,14 +40,19 @@ export const Popup = () => {
 
   const updateSettings = async (newSettings: Settings) => {
     setSettings(newSettings);
-    setHostSetting(true);
     const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
-    saveHostSettings(tabs[0]?.url, newSettings);
-    sendMessageToActiveTab({
-      type: "updateAccessibilityInfo",
-      settings: newSettings,
-      enabled: enabled,
-    });
+    const url = tabs[0]?.url;
+    const host = url ? new URL(url).host : undefined;
+    if (host) {
+      setHostSetting(true);
+      saveHostSettings(host, newSettings);
+      sendMessageToActiveTabs<SettingsMessage>({
+        type: "updateHostSettings",
+        settings: newSettings,
+        enabled: enabled,
+        host: host,
+      });
+    }
   };
 
   return (
@@ -59,9 +65,8 @@ export const Popup = () => {
             type: "updateEnabled",
             enabled: e.target.checked,
           });
-          sendMessageToActiveTab({
-            type: "updateAccessibilityInfo",
-            settings: settings,
+          sendMessageToActiveTabs<SettingsMessage>({
+            type: "updateEnabled",
             enabled: e.target.checked,
           });
         }}
@@ -85,7 +90,7 @@ export const Popup = () => {
             disabled:border-slate-200 disabled:text-slate-600 disabled:cursor-not-allowed"
           onClick={() => {
             sendMessageToActiveTab({
-              type: "updateAccessibilityInfo",
+              type: "applySettings",
               settings: settings,
               enabled: enabled,
             });
@@ -111,7 +116,13 @@ export const Popup = () => {
               const url = new URL(tabs[0].url);
               const host = url.host;
               await chrome.storage.local.remove(host);
-              loadSettings(true);
+              const defaultSettings = await loadSettings();
+              sendMessageToActiveTabs<SettingsMessage>({
+                type: "updateHostSettings",
+                settings: defaultSettings,
+                enabled: enabled,
+                host: host,
+              });
             }
           }}
           disabled={!enabled || !hostSetting}

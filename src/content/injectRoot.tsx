@@ -1,12 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { Root } from "./Root";
-import {
-  Settings,
-  Message,
-  initialSettings,
-  loadHostSettings,
-} from "../settings";
+import { Settings, SettingsMessage, loadHostSettings } from "../settings";
 import { SettingsProvider } from "./components/SettingsProvider";
 import { loadEnabled } from "../enabled";
 
@@ -16,7 +11,7 @@ export const injectRoot = async (w: Window, parent: Element) => {
   if (!location.href.startsWith("http")) {
     return;
   }
-  const [settings] = await loadHostSettings(location.href);
+  const [settings] = await loadHostSettings(location.host);
   const enabled = await loadEnabled();
 
   const rootDiv = w.document.createElement("div");
@@ -38,14 +33,31 @@ export const injectRoot = async (w: Window, parent: Element) => {
 
   render(settings, parent, enabled);
 
-  const listener = (message: Message) => {
-    if (message.type === "updateAccessibilityInfo") {
-      const newSettings = {
-        ...initialSettings,
-        ...message.settings,
-      };
-      render(newSettings, parent, message.enabled);
+  window.addEventListener("visibilitychange", async () => {
+    if (document.visibilityState === "visible") {
+      const [settings] = await loadHostSettings(location.host);
+      const enabled = await loadEnabled();
+      render(settings, parent, enabled);
+    }
+  });
+
+  const listener = (message: SettingsMessage) => {
+    switch (message.type) {
+      case "updateHostSettings":
+        if (message.host === location.host) {
+          render(message.settings, parent, message.enabled);
+        }
+        break;
+      case "applySettings":
+        render(message.settings, parent, message.enabled);
+        break;
+      case "updateEnabled":
+        render(settings, parent, message.enabled);
+        break;
     }
   };
   chrome.runtime.onMessage.addListener(listener);
+  window.addEventListener("unload", () => {
+    chrome.runtime.onMessage.removeListener(listener);
+  });
 };

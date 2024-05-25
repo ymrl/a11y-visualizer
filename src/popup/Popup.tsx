@@ -55,6 +55,10 @@ export const Popup = () => {
         onChange={async (e) => {
           setEnabled(e.target.checked);
           saveEnabled(e.target.checked);
+          chrome.runtime.sendMessage({
+            type: "updateEnabled",
+            enabled: e.target.checked,
+          });
           sendMessageToActiveTab({
             type: "updateAccessibilityInfo",
             settings: settings,

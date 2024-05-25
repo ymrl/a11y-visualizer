@@ -1,26 +1,60 @@
-import { ENABLED_KEY } from "./enabled";
-import {
-  OBSOLETE_SETTING_KEY,
-  DEFAULT_SETTING_KEY,
-  initialSettings,
-} from "./settings";
+import { ENABLED_KEY, loadEnabled, saveEnabled } from "./enabled";
+import disabled192 from "./assets/icon-disabled.png";
+import disabled48 from "./assets/icon-disabled@48w.png";
+import disabled128 from "./assets/icon-disabled@128w.png";
+import disabled16 from "./assets/icon-disabled@16w.png";
+import enabled192 from "./assets/icon.png";
+import enabled128 from "./assets/icon@128w.png";
+import enabled48 from "./assets/icon@48w.png";
+import enabled16 from "./assets/icon@16w.png";
+
+const enabledIcons = {
+  16: enabled16,
+  48: enabled48,
+  128: enabled128,
+  192: enabled192,
+} as const;
+
+const disabledIcons = {
+  16: disabled16,
+  48: disabled48,
+  128: disabled128,
+  192: disabled192,
+} as const;
+
+const updateIcons = (enabled: boolean) => {
+  if (enabled) {
+    chrome.action.setIcon({
+      path: enabledIcons,
+    });
+  } else {
+    chrome.action.setIcon({
+      path: disabledIcons,
+    });
+  }
+};
 
 chrome.runtime.onInstalled.addListener(async (details) => {
-  if (details.reason !== "update") {
-    return;
+  const { reason } = details;
+  if (reason === chrome.runtime.OnInstalledReason.INSTALL) {
+    saveEnabled(true);
+  } else if (details.reason === chrome.runtime.OnInstalledReason.UPDATE) {
+    const enabled = await chrome.storage.local.get(ENABLED_KEY);
+    if (enabled[ENABLED_KEY] === undefined) {
+      saveEnabled(true);
+    }
   }
-  const data = await chrome.storage.local.get(OBSOLETE_SETTING_KEY);
-  const oldSetting = data[OBSOLETE_SETTING_KEY];
-  if (oldSetting) {
-    const settings = {
-      ...initialSettings,
-      ...oldSetting,
-    };
-    await chrome.storage.local.set({ [DEFAULT_SETTING_KEY]: settings });
-    await chrome.storage.local.remove(OBSOLETE_SETTING_KEY);
-  }
-  const enabled = await chrome.storage.local.get(ENABLED_KEY);
-  if (enabled[ENABLED_KEY] === undefined) {
-    await chrome.storage.local.set({ __enabled__: true });
+  const enabled = await loadEnabled();
+  updateIcons(enabled);
+});
+
+chrome.runtime.onStartup.addListener(async () => {
+  const enabled = await loadEnabled();
+  updateIcons(enabled);
+});
+
+chrome.runtime.onMessage.addListener((message) => {
+  if (message.type === "updateEnabled") {
+    updateIcons(message.enabled);
   }
 });

@@ -62,8 +62,8 @@ export const Popup = () => {
   };
 
   return (
-    <div className="w-72" lang={lang}>
-      <div className="p-2 flex flex-row gap-4 items-center justify-between bg-slate-100">
+    <div className="w-72 text-zinc-800" lang={lang}>
+      <div className="p-2 flex flex-row gap-4 items-center justify-between bg-zinc-100">
         <div className="flex flex-row gap-1 items-center">
           <img
             src={enabled ? icon : iconDisabled}
@@ -72,14 +72,14 @@ export const Popup = () => {
             width="24"
             height="24"
           />
-          <h1 className="text-xs font-bold text-slate-700">
+          <h1 className="text-xs font-bold text-teal-800">
             {t("popup.title")}
           </h1>
           <button
             type="button"
-            className="text-emerald-700 bg-opacity-0 rounded-full shrink-0 p-1
-                hover:enabled:bg-slate-200 transition-colors
-               disabled:text-slate-400 disabled:cursor-not-allowed"
+            className="text-teal-700 bg-opacity-0 rounded-full shrink-0 p-1
+                hover:enabled:bg-zinc-200 transition-colors
+               disabled:text-zinc-400 disabled:cursor-not-allowed"
             onClick={() => {
               sendMessageToActiveTab({
                 type: "applySettings",
@@ -112,7 +112,7 @@ export const Popup = () => {
           }}
           checked={enabled}
         >
-          <span className="text-xs font-bold text-slate-800">
+          <span className="text-xs font-bold text-teal-800">
             {t("popup.enabled")}
           </span>
         </Checkbox>
@@ -120,14 +120,14 @@ export const Popup = () => {
       {host && (
         <div className="p-2 flex flex-col gap-2 items-stretch">
           <div className="flex flex-row gap-2 items-center">
-            <h2 className="text-sm font-bold text-emerald-800 shrink">
+            <h2 className="text-sm font-bold text-teal-800 shrink">
               {t("popup.settingsForHost", { host })}
             </h2>
             <button
               type="button"
-              className="text-emerald-700 bg-opacity-0 rounded-full shrink-0 p-1
-                hover:enabled:bg-slate-100 transition-colors
-               disabled:text-slate-400 disabled:cursor-not-allowed"
+              className="text-teal-700 bg-opacity-0 rounded-full shrink-0 p-1
+                hover:enabled:bg-zinc-100 transition-colors
+               disabled:text-zinc-400 disabled:cursor-not-allowed"
               onClick={async () => {
                 await chrome.storage.local.remove(host);
                 const defaultSettings = await loadSettings();
@@ -153,7 +153,7 @@ export const Popup = () => {
             onChange={updateSettings}
             disabled={!enabled}
           />
-          <p className="text-xs text-slate-500">{t("popup.hostDesc")}</p>
+          <p className="text-xs text-zinc-500">{t("popup.hostDesc")}</p>
         </div>
       )}
     </div>

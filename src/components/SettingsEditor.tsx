@@ -49,9 +49,9 @@ export const SettingsEditor = ({
         <span className="text-sm">{t("settings.showTips")}</span>
       </Checkbox>
       <div className="flex flex-col gap-2 pl-4">
-        <div className="px-2 py-1 bg-slate-100 rounded-md">
+        <div className="px-2 py-1 bg-zinc-100 rounded-md">
           <fieldset className="border-0 flex flex-col">
-            <legend className="text-xs text-emerald-800 font-bold mb-1">
+            <legend className="text-xs text-teal-800 font-bold mb-1">
               {t("settings.elementTypes")}
             </legend>
             <div className="flex flex-row flex-wrap gap-x-3 gap-y-1 items-center">
@@ -126,7 +126,7 @@ export const SettingsEditor = ({
           </div>
           <input
             id="tipOpacityPercent"
-            className="accent-emerald-700"
+            className="accent-teal-600"
             type="range"
             min={0}
             max={100}
@@ -169,9 +169,9 @@ export const SettingsEditor = ({
         <span className="text-sm">{t("settings.announceLiveRegions")}</span>
       </Checkbox>
       <div className="flex flex-col gap-2 pl-3 w-full">
-        <div className="px-2 py-1 bg-slate-100 rounded-md">
+        <div className="px-2 py-1 bg-zinc-100 rounded-md">
           <fieldset className="border-0 flex flex-col gap-2">
-            <legend className="text-xs text-emerald-800 font-bold mb-1">
+            <legend className="text-xs text-teal-800 font-bold mb-1">
               {t("settings.announcement")}
             </legend>
 
@@ -180,7 +180,7 @@ export const SettingsEditor = ({
                 {t("settings.announcementMaxSeconds")}
               </span>
               <input
-                className="border-slate-400 border-solid border rounded-md py-0.5 px-1 text-sm text-right w-14 h-6"
+                className="border-zinc-400 border-solid border rounded-md py-0.5 px-1 text-sm text-right w-14 h-6"
                 type="number"
                 value={settings.announcementMaxSeconds}
                 onChange={(e) =>
@@ -196,7 +196,7 @@ export const SettingsEditor = ({
                 {t("settings.announcementSecondsPerCharacter")}
               </span>
               <input
-                className="border-slate-400 border-solid border rounded-md py-0.5 px-1 text-sm text-right w-14 h-6"
+                className="border-zinc-400 border-solid border rounded-md py-0.5 px-1 text-sm text-right w-14 h-6"
                 type="number"
                 value={settings.announcementSecondsPerCharacter}
                 onChange={(e) =>
@@ -226,7 +226,7 @@ export const SettingsEditor = ({
           </div>
           <input
             id="liveRegionOpacityPercent"
-            className="accent-emerald-700"
+            className="accent-teal-600"
             type="range"
             min={0}
             max={100}

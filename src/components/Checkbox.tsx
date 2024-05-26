@@ -12,7 +12,7 @@ export const Checkbox = ({
   return (
     <label className="flex flex-row gap-1 items-center">
       <input
-        className="accent-emerald-700"
+        className="accent-teal-600"
         type="checkbox"
         onChange={onChange}
         checked={checked}

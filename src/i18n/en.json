@@ -7,7 +7,8 @@
     "settingsForHost": "Settings for {{host}}",
     "rerun": "Re-run",
     "reset": "Reset to defaults",
-    "hostDesc": "Settings on this popup are saved per host. Default values for new hosts can be set in the extension options."
+    "hostDesc": "Settings on this popup are saved per host. Default values for new hosts can be set in the extension options.",
+    "openExtensionOptions": "Open extension options"
   },
   "settings": {
     "showTips": "Show tips",

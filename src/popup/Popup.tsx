@@ -69,6 +69,8 @@ export const Popup = () => {
             src={enabled ? icon : iconDisabled}
             alt="icon"
             className="size-6"
+            width="24"
+            height="24"
           />
           <h1 className="text-xs font-bold text-emerald-800">
             {t("popup.title")}

@@ -67,7 +67,7 @@ export const Popup = () => {
         <div className="flex flex-row gap-1 items-center">
           <img
             src={enabled ? icon : iconDisabled}
-            alt="icon"
+            alt={enabled ? t("popup.iconEyesOpen") : t("popup.iconEyesClosed")}
             className="size-8 -mt-1 -mb-1 -ml-1"
             width="24"
             height="24"

@@ -2,6 +2,8 @@
   "popup": {
     "title": "Accessibility Visualizer",
     "enabled": "有効",
+    "iconEyesOpen": "アイコン: 目が開いている",
+    "iconEyesClosed": "アイコン: 目が閉じている",
     "settingsForHost": "{{host}} の設定",
     "rerun": "再実行",
     "reset": "設定をリセット",

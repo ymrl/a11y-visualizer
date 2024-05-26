@@ -1,0 +1,55 @@
+<svg width="192" height="192" viewBox="0 0 192 192" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_22_311)">
+<rect width="192" height="192" rx="48" fill="white"/>
+<rect y="6" width="48" height="12" rx="2" fill="#BFE4FF"/>
+<rect x="54" y="6" width="24" height="12" rx="2" fill="#77D9A8"/>
+<rect x="84" y="6" width="36" height="12" rx="2" fill="#FFCABF"/>
+<rect x="126" y="6" width="24" height="12" rx="2" fill="#C8C8CB"/>
+<rect x="156" y="6" width="24" height="12" rx="2" fill="#77D9A8"/>
+<rect x="186" y="6" width="24" height="12" rx="2" fill="#C9ACE6"/>
+<rect y="30" width="24" height="12" rx="2" fill="#77D9A8"/>
+<rect x="30" y="30" width="24" height="12" rx="2" fill="#C9ACE6"/>
+<rect x="60" y="30" width="36" height="12" rx="2" fill="#FF4B00"/>
+<rect x="102" y="30" width="36" height="12" rx="2" fill="#77D9A8"/>
+<rect x="144" y="30" width="48" height="12" rx="2" fill="#FFF100"/>
+<rect y="54" width="36" height="12" rx="2" fill="#77D9A8"/>
+<rect x="42" y="54" width="24" height="12" rx="2" fill="#FFCABF"/>
+<rect x="72" y="54" width="24" height="12" rx="2" fill="#77D9A8"/>
+<rect x="102" y="54" width="36" height="12" rx="2" fill="#C8C8CB"/>
+<rect x="144" y="54" width="48" height="12" rx="2" fill="#77D9A8"/>
+<rect y="78" width="24" height="12" rx="2" fill="#BFE4FF"/>
+<rect x="30" y="78" width="48" height="12" rx="2" fill="#77D9A8"/>
+<rect x="84" y="78" width="36" height="12" rx="2" fill="#FFCABF"/>
+<rect x="126" y="78" width="24" height="12" rx="2" fill="#77D9A8"/>
+<rect x="156" y="78" width="36" height="12" rx="2" fill="#C8C8CB"/>
+<rect y="102" width="48" height="12" rx="2" fill="#FF4B00"/>
+<rect x="54" y="102" width="24" height="12" rx="2" fill="#77D9A8"/>
+<rect x="84" y="102" width="36" height="12" rx="2" fill="#FFCABF"/>
+<rect x="126" y="102" width="36" height="12" rx="2" fill="#C9ACE6"/>
+<rect x="168" y="102" width="24" height="12" rx="2" fill="#FFF100"/>
+<rect y="126" width="36" height="12" rx="2" fill="#77D9A8"/>
+<rect x="42" y="126" width="36" height="12" rx="2" fill="#FFCABF"/>
+<rect x="84" y="126" width="36" height="12" rx="2" fill="#77D9A8"/>
+<rect x="126" y="126" width="24" height="12" rx="2" fill="#FFF100"/>
+<rect x="156" y="126" width="36" height="12" rx="2" fill="#C8C8CB"/>
+<rect y="150" width="24" height="12" rx="2" fill="#77D9A8"/>
+<rect x="30" y="150" width="36" height="12" rx="2" fill="#FF4B00"/>
+<rect x="72" y="150" width="36" height="12" rx="2" fill="#FFF100"/>
+<rect x="114" y="150" width="24" height="12" rx="2" fill="#C9ACE6"/>
+<rect x="144" y="150" width="48" height="12" rx="2" fill="#77D9A8"/>
+<rect y="174" width="48" height="12" rx="2" fill="#BFE4FF"/>
+<rect x="54" y="174" width="24" height="12" rx="2" fill="#77D9A8"/>
+<rect x="84" y="174" width="36" height="12" rx="2" fill="#FFCABF"/>
+<rect x="126" y="174" width="24" height="12" rx="2" fill="#C9ACE6"/>
+<rect x="156" y="174" width="36" height="12" rx="2" fill="#FFF100"/>
+<path d="M51 133C63.1071 133 74.2039 129.737 82.3616 124.303C90.4981 118.884 96 111.066 96 102.025C96 97.4912 94.5891 93.8502 91.7745 91.1545C89.065 88.5593 85.3546 87.1332 81.3037 86.2987C74.5991 84.9176 65.8019 84.9659 56.4412 85.0172C54.6446 85.0271 52.8273 85.0371 51 85.0371C49.1727 85.0371 47.3554 85.0271 45.5588 85.0172C36.1981 84.9659 27.4009 84.9176 20.6963 86.2987C16.6454 87.1332 12.935 88.5593 10.2255 91.1545C7.41092 93.8502 6 97.4912 6 102.025C6 111.066 11.5019 118.884 19.6384 124.303C27.7961 129.737 38.8929 133 51 133Z" fill="white" stroke="white" stroke-width="6"/>
+<path d="M18 102.009C23.5575 112.599 36.2417 120 51 120C65.7583 120 78.4425 112.599 84 102.009" stroke="#16423D" stroke-width="12" stroke-linecap="round"/>
+<path d="M141 133C153.107 133 164.204 129.737 172.362 124.303C180.498 118.884 186 111.066 186 102.025C186 97.4912 184.589 93.8502 181.775 91.1545C179.065 88.5593 175.355 87.1332 171.304 86.2987C164.599 84.9176 155.802 84.9659 146.441 85.0172C144.645 85.0271 142.827 85.0371 141 85.0371C139.173 85.0371 137.355 85.0271 135.559 85.0172C126.198 84.9659 117.401 84.9176 110.696 86.2987C106.645 87.1332 102.935 88.5593 100.225 91.1545C97.4109 93.8502 96 97.4912 96 102.025C96 111.066 101.502 118.884 109.638 124.303C117.796 129.737 128.893 133 141 133Z" fill="white" stroke="white" stroke-width="6"/>
+<path d="M108 102.009C113.558 112.599 126.242 120 141 120C155.758 120 168.442 112.599 174 102.009" stroke="#16423D" stroke-width="12" stroke-linecap="round"/>
+</g>
+<defs>
+<clipPath id="clip0_22_311">
+<rect width="192" height="192" rx="48" fill="white"/>
+</clipPath>
+</defs>
+</svg>

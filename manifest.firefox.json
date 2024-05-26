@@ -2,8 +2,15 @@
   "manifest_version": 3,
   "name": "Accessibility Visualizer",
   "version": "0.6.0",
+  "default_locale": "en",
   "action": {
-    "default_popup": "src/popup/index.html"
+    "default_popup": "src/popup/index.html",
+    "default_icon": {
+      "16": "src/assets/icon-disabled@16w.png",
+      "48": "src/assets/icon-disabled@48w.png",
+      "128": "src/assets/icon-disabled@128w.png",
+      "192": "src/assets/icon-disabled.png"
+    }
   },
   "icons": {
     "16": "src/assets/icon@16w.png",

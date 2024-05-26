@@ -6,7 +6,7 @@ export const OBSOLETE_SETTING_KEY = "settings";
 export const initialSettings: Settings = {
   accessibilityInfo: true,
   image: true,
-  formControl: false,
+  formControl: true,
   link: false,
   button: false,
   heading: true,

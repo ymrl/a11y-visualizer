@@ -2,6 +2,8 @@
   "popup": {
     "title": "Accessibility Visualizer",
     "enabled": "Enabled",
+    "iconEyesOpen": "Icon: eyes open",
+    "iconEyesClosed": "Icon: eyes closed",
     "settingsForHost": "Settings for {{host}}",
     "rerun": "Re-run",
     "reset": "Reset to defaults",

@@ -46,67 +46,87 @@ export const SettingsEditor = ({
         checked={settings.accessibilityInfo}
         disabled={disabled}
       >
-        {t("popup.accessibilityInfo")}
+        <span className="text-sm">{t("settings.showTips")}</span>
       </Checkbox>
-
-      <div className="flex flex-col gap-2 pl-3">
-        <Checkbox
-          onChange={(e) => {
-            handleChangeCheckbox("image", e);
-          }}
-          checked={settings.image}
-          disabled={disabled || !settings.accessibilityInfo}
-        >
-          {t("popup.showImage")}
-        </Checkbox>
-        <Checkbox
-          onChange={(e) => {
-            handleChangeCheckbox("button", e);
-          }}
-          checked={settings.button}
-          disabled={disabled || !settings.accessibilityInfo}
-        >
-          {t("popup.showButtons")}
-        </Checkbox>
-        <Checkbox
-          onChange={(e) => {
-            handleChangeCheckbox("link", e);
-          }}
-          checked={settings.link}
-          disabled={disabled || !settings.accessibilityInfo}
-        >
-          {t("popup.showLinks")}
-        </Checkbox>
-        <Checkbox
-          onChange={(e) => {
-            handleChangeCheckbox("formControl", e);
-          }}
-          checked={settings.formControl}
-          disabled={disabled || !settings.accessibilityInfo}
-        >
-          {t("popup.showFormControls")}
-        </Checkbox>
-        <Checkbox
-          onChange={(e) => {
-            handleChangeCheckbox("heading", e);
-          }}
-          checked={settings.heading}
-          disabled={disabled || !settings.accessibilityInfo}
-        >
-          {t("popup.showHeadings")}
-        </Checkbox>
-        <Checkbox
-          onChange={(e) => {
-            handleChangeCheckbox("ariaHidden", e);
-          }}
-          checked={settings.ariaHidden}
-          disabled={disabled || !settings.accessibilityInfo}
-        >
-          {t("popup.showAriaHidden")}
-        </Checkbox>
-        <label className="flex flex-col gap-1 items-stretch">
-          <span className="shrink-0">{t("popup.tipOpacityPercent")}</span>
+      <div className="flex flex-col gap-2 pl-4">
+        <div className="px-2 py-1 bg-zinc-100 rounded-md">
+          <fieldset className="border-0 flex flex-col">
+            <legend className="text-xs text-teal-800 font-bold mb-1">
+              {t("settings.elementTypes")}
+            </legend>
+            <div className="flex flex-row flex-wrap gap-x-3 gap-y-1 items-center">
+              <Checkbox
+                onChange={(e) => {
+                  handleChangeCheckbox("heading", e);
+                }}
+                checked={settings.heading}
+                disabled={disabled || !settings.accessibilityInfo}
+              >
+                <span className="text-sm">{t("settings.headings")}</span>
+              </Checkbox>
+              <Checkbox
+                onChange={(e) => {
+                  handleChangeCheckbox("image", e);
+                }}
+                checked={settings.image}
+                disabled={disabled || !settings.accessibilityInfo}
+              >
+                <span className="text-sm">{t("settings.images")}</span>
+              </Checkbox>
+              <Checkbox
+                onChange={(e) => {
+                  handleChangeCheckbox("ariaHidden", e);
+                }}
+                checked={settings.ariaHidden}
+                disabled={disabled || !settings.accessibilityInfo}
+              >
+                <span className="text-sm">{t("settings.ariaHidden")}</span>
+              </Checkbox>
+              <Checkbox
+                onChange={(e) => {
+                  handleChangeCheckbox("formControl", e);
+                }}
+                checked={settings.formControl}
+                disabled={disabled || !settings.accessibilityInfo}
+              >
+                <span className="text-sm">{t("settings.formControls")}</span>
+              </Checkbox>
+              <Checkbox
+                onChange={(e) => {
+                  handleChangeCheckbox("button", e);
+                }}
+                checked={settings.button}
+                disabled={disabled || !settings.accessibilityInfo}
+              >
+                <span className="text-sm">{t("settings.buttons")}</span>
+              </Checkbox>
+              <Checkbox
+                onChange={(e) => {
+                  handleChangeCheckbox("link", e);
+                }}
+                checked={settings.link}
+                disabled={disabled || !settings.accessibilityInfo}
+              >
+                <span className="text-sm">{t("settings.links")}</span>
+              </Checkbox>
+            </div>
+          </fieldset>
+        </div>
+        <div className="flex flex-col gap-1 items-stretch">
+          <div className="flex flex-row gap-2 items-center justify-between">
+            <label className="text-sm shrink-0" htmlFor="tipOpacityPercent">
+              {t("settings.tipOpacityPercent")}
+            </label>
+            <span>
+              <span className="text-sm font-bold shrink">
+                {settings.tipOpacityPercent}
+              </span>
+              <span className="text-xs">%</span>
+            </span>
+          </div>
           <input
+            id="tipOpacityPercent"
+            className="accent-teal-600"
             type="range"
             min={0}
             max={100}
@@ -115,26 +135,28 @@ export const SettingsEditor = ({
             onChange={(e) => handleChangeNumber("tipOpacityPercent", e)}
             disabled={disabled}
           />
-        </label>
-        <Checkbox
-          onChange={(e) => {
-            handleChangeCheckbox("interactiveMode", e);
-          }}
-          checked={settings.interactiveMode}
-          disabled={disabled}
-        >
-          {t("popup.interactiveMode")}
-        </Checkbox>
-        <div className="flex flex-col gap-2 pl-3">
+        </div>
+        <div className="flex flex-col gap-1">
           <Checkbox
             onChange={(e) => {
-              handleChangeCheckbox("hideTips", e);
+              handleChangeCheckbox("interactiveMode", e);
             }}
-            checked={settings.hideTips}
-            disabled={disabled || !settings.interactiveMode}
+            checked={settings.interactiveMode}
+            disabled={disabled}
           >
-            {t("popup.hideTipLabels")}
+            <span className="text-sm">{t("settings.interactiveMode")}</span>
           </Checkbox>
+          <div className="flex flex-col gap-2 pl-4">
+            <Checkbox
+              onChange={(e) => {
+                handleChangeCheckbox("hideTips", e);
+              }}
+              checked={settings.hideTips}
+              disabled={disabled || !settings.interactiveMode}
+            >
+              <span className="text-sm">{t("settings.hideLabels")}</span>
+            </Checkbox>
+          </div>
         </div>
       </div>
       <Checkbox
@@ -144,42 +166,67 @@ export const SettingsEditor = ({
         checked={settings.showLiveRegions}
         disabled={disabled}
       >
-        {t("popup.showLiveRegions")}
+        <span className="text-sm">{t("settings.announceLiveRegions")}</span>
       </Checkbox>
       <div className="flex flex-col gap-2 pl-3 w-full">
-        <label className="flex flex-col gap-1 items-stretch">
-          <span className="srhink-0">{t("popup.announcementMaxSeconds")}</span>
+        <div className="px-2 py-1 bg-zinc-100 rounded-md">
+          <fieldset className="border-0 flex flex-col gap-2">
+            <legend className="text-xs text-teal-800 font-bold mb-1">
+              {t("settings.announcement")}
+            </legend>
+
+            <label className="flex flex-row gap-1 items-center justify-between">
+              <span className="srhink text-xs">
+                {t("settings.announcementMaxSeconds")}
+              </span>
+              <input
+                className="border-zinc-400 border-solid border rounded-md py-0.5 px-1 text-sm text-right w-14 h-6"
+                type="number"
+                value={settings.announcementMaxSeconds}
+                onChange={(e) =>
+                  handleChangeNumber("announcementMaxSeconds", e)
+                }
+                min={1}
+                step={1}
+                disabled={disabled}
+              />
+            </label>
+            <label className="flex flex-row gap-1 items-center justify-between">
+              <span className="shrink text-xs">
+                {t("settings.announcementSecondsPerCharacter")}
+              </span>
+              <input
+                className="border-zinc-400 border-solid border rounded-md py-0.5 px-1 text-sm text-right w-14 h-6"
+                type="number"
+                value={settings.announcementSecondsPerCharacter}
+                onChange={(e) =>
+                  handleChangeNumber("announcementSecondsPerCharacter", e)
+                }
+                min={0.1}
+                step={0.1}
+                disabled={disabled}
+              />
+            </label>
+          </fieldset>
+        </div>
+        <div className="flex flex-col gap-1 items-stretch">
+          <div className="flex flex-row gap-2 items-center justify-between">
+            <label
+              className="text-sm shrink-0"
+              htmlFor="liveRegionOpacityPercent"
+            >
+              {t("settings.liveRegionOpacityPercent")}
+            </label>
+            <span>
+              <span className="text-sm font-bold shrink">
+                {settings.liveRegionOpacityPercent}
+              </span>
+              <span className="text-xs">%</span>
+            </span>
+          </div>
           <input
-            className="border-slate-400 border-solid border rounded-md p-1 text-right"
-            type="number"
-            value={settings.announcementMaxSeconds}
-            onChange={(e) => handleChangeNumber("announcementMaxSeconds", e)}
-            min={1}
-            step={1}
-            disabled={disabled}
-          />
-        </label>
-        <label className="flex flex-col gap-1 items-stretch">
-          <span className="shrink-0">
-            {t("popup.announcementSecondsPerCharacter")}
-          </span>
-          <input
-            className="border-slate-400 border-solid border rounded-md p-1 text-right"
-            type="number"
-            value={settings.announcementSecondsPerCharacter}
-            onChange={(e) =>
-              handleChangeNumber("announcementSecondsPerCharacter", e)
-            }
-            min={0.1}
-            step={0.1}
-            disabled={disabled}
-          />
-        </label>
-        <label className="flex flex-col gap-1 items-stretch">
-          <span className="shrink-0">
-            {t("popup.liveRegionOpacityPercent")}
-          </span>
-          <input
+            id="liveRegionOpacityPercent"
+            className="accent-teal-600"
             type="range"
             min={0}
             max={100}
@@ -188,7 +235,7 @@ export const SettingsEditor = ({
             onChange={(e) => handleChangeNumber("liveRegionOpacityPercent", e)}
             disabled={disabled}
           />
-        </label>
+        </div>
       </div>
     </form>
   );

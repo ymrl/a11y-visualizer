@@ -10,8 +10,9 @@ export const Checkbox = ({
   disabled?: boolean;
 }) => {
   return (
-    <label className="flex flex-row gap-1 items-baseline">
+    <label className="flex flex-row gap-1 items-center">
       <input
+        className="accent-teal-600"
         type="checkbox"
         onChange={onChange}
         checked={checked}

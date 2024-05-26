@@ -23,12 +23,16 @@ const currentVersion = execSync(
   .trim();
 const nextVersion = semver.inc(currentVersion, releaseLevel);
 
-// Update manifest.json
-const manifest = JSON.parse(readFileSync("./manifest.json", "utf8"));
-manifest.version = nextVersion;
-writeFileSync("./manifest.json", JSON.stringify(manifest, null, 2));
-execSync("npx prettier --write manifest.json");
-execSync("git add manifest.json");
+const manifests = ["manifest.json", "manifest.firefox.json"];
+manifests.forEach((manifest) => {
+  const manifestContent = JSON.parse(readFileSync(manifest, "utf8"));
+  manifestContent.version = nextVersion;
+  writeFileSync(manifest, JSON.stringify(manifestContent, null, 2));
+});
+
+execSync(`npx prettier --write ${manifests.join(" ")}`);
+execSync(`git add ${manifests.join(" ")}`);
+
 execSync(`git commit -m ":up: update manifest.json to v${nextVersion}"`);
 
 // Update package.json

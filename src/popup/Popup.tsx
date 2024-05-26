@@ -63,22 +63,22 @@ export const Popup = () => {
 
   return (
     <div className="w-72" lang={lang}>
-      <div className="p-2 flex flex-row gap-4 items-center justify-between bg-emerald-50">
+      <div className="p-2 flex flex-row gap-4 items-center justify-between bg-slate-100">
         <div className="flex flex-row gap-1 items-center">
           <img
             src={enabled ? icon : iconDisabled}
             alt="icon"
-            className="size-6"
+            className="size-8 -mt-1 -mb-1 -ml-1"
             width="24"
             height="24"
           />
-          <h1 className="text-xs font-bold text-emerald-800">
+          <h1 className="text-xs font-bold text-slate-700">
             {t("popup.title")}
           </h1>
           <button
             type="button"
             className="text-emerald-700 bg-opacity-0 rounded-full shrink-0 p-1
-                hover:enabled:bg-emerald-100 hover:enabled:text-emerald-800 transition-colors
+                hover:enabled:bg-slate-200 transition-colors
                disabled:text-slate-400 disabled:cursor-not-allowed"
             onClick={() => {
               sendMessageToActiveTab({
@@ -112,7 +112,7 @@ export const Popup = () => {
           }}
           checked={enabled}
         >
-          <span className="text-xs font-bold text-emerald-800">
+          <span className="text-xs font-bold text-slate-800">
             {t("popup.enabled")}
           </span>
         </Checkbox>
@@ -126,7 +126,7 @@ export const Popup = () => {
             <button
               type="button"
               className="text-emerald-700 bg-opacity-0 rounded-full shrink-0 p-1
-                hover:enabled:bg-emerald-100 hover:enabled:text-emerald-800 transition-colors
+                hover:enabled:bg-slate-100 transition-colors
                disabled:text-slate-400 disabled:cursor-not-allowed"
               onClick={async () => {
                 await chrome.storage.local.remove(host);

@@ -49,7 +49,7 @@ export const SettingsEditor = ({
         <span className="text-sm">{t("settings.showTips")}</span>
       </Checkbox>
       <div className="flex flex-col gap-2 pl-4">
-        <div className="px-2 py-1 bg-emerald-50 rounded-md">
+        <div className="px-2 py-1 bg-slate-100 rounded-md">
           <fieldset className="border-0 flex flex-col">
             <legend className="text-xs text-emerald-800 font-bold mb-1">
               {t("settings.elementTypes")}
@@ -169,7 +169,7 @@ export const SettingsEditor = ({
         <span className="text-sm">{t("settings.announceLiveRegions")}</span>
       </Checkbox>
       <div className="flex flex-col gap-2 pl-3 w-full">
-        <div className="px-2 py-1 bg-emerald-50 rounded-md">
+        <div className="px-2 py-1 bg-slate-100 rounded-md">
           <fieldset className="border-0 flex flex-col gap-2">
             <legend className="text-xs text-emerald-800 font-bold mb-1">
               {t("settings.announcement")}

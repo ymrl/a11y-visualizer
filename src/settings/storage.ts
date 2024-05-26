@@ -7,12 +7,10 @@ export const loadDefaultSettings = async (): Promise<[Settings, boolean]> => {
 };
 
 export const loadHostSettings = async (
-  url: string | undefined,
+  host: string | undefined,
 ): Promise<[Settings, boolean]> => {
   const [baseSettings] = await loadDefaultSettings();
-  if (url && url.startsWith("http")) {
-    const parsedURL = new URL(url);
-    const host = parsedURL.host;
+  if (host) {
     return await getAsync(host, baseSettings);
   }
   return [baseSettings, false];
@@ -22,14 +20,6 @@ export const saveDefaultSettings = async (settings: Settings) => {
   return await setAsync(DEFAULT_SETTING_KEY, settings);
 };
 
-export const saveHostSettings = async (
-  url: string | undefined,
-  settings: Settings,
-) => {
-  if (url && url.startsWith("http")) {
-    const parsedURL = new URL(url);
-    const host = parsedURL.host;
-    return await setAsync(host, settings);
-  }
-  return false;
+export const saveHostSettings = async (host: string, settings: Settings) => {
+  setAsync(host, settings);
 };

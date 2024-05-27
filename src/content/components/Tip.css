@@ -24,6 +24,10 @@
   background-color: rgb(201, 172, 230);
   border-color: rgb(153, 0, 153);
 }
+.Tip--landmark {
+  background-color: rgb(216, 242, 85);
+  border-color: rgb(100, 160, 12);
+}
 
 .Tip--description {
   background-color: rgb(200, 200, 203);

@@ -110,16 +110,19 @@ export const Root = ({
     });
     return () => observer.disconnect();
   }, [updateInfo, parent]);
-
   return (
     enabled && (
-      <div ref={containerRef}>
+      <section
+        aria-label={`Accessibility Visualizer <${parent.tagName.toLowerCase()}>`}
+        aria-hidden="true"
+        ref={containerRef}
+      >
         <ElementList list={metaList} width={width} height={height} />
         <Announcements
           contents={announcements.map((a) => a.content)}
           ref={announcementsRef}
         />
-      </div>
+      </section>
     )
   );
 };

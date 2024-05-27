@@ -17,6 +17,7 @@ export type TipType =
   | "name"
   | "role"
   | "tagName"
+  | "landmark"
   | "description"
   | "level"
   | "warning"
@@ -32,4 +33,5 @@ export type Category =
   | "button"
   | "link"
   | "heading"
-  | "ariaHidden";
+  | "ariaHidden"
+  | "section";

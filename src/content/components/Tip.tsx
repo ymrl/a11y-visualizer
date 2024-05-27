@@ -6,6 +6,7 @@ import {
   IoBookmark,
   IoCodeSlash,
   IoDocument,
+  IoFlag,
   IoPricetag,
   IoWarning,
 } from "react-icons/io5";
@@ -35,6 +36,14 @@ const Icon = ({ type }: { type: TipType }) => {
           className="Tip__icon"
           role="img"
           aria-label={t("tip.element")}
+        />
+      );
+    case "landmark":
+      return (
+        <IoFlag
+          className="Tip__icon"
+          role="img"
+          aria-label={t("tip.landmark")}
         />
       );
     case "description":

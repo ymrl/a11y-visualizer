@@ -18,6 +18,7 @@
     "links": "Links",
     "headings": "Headings",
     "ariaHidden": "aria-hidden",
+    "sections": "Sections",
     "tipOpacityPercent": "Tips opacity (%)",
     "interactiveMode": "Interactive mode",
     "hideLabels": "Hide labels",
@@ -31,6 +32,7 @@
     "name": "Name",
     "role": "Role",
     "element": "Element",
+    "landmark": "Landmark",
     "description": "Description",
     "heading": "Heading",
     "warning": "Warning",
@@ -48,7 +50,8 @@
     "notFocusable": "Not focusable",
     "noControlForLabel": "No control for label",
     "noNameAttr": "No name attribute",
-    "noRadioGroup": "No radiobutton group"
+    "noRadioGroup": "No radiobutton group",
+    "noNameSection": "No name <section>"
   },
   "optionsPage": {
     "description": "Settings changed from the popup are saved per host of the web page, and will be applied to other pages on the same host. Changing settings here does not affect those values."

@@ -5,6 +5,7 @@ export type CategorySettings = {
   button: boolean;
   heading: boolean;
   ariaHidden: boolean;
+  section: boolean;
 };
 
 export type Settings = {

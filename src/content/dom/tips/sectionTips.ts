@@ -10,6 +10,7 @@ const sectionTags = [
   "header",
   "main",
   "form",
+  "search",
 ] as const;
 const sectionRoles = [
   "article",
@@ -32,6 +33,7 @@ const tagToRole: Record<string, string> = {
   header: "banner",
   main: "main",
   form: "form",
+  search: "search",
 } as const;
 
 export const SectionSelectors = [

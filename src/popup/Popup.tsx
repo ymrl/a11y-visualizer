@@ -62,9 +62,9 @@ export const Popup = () => {
   };
 
   return (
-    <div className="w-72 text-zinc-800" lang={lang}>
-      <div className="p-2 flex flex-row gap-4 items-center justify-between bg-zinc-100">
-        <div className="flex flex-row gap-1 items-center">
+    <div className="w-80 text-zinc-800" lang={lang}>
+      <div className="p-2 flex flex-row items-center justify-between gap-3 bg-zinc-100">
+        <div className="flex flex-row gap-1 items-center justify-start">
           <img
             src={enabled ? icon : iconDisabled}
             alt={enabled ? t("popup.iconEyesOpen") : t("popup.iconEyesClosed")}
@@ -112,7 +112,7 @@ export const Popup = () => {
           }}
           checked={enabled}
         >
-          <span className="text-xs font-bold text-teal-800">
+          <span className="text-xs font-bold text-teal-800 shrink-0">
             {t("popup.enabled")}
           </span>
         </Checkbox>

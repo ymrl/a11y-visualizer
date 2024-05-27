@@ -153,7 +153,15 @@ export const Popup = () => {
             onChange={updateSettings}
             disabled={!enabled}
           />
-          <p className="text-xs text-zinc-500">{t("popup.hostDesc")}</p>
+          <p className="text-xs text-zinc-500">
+            {t("popup.hostDesc")}
+            <button
+              className="link text-teal-700 underline hover:enabled:text-teal-900 transition-colors"
+              onClick={() => chrome.runtime.openOptionsPage()}
+            >
+              {t("popup.openExtensionOptions")}
+            </button>
+          </p>
         </div>
       )}
     </div>

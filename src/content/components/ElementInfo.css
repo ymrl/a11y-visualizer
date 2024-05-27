@@ -40,6 +40,10 @@
   border-color: rgb(0, 90, 255);
 }
 
+.ElementInfo__border--section {
+  border-color: rgb(100, 160, 12);
+}
+
 .ElementInfo__border--ariaHidden {
   border-color: rgb(255, 75, 0);
 }

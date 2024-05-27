@@ -5,8 +5,6 @@ import { Settings, SettingsMessage, loadHostSettings } from "../settings";
 import { SettingsProvider } from "./components/SettingsProvider";
 import { loadEnabled } from "../enabled";
 
-let counter = 0;
-
 export const injectRoot = async (w: Window, parent: Element) => {
   if (!location.href.startsWith("http")) {
     return;
@@ -16,9 +14,6 @@ export const injectRoot = async (w: Window, parent: Element) => {
 
   const rootDiv = w.document.createElement("div");
   parent.append(rootDiv);
-  rootDiv.setAttribute("role", "region");
-  rootDiv.setAttribute("aria-label", `Accessibility Visualizer ${counter++}`);
-  rootDiv.setAttribute("aria-hidden", "true");
 
   const root = ReactDOM.createRoot(rootDiv);
 

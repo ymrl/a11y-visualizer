@@ -19,6 +19,7 @@
     "links": "リンク",
     "headings": "見出し",
     "ariaHidden": "aria-hidden",
+    "sections": "セクション",
     "tipOpacityPercent": "チップの不透明度（%）",
     "interactiveMode": "インタラクティブモード",
     "hideLabels": "ラベルを隠す",
@@ -32,6 +33,7 @@
     "name": "名前",
     "role": "ロール",
     "element": "要素",
+    "landmark": "ランドマーク",
     "description": "説明",
     "heading": "見出し",
     "warning": "警告",
@@ -49,7 +51,8 @@
     "notFocusable": "フォーカスできない",
     "noControlForLabel": "フォームコントロールなしのラベル",
     "noNameAttr": "name属性なし",
-    "noRadioGroup": "ラジオボタングループなし"
+    "noRadioGroup": "ラジオボタングループなし",
+    "noNameSection": "名前なしの <section>"
   },
   "optionsPage": {
     "description": "拡張機能のポップアップから設定を変更すると、閲覧中のWebページのホストごとに設定が保存され、同じホストのWebページに対して適用されます。この画面で設定を変更しても、それらの設定値は変更されません。"

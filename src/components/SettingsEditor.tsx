@@ -109,6 +109,15 @@ export const SettingsEditor = ({
               >
                 <span className="text-sm">{t("settings.links")}</span>
               </Checkbox>
+              <Checkbox
+                onChange={(e) => {
+                  handleChangeCheckbox("section", e);
+                }}
+                checked={settings.section}
+                disabled={disabled || !settings.accessibilityInfo}
+              >
+                <span className="text-sm">{t("settings.sections")}</span>
+              </Checkbox>
             </div>
           </fieldset>
         </div>

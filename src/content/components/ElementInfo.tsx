@@ -51,18 +51,21 @@ export const ElementInfo = ({
   if (!categories.some((category) => settings[category])) {
     return;
   }
-  const rightAligned: boolean = width < 160 && x + width > rootWidth - 160;
-  const verticalPosition: VerticalPosition = categories.includes("heading")
-    ? y < 24
-      ? "inner-top"
-      : "outer-top"
-    : categories.includes("image")
-      ? y > 24 && height < 32
-        ? "outer-top"
-        : "inner-top"
-      : y + height > rootHeight - 24
-        ? "inner-bottom"
-        : "outer-bottom";
+  const rightAligned: boolean =
+    (categories.includes("section") && width > 160) ||
+    (width < 160 && x + width > rootWidth - 160);
+  const verticalPosition: VerticalPosition =
+    categories.includes("section") || categories.includes("heading")
+      ? y < 24
+        ? "inner-top"
+        : "outer-top"
+      : categories.includes("image")
+        ? y > 24 && height < 32
+          ? "outer-top"
+          : "inner-top"
+        : y + height > rootHeight - 24
+          ? "inner-bottom"
+          : "outer-bottom";
 
   const disappear = () => {
     setHovered(false);

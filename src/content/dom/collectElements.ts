@@ -12,6 +12,7 @@ import { imageTips, isImage, ImageSelectors } from "./tips/imageTips";
 import { computeAccessibleName } from "dom-accessibility-api";
 import { isAriaHidden } from "./isAriaHidden";
 import { CategorySettings } from "../../settings";
+import { SectionSelectors, isSection, sectionTips } from "./tips/sectionTips";
 
 const getSelector = (settings: Partial<CategorySettings>) => {
   return [
@@ -21,6 +22,7 @@ const getSelector = (settings: Partial<CategorySettings>) => {
     ...(settings.heading ? HeadingSelectors : []),
     ...(settings.button ? ButtonSelectors : []),
     ...(settings.ariaHidden ? AriraHiddenSelectors : []),
+    ...(settings.section ? SectionSelectors : []),
   ].join(",");
 };
 
@@ -91,6 +93,7 @@ export const collectElements = (
             const links = linkTips(el);
             const heading = headingTips(el);
             const ariaHidden = ariaHiddenTips(el);
+            const section = sectionTips(el);
             const global = globalTips(el);
             return {
               ...getElementPosition(el, w, offsetX, offsetY),
@@ -102,6 +105,7 @@ export const collectElements = (
                 isLink(el) ? "link" : "",
                 isHeading(el) ? "heading" : "",
                 isAriaHidden(el) ? "ariaHidden" : "",
+                isSection(el) ? "section" : "",
               ].filter(Boolean) as Category[],
               tips: [
                 ...heading,
@@ -111,6 +115,7 @@ export const collectElements = (
                 ...buttons,
                 ...links,
                 ...ariaHidden,
+                ...section,
                 ...global,
               ],
             };

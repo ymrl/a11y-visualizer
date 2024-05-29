@@ -1,9 +1,7 @@
-// import React from "react";
 import { ElementMeta } from "../types";
 import { ElementInfo } from "./ElementInfo";
 import root from "react-shadow";
 import { Style } from "./Style";
-// import { SettingsContext } from "./SettingsProvider";
 
 export const ElementList = ({
   list,
@@ -30,14 +28,7 @@ export const ElementList = ({
             !meta.hidden && (
               <ElementInfo
                 key={i}
-                x={meta.x}
-                y={meta.y}
-                absoluteX={meta.absoluteX}
-                absoluteY={meta.absoluteY}
-                width={meta.width}
-                height={meta.height}
-                tips={meta.tips}
-                categories={meta.categories}
+                meta={meta}
                 rootHeight={height}
                 rootWidth={width}
               />

@@ -15,7 +15,6 @@ import {
 } from "./tips/formTips";
 import { imageTips, isImage, ImageSelectors } from "./tips/imageTips";
 import { computeAccessibleName } from "dom-accessibility-api";
-import { isAriaHidden } from "./isAriaHidden";
 import { CategorySettings } from "../../settings";
 import { SectionSelectors, isSection, sectionTips } from "./tips/sectionTips";
 
@@ -100,22 +99,11 @@ export const collectElements = (
             const ariaHidden = ariaHiddenTips(el);
             const section = sectionTips(el);
             const global = globalTips(el);
-            const categories: (Category | undefined)[] = [
-              isImage(el) ? "image" : undefined,
-              isFormControl(el) ? "formControl" : undefined,
-              isButton(el) ? "button" : undefined,
-              isLink(el) ? "link" : undefined,
-              isHeading(el) ? "heading" : undefined,
-              isAriaHidden(el) ? "ariaHidden" : undefined,
-              isSection(el) ? "section" : undefined,
-              isFieldset(el) ? "fieldset" : undefined,
-            ];
+
             return {
               ...getElementPosition(el, w, offsetX, offsetY),
               hidden: isHidden(el),
-              categories: categories.filter(
-                (e: Category | undefined): e is Category => e !== undefined,
-              ),
+              category: getElementCategory(el),
               tips: [
                 ...heading,
                 ...nameTips,
@@ -132,4 +120,13 @@ export const collectElements = (
           .filter((el): el is ElementMeta => el !== null)
       : [],
   };
+};
+
+const getElementCategory = (el: Element): Category => {
+  if (isImage(el)) return "image";
+  if (isHeading(el)) return "heading";
+  if (isFormControl(el) || isLink(el) || isButton(el)) return "control";
+  if (isSection(el)) return "section";
+  if (isFieldset(el)) return "fieldset";
+  return "general";
 };

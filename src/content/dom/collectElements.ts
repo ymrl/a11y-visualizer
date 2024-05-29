@@ -7,7 +7,12 @@ import { AriraHiddenSelectors, ariaHiddenTips } from "./tips/ariaHiddenTips";
 import { HeadingSelectors, headingTips, isHeading } from "./tips/headingTips";
 import { LinkSelectors, isLink, linkTips } from "./tips/linkTips";
 import { ButtonSelectors, buttonTips, isButton } from "./tips/buttonTips";
-import { FormSelectors, formTips, isFormControl } from "./tips/formTips";
+import {
+  FormSelectors,
+  formTips,
+  isFieldset,
+  isFormControl,
+} from "./tips/formTips";
 import { imageTips, isImage, ImageSelectors } from "./tips/imageTips";
 import { computeAccessibleName } from "dom-accessibility-api";
 import { isAriaHidden } from "./isAriaHidden";
@@ -95,18 +100,22 @@ export const collectElements = (
             const ariaHidden = ariaHiddenTips(el);
             const section = sectionTips(el);
             const global = globalTips(el);
+            const categories: (Category | undefined)[] = [
+              isImage(el) ? "image" : undefined,
+              isFormControl(el) ? "formControl" : undefined,
+              isButton(el) ? "button" : undefined,
+              isLink(el) ? "link" : undefined,
+              isHeading(el) ? "heading" : undefined,
+              isAriaHidden(el) ? "ariaHidden" : undefined,
+              isSection(el) ? "section" : undefined,
+              isFieldset(el) ? "fieldset" : undefined,
+            ];
             return {
               ...getElementPosition(el, w, offsetX, offsetY),
               hidden: isHidden(el),
-              categories: [
-                isImage(el) ? "image" : "",
-                isFormControl(el) ? "formControl" : "",
-                isButton(el) ? "button" : "",
-                isLink(el) ? "link" : "",
-                isHeading(el) ? "heading" : "",
-                isAriaHidden(el) ? "ariaHidden" : "",
-                isSection(el) ? "section" : "",
-              ].filter(Boolean) as Category[],
+              categories: categories.filter(
+                (e: Category | undefined): e is Category => e !== undefined,
+              ),
               tips: [
                 ...heading,
                 ...nameTips,

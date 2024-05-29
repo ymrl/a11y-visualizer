@@ -48,18 +48,16 @@ export const ElementInfo = ({
     };
   }, []);
 
-  if (!categories.some((category) => settings[category])) {
-    return;
-  }
   const rightAligned: boolean =
-    (categories.includes("section") && width > 160) ||
+    ((categories.includes("section") || categories.includes("fieldset")) &&
+      width > 160) ||
     (width < 160 && x + width > rootWidth - 160);
   const verticalPosition: VerticalPosition =
     categories.includes("section") || categories.includes("heading")
       ? y < 24
         ? "inner-top"
         : "outer-top"
-      : categories.includes("image")
+      : categories.includes("image") || categories.includes("fieldset")
         ? y > 24 && height < 32
           ? "outer-top"
           : "inner-top"
@@ -125,20 +123,18 @@ export const ElementInfo = ({
         />
       )}
       {tips.length > 0 &&
-        categories
-          .filter((category) => settings[category])
-          .map((category, i) => (
-            <div
-              key={i}
-              className={`ElementInfo__border ElementInfo__border--${category}`}
-              style={{
-                opacity:
-                  interactiveMode && hovered
-                    ? 1
-                    : settings.tipOpacityPercent / 100,
-              }}
-            />
-          ))}
+        categories.map((category, i) => (
+          <div
+            key={i}
+            className={`ElementInfo__border ElementInfo__border--${category}`}
+            style={{
+              opacity:
+                interactiveMode && hovered
+                  ? 1
+                  : settings.tipOpacityPercent / 100,
+            }}
+          />
+        ))}
       <div
         className={[
           "ElementInfo__tips",

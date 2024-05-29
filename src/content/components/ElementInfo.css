@@ -43,6 +43,10 @@
 .ElementInfo__border--section {
   border-color: rgb(100, 160, 12);
 }
+.ElementInfo__border--fieldset {
+  border-color: rgb(246, 170, 0);
+  border-style: dotted;
+}
 
 .ElementInfo__border--ariaHidden {
   border-color: rgb(255, 75, 0);

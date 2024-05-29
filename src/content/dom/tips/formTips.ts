@@ -60,12 +60,14 @@ const hasInputTag = (el: Element): boolean => {
   );
 };
 
-const isLabel = (el: Element): boolean => el.tagName.toLowerCase() === "label";
+export const isLabel = (el: Element): boolean =>
+  el.tagName.toLowerCase() === "label";
+
 export const isFieldset = (el: Element): boolean =>
   el.tagName.toLowerCase() === "fieldset";
 
 export const isFormControl = (el: Element): boolean =>
-  hasInputRole(el) || hasInputTag(el) || isLabel(el) || isFieldset(el);
+  hasInputRole(el) || hasInputTag(el);
 
 export const formTips = (el: Element): ElementTip[] => {
   const result: ElementTip[] = [];

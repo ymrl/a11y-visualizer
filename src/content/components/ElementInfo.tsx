@@ -1,5 +1,5 @@
 import React from "react";
-import { Category, ElementTip } from "../types";
+import { ElementMeta } from "../types";
 import { SettingsContext } from "./SettingsProvider";
 import { Tip } from "./Tip";
 
@@ -9,25 +9,11 @@ type VerticalPosition =
   | "outer-top"
   | "outer-bottom";
 export const ElementInfo = ({
-  x,
-  y,
-  absoluteX,
-  absoluteY,
-  width,
-  height,
-  tips,
-  categories,
+  meta: { x, y, absoluteX, absoluteY, width, height, tips, category },
   rootWidth,
   rootHeight,
 }: {
-  x: number;
-  y: number;
-  absoluteX: number;
-  absoluteY: number;
-  width: number;
-  height: number;
-  tips: ElementTip[];
-  categories: Category[];
+  meta: ElementMeta;
   rootWidth: number;
   rootHeight: number;
 }) => {
@@ -49,15 +35,14 @@ export const ElementInfo = ({
   }, []);
 
   const rightAligned: boolean =
-    ((categories.includes("section") || categories.includes("fieldset")) &&
-      width > 160) ||
+    ((category === "section" || category === "fieldset") && width > 160) ||
     (width < 160 && x + width > rootWidth - 160);
   const verticalPosition: VerticalPosition =
-    categories.includes("section") || categories.includes("heading")
+    category === "section" || category === "heading"
       ? y < 24
         ? "inner-top"
         : "outer-top"
-      : categories.includes("image") || categories.includes("fieldset")
+      : category === "image" || category === "fieldset"
         ? y > 24 && height < 32
           ? "outer-top"
           : "inner-top"
@@ -122,39 +107,35 @@ export const ElementInfo = ({
           onMouseMove={handleHovered}
         />
       )}
-      {tips.length > 0 &&
-        categories.map((category, i) => (
-          <div
-            key={i}
-            className={`ElementInfo__border ElementInfo__border--${category}`}
-            style={{
-              opacity:
-                interactiveMode && hovered
-                  ? 1
-                  : settings.tipOpacityPercent / 100,
-            }}
-          />
-        ))}
       <div
-        className={[
-          "ElementInfo__tips",
-          `ElementInfo__tips--${verticalPosition}`,
-          rightAligned
-            ? "ElementInfo__tips--right-aligned"
-            : "ElementInfo__tips--left-aligned",
-        ].join(" ")}
+        className="ElementInfo__content"
         style={{
           opacity:
             interactiveMode && hovered ? 1 : settings.tipOpacityPercent / 100,
         }}
       >
-        {tips.map((tip, i) => (
-          <Tip
-            hideLabel={interactiveMode && hideTips ? !hovered : false}
-            key={i}
-            tip={tip}
+        {tips.length > 0 && (
+          <div
+            className={`ElementInfo__border ElementInfo__border--${category}`}
           />
-        ))}
+        )}
+        <div
+          className={[
+            "ElementInfo__tips",
+            `ElementInfo__tips--${verticalPosition}`,
+            rightAligned
+              ? "ElementInfo__tips--right-aligned"
+              : "ElementInfo__tips--left-aligned",
+          ].join(" ")}
+        >
+          {tips.map((tip, i) => (
+            <Tip
+              hideLabel={interactiveMode && hideTips ? !hovered : false}
+              key={i}
+              tip={tip}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );

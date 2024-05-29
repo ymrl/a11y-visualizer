@@ -11,45 +11,34 @@
   min-height: 8px;
   z-index: 3;
 }
+.ElementInfo__content {
+  position: absolute;
+  inset: 0;
+}
 
 .ElementInfo__border {
   position: absolute;
   inset: 0;
-  box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.5),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.5);
-  border: 2px dashed rgb(132, 145, 158);
+  border: 3px dotted var(--light-gray);
 }
 
 .ElementInfo__border--image {
-  border-color: rgb(3, 175, 122);
+  border-color: var(--accent-green);
 }
-.ElementInfo__border--formControl {
-  border-color: rgb(255, 128, 130);
-}
-
-.ElementInfo__border--button {
-  border-color: rgb(77, 196, 255);
-}
-
-.ElementInfo__border--link {
-  border-color: rgb(153, 0, 153);
+.ElementInfo__border--control {
+  border-color: var(--accent-orange);
 }
 
 .ElementInfo__border--heading {
-  border-color: rgb(0, 90, 255);
+  border-color: var(--accent-blue);
 }
 
 .ElementInfo__border--section {
-  border-color: rgb(100, 160, 12);
+  border-color: var(--accent-skyblue);
 }
 .ElementInfo__border--fieldset {
-  border-color: rgb(246, 170, 0);
+  border-color: var(--accent-brown);
   border-style: dotted;
-}
-
-.ElementInfo__border--ariaHidden {
-  border-color: rgb(255, 75, 0);
 }
 
 .ElementInfo__tips {

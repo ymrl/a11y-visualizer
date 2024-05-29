@@ -1,7 +1,7 @@
 export type ElementMeta = {
   tips: ElementTip[];
   hidden: boolean;
-  categories: Category[];
+  category: Category;
 } & ElementPosition;
 
 export type ElementPosition = {
@@ -29,10 +29,8 @@ export type ElementTip = {
 
 export type Category =
   | "image"
-  | "formControl"
-  | "button"
-  | "link"
   | "heading"
-  | "ariaHidden"
+  | "control"
   | "section"
-  | "fieldset";
+  | "fieldset"
+  | "general";

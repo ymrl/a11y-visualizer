@@ -34,4 +34,5 @@ export type Category =
   | "link"
   | "heading"
   | "ariaHidden"
-  | "section";
+  | "section"
+  | "fieldset";

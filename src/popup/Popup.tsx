@@ -63,7 +63,7 @@ export const Popup = () => {
 
   return (
     <div className="w-80 text-zinc-800" lang={lang}>
-      <div className="p-2 flex flex-row items-center justify-between gap-3 bg-zinc-100">
+      <div className="p-2 flex flex-row items-center justify-between gap-3 bg-zinc-100 relative">
         <div className="flex flex-row gap-1 items-center justify-start">
           <img
             src={enabled ? icon : iconDisabled}
@@ -78,8 +78,8 @@ export const Popup = () => {
           <button
             type="button"
             className="text-teal-700 bg-opacity-0 rounded-full shrink-0 p-1
-                hover:enabled:bg-zinc-200 transition-colors
-               disabled:text-zinc-400 disabled:cursor-not-allowed"
+                hover:enabled:bg-zinc-200 transition-colors cursor-pointer
+               disabled:text-zinc-400 disabled:cursor-not-allowed z-10"
             onClick={() => {
               sendMessageToActiveTab({
                 type: "applySettings",
@@ -115,6 +115,7 @@ export const Popup = () => {
           <span className="text-xs font-bold text-teal-800 shrink-0">
             {t("popup.enabled")}
           </span>
+          <span className="absolute inset-0" />
         </Checkbox>
       </div>
       {host && (
@@ -126,7 +127,7 @@ export const Popup = () => {
             <button
               type="button"
               className="text-teal-700 bg-opacity-0 rounded-full shrink-0 p-1
-                hover:enabled:bg-zinc-100 transition-colors
+                hover:enabled:bg-zinc-100 transition-colors cursor-pointer
                disabled:text-zinc-400 disabled:cursor-not-allowed"
               onClick={async () => {
                 await chrome.storage.local.remove(host);

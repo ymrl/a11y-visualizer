@@ -8,46 +8,37 @@
   gap: 4px;
   color: #000;
   background-color: #fff;
-  border: 1px solid #000;
 }
 .Tip--name {
   background-color: rgb(119, 217, 168);
-  border-color: rgb(3, 175, 122);
 }
 
 .Tip--role {
   background-color: rgb(255, 202, 191);
-  border-color: rgb(255, 128, 130);
 }
 
 .Tip--tagName {
   background-color: rgb(201, 172, 230);
-  border-color: rgb(153, 0, 153);
 }
 .Tip--landmark {
   background-color: rgb(216, 242, 85);
-  border-color: rgb(100, 160, 12);
 }
 
 .Tip--description {
   background-color: rgb(200, 200, 203);
-  border-color: rgb(132, 145, 158);
 }
 
 .Tip--level {
   background-color: rgb(191, 228, 255);
-  border-color: rgb(0, 90, 255);
 }
 
 .Tip--warning {
   background-color: rgb(255, 241, 0);
-  border-color: rgb(0, 0, 0);
 }
 
 .Tip--error {
   background-color: rgb(214, 64, 0);
   color: #fff;
-  border-color: rgb(214, 64, 0);
 }
 
 .Tip__icon {

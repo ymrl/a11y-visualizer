@@ -59,8 +59,8 @@ describe("sectionTips()", () => {
     const result = sectionTips(element);
     expect(result).toHaveLength(1);
     expect(result[0]).toEqual({
-      type: "warning",
-      content: "messages.noNameSection",
+      type: "tagName",
+      content: "section",
     });
   });
 

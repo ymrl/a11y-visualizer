@@ -49,9 +49,11 @@ export const SettingsEditor = ({
         <span className="text-sm">{t("settings.showTips")}</span>
       </Checkbox>
       <div className="flex flex-col gap-2 pl-4">
-        <div className="px-2 py-1 bg-zinc-100 rounded-md">
+        <div className="px-2 py-1 bg-zinc-100 dark:bg-zinc-800 rounded-md">
           <fieldset className="border-0 flex flex-col">
-            <legend className="text-xs text-teal-800 font-bold mb-1">
+            <legend
+              className={`text-xs ${disabled || !settings.accessibilityInfo ? "text-zinc-700 dark:text-zinc-300" : "text-teal-800 dark:text-teal-200"} font-bold mb-1`}
+            >
               {t("settings.elementTypes")}
             </legend>
             <div className="flex flex-row flex-wrap gap-x-3 gap-y-1 items-center">
@@ -135,7 +137,7 @@ export const SettingsEditor = ({
           </div>
           <input
             id="tipOpacityPercent"
-            className="accent-teal-600"
+            className="accent-teal-600 dark:accent-teal-400"
             type="range"
             min={0}
             max={100}
@@ -178,9 +180,11 @@ export const SettingsEditor = ({
         <span className="text-sm">{t("settings.announceLiveRegions")}</span>
       </Checkbox>
       <div className="flex flex-col gap-2 pl-3 w-full">
-        <div className="px-2 py-1 bg-zinc-100 rounded-md">
+        <div className="px-2 py-1 bg-zinc-100 dark:bg-zinc-800 rounded-md">
           <fieldset className="border-0 flex flex-col gap-2">
-            <legend className="text-xs text-teal-800 font-bold mb-1">
+            <legend
+              className={`text-xs ${disabled ? "text-zinc-700 dark:text-zinc-300" : "text-teal-800 dark:text-teal-200"} font-bold mb-1`}
+            >
               {t("settings.announcement")}
             </legend>
 
@@ -189,7 +193,12 @@ export const SettingsEditor = ({
                 {t("settings.announcementMaxSeconds")}
               </span>
               <input
-                className="border-zinc-400 border-solid border rounded-md py-0.5 px-1 text-sm text-right w-14 h-6"
+                className="border-zinc-400 border-solid border rounded-md
+                  py-0.5 px-1 text-sm text-right w-14 h-6
+                  bg-white dark:bg-zinc-800
+                  text-zinc-800 dark:text-zinc-300
+                  disabled:opacity-60
+                  "
                 type="number"
                 value={settings.announcementMaxSeconds}
                 onChange={(e) =>
@@ -197,7 +206,7 @@ export const SettingsEditor = ({
                 }
                 min={1}
                 step={1}
-                disabled={disabled}
+                disabled={disabled || !settings.showLiveRegions}
               />
             </label>
             <label className="flex flex-row gap-1 items-center justify-between">
@@ -205,7 +214,12 @@ export const SettingsEditor = ({
                 {t("settings.announcementSecondsPerCharacter")}
               </span>
               <input
-                className="border-zinc-400 border-solid border rounded-md py-0.5 px-1 text-sm text-right w-14 h-6"
+                className="border-zinc-400 border-solid border rounded-md
+                  py-0.5 px-1 text-sm text-right w-14 h-6
+                  bg-white dark:bg-zinc-800
+                  text-zinc-800 dark:text-zinc-300
+                  disabled:opacity-60
+                  "
                 type="number"
                 value={settings.announcementSecondsPerCharacter}
                 onChange={(e) =>
@@ -213,7 +227,7 @@ export const SettingsEditor = ({
                 }
                 min={0.1}
                 step={0.1}
-                disabled={disabled}
+                disabled={disabled || !settings.showLiveRegions}
               />
             </label>
           </fieldset>
@@ -235,14 +249,14 @@ export const SettingsEditor = ({
           </div>
           <input
             id="liveRegionOpacityPercent"
-            className="accent-teal-600"
+            className="accent-teal-600 dark:accent-teal-400"
             type="range"
             min={0}
             max={100}
             step={1}
             value={settings.liveRegionOpacityPercent}
             onChange={(e) => handleChangeNumber("liveRegionOpacityPercent", e)}
-            disabled={disabled}
+            disabled={disabled || !settings.showLiveRegions}
           />
         </div>
       </div>

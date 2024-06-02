@@ -52,8 +52,8 @@ const hasSectionTag = (el: Element): boolean =>
 
 export const sectionTips = (el: Element): ElementTip[] => {
   const result: ElementTip[] = [];
+  const role = el.getAttribute("role");
   if (hasSectionRole(el)) {
-    const role = el.getAttribute("role");
     if (role) result.push({ type: "landmark", content: role });
   } else if (hasSectionTag(el)) {
     const tagName = el.tagName.toLowerCase();
@@ -61,8 +61,8 @@ export const sectionTips = (el: Element): ElementTip[] => {
     if (tagName === "section") {
       if (name) {
         result.push({ type: "landmark", content: "region" });
-      } else {
-        result.push({ type: "warning", content: "messages.noNameSection" });
+      } else if (!role) {
+        result.push({ type: "tagName", content: "section" });
       }
     } else if (tagName === "aside") {
       if (!el.parentElement?.closest("article, aside, nav, section") || name) {

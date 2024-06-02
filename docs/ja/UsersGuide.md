@@ -4,7 +4,7 @@
 
 Accessibility Visualizerに興味を持っていただき、ありがとうございます。
 Accessibility Visualizerは、Webページのアクセシビリティを向上するために重要だが、視覚的に見えない情報を可視化することを目的とした、ブラウザ拡張機能です。
-現在はGoogle Chrome向けに、[Chromeウェブストア](https://chromewebstore.google.com/detail/accessibility-visualizer/idcacekakoknnpbfjcdhnkffgfbddnhk)で配布しています。
+現在はGoogle Chrome向けに、[Chromeウェブストア](https://chromewebstore.google.com/detail/accessibility-visualizer/idcacekakoknnpbfjcdhnkffgfbddnhk)、Firefox向けに[Firefox Add-Ons](https://addons.mozilla.org/ja/firefox/addon/accessibility-visualizer/)で配布しています。
 
 ## Accessibility Visualizerでできること
 
@@ -78,6 +78,7 @@ Accessibility Visualizerをインストールすると、拡張機能メニュ�
 - 名前: 緑色で、人型のアイコンとともに表示されます。内容が適切かどうか、抜け漏れがないかを確認してください
 - 説明: 灰色で、書類のアイコンとともに表示されます。内容が適切かどうか、抜け漏れがないかを確認してください
 - 見出し: 青色で、ブックマークのアイコンとともに表示されます。見出しのレベルが適切かどうかを確認してください
+- ランドマーク: 黄緑色で、旗のアイコンとともに表示されます。ランドマークが適切かどうかを確認してください
 - 警告: 黄色で、警告の三角形のアイコンとともに表示されます。問題があるかもしれない箇所を示しています
 - エラー: 赤色で、エラーの三角形のアイコンとともに表示されます。確実に問題のある箇所を示しています
 - ロール: ピンク色で、荷札のアイコンとともに表示されます
@@ -87,7 +88,7 @@ Accessibility Visualizerをインストールすると、拡張機能メニュ�
 
 ### 画像
 
-「画像の情報を表示」のチェックが入っているとき、`<img>` 要素、`<svg>` 要素、`role="img"` 属性をもつ要素に対してチップを表示します。
+「画像」のチェックが入っているとき、`<img>` 要素、`<svg>` 要素、`role="img"` 属性をもつ要素に対してチップを表示します。
 
 - 名前チップで、いわゆる代替テキスト（altテキスト）が表示されます
   - 画像の代替テキストは、画像がのかわりに表示されてもほとんど同じ情報が伝わるような内容で、簡潔な説明であることが望ましいとされています
@@ -99,7 +100,7 @@ Accessibility Visualizerをインストールすると、拡張機能メニュ�
 
 ### ボタン
 
-「ボタンの情報を表示」のチェックが入っているとき、`<button>` 要素、 `type` 属性が `button` `submit` `reset` `image` の `<input>`要素、 `role="button"` 属性をもつ要素に対してチップを表示します。
+「ボタン」のチェックが入っているとき、`<button>` 要素、 `type` 属性が `button` `submit` `reset` `image` の `<input>`要素、 `role="button"` 属性をもつ要素に対してチップを表示します。
 
 - 名前のチップで、ボタンのラベルが表示されます。抜け漏れの有無や適切なラベルになっているかを確認してください。
 - 名前が与えられていない場合、 **「名前（ラベル）なし」のエラーチップ** が表示されます。この場合は、スクリーンリーダー等の支援技術ではボタンの挙動を予測できません。 **修正が必要です**
@@ -107,7 +108,7 @@ Accessibility Visualizerをインストールすると、拡張機能メニュ�
 
 ### リンク
 
-「リンクの情報を表示」のチェックが入っているとき、`<a>` 要素、 `<area>` 要素、 `role="link"` 属性をもつ要素に対してチップを表示します。
+「リンク」のチェックが入っているとき、`<a>` 要素、 `<area>` 要素、 `role="link"` 属性をもつ要素に対してチップを表示します。
 
 - 名前のチップで、リンクのテキストが表示されます。抜け漏れの有無や適切なテキストになっているかを確認してください。
 - リンクの名前が空になってしまう場合、 **「名前（ラベル）なし」のエラーチップ** が表示されます。この場合は、スクリーンリーダー等の支援技術ではリンクの目的を知覚できません。 **修正が必要です**
@@ -115,7 +116,7 @@ Accessibility Visualizerをインストールすると、拡張機能メニュ�
 
 ### フォームコントロール
 
-「フォームコントロールの情報を表示」のチェックが入っているとき、`type` 属性が `hidden` `button` `submit` `reset` `image` 以外の `<input>` 要素、`<textarea>`要素、 `<select>` 要素、 `<label>` 要素、 `role` 属性に `textbox` `combobox` `checkbox` `radio` `switch` `menuitemcheckbox` `menuitemradio` のいずれかが指定されている要素に対してチップを表示します。
+「フォームコントロール」のチェックが入っているとき、`type` 属性が `hidden` `button` `submit` `reset` `image` 以外の `<input>` 要素、`<textarea>`要素、 `<select>` 要素、 `<label>` 要素、`<fieldset>`要素、 `role` 属性に `textbox` `combobox` `checkbox` `radio` `switch` `menuitemcheckbox` `menuitemradio` のいずれかが指定されている要素に対してチップを表示します。
 
 - 名前のチップで、フォームコントロールのラベルが表示されます。抜け漏れの有無や適切なラベルになっているかを確認してください。
   - 通常、`<input>` `<select>` `<textarea>` 要素には、`<label>` 要素が使われます
@@ -126,7 +127,7 @@ Accessibility Visualizerをインストールすると、拡張機能メニュ�
 
 ### 見出し
 
-「見出しの情報を表示」のチェックが入っているとき、`<h1>` から `<h6>` 要素と、 `role="heading"` 属性をもつ要素に対してチップを表示します。
+「見出し」のチェックが入っているとき、`<h1>` から `<h6>` 要素と、 `role="heading"` 属性をもつ要素に対してチップを表示します。
 
 - 見出しのレベルのチップで、見出しのレベルが表示されます。適切なレベルになっているかを確認してください。
   - `<h1>` から `<h6>` 要素は、見出しのレベルを示すために使われます
@@ -135,8 +136,18 @@ Accessibility Visualizerをインストールすると、拡張機能メニュ�
 - 名前のチップで、見出しのテキストが表示されます。抜け漏れの有無や適切なテキストになっているかを確認してください。
 - 見出しに名前が与えられていない場合、 **「名前（ラベル）なし」のエラーチップ** が表示されます。この場合は、スクリーンリーダー等の支援技術では見出しを知覚できません。 **修正が必要です**
 
+### Sections
+
+「セクション」にチェクが入っているとき、 `<article>` 要素、`<section>` 要素、`<nav>` 要素、`<aside>` 要素、`<main>` 要素、`<form>` 要素、`<search>` 要素、role属性に`article`、 `banner`、 `complementary`、 `contentinfo`、 `main`、 `form`、 `navigation`、 `region`、 `search`、 `application` をもつ要素に対してチップを表示します。
+
+これらの要素は、ページのコンテンツをセクションに分割するために使用され、支援技術のユーザーがページの構造を理解し、不要なコンテンツをスキップするのに役立ちます。
+
+- ランドマークのチップでは、`role` の属性値に相当するランドマークの名前が表示されます。表示されている場合には、その役割が適切かどうかを確認してください
+- 何らかの方法でアクセシブルネームが与えられている場合、名前のチップで、セクションの名前が表示されます。表示されている場合には、その名前が適切かどうかを確認してください。また、ページ内に同名で同じ役割をもつランドマークが存在しないことを確認してください。
+- The name tip displays the section label if accesible name has been given by some ways. If it is displayed, please check if the content is appropriate, if there are any omissions, and if there are any other landmarks that has same name and same role.
+
 ### aria-hidden
 
-「aria-hiddenの情報を表示」のチェックが入っているとき、`aria-hidden="true"` 属性をもつ要素に対してチップを表示します。
+「aria-hidden」のチェックが入っているとき、`aria-hidden="true"` 属性をもつ要素に対してチップを表示します。
 
 - 警告のチップで、`aria-hidden="true"` 属性が存在することが表示されます。この属性が指定されている要素は、スクリーンリーダー等の支援技術のユーザーには知覚されません。 画面に表示されていてユーザーが知覚できる情報が存在するのに `aria-hidden="ture"` となっている場合は、スクリーンリーダー等の支援技術のユーザーのみがその情報を知覚できないことになります。装飾目的の要素以外で視覚的に見えているのに `aria-hidden` となっている要素が存在する場合は、 **修正が必要です**

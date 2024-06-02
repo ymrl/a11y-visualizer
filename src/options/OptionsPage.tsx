@@ -27,7 +27,12 @@ export const OptionsPage = () => {
   const { t, lang } = useLang();
 
   return (
-    <div className="font-sans px-5 pt-0 pb-5 flex flex-col gap-5" lang={lang}>
+    <div
+      className="font-sans text-zinc-800 bg-zinc-50
+      dark:bg-zinc-900 dark:text-zinc-300
+      px-5 pt-5 pb-5 flex flex-col gap-5"
+      lang={lang}
+    >
       <SettingsEditor settings={settings} onChange={updateSettings} />
       <p className="text-sm text-gray-500">{t("optionsPage.description")}</p>
     </div>

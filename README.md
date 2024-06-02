@@ -3,6 +3,11 @@
 ![Screenshot of 駒瑠市. Showing annotations of accessibility properties](./a11y-visualizer-komarushi.jpg)
 (This screenshot from [駒瑠市〜アクセシビリティ上の問題の体験サイト〜](https://a11yc.com/city-komaru/))
 
+## Install
+
+- [Chrome Web Store](https://chromewebstore.google.com/detail/accessibility-visualizer/idcacekakoknnpbfjcdhnkffgfbddnhk)
+- [Firefox Add-ons](https://addons.mozilla.org/ja/firefox/addon/accessibility-visualizer/)
+
 ## Users' Guide
 
 - [Accessibility Visualizer ユーザーズガイド (Japanese)](./docs/ja/UsersGuide.md)
@@ -40,5 +45,6 @@ $ npm install
 $ npm run build
 
 # Build zip files to upload to the stores
+# The zip files are created as ./a11y-visualizer-chrome.zip and ./a11y-visualizer-firefox.zip
 $ npm run package
 ```

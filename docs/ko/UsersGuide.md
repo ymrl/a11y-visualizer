@@ -4,7 +4,7 @@
 
 우선 Accessibility Visualizer에 관심을 가져주셔서 정말 감사합니다.
 Accessibility Visualizer는 웹 페이지의 접근성을 향상시키기 위해 중요하면서도 시각적으로는 표시되지 않는 정보를 가시화하는 것을 목적으로 제작된 브라우저 확장 기능입니다.
-현재는 Google Chrome용으로 [Chrome 웹 스토어](https://chromewebstore.google.com/detail/accessibility-visualizer/idcacekakoknnpbfjcdhnkffgfbddnhk) 에서 배포하고 있습니다.
+현재는 Google Chrome용으로 [Chrome 웹 스토어](https://chromewebstore.google.com/detail/accessibility-visualizer/idcacekakoknnpbfjcdhnkffgfbddnhk) Mozilla Firefox용으로[Firefox Add-ons](https://addons.mozilla.org/ja/firefox/addon/accessibility-visualizer/) 에서 배포하고 있습니다.
 
 ## Accessibility Visualizer에서 할 수 있는 것
 
@@ -54,7 +54,7 @@ Accessibility Visualizer 를 설치하면 확장기능 메뉴 내에 Accessibili
 팝업 내의 '라이브리전을 안내하기'선택 시, [ARIA 라이브 리전](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Live_Regions) 에 변화가 있을 경우, 해당 내용을 화면 중앙 부근에 나타냅니다.
 이것은 스크린 리더와 같은 보조기술 사용자에게 화면에서 일어나는 상태 변화 등을 실시간으로 전달하기 위해서 사용되는 라이브리전의 기능을, 스크린 리더 등을 사용하지 않고 체험하고 동작을 확인하기 위한 기능입니다.
 
-![브라우저 중앙에 크게 일본어로 「지금 다운로드!당신의 PC를 고속화!」라고 표시되고 있다](./images/a11y_visualizer_live_region.png)
+![브라우저 중앙에 크게 일본어로 「지금 다운로드!당신의 PC를 고속화!」라고 표시되고 있다](../ja/images/a11y_visualizer_live_region.png)
 
 (스크린샷은 ['aria-live がうるさい (aria-live가 시끄럽다)' (ARIA-Barriers)](https://shuaruta.github.io/ARIA-Barriers/2023/12/22/aria-live.html) 에서 공지사항을 표시한 것)
 
@@ -78,6 +78,7 @@ Accessibility Visualizer 를 설치하면 확장기능 메뉴 내에 Accessibili
 - 이름: 녹색으로 사람 모양 아이콘과 함께 표시됩니다. 내용이 적절한지 누락되지 않았는지 확인해 주세요.
 - 설명: 회색으로 서류 아이콘과 함께 표시됩니다. 내용이 적절한지 누락되지 않았는지 확인해 주세요.
 - 헤딩: 파란색으로 책갈피 아이콘과 함께 표시됩니다. 헤딩 레벨이 논리적으로 알맞게 사용되었는지 확인해 주세요.
+- Landmark: Displayed in yellow-green with a flag icon. Check if the landmark role is appropriate
 - 경고: 노란색으로 경고의 삼각형 아이콘과 함께 표시됩니다. 문제가 있을지도 모르는 부분을 나타내고 있습니다.
 - 오류: 빨간색으로 오류 삼각형 아이콘과 함께 표시됩니다. 확실히 문제가 있는 부분을 나타내고 있습니다.
 - 롤: 핑크색으로 꼬리표 아이콘과 함께 표시됩니다.
@@ -87,7 +88,7 @@ Accessibility Visualizer 를 설치하면 확장기능 메뉴 내에 Accessibili
 
 ### 이미지
 
-「이미지 정보 보기」선택 시, `<img>`요소, `<svg>` 요소, `role="img"` 속성을 가지는 요소에 대해서 팁을 표시합니다.
+「이미지」선택 시, `<img>`요소, `<svg>` 요소, `role="img"` 속성을 가지는 요소에 대해서 팁을 표시합니다.
 
 - 이름 팁에서 대체 텍스트(alt 텍스트)가 표시됩니다
   - 이미지의 대체 텍스트는, 이미지 대신에 표시되어도 같은 정보가 전달되어야 하는 내용으로, 간결한 설명으로 제공하는 것이 바람직합니다.
@@ -99,7 +100,7 @@ Accessibility Visualizer 를 설치하면 확장기능 메뉴 내에 Accessibili
 
 ### 버튼
 
-「버튼 정보 보기」선택 시, `<button>`요소, 「type」 속성이 `button` `submit` `reset` `image` 의 `<input>` 요소, `role="button"` 속성을 가지는 요소에 대해서 팁을 표시합니다.
+「버튼」선택 시, `<button>`요소, 「type」 속성이 `button` `submit` `reset` `image` 의 `<input>` 요소, `role="button"` 속성을 가지는 요소에 대해서 팁을 표시합니다.
 
 - 이름의 팁으로 버튼 라벨이 표시됩니다. 누락의 유무나 적절한 버튼명이 제공되고 있는지 확인해 주세요.
 - 이름이 주어지지 않은 경우, **「이름(라벨) 없음」의 에러 팁**이 표시됩니다. 이 경우에는 스크린 리더 등의 보조기술로는 버튼의 의미 및 동작, 기능을 예측할 수 없습니다. **수정이 필요합니다**
@@ -107,7 +108,7 @@ Accessibility Visualizer 를 설치하면 확장기능 메뉴 내에 Accessibili
 
 ### 링크
 
-「링크 정보 보기」선택 시, 「`<a>`」 요소, `<area>` 요소, `role="link"` 속성을 가진 요소에 대해 팁을 표시합니다.
+「링크」선택 시, 「`<a>`」 요소, `<area>` 요소, `role="link"` 속성을 가진 요소에 대해 팁을 표시합니다.
 
 - 이름의 팁으로 링크 텍스트가 표시됩니다. 누락의 유무나 적절한 링크 텍스트가 제공되는지 확인해 주세요.
 - 링크의 이름이 비어 있는 경우, **「이름(라벨) 없음」의 에러 팁**이 표시됩니다. 이 경우는 스크린 리더 등의 보조기술로는 링크의 목적을 알 수 없습니다. **수정이 필요합니다**
@@ -115,7 +116,7 @@ Accessibility Visualizer 를 설치하면 확장기능 메뉴 내에 Accessibili
 
 ### 입력 서식
 
-「입력 서식 정보 보기」선택 시, 'type' 속성이 'hidden' 'button' 'submit' 'reset' 'image' 이외의 `<input>` 요소, `<textarea>` 요소, `<select>` 요소, `<label>` 요소, 'role' 속성에 'textbox' `combobox` `checkbox` 'radio' 'switch' 'menuitemcheckbox' 'menuitemradio' 중 하나가 지정되어 있는 요소에 대해 팁을 표시합니다.
+「입력」선택 시, `type` 속성이 `hidden` `button` `submit` `reset` `image` 이외의 `<input>` 요소, `<textarea>` 요소, `<select>` 요소, `<label>` 요소, `<fieldset>` 요소, 'role' 속성에 'textbox' `combobox` `checkbox` 'radio' 'switch' 'menuitemcheckbox' 'menuitemradio' 중 하나가 지정되어 있는 요소에 대해 팁을 표시합니다.
 
 - 이름의 팁으로 입력 서식의 라벨이 표시됩니다. 누락의 유무나 적절한 라벨이 되어 있는지를 확인해 주세요.
   - `<input>` `<select>` `<textarea>` 요소에는 해당 요소의 id와 연결된 `<label>` 요소가 제공되어야 합니다.
@@ -126,7 +127,7 @@ Accessibility Visualizer 를 설치하면 확장기능 메뉴 내에 Accessibili
 
 ### 헤딩
 
-'헤딩 정보 보기'선택 시, `<h1>` 에서 `<h6>` 요소와, role="heading" 속성을 가지는 요소에 대해서 팁을 표시합니다.
+「헤딩」선택 시, `<h1>` 에서 `<h6>` 요소와, `role="heading"` 속성을 가지는 요소에 대해서 팁을 표시합니다.
 
 - 헤딩 레벨의 팁으로 헤딩 레벨이 표시됩니다.적절한 레벨 순서대로 제공되고 있는지, `<h1>`이 중복으로 제공되고 있는지 등을 확인해 주세요.
   - `<h1>` 에서 `<h6>` 요소는 헤딩의 레벨을 나타내기 위해 사용됩니다
@@ -135,8 +136,17 @@ Accessibility Visualizer 를 설치하면 확장기능 메뉴 내에 Accessibili
 - 이름의 팁으로 헤딩 텍스트가 표시됩니다. 누락의 유무나 적절한 텍스트가 되어 있는지 확인해 주세요.
 - 헤딩에 이름이 주어지지 않은 경우, **「이름(라벨) 없음」의 에러 팁**이 표시됩니다. 이 경우는 스크린 리더 등의 보조기술로는 헤딩를 알 수 없습니다. **수정이 필요합니다**
 
+### Sections
+
+When "Sections" is checked, tips are displayed for `<article>` elements, `<section>` elements, `<nav>` elements, `<aside>` elements, `<main>` elements, `<form>` elements, `<search>` elements, and elements whose role attribute specifies `article`, `banner`, `complementary`, `contentinfo`, `main`, `form`, `navigation`, `region`, `search`, or `application`.
+
+These elements are used to divide the content of the page into sections, and these helps users of assistive technologies such as screen readers to understand the page structure, and to skip some unnecesary contents.
+
+- The landmark tip displays the landmark role. Please check if the landmark role is appropriate
+- The name tip displays the section label if accesible name has been given by some ways. If it is displayed, please check if the content is appropriate, if there are any omissions, and if there are any other landmarks that has same name and same role.
+
 ### aria-hidden
 
-「aria-hidden 정보 보기」선택 시, `aria-hidden="true"` 속성을 가진 요소에 대해 팁을 표시합니다.
+「aria-hidden」선택 시, `aria-hidden="true"` 속성을 가진 요소에 대해 팁을 표시합니다.
 
 - 경고의 팁으로, `aria-hidden="true"` 속성이 존재하는 것으로 표시됩니다. 이 속성이 지정되어 있는 요소는 스크린 리더 등의 보조기술에서 탐색되지 않기 때문에 사용자는 해당 요소가 제공되는지 알 수 없습니다. 화면에 표시되어 있어 사용자가 알 수 있는 정보가 제공되면서도 `aria-hidden="ture"` 가 선언되어 있는 요소는 스크린 리더 등의 보조기술 사용자만 그 정보를 제공받지 못하게 됩니다. 장식목적의 요소 이외에 시각적으로 제공되는 정보에 `aria-hidden` 이 선언되어 있는 요소가 있을 경우 **수정이 필요합니다**

@@ -4,7 +4,7 @@
 
 Thank you for your interest in Accessibility Visualizer.
 Accessibility Visualizer is a browser extension that aims to visualize important but visually invisible information to improve the accessibility of web pages.
-It is currently distributed for Google Chrome at [Chrome Web Store](https://chromewebstore.google.com/detail/accessibility-visualizer/idcacekakoknnpbfjcdhnkffgfbddnhk).
+It is currently distributed for Google Chrome at [Chrome Web Store](https://chromewebstore.google.com/detail/accessibility-visualizer/idcacekakoknnpbfjcdhnkffgfbddnhk) and for Mozilla Firefox at [Firefox Add-Ons](https://addons.mozilla.org/ja/firefox/addon/accessibility-visualizer/).
 
 ## What you can do with Accessibility Visualizer
 
@@ -54,7 +54,7 @@ The "Tips opacity" slider allows you to adjust the color intensity of the tip di
 When "Announce live regions" was checked in the popup, there was a change in [ARIA live regions](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Live_Regions) The content will now be displayed near the center of the screen.
 This is a function that allows users of assistive technology such as screen readers to experience and check the operation of the live region function, which is used to inform users of changes in screen status, etc., without using screen readers. .
 
-![A large message "Download now! Speed up your PC!" is displayed in the center of the browser](./images/a11y_visualizer_live_region.png)
+![A large message "Download now! Speed up your PC!" is displayed in the center of the browser](../ja/images/a11y_visualizer_live_region.png)
 
 (The screenshot is from ["aria-live がうるさい (aria-live is noisy)" (ARIA-Barriers)](https://shuaruta.github.io/ARIA-Barriers/2023/12/22/aria-live.html), which displays the announcement. )
 
@@ -78,6 +78,7 @@ There are following types of tips
 - Name: Appears in green with a humanoid icon. Please check that the content is appropriate and that there are no omissions.
 - Description: Appears in gray with a document icon. Please check that the content is appropriate and that there are no omissions.
 - Heading: Displayed in blue with a bookmark icon. Check if the heading level is appropriate
+- Landmark: Displayed in yellow-green with a flag icon. Check if the landmark role is appropriate
 - Warning: Displayed in yellow with a warning triangle icon. Indicates where there may be a problem
 - Error: Displayed in red with an error triangle icon. Definitely indicates where the problem is
 - Role: pink and displayed with a tag icon
@@ -85,9 +86,9 @@ There are following types of tips
 
 "Name" is "[Accessible Name](https://developer.mozilla.org/en-US/docs/Glossary/Accessible_name)" and "Description" is "[Accessible Description](https://developer.mozilla.org/en-US/docs/Glossary/Accessible_description)" value is displayed. These are pieces of information that help users of assistive technologies, such as screen readers, recognize the element.
 
-### image
+### Images
 
-When "Show about image" is checked, tips are displayed for `<img>` elements, `<svg>` elements, and elements with the `role="img"` attribute.
+When "Images" is checked, tips are displayed for `<img>` elements, `<svg>` elements, and elements with the `role="img"` attribute.
 
 - So-called alternative text (alt text) is displayed in the name tip
   - Image alt text should be a concise description that conveys much of the same information even if the image were displayed instead.
@@ -97,17 +98,17 @@ When "Show about image" is checked, tips are displayed for `<img>` elements, `<s
 - If `alt=""` is specified in the `<img>` element, a warning tip "Image with alt="" will be displayed. Images in this state cannot be perceived by assistive technologies such as screen readers. **Please provide alt text unless this image is placed for decorative purposes**
 - If no alternative text is specified and it is not `aria-hidden` or `alt=""`, the error tip `Image without alt attribute'' or `No name (label)'' will be displayed. . In this case, **Modification is required**
 
-### button
+### Buttons
 
-When "Show about buttons" is checked, tips are displayed for`<button>` element, `<input>` element with `type` attribute of `button` `submit` `reset` `image`, and any elements with `role="button"` attribute.
+When "Buttons" is checked, tips are displayed for`<button>` element, `<input>` element with `type` attribute of `button` `submit` `reset` `image`, and any elements with `role="button"` attribute.
 
 - The name tip displays the button label. Please check if there are any omissions or if the labels are appropriate.
 - If no name is given, a **``No name (label)'' error tip** will be displayed. In this case, assistive technologies such as screen readers cannot predict the behavior of the button. **Modification required**
 - If the element has the `role="button"` attribute and is not focusable by default, and the `tabindex` attribute is not specified, a **``Unfocusable'' error tip** will be displayed. In this state, you cannot operate with the keyboard, so **Modification is required**
 
-### Link
+### Links
 
-When "Show about links" is checked, tips are displayed for `<a>` elements, `<area>` elements, and elements with the `role="link"` attribute.
+When "Links" is checked, tips are displayed for `<a>` elements, `<area>` elements, and elements with the `role="link"` attribute.
 
 - The text of the link will be displayed in the name tip. Please check if there are any omissions or if the text is appropriate.
 - If the link name becomes empty, a **"No name (label)" error tip** will be displayed. In this case, assistive technologies such as screen readers cannot perceive the purpose of the link. **Modification required**
@@ -115,7 +116,7 @@ When "Show about links" is checked, tips are displayed for `<a>` elements, `<are
 
 ### Form controls
 
-When "Show about form-controls" is checked, tips are displayed for `<input>` elements whose `type` attribute is `hidden` `button` `submit` `reset` `image`, `<textarea>` elements, `<select>` elements, `<label>` elements, and elements whose `role` attribute specifies `textbox`, `combobox`, `checkbox`, `radio`, `switch`, `menuitemcheckbox` or `menuitemradio` .
+When "Form controls" is checked, tips are displayed for `<input>` elements whose `type` attribute is `hidden` `button` `submit` `reset` `image`, `<textarea>` elements, `<select>` elements, `<label>` elements, `<fieldset>` elements, and elements whose `role` attribute specifies `textbox`, `combobox`, `checkbox`, `radio`, `switch`, `menuitemcheckbox` or `menuitemradio` .
 
 - Name tip displays form control labels. Please check if there are any omissions or if the labels are appropriate.
   - Typically, the `<label>` element is used for the `<input>` `<select>` `<textarea>` element
@@ -124,9 +125,9 @@ When "Show about form-controls" is checked, tips are displayed for `<input>` ele
 - If the radio button (`<input type="radio">`) does not have the same `name` attribute, a **"No name attribute" error tip** will be displayed. If there are no radio buttons with the same `name` attribute in the same `<form>` element or the same document, a **"No radiobutton group" error tip** will be displayed. These are not grouped as radio buttons, so users cannot select them with the keyboard or predict movement with the Tab key, and users may not be able to recognize which radio buttons are in the same group. **Modification required**
 - If `<label>` element does not have an associated form control or is hidden, a **"No control for label" warning tip** will be displayed. Especially when hidden for styling checkboxes or radio buttons, the possibility of not being able to operate with the keyboard is high. **Please check**
 
-### Heading
+### Headings
 
-When "Show about headings" is checked, tips are displayed for elements `<h1>` to `<h6>` and elements with the `role="heading"` attribute.
+When "Headings" is checked, tips are displayed for elements `<h1>` to `<h6>` and elements with the `role="heading"` attribute.
 
 - The heading level tip displays the heading level. Please make sure it is at the appropriate level.
   - `<h1>` to `<h6>` elements are used to indicate heading levels
@@ -135,8 +136,17 @@ When "Show about headings" is checked, tips are displayed for elements `<h1>` to
 - The name tip displays the heading text. Please check if there are any omissions or if the text is appropriate.
 - If a heading is not given a name, a ``No name (label)'' error tip will be displayed. In this case, assistive technologies such as screen readers will not be able to perceive the heading. **Modification required**
 
+### Sections
+
+When "Sections" is checked, tips are displayed for `<article>` elements, `<section>` elements, `<nav>` elements, `<aside>` elements, `<main>` elements, `<form>` elements, `<search>` elements, and elements whose role attribute specifies `article`, `banner`, `complementary`, `contentinfo`, `main`, `form`, `navigation`, `region`, `search`, or `application`.
+
+These elements are used to divide the content of the page into sections, and these helps users of assistive technologies such as screen readers to understand the page structure, and to skip some unnecesary contents.
+
+- The landmark tip displays the landmark role. Please check if the landmark role is appropriate
+- The name tip displays the section label if accesible name has been given by some ways. If it is displayed, please check if the content is appropriate, if there are any omissions, and if there are any other landmarks that has same name and same role.
+
 ### aria-hidden
 
-When "Show about aria-hidden" is checked, tips are displayed for elements with the `aria-hidden="true"` attribute.
+When "aria-hidden" is checked, tips are displayed for elements with the `aria-hidden="true"` attribute.
 
 - A warning tip indicates that the `aria-hidden="true"` attribute is present. Elements with this attribute are invisible to users of assistive technologies such as screen readers. If there is information displayed on the screen that the user can perceive, but `aria-hidden="true"` is specified, only users of assistive technology such as screen readers will not be able to perceive that information. If there is an element that is visually visible but marked as `aria-hidden` except for decorative elements, **needs modification**

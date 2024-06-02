@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Accessibility Visualizer",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "default_locale": "en",
   "action": {
     "default_popup": "src/popup/index.html",

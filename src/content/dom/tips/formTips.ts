@@ -3,7 +3,7 @@ import { ElementTip } from "../../types";
 import { isAriaHidden, isFocusable, isHidden } from "../index";
 
 export const FormSelectors = [
-  "input:not([type='hidden'])",
+  "input:not([type='hidden']):not([type='button']):not([type='submit']):not([type='reset']):not([type='image'])",
   "textarea",
   "select",
   '[role="checkbox"]',

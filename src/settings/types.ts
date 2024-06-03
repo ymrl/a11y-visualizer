@@ -21,11 +21,6 @@ export type Settings = {
 
 export type SettingsMessage =
   | {
-      type: "updateAccessibilityInfo";
-      settings: Settings;
-      enabled: boolean;
-    }
-  | {
       type: "updateHostSettings";
       settings: Settings;
       enabled: boolean;

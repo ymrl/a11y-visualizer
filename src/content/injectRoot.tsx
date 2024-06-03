@@ -5,54 +5,59 @@ import { Settings, SettingsMessage, loadHostSettings } from "../settings";
 import { SettingsProvider } from "./components/SettingsProvider";
 import { loadEnabled } from "../enabled";
 
-export const injectRoot = async (w: Window, parent: Element) => {
-  if (!location.href.startsWith("http")) {
-    return;
-  }
-  const [settings] = await loadHostSettings(location.host);
-  const enabled = await loadEnabled();
-
-  const rootDiv = w.document.createElement("div");
-  parent.append(rootDiv);
-
-  const root = ReactDOM.createRoot(rootDiv);
-
-  const render = (settings: Settings, parent: Element, enabled: boolean) =>
+const mount = (w: Window, parent: Element) => {
+  const rootElement = w.document.createElement("div");
+  parent.append(rootElement);
+  const root = ReactDOM.createRoot(rootElement);
+  const render = (settings: Settings) => {
     root.render(
       <React.StrictMode>
         <SettingsProvider settings={settings}>
-          <Root parent={parent} enabled={enabled} />
+          <Root parent={parent} />
         </SettingsProvider>
       </React.StrictMode>,
     );
+  };
+  const unmount = () => {
+    parent.removeChild(rootElement);
+    root.unmount();
+  };
+  return {
+    render,
+    unmount,
+  };
+};
 
-  render(settings, parent, enabled);
+export const injectRoot = async (w: Window, parent: Element) => {
+  if (!w.location.href.startsWith("http")) {
+    return;
+  }
+  let [settings] = await loadHostSettings(w.location.host);
+  const enabled = await loadEnabled();
 
-  window.addEventListener("visibilitychange", async () => {
-    if (document.visibilityState === "visible") {
-      const [settings] = await loadHostSettings(location.host);
-      const enabled = await loadEnabled();
-      render(settings, parent, enabled);
-    }
-  });
+  let mountReturn = enabled ? mount(w, parent) : null;
+  mountReturn?.render(settings);
 
   const listener = (message: SettingsMessage) => {
-    switch (message.type) {
-      case "updateHostSettings":
-        if (message.host === location.host) {
-          render(message.settings, parent, message.enabled);
-        }
-        break;
-      case "applySettings":
-        render(message.settings, parent, message.enabled);
-        break;
-      case "updateEnabled":
-        render(settings, parent, message.enabled);
-        break;
+    if (
+      !["updateHostSettings", "applySettings", "updateEnabled"].includes(
+        message.type,
+      )
+    )
+      return;
+    if (
+      message.type === "applySettings" ||
+      message.type === "updateHostSettings"
+    ) {
+      settings = message.settings;
+    }
+    if (message.enabled) {
+      (mountReturn || (mountReturn = mount(w, parent))).render(settings);
+    } else {
+      mountReturn?.unmount();
+      mountReturn = null;
+      chrome.runtime.onMessage.removeListener(listener);
     }
   };
   chrome.runtime.onMessage.addListener(listener);
-  window.addEventListener("unload", () => {
-    chrome.runtime.onMessage.removeListener(listener);
-  });
 };

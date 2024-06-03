@@ -7,13 +7,7 @@ import { Announcements } from "./components/Announcements";
 import { SettingsContext } from "./components/SettingsProvider";
 import { useLiveRegion } from "./hooks/useLiveRegion";
 
-export const Root = ({
-  parent,
-  enabled,
-}: {
-  parent: Element;
-  enabled: boolean;
-}) => {
+export const Root = ({ parent }: { parent: Element }) => {
   const [metaList, setMetaList] = React.useState<ElementMeta[]>([]);
   const [width, setWidth] = React.useState<number>(0);
   const [height, setHeight] = React.useState<number>(0);
@@ -68,7 +62,7 @@ export const Root = ({
   const updateInfo = React.useCallback(() => {
     injectToFrames(parent);
     observeLiveRegion(parent);
-    if (enabled && settings.accessibilityInfo) {
+    if (settings.accessibilityInfo) {
       injectToDialogs(parent);
       const { elements, rootHeight, rootWidth } = collectElements(
         parent,
@@ -89,14 +83,7 @@ export const Root = ({
       setHeight(0);
       setMetaList([]);
     }
-  }, [
-    injectToFrames,
-    parent,
-    settings,
-    observeLiveRegion,
-    injectToDialogs,
-    enabled,
-  ]);
+  }, [injectToFrames, parent, settings, observeLiveRegion, injectToDialogs]);
 
   React.useEffect(() => {
     updateInfo();
@@ -111,18 +98,16 @@ export const Root = ({
     return () => observer.disconnect();
   }, [updateInfo, parent]);
   return (
-    enabled && (
-      <section
-        aria-label={`Accessibility Visualizer <${parent.tagName.toLowerCase()}>`}
-        aria-hidden="true"
-        ref={containerRef}
-      >
-        <ElementList list={metaList} width={width} height={height} />
-        <Announcements
-          contents={announcements.map((a) => a.content)}
-          ref={announcementsRef}
-        />
-      </section>
-    )
+    <section
+      aria-label={`Accessibility Visualizer <${parent.tagName.toLowerCase()}>`}
+      aria-hidden="true"
+      ref={containerRef}
+    >
+      <ElementList list={metaList} width={width} height={height} />
+      <Announcements
+        contents={announcements.map((a) => a.content)}
+        ref={announcementsRef}
+      />
+    </section>
   );
 };

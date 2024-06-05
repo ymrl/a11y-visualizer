@@ -34,6 +34,8 @@ export type Category =
   | "heading"
   | "control"
   | "section"
+  | "table"
+  | "tableCell"
   | "fieldset"
   | "page"
   | "general";

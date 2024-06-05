@@ -19,6 +19,12 @@ import { CategorySettings } from "../../settings";
 import { SectionSelectors, isSection, sectionTips } from "./tips/sectionTips";
 import { isPage, pageTips } from "./tips/pageTips";
 import { LangSelectors, langTips, isLang } from "./tips/langTips";
+import {
+  TableSelectors,
+  isTable,
+  isTableCell,
+  tableTips,
+} from "./tips/tableTips";
 
 const getSelector = (settings: Partial<CategorySettings>) => {
   return [
@@ -30,20 +36,14 @@ const getSelector = (settings: Partial<CategorySettings>) => {
     ...(settings.ariaHidden ? AriraHiddenSelectors : []),
     ...(settings.section ? SectionSelectors : []),
     ...(settings.lang ? LangSelectors : []),
+    ...(settings.table ? TableSelectors : []),
   ].join(",");
 };
 
 export const collectElements = (
   root: Element,
   excludes: Element[],
-  settings: Partial<CategorySettings> = {
-    image: true,
-    formControl: true,
-    link: true,
-    button: true,
-    heading: true,
-    ariaHidden: true,
-  },
+  settings: Partial<CategorySettings>,
   options: {
     srcdoc?: boolean;
   } = {},
@@ -123,6 +123,7 @@ export const collectElements = (
                 ...linkTips(el, name),
                 ...ariaHiddenTips(el),
                 ...sectionTips(el, name),
+                ...tableTips(el),
                 ...langTips(el),
                 ...pageTips(el, !!options.srcdoc),
                 ...globalTips(el),
@@ -139,6 +140,9 @@ const getElementCategory = (el: Element): Category => {
   if (isImage(el)) return "image";
   if (isHeading(el)) return "heading";
   if (isFormControl(el) || isLink(el) || isButton(el)) return "control";
+  if (isSection(el)) return "section";
+  if (isTable(el)) return "table";
+  if (isTableCell(el)) return "tableCell";
   if (isFieldset(el)) return "fieldset";
   if (isSection(el) || isLang(el)) return "section";
   return "general";

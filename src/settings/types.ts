@@ -8,6 +8,7 @@ export type CategorySettings = {
   section: boolean;
   lang: boolean;
   page: boolean;
+  table: boolean;
 };
 
 export type Settings = {

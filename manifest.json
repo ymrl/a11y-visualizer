@@ -32,5 +32,6 @@
     "service_worker": "src/background.ts",
     "type": "module"
   },
-  "permissions": ["storage", "activeTab"]
+  "permissions": ["storage", "activeTab"],
+  "minimum_chrome_version": "89"
 }

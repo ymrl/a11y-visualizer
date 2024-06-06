@@ -103,7 +103,9 @@ export const Tip = ({
       {!hideLabel &&
         (tip.type === "level"
           ? `${t("messages.headingLevel")}${tip.content}`
-          : tip.type === "warning" || tip.type === "error"
+          : tip.type === "warning" ||
+              tip.type === "error" ||
+              tip.type === "ariaStatus"
             ? t(tip.content)
             : tip.content)}
     </div>

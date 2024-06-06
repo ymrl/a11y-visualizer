@@ -120,7 +120,10 @@ export const globalTips = (el: Element): ElementTip[] => {
   for (const state of globalAriaStates) {
     const value = el.getAttribute(state);
     if (value) {
-      result.push({ type: "ariaStatus", content: `${state}="${value}"` });
+      result.push({
+        type: "ariaStatus",
+        content: `ariaStatus.${state}.${value}`,
+      });
     }
   }
 
@@ -130,7 +133,7 @@ export const globalTips = (el: Element): ElementTip[] => {
       if (ariaStateValue) {
         result.push({
           type: "ariaStatus",
-          content: `${ariaState}="${ariaStateValue}"`,
+          content: `ariaStatus.${ariaState}.${ariaStateValue}`,
         });
       }
     }

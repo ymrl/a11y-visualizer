@@ -144,9 +144,29 @@ export const SettingsEditor = ({
             step={1}
             value={settings.tipOpacityPercent}
             onChange={(e) => handleChangeNumber("tipOpacityPercent", e)}
-            disabled={disabled}
+            disabled={disabled || !settings.accessibilityInfo}
           />
         </div>
+        <label className="flex flex-row gap-2 items-center justify-between">
+          <span className="shrink text-sm">{t("settings.tipFontSize")}</span>
+          <input
+            className="border-zinc-400 border-solid border rounded-md
+                  py-0.5 px-1 text-sm text-right w-14 h-6
+                  bg-white dark:bg-zinc-800
+                  text-zinc-800 dark:text-zinc-300
+                  disabled:opacity-60
+                  "
+            type="number"
+            value={settings.tipFontSize}
+            onChange={(e) => {
+              handleChangeNumber("tipFontSize", e);
+            }}
+            min={8}
+            step={1}
+            disabled={disabled || !settings.accessibilityInfo}
+          />
+        </label>
+
         <div className="flex flex-col gap-1">
           <Checkbox
             onChange={(e) => {

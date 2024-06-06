@@ -19,4 +19,5 @@ export const initialSettings: Settings = {
   announcementSecondsPerCharacter: 0.5,
   tipOpacityPercent: 50,
   liveRegionOpacityPercent: 50,
+  tipFontSize: 10,
 } as const;

@@ -17,6 +17,7 @@ export type Settings = {
   announcementSecondsPerCharacter: number;
   tipOpacityPercent: number;
   liveRegionOpacityPercent: number;
+  tipFontSize: number;
 } & CategorySettings;
 
 export type SettingsMessage =

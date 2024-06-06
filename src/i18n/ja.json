@@ -27,7 +27,8 @@
     "announcement": "アナウンス",
     "announcementSecondsPerCharacter": "スピード（秒/文字）",
     "announcementMaxSeconds": "最長の長さ（秒）",
-    "liveRegionOpacityPercent": "ライブリージョンの不透明度（%）"
+    "liveRegionOpacityPercent": "ライブリージョンの不透明度（%）",
+    "tipFontSize": "チップの文字サイズ"
   },
   "tip": {
     "name": "名前",

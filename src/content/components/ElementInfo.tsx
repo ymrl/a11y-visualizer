@@ -17,7 +17,7 @@ export const ElementInfo = ({
   rootWidth: number;
   rootHeight: number;
 }) => {
-  const { interactiveMode, hideTips, ...settings } =
+  const { interactiveMode, hideTips, tipFontSize, ...settings } =
     React.useContext(SettingsContext);
   const [hovered, setHovered] = React.useState(false);
   const selfRef = React.useRef<HTMLDivElement>(null);
@@ -35,18 +35,19 @@ export const ElementInfo = ({
   }, []);
 
   const rightAligned: boolean =
-    ((category === "section" || category === "fieldset") && width > 160) ||
-    (width < 160 && x + width > rootWidth - 160);
+    ((category === "section" || category === "fieldset") &&
+      width > tipFontSize * 16) ||
+    (width < tipFontSize * 16 && x + width > rootWidth - tipFontSize * 16);
   const verticalPosition: VerticalPosition =
     category === "section" || category === "heading"
-      ? y < 24
+      ? y < tipFontSize * 2.4
         ? "inner-top"
         : "outer-top"
       : category === "image" || category === "fieldset"
-        ? y > 24 && height < 32
+        ? y > tipFontSize * 2.4 && height < tipFontSize * 3.2
           ? "outer-top"
           : "inner-top"
-        : y + height > rootHeight - 24
+        : y + height > rootHeight - tipFontSize * 2.4
           ? "inner-bottom"
           : "outer-bottom";
 
@@ -127,6 +128,7 @@ export const ElementInfo = ({
               ? "ElementInfo__tips--right-aligned"
               : "ElementInfo__tips--left-aligned",
           ].join(" ")}
+          style={{ fontSize: tipFontSize }}
         >
           {tips.map((tip, i) => (
             <Tip

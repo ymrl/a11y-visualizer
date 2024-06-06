@@ -36,6 +36,7 @@
     "landmark": "Landmark",
     "description": "Description",
     "heading": "Heading",
+    "ariaStatus": "WAI-ARIA Status",
     "warning": "Warning",
     "error": "Error"
   },

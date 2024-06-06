@@ -84,7 +84,7 @@ const Icon = ({ type }: { type: TipType }) => {
         <IoInformationCircle
           className="Tip__icon"
           role="img"
-          aria-label={t("tip.status")}
+          aria-label={t("tip.ariaStatus")}
         />
       );
   }

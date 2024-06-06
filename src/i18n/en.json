@@ -27,7 +27,8 @@
     "announcement": "Announcement",
     "announcementSecondsPerCharacter": "speed (seconds/char)",
     "announcementMaxSeconds": "Max seconds",
-    "liveRegionOpacityPercent": "Live region opacity (%)"
+    "liveRegionOpacityPercent": "Live region opacity (%)",
+    "tipFontSize": "Tip font size"
   },
   "tip": {
     "name": "Name",

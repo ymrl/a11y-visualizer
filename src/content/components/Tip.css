@@ -1,11 +1,11 @@
 .Tip {
-  padding: 2px 4px;
-  font: bold 10px/1 sans-serif;
+  padding: 0.2em 0.4em;
+  font: bold 1em/1 sans-serif;
   white-space: nowrap;
   display: inline-flex;
   flex-direction: row;
   align-items: center;
-  gap: 4px;
+  gap: 0.4em;
   color: #000;
   background-color: #fff;
 }

@@ -52,4 +52,38 @@ describe("globalTips()", () => {
       content: "div",
     });
   });
+
+  test("aria-busy", () => {
+    const element = document.createElement("div");
+    element.setAttribute("aria-busy", "true");
+    expect(globalTips(element)).toEqual([
+      { type: "ariaStatus", content: 'aria-busy="true"' },
+    ]);
+  });
+
+  test("aria-current", () => {
+    const element = document.createElement("div");
+    element.setAttribute("aria-current", "page");
+    expect(globalTips(element)).toEqual([
+      { type: "ariaStatus", content: 'aria-current="page"' },
+    ]);
+  });
+
+  test("aria-disabled", () => {
+    const element = document.createElement("button");
+    element.setAttribute("aria-disabled", "true");
+    expect(globalTips(element)).toEqual([
+      { type: "ariaStatus", content: 'aria-disabled="true"' },
+    ]);
+  });
+
+  test("aria-disabled on prohibited role", () => {
+    const element = document.createElement("div");
+    element.setAttribute("role", "article");
+    element.setAttribute("aria-disabled", "true");
+    const result = globalTips(element);
+    expect(result).toHaveLength(2);
+    expect(result.find((t) => t.type === "role")).toBeDefined();
+    expect(result.find((t) => t.type === "tagName")).toBeDefined();
+  });
 });

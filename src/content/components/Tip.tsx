@@ -7,6 +7,7 @@ import {
   IoCodeSlash,
   IoDocument,
   IoFlag,
+  IoInformationCircle,
   IoPricetag,
   IoWarning,
 } from "react-icons/io5";
@@ -76,6 +77,14 @@ const Icon = ({ type }: { type: TipType }) => {
           className="Tip__icon"
           role="img"
           aria-label={t("tip.error")}
+        />
+      );
+    case "ariaStatus":
+      return (
+        <IoInformationCircle
+          className="Tip__icon"
+          role="img"
+          aria-label={t("tip.status")}
         />
       );
   }

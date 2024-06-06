@@ -1,5 +1,6 @@
 :host {
   --accent-red: rgb(255, 75, 0);
+  --accent-red-darken: rgb(214, 64, 0);
   --accent-yellow: rgb(255, 241, 0);
   --accent-green: rgb(3, 175, 122);
   --accent-blue: rgb(0, 90, 255);

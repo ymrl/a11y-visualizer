@@ -20,6 +20,7 @@ export type TipType =
   | "landmark"
   | "description"
   | "level"
+  | "ariaStatus"
   | "warning"
   | "error";
 export type ElementTip = {

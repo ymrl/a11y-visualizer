@@ -10,35 +10,39 @@
   background-color: #fff;
 }
 .Tip--name {
-  background-color: rgb(119, 217, 168);
+  background-color: var(--base-green);
 }
 
 .Tip--role {
-  background-color: rgb(255, 202, 191);
+  background-color: var(--base-pink);
 }
 
 .Tip--tagName {
-  background-color: rgb(201, 172, 230);
+  background-color: var(--base-purple);
 }
 .Tip--landmark {
-  background-color: rgb(216, 242, 85);
+  background-color: var(--base-yellowgreen);
 }
 
 .Tip--description {
-  background-color: rgb(200, 200, 203);
+  background-color: var(--light-gray);
 }
 
 .Tip--level {
-  background-color: rgb(191, 228, 255);
+  background-color: var(--base-skyblue);
 }
 
 .Tip--warning {
-  background-color: rgb(255, 241, 0);
+  background-color: var(--accent-yellow);
 }
 
 .Tip--error {
-  background-color: rgb(214, 64, 0);
+  background-color: var(--accent-red-darken);
   color: #fff;
+}
+
+.Tip--ariaStatus {
+  background-color: var(--base-cream);
 }
 
 .Tip__icon {

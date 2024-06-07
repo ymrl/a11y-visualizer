@@ -57,7 +57,7 @@ describe("globalTips()", () => {
     const element = document.createElement("div");
     element.setAttribute("aria-busy", "true");
     expect(globalTips(element)).toEqual([
-      { type: "ariaStatus", content: 'aria-busy="true"' },
+      { type: "ariaStatus", content: "ariaStatus.aria-busy.true" },
     ]);
   });
 
@@ -65,7 +65,7 @@ describe("globalTips()", () => {
     const element = document.createElement("div");
     element.setAttribute("aria-current", "page");
     expect(globalTips(element)).toEqual([
-      { type: "ariaStatus", content: 'aria-current="page"' },
+      { type: "ariaStatus", content: "ariaStatus.aria-current.page" },
     ]);
   });
 
@@ -73,7 +73,7 @@ describe("globalTips()", () => {
     const element = document.createElement("button");
     element.setAttribute("aria-disabled", "true");
     expect(globalTips(element)).toEqual([
-      { type: "ariaStatus", content: 'aria-disabled="true"' },
+      { type: "ariaStatus", content: "ariaStatus.aria-disabled.true" },
     ]);
   });
 

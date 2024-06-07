@@ -9,6 +9,17 @@ const globalAriaStates = [
   // "aria-hidden",
 ] as const;
 
+const ariaStateValues: { [ariaState: string]: (string | null)[] } = {
+  "aria-busy": ["true", "false"],
+  "aria-current": ["true", "false", "page", "step", "location", "date", "time"],
+  "aria-checked": ["true", "false", "mixed", "undefined"],
+  "aria-disabled": ["true", "false"],
+  "aria-expanded": ["true", "false", "undefined"],
+  "aria-invalid": ["true", "false", "grammar", "spelling"],
+  "aria-pressed": ["true", "false", "mixed", "undefined"],
+  "aria-selected": ["true", "false", "undefined"],
+};
+
 const ariaStateRoles: { [ariaState: string]: KnownRole[] } = {
   "aria-checked": [
     "checkbox",
@@ -108,11 +119,11 @@ const ariaStateRoles: { [ariaState: string]: KnownRole[] } = {
 export const globalTips = (el: Element): ElementTip[] => {
   const result: ElementTip[] = [];
   const description = computeAccessibleDescription(el);
-  const roleAttr = el.getAttribute("role") || "";
+  const roleAttr = el.getAttribute("role");
   const role = getKnownRole(el);
+  const tagName = el.tagName.toLowerCase();
 
   if (roleAttr) {
-    const tagName = el.tagName.toLowerCase();
     result.push({ type: "tagName", content: tagName });
     result.push({ type: "role", content: roleAttr });
   }
@@ -120,10 +131,17 @@ export const globalTips = (el: Element): ElementTip[] => {
   for (const state of globalAriaStates) {
     const value = el.getAttribute(state);
     if (value) {
-      result.push({
-        type: "ariaStatus",
-        content: `ariaStatus.${state}.${value}`,
-      });
+      if (ariaStateValues[state].includes(value)) {
+        result.push({
+          type: "ariaStatus",
+          content: `ariaStatus.${state}.${value}`,
+        });
+      } else {
+        result.push({
+          type: "error",
+          content: `messages.invalidAriaValue`,
+        });
+      }
     }
   }
 
@@ -131,11 +149,55 @@ export const globalTips = (el: Element): ElementTip[] => {
     if (role && roles.includes(role)) {
       const ariaStateValue = el.getAttribute(ariaState);
       if (ariaStateValue) {
-        result.push({
-          type: "ariaStatus",
-          content: `ariaStatus.${ariaState}.${ariaStateValue}`,
-        });
+        if (ariaStateValues[ariaState].includes(ariaStateValue)) {
+          result.push({
+            type: "ariaStatus",
+            content: `ariaStatus.${ariaState}.${ariaStateValue}`,
+          });
+        } else {
+          result.push({
+            type: "error",
+            content: `messages.invalidAriaValue`,
+          });
+        }
       }
+    }
+  }
+
+  if (
+    tagName === "input" &&
+    (["checkbox", "radio"] as (string | null)[]).includes(
+      el.getAttribute("type"),
+    ) &&
+    !el.hasAttribute("aria-checked")
+  ) {
+    result.push({
+      type: "ariaStatus",
+      content: `ariaStatus.aria-checked.${
+        (el as HTMLInputElement).checked ? "true" : "false"
+      }`,
+    });
+  }
+
+  if (
+    [
+      "button",
+      "fieldset",
+      "optgroup",
+      "option",
+      "select",
+      "textarea",
+      "input",
+    ].includes(tagName)
+  ) {
+    if (
+      el.hasAttribute("disabled") ||
+      (el.closest("fieldset[disabled]") && !el.closest("legend"))
+    ) {
+      result.push({
+        type: "ariaStatus",
+        content: "ariaStatus.aria-disabled.true",
+      });
     }
   }
 

@@ -192,6 +192,19 @@ export const FormControl = () => (
           title: "Single Label",
           body: <label className="intentional-violation">Single Label</label>,
         },
+        {
+          title: "wrong aria-checked",
+          body: (
+            <label>
+              <input
+                className="intentional-violation"
+                type="checkbox"
+                aria-checked="hoge"
+              />{" "}
+              wrong aria-checked
+            </label>
+          ),
+        },
       ]}
     />
   </>

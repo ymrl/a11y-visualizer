@@ -86,4 +86,30 @@ describe("globalTips()", () => {
     expect(result.find((t) => t.type === "role")).toBeDefined();
     expect(result.find((t) => t.type === "tagName")).toBeDefined();
   });
+
+  test("checked checkbox", () => {
+    const element = document.createElement("input");
+    element.setAttribute("type", "checkbox");
+    element.checked = true;
+    expect(globalTips(element)).toEqual([
+      { type: "ariaStatus", content: "ariaStatus.aria-checked.true" },
+    ]);
+  });
+
+  test("unchecked checkbox", () => {
+    const element = document.createElement("input");
+    element.setAttribute("type", "checkbox");
+    element.checked = false;
+    expect(globalTips(element)).toEqual([
+      { type: "ariaStatus", content: "ariaStatus.aria-checked.false" },
+    ]);
+  });
+
+  test("disabled input", () => {
+    const element = document.createElement("input");
+    element.setAttribute("disabled", "");
+    expect(globalTips(element)).toEqual([
+      { type: "ariaStatus", content: "ariaStatus.aria-disabled.true" },
+    ]);
+  });
 });

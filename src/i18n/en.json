@@ -95,7 +95,8 @@
     "noControlForLabel": "No control for label",
     "noNameAttr": "No name attribute",
     "noRadioGroup": "No radiobutton group",
-    "noNameSection": "No name <section>"
+    "noNameSection": "No name <section>",
+    "invalidAriaValue": "Invalid WAI-ARIA Attribute Value"
   },
   "optionsPage": {
     "description": "Settings changed from the popup are saved per host of the web page, and will be applied to other pages on the same host. Changing settings here does not affect those values."

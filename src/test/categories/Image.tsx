@@ -162,6 +162,19 @@ export const Image = () => (
           ),
         },
         {
+          title: "role presentation",
+          body: (
+            <svg
+              width="100"
+              height="100"
+              viewBox="0 0 100 100"
+              role="presentation"
+            >
+              <circle cx="50" cy="50" r="40" fill="blue" />
+            </svg>
+          ),
+        },
+        {
           title: "inside link",
           body: (
             <a href="https://example.com">

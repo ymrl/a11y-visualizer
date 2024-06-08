@@ -1,6 +1,6 @@
 import { computeAccessibleName } from "dom-accessibility-api";
 import { ElementTip } from "../../types";
-import { getClosestByRoles, isAriaHidden } from "../index";
+import { isAriaHidden, isPresentationalChildren } from "../index";
 
 export const ImageSelectors = ["img", "svg", '[role="img"]'] as const;
 
@@ -15,9 +15,17 @@ export const imageTips = (el: Element): ElementTip[] => {
   const result: ElementTip[] = [];
   const tagName = el.tagName.toLowerCase();
   const roleAttr = el.getAttribute("role") || "";
-  if (isImage(el)) {
+  const hasPresentationRole =
+    roleAttr === "presentation" || roleAttr === "none";
+
+  if (tagName === "img" || roleAttr === "img") {
     const name = computeAccessibleName(el);
-    if (!name && !isAriaHidden(el) && roleAttr !== "presentation") {
+    if (
+      !name &&
+      !isAriaHidden(el) &&
+      !hasPresentationRole &&
+      !isPresentationalChildren(el)
+    ) {
       if (tagName === "img") {
         const hasAlt = el.hasAttribute("alt");
         if (hasAlt) {
@@ -29,34 +37,16 @@ export const imageTips = (el: Element): ElementTip[] => {
           result.push({ type: "error", content: "messages.noAltImage" });
         }
       } else {
-        const ancestorControl = getClosestByRoles(el, [
-          "link",
-          "button",
-          "checkbox",
-          "img",
-          "menuitemcheckbox",
-          "menuitemradio",
-          "meter",
-          "option",
-          "progressbar",
-          "radio",
-          "scrollbar",
-          "separator",
-          "slider",
-          "switch",
-          "tab",
-        ]);
-        const nameNotRequired = ["scrollbar", "separator", "tab"];
-        const ancestorName = ancestorControl
-          ? computeAccessibleName(ancestorControl)
-          : "";
-        if (!ancestorName && !nameNotRequired.includes(roleAttr)) {
-          result.push({ type: "error", content: "messages.noName" });
-        }
+        result.push({ type: "error", content: "messages.noName" });
       }
     }
-    if (tagName === "svg" && roleAttr === "") {
-      result.push({ type: "tagName", content: "svg" });
+  } else if (tagName === "svg") {
+    if (
+      !isAriaHidden(el) &&
+      !hasPresentationRole &&
+      !isPresentationalChildren(el)
+    ) {
+      result.push({ type: "warning", content: "messages.mayBeSkipped" });
     }
   }
   return result;

@@ -4,15 +4,16 @@ export const getClosestByRoles = (
   el: Element,
   roles: KnownRole[],
 ): Element | null => {
+  const role = getKnownRole(el);
+  if (role) {
+    if (roles.includes(role)) {
+      return el;
+    }
+  }
+
   const parent = el.parentElement;
   if (!parent) {
     return null;
-  }
-  const role = getKnownRole(parent);
-  if (role) {
-    if (roles.includes(role)) {
-      return parent;
-    }
   }
   return getClosestByRoles(parent, roles);
 };

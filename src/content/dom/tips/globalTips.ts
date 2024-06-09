@@ -200,6 +200,15 @@ export const globalTips = (el: Element): ElementTip[] => {
       });
     }
   }
+  if (tagName === "summary" && el.matches("details > summary:first-child")) {
+    const details = el.closest("details") as HTMLDetailsElement | null;
+    if (details) {
+      result.push({
+        type: "ariaStatus",
+        content: `ariaStatus.aria-expanded.${details.open ? "true" : "false"}`,
+      });
+    }
+  }
 
   if (description) {
     result.push({ type: "description", content: description });

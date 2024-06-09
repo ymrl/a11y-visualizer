@@ -7,6 +7,7 @@ import manifest from "./manifest.firefox.json";
 export default defineConfig({
   plugins: [react(), crx({ manifest, browser: "firefox" })],
   build: {
+    target: ["es2022", "firefox109"],
     outDir: "dist-firefox",
   },
 });

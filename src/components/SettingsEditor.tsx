@@ -173,7 +173,7 @@ export const SettingsEditor = ({
               handleChangeCheckbox("interactiveMode", e);
             }}
             checked={settings.interactiveMode}
-            disabled={disabled}
+            disabled={disabled || !settings.accessibilityInfo}
           >
             <span className="text-sm">{t("settings.interactiveMode")}</span>
           </Checkbox>
@@ -183,7 +183,11 @@ export const SettingsEditor = ({
                 handleChangeCheckbox("hideTips", e);
               }}
               checked={settings.hideTips}
-              disabled={disabled || !settings.interactiveMode}
+              disabled={
+                disabled ||
+                !settings.accessibilityInfo ||
+                !settings.interactiveMode
+              }
             >
               <span className="text-sm">{t("settings.hideLabels")}</span>
             </Checkbox>

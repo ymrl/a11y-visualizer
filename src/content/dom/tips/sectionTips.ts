@@ -50,14 +50,16 @@ const hasSectionRole = (el: Element): boolean =>
 const hasSectionTag = (el: Element): boolean =>
   (sectionTags as readonly string[]).includes(el.tagName.toLowerCase());
 
-export const sectionTips = (el: Element): ElementTip[] => {
+export const sectionTips = (
+  el: Element,
+  name: string = computeAccessibleName(el),
+): ElementTip[] => {
   const result: ElementTip[] = [];
   const role = el.getAttribute("role");
   if (hasSectionRole(el)) {
     if (role) result.push({ type: "landmark", content: role });
   } else if (hasSectionTag(el)) {
     const tagName = el.tagName.toLowerCase();
-    const name = computeAccessibleName(el);
     if (tagName === "section") {
       if (name) {
         result.push({ type: "landmark", content: "region" });

@@ -23,7 +23,10 @@ const hasHeadingRole = (el: Element): boolean =>
 export const isHeading = (el: Element): boolean =>
   hasHeadingRole(el) || hasHeadingTag(el);
 
-export const headingTips = (el: Element): ElementTip[] => {
+export const headingTips = (
+  el: Element,
+  name: string = computeAccessibleName(el),
+): ElementTip[] => {
   const result: ElementTip[] = [];
   const tagName = el.tagName.toLowerCase();
   const hidden = isAriaHidden(el);
@@ -44,7 +47,6 @@ export const headingTips = (el: Element): ElementTip[] => {
     }
   }
   if (hasTag || hasRole) {
-    const name = computeAccessibleName(el);
     if (!name && !hidden) {
       result.push({ type: "error", content: "messages.noName" });
     }

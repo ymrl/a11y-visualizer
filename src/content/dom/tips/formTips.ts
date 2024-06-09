@@ -69,7 +69,10 @@ export const isFieldset = (el: Element): boolean =>
 export const isFormControl = (el: Element): boolean =>
   hasInputRole(el) || hasInputTag(el);
 
-export const formTips = (el: Element): ElementTip[] => {
+export const formTips = (
+  el: Element,
+  name: string = computeAccessibleName(el),
+): ElementTip[] => {
   const result: ElementTip[] = [];
   const tagName = el.tagName.toLowerCase();
   const typeAttr = el.getAttribute("type");
@@ -77,7 +80,6 @@ export const formTips = (el: Element): ElementTip[] => {
   const hasRole = hasInputRole(el);
 
   if (hasTag || hasRole) {
-    const name = computeAccessibleName(el);
     if (!name && !isAriaHidden(el)) {
       result.push({ type: "error", content: "messages.noName" });
     }

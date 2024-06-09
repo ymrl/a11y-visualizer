@@ -28,11 +28,13 @@ export const isButton = (el: Element): boolean => {
   return hasButtonTag || hasButtonRole;
 };
 
-export const buttonTips = (el: Element): ElementTip[] => {
+export const buttonTips = (
+  el: Element,
+  name: string = computeAccessibleName(el),
+): ElementTip[] => {
   const result: ElementTip[] = [];
 
   if (isButton(el)) {
-    const name = computeAccessibleName(el);
     if (!name && !isAriaHidden(el)) {
       result.push({ type: "error", content: "messages.noName" });
     }

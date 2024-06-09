@@ -6,6 +6,7 @@ import {
   initialSettings,
   loadHostSettings,
   saveHostSettings,
+  resetHostSettings,
 } from "../settings";
 import { useLang } from "../useLang";
 import {
@@ -143,7 +144,7 @@ export const Popup = () => {
                 dark:hover:enabled:bg-teal-800
                 disabled:text-zinc-400 disabled:cursor-not-allowed"
               onClick={async () => {
-                await chrome.storage.local.remove(host);
+                await resetHostSettings(host);
                 const defaultSettings = await loadSettings();
                 sendMessageToActiveTabs<SettingsMessage>({
                   type: "updateHostSettings",

@@ -1,6 +1,6 @@
 import { Settings } from "./types";
 import { DEFAULT_SETTING_KEY, initialSettings } from "./constatns";
-import { getAsync, setAsync } from "../chrome/localStorage";
+import { getAsync, removeAsync, setAsync } from "../chrome/localStorage";
 
 export const loadDefaultSettings = async (): Promise<[Settings, boolean]> => {
   return await getAsync(DEFAULT_SETTING_KEY, initialSettings);
@@ -22,4 +22,12 @@ export const saveDefaultSettings = async (settings: Settings) => {
 
 export const saveHostSettings = async (host: string, settings: Settings) => {
   setAsync(host, settings);
+};
+
+export const resetHostSettings = async (host: string) => {
+  removeAsync(host);
+};
+
+export const resetDefaultSettings = async () => {
+  await removeAsync(DEFAULT_SETTING_KEY);
 };

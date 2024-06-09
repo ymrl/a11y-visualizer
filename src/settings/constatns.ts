@@ -8,7 +8,7 @@ export const initialSettings: Settings = {
   image: true,
   formControl: true,
   link: false,
-  button: false,
+  button: true,
   heading: true,
   ariaHidden: true,
   section: true,
@@ -17,7 +17,8 @@ export const initialSettings: Settings = {
   showLiveRegions: true,
   announcementMaxSeconds: 10,
   announcementSecondsPerCharacter: 0.5,
-  tipOpacityPercent: 50,
+  tipOpacityPercent: 30,
   liveRegionOpacityPercent: 50,
   tipFontSize: 10,
+  liveRegionFontSize: 48,
 } as const;

@@ -28,7 +28,8 @@
     "announcementSecondsPerCharacter": "スピード（秒/文字）",
     "announcementMaxSeconds": "最長の長さ（秒）",
     "liveRegionOpacityPercent": "ライブリージョンの不透明度（%）",
-    "tipFontSize": "チップの文字サイズ"
+    "tipFontSize": "チップの文字サイズ",
+    "liveRegionFontSize": "ライブリージョンの文字サイズ"
   },
   "tip": {
     "name": "名前",
@@ -106,6 +107,11 @@
     "invalidAriaValue": "WAI-ARIA属性値が不正"
   },
   "optionsPage": {
-    "description": "拡張機能のポップアップから設定を変更すると、閲覧中のWebページのホストごとに設定が保存され、同じホストのWebページに対して適用されます。この画面で設定を変更しても、それらの設定値は変更されません。"
+    "description": "拡張機能のポップアップから設定を変更すると、閲覧中のWebページのホストごとに設定が保存され、同じホストのWebページに対して適用されます。この画面で設定を変更しても、それらの設定値は変更されません。",
+    "resetSettings": "設定のリセット",
+    "resetSettingsConfirm": "設定をデフォルトの内容に戻しますか？（ホストごとに保存されている設定には影響しません）",
+    "resetSettingsConfirmYes": "はい",
+    "resetSettingsConfirmNo": "いいえ",
+    "resetSettingsSuccess": "設定をリセットしました"
   }
 }

@@ -279,6 +279,27 @@ export const SettingsEditor = ({
             disabled={disabled || !settings.showLiveRegions}
           />
         </div>
+        <label className="flex flex-row gap-2 items-center justify-between">
+          <span className="shrink text-sm">
+            {t("settings.liveRegionFontSize")}
+          </span>
+          <input
+            className="border-zinc-400 border-solid border rounded-md
+                  py-0.5 px-1 text-sm text-right w-14 h-6
+                  bg-white dark:bg-zinc-800
+                  text-zinc-800 dark:text-zinc-300
+                  disabled:opacity-60
+                  "
+            type="number"
+            value={settings.liveRegionFontSize}
+            onChange={(e) => {
+              handleChangeNumber("liveRegionFontSize", e);
+            }}
+            min={8}
+            step={1}
+            disabled={disabled || !settings.showLiveRegions}
+          />
+        </label>
       </div>
     </form>
   );

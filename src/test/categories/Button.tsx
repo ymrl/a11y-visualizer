@@ -117,6 +117,28 @@ export const Button = () => (
           title: 'input type="image" with alt',
           body: <input type="image" src={buttonImg} alt="Click Me" />,
         },
+        {
+          title: "summary",
+          body: (
+            <details>
+              <summary className={buttonClassNames}>Click Me</summary>
+              <p>Details</p>
+            </details>
+          ),
+        },
+        {
+          title: "summary without details",
+          body: <summary className={buttonClassNames}>Click Me</summary>,
+        },
+        {
+          title: "summary without name",
+          body: (
+            <details>
+              <summary />
+              <p>Details</p>
+            </details>
+          ),
+        },
       ]}
     />
   </>

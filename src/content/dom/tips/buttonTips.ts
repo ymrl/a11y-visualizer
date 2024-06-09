@@ -5,6 +5,7 @@ import { isFocusable } from "../isFocusable";
 
 export const ButtonSelectors = [
   "button",
+  "details > summary:first-child",
   '[role="button"]',
   'input[type="button"]',
   'input[type="submit"]',
@@ -17,6 +18,7 @@ export const isButton = (el: Element): boolean => {
   const typeAttr = el.getAttribute("type");
   const hasButtonTag =
     tagName === "button" ||
+    (tagName === "summary" && el.matches("details > summary:first-child")) ||
     (tagName === "input" &&
       !!typeAttr &&
       ["button", "submit", "reset", "image"].includes(typeAttr));

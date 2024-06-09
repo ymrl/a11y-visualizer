@@ -112,4 +112,26 @@ describe("globalTips()", () => {
       { type: "ariaStatus", content: "ariaStatus.aria-disabled.true" },
     ]);
   });
+
+  test("details > summary:first-child open", () => {
+    const element = document.createElement("summary");
+    const details = document.createElement("details");
+    details.appendChild(element);
+    document.body.appendChild(details);
+    details.open = true;
+    expect(globalTips(element)).toEqual([
+      { type: "ariaStatus", content: "ariaStatus.aria-expanded.true" },
+    ]);
+  });
+
+  test("details > summary:first-child closed", () => {
+    const element = document.createElement("summary");
+    const details = document.createElement("details");
+    details.appendChild(element);
+    document.body.appendChild(details);
+    details.open = false;
+    expect(globalTips(element)).toEqual([
+      { type: "ariaStatus", content: "ariaStatus.aria-expanded.false" },
+    ]);
+  });
 });

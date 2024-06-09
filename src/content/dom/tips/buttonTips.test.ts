@@ -209,4 +209,25 @@ describe("buttonTips()", () => {
     const result = buttonTips(element);
     expect(result).toHaveLength(0);
   });
+
+  test("summary", () => {
+    const element = document.createElement("summary");
+    const details = document.createElement("details");
+    element.textContent = "Hello";
+    details.appendChild(element);
+    document.body.appendChild(details);
+    const result = buttonTips(element);
+    expect(result).toHaveLength(0);
+  });
+
+  test("summary without name", () => {
+    const element = document.createElement("summary");
+    const details = document.createElement("details");
+    details.appendChild(element);
+    document.body.appendChild(details);
+    const result = buttonTips(element);
+    expect(result).toHaveLength(1);
+    expect(result[0].type).toBe("error");
+    expect(result[0].content).toBe("messages.noName");
+  });
 });

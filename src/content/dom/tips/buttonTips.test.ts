@@ -47,6 +47,24 @@ describe("isButton()", () => {
     element.setAttribute("role", "button");
     expect(isButton(element)).toBe(true);
   });
+
+  test("summary", () => {
+    const element = document.createElement("summary");
+    const details = document.createElement("details");
+    details.appendChild(element);
+    expect(isButton(element)).toBe(true);
+  });
+
+  test("summary without details", () => {
+    const element = document.createElement("summary");
+    expect(isButton(element)).toBe(false);
+  });
+
+  test("role = menuitem", () => {
+    const element = document.createElement("div");
+    element.setAttribute("role", "menuitem");
+    expect(isButton(element)).toBe(true);
+  });
 });
 
 describe("buttonTips()", () => {

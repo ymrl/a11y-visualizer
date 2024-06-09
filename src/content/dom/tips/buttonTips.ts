@@ -7,6 +7,7 @@ export const ButtonSelectors = [
   "button",
   "details > summary:first-child",
   '[role="button"]',
+  '[role="menuitem"]',
   'input[type="button"]',
   'input[type="submit"]',
   'input[type="reset"]',
@@ -22,7 +23,8 @@ export const isButton = (el: Element): boolean => {
     (tagName === "input" &&
       !!typeAttr &&
       ["button", "submit", "reset", "image"].includes(typeAttr));
-  const hasButtonRole = el.getAttribute("role") === "button";
+  const role = el.getAttribute("role");
+  const hasButtonRole = role === "button" || role === "menuitem";
   return hasButtonTag || hasButtonRole;
 };
 

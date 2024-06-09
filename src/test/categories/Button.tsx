@@ -55,6 +55,27 @@ export const Button = () => (
           ),
         },
         {
+          title: "image in button",
+          body: (
+            <button>
+              <img src={buttonImg} alt="Click Me" width={75} height={40} />
+            </button>
+          ),
+        },
+        {
+          title: "image in button without alt",
+          body: (
+            <button>
+              <img
+                src={buttonImg}
+                width={75}
+                height={40}
+                className="intentional-violation"
+              />
+            </button>
+          ),
+        },
+        {
           title: 'input type="button"',
           body: (
             <input

@@ -5,3 +5,4 @@ export * from "./isFocusable";
 export * from "./isAriaHidden";
 export * from "./getClosestByRoles";
 export * from "./getKnownRole";
+export * from "./isPresentationalChildren";

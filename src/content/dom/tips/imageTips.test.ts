@@ -85,20 +85,27 @@ describe("imageTips()", () => {
     const svg = document.createElement("svg");
     link.appendChild(svg);
     document.body.appendChild(link);
-    expect(imageTips(svg)).toEqual([{ type: "tagName", content: "svg" }]);
+    expect(imageTips(svg)).toEqual([
+      { type: "warning", content: "messages.mayBeSkipped" },
+    ]);
+  });
+
+  test("svg inside button", () => {
+    const button = document.createElement("button");
+    const svg = document.createElement("svg");
+    button.appendChild(svg);
+    document.body.appendChild(button);
+    expect(imageTips(svg)).toHaveLength(0);
   });
 
   test("svg", () => {
     const element = document.createElement("svg");
     document.body.appendChild(element);
     const result = imageTips(element);
-    expect(result.find((e) => e.type === "tagName")).toEqual({
-      type: "tagName",
-      content: "svg",
-    });
-    expect(result.find((e) => e.type === "error")).toEqual({
-      type: "error",
-      content: "messages.noName",
+    expect(result).toHaveLength(1);
+    expect(result.find((e) => e.type === "warning")).toEqual({
+      type: "warning",
+      content: "messages.mayBeSkipped",
     });
   });
 
@@ -107,10 +114,6 @@ describe("imageTips()", () => {
     element.setAttribute("aria-hidden", "true");
     document.body.appendChild(element);
     const result = imageTips(element);
-    expect(result).toHaveLength(1);
-    expect(
-      result.find((e) => e.type === "tagName" && e.content === "svg"),
-    ).toBeDefined();
-    expect(result.find((e) => e.type === "error")).toBeUndefined();
+    expect(result).toHaveLength(0);
   });
 });

@@ -6,6 +6,21 @@ describe("getClosestRoles", () => {
     document.body.innerHTML = "";
   });
 
+  test("element itself with button role", () => {
+    const element = document.createElement("div");
+    element.setAttribute("role", "button");
+    document.body.appendChild(element);
+    const result = getClosestByRoles(element, ["button", "link"]);
+    expect(result).toBe(element);
+  });
+
+  test("button element itself", () => {
+    const element = document.createElement("button");
+    document.body.appendChild(element);
+    const result = getClosestByRoles(element, ["button", "link"]);
+    expect(result).toBe(element);
+  });
+
   test("single role attribute", () => {
     const parent = document.createElement("div");
     parent.setAttribute("role", "button");

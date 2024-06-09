@@ -85,6 +85,7 @@
   "messages": {
     "noAltImage": "No alt attribute",
     "emptyAltImage": "Image has alt=\"\"",
+    "mayBeSkipped": "May be skipped",
     "noName": "No name (label)",
     "noHref": "No href attribute",
     "emptyHeading": "Empty heading",

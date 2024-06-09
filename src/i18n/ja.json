@@ -91,6 +91,7 @@
   "messages": {
     "noAltImage": "alt属性のない画像",
     "emptyAltImage": "alt=\"\"の画像",
+    "mayBeSkipped": "読み飛ばされる可能性あり",
     "noName": "名前（ラベル）なし",
     "noHref": "href属性なし",
     "emptyHeading": "空の見出し",

@@ -18,3 +18,7 @@ export const setAsync = async <T extends object>(
 ): Promise<void> => {
   await chrome.storage.local.set({ [key]: data });
 };
+
+export const removeAsync = async (key: string): Promise<void> => {
+  await chrome.storage.local.remove(key);
+};

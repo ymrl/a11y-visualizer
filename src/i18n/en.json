@@ -28,7 +28,8 @@
     "announcementSecondsPerCharacter": "speed (seconds/char)",
     "announcementMaxSeconds": "Max seconds",
     "liveRegionOpacityPercent": "Live region opacity (%)",
-    "tipFontSize": "Tip font size"
+    "tipFontSize": "Tip font size",
+    "liveRegionFontSize": "Live region font size"
   },
   "tip": {
     "name": "Name",
@@ -100,6 +101,11 @@
     "invalidAriaValue": "Invalid WAI-ARIA Attribute Value"
   },
   "optionsPage": {
-    "description": "Settings changed from the popup are saved per host of the web page, and will be applied to other pages on the same host. Changing settings here does not affect those values."
+    "description": "Settings changed from the popup are saved per host of the web page, and will be applied to other pages on the same host. Changing settings here does not affect those values.",
+    "resetSettings": "Reset settings to defaults",
+    "resetSettingsConfirm": "Reset all settings to default values? (This action does not affect settings saved per host.)",
+    "resetSettingsConfirmYes": "Yes",
+    "resetSettingsConfirmNo": "No",
+    "resetSettingsSuccess": "Settings has been reset to defaults."
   }
 }

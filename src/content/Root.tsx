@@ -6,8 +6,13 @@ import { injectRoot } from "./injectRoot";
 import { Announcements } from "./components/Announcements";
 import { SettingsContext } from "./components/SettingsProvider";
 import { useLiveRegion } from "./hooks/useLiveRegion";
+import { useDebouncedCallback } from "./hooks/useDebouncedCallback";
 
-export const Root = ({ parent }: { parent: Element }) => {
+export const Root = ({
+  parentRef,
+}: {
+  parentRef: React.RefObject<Element>;
+}) => {
   const [metaList, setMetaList] = React.useState<ElementMeta[]>([]);
   const [width, setWidth] = React.useState<number>(0);
   const [height, setHeight] = React.useState<number>(0);
@@ -59,47 +64,54 @@ export const Root = ({ parent }: { parent: Element }) => {
     popoversRef.current = Array.from(popovers);
   }, []);
 
-  const updateInfo = React.useCallback(() => {
-    injectToFrames(parent);
-    observeLiveRegion(parent);
-    if (settings.accessibilityInfo) {
-      injectToDialogs(parent);
-      const { elements, rootHeight, rootWidth } = collectElements(
-        parent,
-        [
-          containerRef.current,
-          announcementsRef.current,
-          ...popoversRef.current,
-          ...dialogsRef.current,
-        ].filter((el): el is Element => !!el),
-        settings,
-      );
+  const updateInfo = useDebouncedCallback(
+    () => {
+      if (!parentRef.current) return;
+      injectToFrames(parentRef.current);
+      observeLiveRegion(parentRef.current);
+      if (settings.accessibilityInfo) {
+        injectToDialogs(parentRef.current);
+        const { elements, rootHeight, rootWidth } = collectElements(
+          parentRef.current,
+          [
+            containerRef.current,
+            announcementsRef.current,
+            ...popoversRef.current,
+            ...dialogsRef.current,
+          ].filter((el): el is Element => !!el),
+          settings,
+        );
 
-      setMetaList(elements);
-      setWidth(rootWidth);
-      setHeight(rootHeight);
-    } else {
-      setWidth(0);
-      setHeight(0);
-      setMetaList([]);
-    }
-  }, [injectToFrames, parent, settings, observeLiveRegion, injectToDialogs]);
+        setMetaList(elements);
+        setWidth(rootWidth);
+        setHeight(rootHeight);
+      } else {
+        setWidth(0);
+        setHeight(0);
+        setMetaList([]);
+      }
+    },
+    200,
+    [injectToFrames, settings, observeLiveRegion, injectToDialogs],
+  );
 
   React.useEffect(() => {
     updateInfo();
     const observer = new MutationObserver(() => {
       updateInfo();
     });
-    observer.observe(parent, {
-      subtree: true,
-      childList: true,
-      attributes: true,
-    });
+    if (parentRef.current) {
+      observer.observe(parentRef.current, {
+        subtree: true,
+        childList: true,
+        attributes: true,
+      });
+    }
     return () => observer.disconnect();
-  }, [updateInfo, parent]);
+  }, [parentRef, updateInfo]);
   return (
     <section
-      aria-label={`Accessibility Visualizer <${parent.tagName.toLowerCase()}>`}
+      aria-label={`Accessibility Visualizer <${parentRef.current?.tagName?.toLowerCase()}>`}
       aria-hidden="true"
       ref={containerRef}
     >

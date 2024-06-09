@@ -9,11 +9,12 @@ const mount = (w: Window, parent: Element) => {
   const rootElement = w.document.createElement("div");
   parent.append(rootElement);
   const root = ReactDOM.createRoot(rootElement);
+  const parentRef = { current: parent };
   const render = (settings: Settings) => {
     root.render(
       <React.StrictMode>
         <SettingsProvider settings={settings}>
-          <Root parent={parent} />
+          <Root parentRef={parentRef} />
         </SettingsProvider>
       </React.StrictMode>,
     );

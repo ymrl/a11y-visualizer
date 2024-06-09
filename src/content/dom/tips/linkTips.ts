@@ -14,7 +14,10 @@ const hasLinkRole = (el: Element): boolean =>
 const hasLinkTag = (el: Element): boolean =>
   ["a", "area"].includes(el.tagName.toLowerCase());
 
-export const linkTips = (el: Element): ElementTip[] => {
+export const linkTips = (
+  el: Element,
+  name: string = computeAccessibleName(el),
+): ElementTip[] => {
   const result: ElementTip[] = [];
   const hidden = isAriaHidden(el);
   const hasTag = hasLinkTag(el);
@@ -22,7 +25,6 @@ export const linkTips = (el: Element): ElementTip[] => {
   const href = el.getAttribute("href");
 
   if (hasTag || hasRole) {
-    const name = computeAccessibleName(el);
     if (!name && (hasRole || href) && !hidden) {
       result.push({ type: "error", content: "messages.noName" });
     }

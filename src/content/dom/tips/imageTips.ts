@@ -11,7 +11,10 @@ export const isImage = (el: Element): boolean => {
   );
 };
 
-export const imageTips = (el: Element): ElementTip[] => {
+export const imageTips = (
+  el: Element,
+  name: string = computeAccessibleName(el),
+): ElementTip[] => {
   const result: ElementTip[] = [];
   const tagName = el.tagName.toLowerCase();
   const roleAttr = el.getAttribute("role") || "";
@@ -19,7 +22,6 @@ export const imageTips = (el: Element): ElementTip[] => {
     roleAttr === "presentation" || roleAttr === "none";
 
   if (tagName === "img" || roleAttr === "img") {
-    const name = computeAccessibleName(el);
     if (
       !name &&
       !isAriaHidden(el) &&

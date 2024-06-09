@@ -91,13 +91,13 @@ export const collectElements = (
             const nameTips: ElementTip[] = name
               ? [{ type: "name", content: name }]
               : [];
-            const images = imageTips(el);
-            const forms = formTips(el);
-            const buttons = buttonTips(el);
-            const links = linkTips(el);
-            const heading = headingTips(el);
+            const images = imageTips(el, name);
+            const forms = formTips(el, name);
+            const buttons = buttonTips(el, name);
+            const links = linkTips(el, name);
+            const heading = headingTips(el, name);
             const ariaHidden = ariaHiddenTips(el);
-            const section = sectionTips(el);
+            const section = sectionTips(el, name);
             const global = globalTips(el);
 
             return {

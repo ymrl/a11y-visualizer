@@ -1,110 +1,133 @@
-import { expect, test } from "vitest";
+import { afterEach, describe, expect, test } from "vitest";
 import { isHidden } from "./isHidden";
-import { JSDOM } from "jsdom";
 
-const dom = new JSDOM(`<!DOCTYPE html>
-<html>
-  <head>
-    <style>
+describe("isHidden", () => {
+  afterEach(() => {
+    document.body.innerHTML = "";
+    document.head.innerHTML = "";
+  });
+
+  test("no parent", () => {
+    const div = document.createElement("div");
+    expect(isHidden(div)).toBe(true);
+  });
+
+  test("body", () => {
+    expect(isHidden(document.body)).toBe(false);
+  });
+
+  test("body > div", () => {
+    const div = document.createElement("div");
+    document.body.appendChild(div);
+    expect(isHidden(div)).toBe(false);
+  });
+
+  test("body > div > div", () => {
+    const div = document.createElement("div");
+    const child = document.createElement("div");
+    div.appendChild(child);
+    document.body.appendChild(div);
+    expect(isHidden(child)).toBe(false);
+  });
+
+  test("body > div.display-none", () => {
+    const style = document.createElement("style");
+    style.textContent = `
       .display-none {
         display: none;
       }
+    `;
+    document.head.appendChild(style);
+    const div = document.createElement("div");
+    div.classList.add("display-none");
+    document.body.appendChild(div);
+    expect(isHidden(div)).toBe(true);
+  });
+
+  test("body > div.display-none > div", () => {
+    const style = document.createElement("style");
+    style.textContent = `
+      .display-none {
+        display: none;
+      }
+    `;
+    document.head.appendChild(style);
+    const div = document.createElement("div");
+    div.classList.add("display-none");
+    const child = document.createElement("div");
+    div.appendChild(child);
+    document.body.appendChild(div);
+    expect(isHidden(child)).toBe(true);
+  });
+
+  test("body > div.visibility-hidden", () => {
+    const style = document.createElement("style");
+    style.textContent = `
       .visibility-hidden {
         visibility: hidden;
       }
-    </style>
-  </head>
-  <body>
-    <div id="body-child">
-      <div id="body-grand-child"></div> 
-    </div>
-    <div id="display-none" class="display-none">
-      <div id="display-none-child"></div>
-    </div>
-    <div id="visibility-hidden" class="visibility-hidden">
-      <div id="visibility-hidden-child"></div>
-    </div>
-    <div id="attribute-hidden" hidden>
-      <div id="attribute-hidden-child"></div>
-    </div>
+    `;
+    document.head.appendChild(style);
+    const div = document.createElement("div");
+    div.classList.add("visibility-hidden");
+    document.body.appendChild(div);
+    expect(isHidden(div)).toBe(true);
+  });
 
-    <details id="details">
-      <summary id="details-summary">Summary</summary>
-      <div id="details-content">Details</div>
-    </details>
+  test("body > div.visibility-hidden > div", () => {
+    const style = document.createElement("style");
+    style.textContent = `
+      .visibility-hidden {
+        visibility: hidden;
+      }
+    `;
+    document.head.appendChild(style);
+    const div = document.createElement("div");
+    div.classList.add("visibility-hidden");
+    const child = document.createElement("div");
+    div.appendChild(child);
+    document.body.appendChild(div);
+    expect(isHidden(child)).toBe(true);
+  });
 
-    <details id="details-open" open>
-      <summary id="details-open-summary">Summary</summary>
-      <div id="details-open-content">Details</div>
-    </details>
-  </body>
-`);
+  test("body > div[hidden]", () => {
+    const div = document.createElement("div");
+    div.hidden = true;
+    document.body.appendChild(div);
+    expect(isHidden(div)).toBe(true);
+  });
 
-test("isHidden", async () => {
-  const bodyChild = dom.window.document.getElementById("body-child");
-  expect(bodyChild).not.toBeNull();
-  bodyChild && expect(isHidden(bodyChild)).toBe(false);
+  test("body > div[hidden] > div", () => {
+    const div = document.createElement("div");
+    div.hidden = true;
+    const child = document.createElement("div");
+    div.appendChild(child);
+    document.body.appendChild(div);
+    expect(isHidden(child)).toBe(true);
+  });
 
-  const bodyGrandChild = dom.window.document.getElementById("body-grand-child");
-  expect(bodyGrandChild).not.toBeNull();
-  bodyGrandChild && expect(isHidden(bodyGrandChild)).toBe(false);
+  test("body > details > summary + div", () => {
+    const details = document.createElement("details");
+    const summary = document.createElement("summary");
+    const content = document.createElement("div");
+    details.appendChild(summary);
+    details.appendChild(content);
+    document.body.appendChild(details);
+    expect(isHidden(details)).toBe(false);
+    expect(isHidden(summary)).toBe(false);
+    expect(isHidden(content)).toBe(true);
+  });
 
-  const displayNone = dom.window.document.getElementById("display-none");
-  expect(displayNone).not.toBeNull();
-  displayNone && expect(isHidden(displayNone)).toBe(true);
-
-  const displayNoneChild =
-    dom.window.document.getElementById("display-none-child");
-  expect(displayNoneChild).not.toBeNull();
-  displayNoneChild && expect(isHidden(displayNoneChild)).toBe(true);
-
-  const visibilityHidden =
-    dom.window.document.getElementById("visibility-hidden");
-  expect(visibilityHidden).not.toBeNull();
-  visibilityHidden && expect(isHidden(visibilityHidden)).toBe(true);
-
-  const visibilityHiddenChild = dom.window.document.getElementById(
-    "visibility-hidden-child",
-  );
-  expect(visibilityHiddenChild).not.toBeNull();
-  visibilityHiddenChild && expect(isHidden(visibilityHiddenChild)).toBe(true);
-
-  const attributeHidden =
-    dom.window.document.getElementById("attribute-hidden");
-  expect(attributeHidden).not.toBeNull();
-  attributeHidden && expect(isHidden(attributeHidden)).toBe(true);
-
-  const attributeHiddenChild = dom.window.document.getElementById(
-    "attribute-hidden-child",
-  );
-  expect(attributeHiddenChild).not.toBeNull();
-  attributeHiddenChild && expect(isHidden(attributeHiddenChild)).toBe(true);
-
-  const details = dom.window.document.getElementById("details");
-  expect(details).not.toBeNull();
-  details && expect(isHidden(details)).toBe(false);
-
-  const summary = dom.window.document.getElementById("details-summary");
-  expect(summary).not.toBeNull();
-  summary && expect(isHidden(summary)).toBe(false);
-
-  const detailsContent = dom.window.document.getElementById("details-content");
-  expect(detailsContent).not.toBeNull();
-  detailsContent && expect(isHidden(detailsContent)).toBe(true);
-
-  const detailsOpen = dom.window.document.getElementById("details-open");
-  expect(detailsOpen).not.toBeNull();
-  detailsOpen && expect(isHidden(detailsOpen)).toBe(false);
-
-  const detailsOpenSummary = dom.window.document.getElementById(
-    "details-open-summary",
-  );
-  expect(detailsOpenSummary).not.toBeNull();
-  detailsOpenSummary && expect(isHidden(detailsOpenSummary)).toBe(false);
-
-  const detailsOpenContent = dom.window.document.getElementById(
-    "details-open-content",
-  );
-  expect(detailsOpenContent).not.toBeNull();
-  detailsOpenContent && expect(isHidden(detailsOpenContent)).toBe(false);
+  test("body > details[open] > summary + div", () => {
+    const details = document.createElement("details");
+    details.open = true;
+    const summary = document.createElement("summary");
+    const content = document.createElement("div");
+    details.appendChild(summary);
+    details.appendChild(content);
+    document.body.appendChild(details);
+    expect(isHidden(details)).toBe(false);
+    expect(isHidden(summary)).toBe(false);
+    expect(isHidden(content)).toBe(false);
+  });
 });

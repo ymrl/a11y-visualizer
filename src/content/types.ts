@@ -1,6 +1,5 @@
 export type ElementMeta = {
   tips: ElementTip[];
-  hidden: boolean;
   category: Category;
 } & ElementPosition;
 

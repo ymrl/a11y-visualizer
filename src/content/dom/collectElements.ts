@@ -84,6 +84,7 @@ export const collectElements = (
     rootWidth,
     elements: selector
       ? [...root.querySelectorAll(getSelector(settings))]
+          .filter((el) => !isHidden(el))
           .map((el: Element) => {
             if (excludes.some((exclude: Element) => exclude.contains(el)))
               return null;
@@ -102,7 +103,6 @@ export const collectElements = (
 
             return {
               ...getElementPosition(el, w, offsetX, offsetY),
-              hidden: isHidden(el),
               category: getElementCategory(el),
               tips: [
                 ...heading,

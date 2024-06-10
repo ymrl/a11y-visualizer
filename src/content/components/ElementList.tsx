@@ -24,8 +24,7 @@ export const ElementList = ({
       >
         {list.map((meta, i) => {
           return (
-            meta &&
-            !meta.hidden && (
+            meta && (
               <ElementInfo
                 key={i}
                 meta={meta}

@@ -24,6 +24,8 @@ export const Root = ({
   const popoversRef = React.useRef<Element[]>([]);
   const { announcements, observeLiveRegion } = useLiveRegion();
 
+  const [outdated, setOutDated] = React.useState(false);
+
   const injectToFrames = React.useCallback((el: Element) => {
     const frames = [...el.querySelectorAll("iframe, frame")]
       .map((f) => (f as HTMLFrameElement | HTMLIFrameElement).contentWindow)
@@ -41,6 +43,10 @@ export const Root = ({
               injectRoot(frame, d.body);
             });
           }
+          frame.addEventListener("unload", () => {
+            setOutDated(true);
+            framesRef.current = framesRef.current.filter((f) => f !== frame);
+          });
         } catch {
           /* noop */
         }
@@ -66,6 +72,7 @@ export const Root = ({
 
   const updateInfo = useDebouncedCallback(
     () => {
+      setOutDated(false);
       if (!parentRef.current) return;
       injectToFrames(parentRef.current);
       observeLiveRegion(parentRef.current);
@@ -94,6 +101,9 @@ export const Root = ({
     200,
     [injectToFrames, settings, observeLiveRegion, injectToDialogs],
   );
+  React.useEffect(() => {
+    if (outdated) updateInfo();
+  }, [updateInfo, outdated]);
 
   React.useEffect(() => {
     updateInfo();

@@ -92,13 +92,15 @@ const Icon = ({ type }: { type: TipType }) => {
 export const Tip = ({
   tip,
   hideLabel = false,
+  maxWidth,
 }: {
   tip: ElementTip;
   hideLabel: boolean;
+  maxWidth: number;
 }) => {
   const { t } = useLang();
   return (
-    <div className={["Tip", `Tip--${tip.type}`].join(" ")}>
+    <div className={["Tip", `Tip--${tip.type}`].join(" ")} style={{ maxWidth }}>
       <Icon type={tip.type} />
       {!hideLabel &&
         (tip.type === "level"

@@ -6,9 +6,6 @@
 }
 .ElementInfo__overlay {
   position: absolute;
-  inset: -4px;
-  min-width: 8px;
-  min-height: 8px;
   z-index: 3;
 }
 .ElementInfo__content {

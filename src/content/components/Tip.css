@@ -12,6 +12,10 @@
   background-color: var(--base-green);
 }
 
+.Tip--pageTitle {
+  background-color: var(--base-green);
+}
+
 .Tip--role {
   background-color: var(--base-pink);
 }
@@ -42,6 +46,9 @@
 
 .Tip--ariaStatus {
   background-color: var(--base-beige);
+}
+.Tip--lang {
+  background-color: var(--base-cream);
 }
 
 .Tip__icon {

@@ -8,10 +8,16 @@ import { SettingsContext } from "./components/SettingsProvider";
 import { useLiveRegion } from "./hooks/useLiveRegion";
 import { useDebouncedCallback } from "./hooks/useDebouncedCallback";
 
+export type RootOptions = {
+  srcdoc?: boolean;
+};
+
 export const Root = ({
   parentRef,
+  options = {},
 }: {
   parentRef: React.RefObject<Element>;
+  options?: RootOptions;
 }) => {
   const [metaList, setMetaList] = React.useState<ElementMeta[]>([]);
   const [width, setWidth] = React.useState<number>(0);
@@ -19,7 +25,7 @@ export const Root = ({
   const settings = React.useContext(SettingsContext);
   const containerRef = React.useRef<HTMLDivElement>(null);
   const announcementsRef = React.useRef<HTMLDivElement>(null);
-  const framesRef = React.useRef<Window[]>([]);
+  const framesRef = React.useRef<Element[]>([]);
   const dialogsRef = React.useRef<Element[]>([]);
   const popoversRef = React.useRef<Element[]>([]);
   const { announcements, observeLiveRegion } = useLiveRegion();
@@ -27,29 +33,32 @@ export const Root = ({
   const [outdated, setOutDated] = React.useState(false);
 
   const injectToFrames = React.useCallback((el: Element) => {
-    const frames = [...el.querySelectorAll("iframe, frame")]
-      .map((f) => (f as HTMLFrameElement | HTMLIFrameElement).contentWindow)
-      .filter((f: Window | null): f is Window => f !== null);
+    const frames = [...el.querySelectorAll("iframe, frame")];
     const prevFrames = framesRef.current;
-    frames.forEach((frame) => {
-      if (!prevFrames.includes(frame)) {
-        try {
-          const d = frame.document;
-          const { readyState } = d;
-          if (readyState === "complete") {
-            injectRoot(frame, d.body);
-          } else {
-            frame.addEventListener("load", () => {
-              injectRoot(frame, d.body);
-            });
-          }
-          frame.addEventListener("unload", () => {
-            setOutDated(true);
-            framesRef.current = framesRef.current.filter((f) => f !== frame);
+    frames.forEach((frameEl) => {
+      const frameWindow = (frameEl as HTMLFrameElement | HTMLIFrameElement)
+        .contentWindow;
+      if (!frameWindow || prevFrames.includes(frameEl)) return;
+      try {
+        const d = frameWindow.document;
+        const { readyState } = d;
+        if (readyState === "complete") {
+          injectRoot(frameWindow, d.body, {
+            srcdoc: frameEl.hasAttribute("srcdoc"),
           });
-        } catch {
-          /* noop */
+        } else {
+          frameWindow.addEventListener("load", () => {
+            injectRoot(frameWindow, d.body, {
+              srcdoc: frameEl.hasAttribute("srcdoc"),
+            });
+          });
         }
+        frameWindow.addEventListener("unload", () => {
+          setOutDated(true);
+          framesRef.current = framesRef.current.filter((f) => f !== frameEl);
+        });
+      } catch {
+        /* noop */
       }
     });
     framesRef.current = frames;
@@ -87,6 +96,7 @@ export const Root = ({
             ...dialogsRef.current,
           ].filter((el): el is Element => !!el),
           settings,
+          { srcdoc: options.srcdoc },
         );
 
         setMetaList(elements);

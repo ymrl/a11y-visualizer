@@ -17,6 +17,8 @@ import { imageTips, isImage, ImageSelectors } from "./tips/imageTips";
 import { computeAccessibleName } from "dom-accessibility-api";
 import { CategorySettings } from "../../settings";
 import { SectionSelectors, isSection, sectionTips } from "./tips/sectionTips";
+import { isPage, pageTips } from "./tips/pageTips";
+import { LangSelectors, langTips, isLang } from "./tips/langTips";
 
 const getSelector = (settings: Partial<CategorySettings>) => {
   return [
@@ -27,6 +29,7 @@ const getSelector = (settings: Partial<CategorySettings>) => {
     ...(settings.button ? ButtonSelectors : []),
     ...(settings.ariaHidden ? AriraHiddenSelectors : []),
     ...(settings.section ? SectionSelectors : []),
+    ...(settings.lang ? LangSelectors : []),
   ].join(",");
 };
 
@@ -41,6 +44,9 @@ export const collectElements = (
     heading: true,
     ariaHidden: true,
   },
+  options: {
+    srcdoc?: boolean;
+  } = {},
 ): {
   elements: ElementMeta[];
   rootWidth: number;
@@ -83,7 +89,10 @@ export const collectElements = (
     rootHeight,
     rootWidth,
     elements: selector
-      ? [...root.querySelectorAll(getSelector(settings))]
+      ? [
+          ...(settings.page && rootTagName === "body" ? [root] : []),
+          ...root.querySelectorAll(getSelector(settings)),
+        ]
           .filter((el) => !isHidden(el))
           .map((el: Element) => {
             if (excludes.some((exclude: Element) => exclude.contains(el)))
@@ -102,28 +111,21 @@ export const collectElements = (
             const nameTips: ElementTip[] = name
               ? [{ type: "name", content: name }]
               : [];
-            const images = imageTips(el, name);
-            const forms = formTips(el, name);
-            const buttons = buttonTips(el, name);
-            const links = linkTips(el, name);
-            const heading = headingTips(el, name);
-            const ariaHidden = ariaHiddenTips(el);
-            const section = sectionTips(el, name);
-            const global = globalTips(el);
-
             return {
               ...elementPosition,
               category: getElementCategory(el),
               tips: [
-                ...heading,
+                ...headingTips(el, name),
                 ...nameTips,
-                ...images,
-                ...forms,
-                ...buttons,
-                ...links,
-                ...ariaHidden,
-                ...section,
-                ...global,
+                ...imageTips(el, name),
+                ...formTips(el, name),
+                ...buttonTips(el, name),
+                ...linkTips(el, name),
+                ...ariaHiddenTips(el),
+                ...sectionTips(el, name),
+                ...langTips(el),
+                ...pageTips(el, !!options.srcdoc),
+                ...globalTips(el),
               ],
             };
           })
@@ -133,10 +135,11 @@ export const collectElements = (
 };
 
 const getElementCategory = (el: Element): Category => {
+  if (isPage(el)) return "page";
   if (isImage(el)) return "image";
   if (isHeading(el)) return "heading";
   if (isFormControl(el) || isLink(el) || isButton(el)) return "control";
-  if (isSection(el)) return "section";
   if (isFieldset(el)) return "fieldset";
+  if (isSection(el) || isLang(el)) return "section";
   return "general";
 };

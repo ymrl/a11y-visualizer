@@ -15,13 +15,7 @@ export const ElementList = ({
   return (
     <root.div>
       <Style />
-      <div
-        className="ElementList"
-        style={{
-          width,
-          height,
-        }}
-      >
+      <div className="ElementList">
         {list.map((meta, i) => {
           return (
             <ElementInfo

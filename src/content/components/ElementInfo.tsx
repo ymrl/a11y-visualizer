@@ -3,6 +3,9 @@ import { ElementMeta } from "../types";
 import { SettingsContext } from "./SettingsProvider";
 import { Tip } from "./Tip";
 
+const ELEMENT_SIZE_ENHANCEMENT = 4;
+const TIP_SIDE_MARGIN = 8;
+
 type VerticalPosition =
   | "inner-top"
   | "inner-bottom"
@@ -69,10 +72,10 @@ export const ElementInfo = ({
       const mx = ew.pageX;
       const my = ew.pageY;
       if (
-        mx < absoluteX - 4 ||
-        mx > absoluteX + width + 4 ||
-        my < absoluteY - 4 ||
-        my > absoluteY + height + 4
+        mx < absoluteX - ELEMENT_SIZE_ENHANCEMENT ||
+        mx > absoluteX + width + ELEMENT_SIZE_ENHANCEMENT ||
+        my < absoluteY - ELEMENT_SIZE_ENHANCEMENT ||
+        my > absoluteY + height + ELEMENT_SIZE_ENHANCEMENT
       ) {
         disappear();
       }
@@ -87,6 +90,8 @@ export const ElementInfo = ({
     }
     appear();
   };
+  const tipMaxWidth =
+    (rightAligned ? x + width : rootWidth - x) - TIP_SIDE_MARGIN;
   return (
     <div
       className={`ElementInfo${hovered ? " ElementInfo--hovered" : ""}`}
@@ -102,6 +107,16 @@ export const ElementInfo = ({
         <div
           className="ElementInfo__overlay"
           style={{
+            top: y > ELEMENT_SIZE_ENHANCEMENT ? -ELEMENT_SIZE_ENHANCEMENT : -y,
+            left: x > ELEMENT_SIZE_ENHANCEMENT ? -ELEMENT_SIZE_ENHANCEMENT : -x,
+            bottom:
+              y + height + ELEMENT_SIZE_ENHANCEMENT < rootHeight
+                ? -ELEMENT_SIZE_ENHANCEMENT
+                : rootHeight - y - height,
+            right:
+              x + width + ELEMENT_SIZE_ENHANCEMENT < rootWidth
+                ? -ELEMENT_SIZE_ENHANCEMENT
+                : rootWidth - x - width,
             pointerEvents: hovered ? "none" : "auto",
           }}
           onMouseEnter={handleHovered}
@@ -128,10 +143,14 @@ export const ElementInfo = ({
               ? "ElementInfo__tips--right-aligned"
               : "ElementInfo__tips--left-aligned",
           ].join(" ")}
-          style={{ fontSize: tipFontSize }}
+          style={{
+            fontSize: tipFontSize,
+            maxWidth: `max(160px, ${tipMaxWidth}px)`,
+          }}
         >
           {tips.map((tip, i) => (
             <Tip
+              maxWidth={tipMaxWidth}
               hideLabel={interactiveMode && hideTips ? !hovered : false}
               key={i}
               tip={tip}

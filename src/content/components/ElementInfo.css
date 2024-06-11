@@ -18,6 +18,9 @@
   inset: 0;
   border: 3px dotted var(--light-gray);
 }
+.ElementInfo__border--page {
+  border: 0;
+}
 
 .ElementInfo__border--image {
   border-color: var(--accent-green);

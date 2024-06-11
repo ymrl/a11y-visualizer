@@ -44,7 +44,6 @@
   display: flex;
   align-items: flex-start;
   flex-direction: row;
-  max-width: max(160px, 100%);
   width: max-content;
   flex-wrap: wrap;
 }

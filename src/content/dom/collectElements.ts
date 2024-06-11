@@ -48,8 +48,10 @@ export const collectElements = (
 } => {
   const d = root.ownerDocument;
   const w = d.defaultView;
+  if (!d || !w) return { elements: [], rootWidth: 0, rootHeight: 0 };
+  const rootTagName = root.tagName.toLowerCase();
   const rootWidth =
-    root.tagName.toLowerCase() === "body"
+    rootTagName === "body"
       ? Math.max(
           d.documentElement.offsetWidth,
           d.documentElement.scrollWidth,
@@ -57,25 +59,23 @@ export const collectElements = (
         )
       : root.scrollWidth;
   const rootHeight =
-    root.tagName.toLowerCase() === "body"
+    rootTagName === "body"
       ? Math.max(
           d.documentElement.offsetHeight,
           d.documentElement.scrollHeight,
           root.scrollHeight,
         )
       : root.scrollHeight;
-  if (!w) return { elements: [], rootWidth, rootHeight };
   const positionBaseElement = getPositionBaseElement(root, d, w);
   const offsetPosition = positionBaseElement
     ? getElementPosition(positionBaseElement, w, 0, 0)
-    : {
-        x: 0,
-        y: 0,
-        width: 0,
-        height: 0,
-      };
+    : { x: 0, y: 0 };
   const offsetX = offsetPosition.x;
   const offsetY = offsetPosition.y;
+  const visibleX = w.scrollX;
+  const visibleY = w.scrollY;
+  const visibleWidth = w.innerWidth;
+  const visibleHeight = w.innerHeight;
 
   const selector = getSelector(settings);
 
@@ -88,6 +88,16 @@ export const collectElements = (
           .map((el: Element) => {
             if (excludes.some((exclude: Element) => exclude.contains(el)))
               return null;
+            const elementPosition = getElementPosition(el, w, offsetX, offsetY);
+            if (
+              elementPosition.absoluteX + elementPosition.width < visibleX ||
+              elementPosition.absoluteY + elementPosition.height < visibleY ||
+              elementPosition.absoluteX > visibleX + visibleWidth ||
+              elementPosition.absoluteY > visibleY + visibleHeight
+            ) {
+              return null;
+            }
+
             const name = computeAccessibleName(el);
             const nameTips: ElementTip[] = name
               ? [{ type: "name", content: name }]
@@ -102,7 +112,7 @@ export const collectElements = (
             const global = globalTips(el);
 
             return {
-              ...getElementPosition(el, w, offsetX, offsetY),
+              ...elementPosition,
               category: getElementCategory(el),
               tips: [
                 ...heading,

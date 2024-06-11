@@ -24,14 +24,12 @@ export const ElementList = ({
       >
         {list.map((meta, i) => {
           return (
-            meta && (
-              <ElementInfo
-                key={i}
-                meta={meta}
-                rootHeight={height}
-                rootWidth={width}
-              />
-            )
+            <ElementInfo
+              key={i}
+              meta={meta}
+              rootHeight={height}
+              rootWidth={width}
+            />
           );
         })}
       </div>

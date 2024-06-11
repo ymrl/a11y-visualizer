@@ -48,14 +48,19 @@
   flex-wrap: wrap;
 }
 
-.ElementInfo__tips--left-aligned {
+.ElementInfo__tips--left {
   left: 0;
   justify-content: flex-start;
 }
 
-.ElementInfo__tips--right-aligned {
+.ElementInfo__tips--right {
   right: 0;
   justify-content: flex-end;
+}
+.ElementInfo__tips--center {
+  left: 50%;
+  transform: translateX(-50%);
+  justify-content: center;
 }
 
 .ElementInfo__tips--inner-top {

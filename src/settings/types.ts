@@ -6,6 +6,8 @@ export type CategorySettings = {
   heading: boolean;
   ariaHidden: boolean;
   section: boolean;
+  lang: boolean;
+  page: boolean;
 };
 
 export type Settings = {

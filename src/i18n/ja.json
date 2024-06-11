@@ -20,6 +20,8 @@
     "headings": "見出し",
     "ariaHidden": "aria-hidden",
     "sections": "セクション",
+    "lang": "言語",
+    "page": "ページ",
     "tipOpacityPercent": "チップの不透明度（%）",
     "interactiveMode": "インタラクティブモード",
     "hideLabels": "ラベルを隠す",
@@ -39,6 +41,8 @@
     "description": "説明",
     "heading": "見出し",
     "ariaStatus": "WAI-ARIAステータス",
+    "pageTitle": "ページタイトル",
+    "lang": "言語",
     "warning": "警告",
     "error": "エラー"
   },
@@ -104,7 +108,10 @@
     "noNameAttr": "name属性なし",
     "noRadioGroup": "ラジオボタングループなし",
     "noNameSection": "名前なしの <section>",
-    "invalidAriaValue": "WAI-ARIA属性値が不正"
+    "invalidAriaValue": "WAI-ARIA属性値が不正",
+    "noTitlePage": "<title>要素なし",
+    "noLangPage": "<html>要素にlang属性なし",
+    "langAndXmlLangMustBeSame": "lang属性とxml:lang属性の値が異なる"
   },
   "optionsPage": {
     "description": "拡張機能のポップアップから設定を変更すると、閲覧中のWebページのホストごとに設定が保存され、同じホストのWebページに対して適用されます。この画面で設定を変更しても、それらの設定値は変更されません。",

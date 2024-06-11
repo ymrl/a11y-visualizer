@@ -20,6 +20,8 @@
     "headings": "Headings",
     "ariaHidden": "aria-hidden",
     "sections": "Sections",
+    "lang": "Langage",
+    "page": "Page",
     "tipOpacityPercent": "Tips opacity (%)",
     "interactiveMode": "Interactive mode",
     "hideLabels": "Hide labels",
@@ -39,6 +41,8 @@
     "description": "Description",
     "heading": "Heading",
     "ariaStatus": "WAI-ARIA Status",
+    "pageTitle": "Page title",
+    "lang": "Language",
     "warning": "Warning",
     "error": "Error"
   },
@@ -98,7 +102,10 @@
     "noNameAttr": "No name attribute",
     "noRadioGroup": "No radiobutton group",
     "noNameSection": "No name <section>",
-    "invalidAriaValue": "Invalid WAI-ARIA Attribute Value"
+    "invalidAriaValue": "Invalid WAI-ARIA Attribute Value",
+    "noTitlePage": "No <title> element",
+    "noLangPage": "No lang attribute on <html>",
+    "langAndXmlLangMustBeSame": "lang and xml:lang attributes must have the same value"
   },
   "optionsPage": {
     "description": "Settings changed from the popup are saved per host of the web page, and will be applied to other pages on the same host. Changing settings here does not affect those values.",

@@ -12,6 +12,8 @@ export const initialSettings: Settings = {
   heading: true,
   ariaHidden: true,
   section: true,
+  lang: true,
+  page: true,
   interactiveMode: true,
   hideTips: true,
   showLiveRegions: true,

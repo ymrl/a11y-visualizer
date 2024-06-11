@@ -20,6 +20,8 @@ export type TipType =
   | "description"
   | "level"
   | "ariaStatus"
+  | "lang"
+  | "pageTitle"
   | "warning"
   | "error";
 export type ElementTip = {
@@ -33,4 +35,5 @@ export type Category =
   | "control"
   | "section"
   | "fieldset"
+  | "page"
   | "general";

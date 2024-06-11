@@ -37,22 +37,28 @@ export const ElementInfo = ({
     };
   }, []);
 
-  const rightAligned: boolean =
-    ((category === "section" || category === "fieldset") &&
-      width > tipFontSize * 16) ||
-    (width < tipFontSize * 16 && x + width > rootWidth - tipFontSize * 16);
+  const horizontalPosition =
+    category === "page"
+      ? "center"
+      : ((category === "section" || category === "fieldset") &&
+            width > tipFontSize * 16) ||
+          (width < tipFontSize * 16 && x + width > rootWidth - tipFontSize * 16)
+        ? "right"
+        : "left";
   const verticalPosition: VerticalPosition =
-    category === "section" || category === "heading"
-      ? y < tipFontSize * 2.4
-        ? "inner-top"
-        : "outer-top"
-      : category === "image" || category === "fieldset"
-        ? y > tipFontSize * 2.4 && height < tipFontSize * 3.2
-          ? "outer-top"
-          : "inner-top"
-        : y + height > rootHeight - tipFontSize * 2.4
-          ? "inner-bottom"
-          : "outer-bottom";
+    category === "page"
+      ? "inner-top"
+      : category === "section" || category === "heading"
+        ? y < tipFontSize * 2.4
+          ? "inner-top"
+          : "outer-top"
+        : category === "image" || category === "fieldset"
+          ? y > tipFontSize * 2.4 && height < tipFontSize * 3.2
+            ? "outer-top"
+            : "inner-top"
+          : y + height > rootHeight - tipFontSize * 2.4
+            ? "inner-bottom"
+            : "outer-bottom";
 
   const disappear = () => {
     setHovered(false);
@@ -91,7 +97,10 @@ export const ElementInfo = ({
     appear();
   };
   const tipMaxWidth =
-    (rightAligned ? x + width : rootWidth - x) - TIP_SIDE_MARGIN;
+    horizontalPosition === "center"
+      ? width - 2 * TIP_SIDE_MARGIN
+      : (horizontalPosition === "right" ? x + width : rootWidth - x) -
+        TIP_SIDE_MARGIN;
   return (
     <div
       className={`ElementInfo${hovered ? " ElementInfo--hovered" : ""}`}
@@ -139,9 +148,7 @@ export const ElementInfo = ({
           className={[
             "ElementInfo__tips",
             `ElementInfo__tips--${verticalPosition}`,
-            rightAligned
-              ? "ElementInfo__tips--right-aligned"
-              : "ElementInfo__tips--left-aligned",
+            `ElementInfo__tips--${horizontalPosition}`,
           ].join(" ")}
           style={{
             fontSize: tipFontSize,

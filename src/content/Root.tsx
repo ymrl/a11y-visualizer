@@ -100,6 +100,8 @@ export const Root = ({
     const observer = new MutationObserver(() => {
       updateInfo();
     });
+    window.addEventListener("resize", updateInfo);
+    window.addEventListener("scroll", updateInfo);
     if (parentRef.current) {
       observer.observe(parentRef.current, {
         subtree: true,
@@ -107,7 +109,11 @@ export const Root = ({
         attributes: true,
       });
     }
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", updateInfo);
+      window.removeEventListener("scroll", updateInfo);
+    };
   }, [parentRef, updateInfo]);
   return (
     <section

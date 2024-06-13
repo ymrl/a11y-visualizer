@@ -110,64 +110,66 @@ export const analyzeTable = (table: HTMLTableElement) => {
             (group) =>
               group.positionY <= y && y < group.positionY + group.sizeY,
           );
-          const colHeaders = rows.reduceRight((prev, row) => {
-            return [
+          const colHeaders = rows.reduceRight(
+            (prev, row) => [
               ...prev,
-              ...(colGroup
-                ? row
-                    .filter(
-                      (cell) =>
-                        cell.header &&
-                        ((cell.scope === "colgroup" &&
-                          cell.positionX <= colGroup.positionX &&
-                          colGroup.positionX < cell.positionX + cell.sizeX) ||
-                          (cell.scope === "auto" &&
-                            cell.positionX === colGroup.positionX &&
-                            cell.sizeX === colGroup.sizeX)),
-                    )
-                    .map((cell) => cell.element)
-                : []),
               ...row
                 .filter(
                   (cell) =>
                     cell.header &&
-                    (cell.scope === "auto" || cell.scope === "col") &&
-                    ((cell.positionX <= positionX &&
-                      positionX < cell.positionX + cell.sizeX) ||
-                      (positionX <= cell.positionX &&
-                        cell.positionX + cell.sizeX <= positionX + sizeX)),
+                    ((colGroup &&
+                      cell.scope === "colgroup" &&
+                      colGroup.positionX <= cell.positionX &&
+                      cell.positionX + cell.sizeX <=
+                        colGroup.positionX + colGroup.sizeX) ||
+                      ((cell.scope === "auto" || cell.scope === "col") &&
+                        ((cell.positionX <= positionX &&
+                          positionX < cell.positionX + cell.sizeX) ||
+                          (positionX <= cell.positionX &&
+                            cell.positionX + cell.sizeX <=
+                              positionX + sizeX)))),
                 )
                 .map((cell) => cell.element),
-            ];
-          }, [] as Element[]);
-          const rowHeaders = rows
-            .slice(
-              rowGroup?.positionY ?? 0,
-              Math.min(
-                rowGroup ? rowGroup.positionY + rowGroup.sizeY : rows.length,
-              ),
-            )
-            .reduce((prev, row) => {
-              return [
+            ],
+            [] as Element[],
+          );
+          const prevRowHeaders = rows
+            .slice(rowGroup?.positionY ?? 0)
+            .reduce(
+              (prev, row) => [
                 ...prev,
                 ...row
                   .filter(
                     (cell) =>
                       cell.header &&
-                      (cell.scope === "rowgroup" ||
+                      cell.positionX <= positionX &&
+                      ((rowGroup &&
+                        cell.scope === "rowgroup" &&
+                        rowGroup.positionY <= cell.positionY &&
+                        cell.positionY + cell.sizeY <=
+                          rowGroup.positionY + rowGroup.sizeY) ||
                         (cell.scope === "row" &&
-                          cell.positionY <= y &&
-                          y < cell.positionY + cell.sizeY) ||
-                        (!header &&
-                          cell.scope === "auto" &&
                           cell.positionY <= y &&
                           y < cell.positionY + cell.sizeY)),
                   )
                   .map((cell) => cell.element),
-              ];
-            }, [] as Element[]);
+              ],
+              [] as Element[],
+            );
+          const rowHeaders = cells
+            .filter(
+              (cell) =>
+                cell.header &&
+                (cell.scope === "row" || cell.scope === "rowgroup"),
+            )
+            .map((cell) => cell.element);
+
           const headerIds = tdh.getAttribute("headers")?.split(" ") ?? [];
-          const structuredHeaders = [...colHeaders, ...rowHeaders];
+          const structuredHeaders = [
+            ...colHeaders,
+            ...prevRowHeaders,
+            ...rowHeaders,
+          ];
           const headers = headerIds
             .filter(
               (id) => !structuredHeaders.find((header) => header.id === id),

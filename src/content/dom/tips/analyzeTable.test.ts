@@ -205,16 +205,16 @@ describe("analyzeTable", () => {
       <tr><th>Header 1</th><th>Header 2</th><th>Header 3</th></tr>
     </thead>
     <tbody>
-      <tr><td>Cell 1</th><td>Cell 2</th><td>Cell 3</th></tr>
-      <tr><td>Cell 1</th><td>Cell 2</th><td>Cell 3</th></tr>
-      <tr><td>Cell 1</th><td>Cell 2</th><td>Cell 3</th></tr>
+      <tr><td>Cell 1</td><td>Cell 2</td><td>Cell 3</td></tr>
+      <tr><td>Cell 1</td><td>Cell 2</td><td>Cell 3</td></tr>
+      <tr><td>Cell 1</td><td>Cell 2</td><td>Cell 3</td></tr>
     </tbody>
     <tbody>
-      <tr><td>Cell 1</th><td>Cell 2</th><td>Cell 3</th></tr>
+      <tr><td>Cell 1</td><td>Cell 2</td><td>Cell 3</td></tr>
     </tbody>
     <tfoot>
-      <tr><td>Cell 1</th><td>Cell 2</th><td>Cell 3</th></tr>
-      <tr><td>Cell 1</th><td>Cell 2</th><td>Cell 3</th></tr>
+      <tr><td>Cell 1</td><td>Cell 2</td><td>Cell 3</td></tr>
+      <tr><td>Cell 1</td><td>Cell 2</td><td>Cell 3</td></tr>
     </tfoot>
     `;
     document.body.appendChild(table);

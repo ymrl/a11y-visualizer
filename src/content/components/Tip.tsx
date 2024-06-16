@@ -8,6 +8,7 @@ import {
   IoCodeSlash,
   IoDocument,
   IoFlag,
+  IoGridOutline,
   IoInformationCircle,
   IoLanguage,
   IoPricetag,
@@ -87,6 +88,14 @@ const Icon = ({ type }: { type: TipType }) => {
           className="Tip__icon"
           role="img"
           aria-label={t("tip.ariaStatus")}
+        />
+      );
+    case "tableHeader":
+      return (
+        <IoGridOutline
+          className="Tip__icon"
+          role="img"
+          aria-label={t("tip.tableHeader")}
         />
       );
 

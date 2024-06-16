@@ -43,6 +43,7 @@
     "heading": "Heading",
     "ariaStatus": "WAI-ARIA Status",
     "pageTitle": "Page title",
+    "tableHeader": "Table header",
     "lang": "Language",
     "warning": "Warning",
     "error": "Error"

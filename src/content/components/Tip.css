@@ -7,6 +7,7 @@
   gap: 0.4em;
   color: #000;
   background-color: #fff;
+  border-radius: 0.2em;
 }
 .Tip--name {
   background-color: var(--base-green);
@@ -25,6 +26,9 @@
 }
 .Tip--landmark {
   background-color: var(--base-yellowgreen);
+}
+.Tip--tableHeader {
+  background-color: var(--base-skyblue);
 }
 
 .Tip--description {

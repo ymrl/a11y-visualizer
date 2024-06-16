@@ -1,4 +1,7 @@
+import { computeAccessibleName } from "dom-accessibility-api";
 import { ElementTip } from "../../types";
+import { getKnownRole } from "../getKnownRole";
+import { InternalTable } from "./internalTable";
 const TableElements = [
   "table",
   // 'thead',
@@ -26,35 +29,42 @@ export const TableSelectors = [
 ] as const;
 
 export const isTable = (el: Element): boolean => {
-  const role = el.getAttribute("role");
+  const role = getKnownRole(el);
   return (
-    el.tagName.toLowerCase() === "table" || role === "table" || role === "grid"
+    el.tagName.toLowerCase() === "table" ||
+    role === "table" ||
+    role === "grid" ||
+    role === "treegrid"
   );
 };
 
 export const isTableCell = (el: Element): boolean => {
-  const role = el.getAttribute("role") || "";
+  const role = getKnownRole(el);
   const tagName = el.tagName.toLowerCase();
 
   return (
     ["th", "td"].includes(tagName) ||
-    ["columnheader", "rowheader", "gridcell", "cell"].includes(role)
+    (!!role && ["columnheader", "rowheader", "gridcell", "cell"].includes(role))
   );
 };
 
-export const tableTips = (el: Element): ElementTip[] => {
+export const tableTips = (
+  el: Element,
+  internalTable: InternalTable,
+): ElementTip[] => {
   const result: ElementTip[] = [];
-  const role = el.getAttribute("role");
-  const tagName = el.tagName.toLowerCase();
 
-  if (isTable(el)) {
-    if (!role) {
-      result.push({ type: "tagName", content: tagName });
-    }
-  } else if (isTableCell(el)) {
-    if (!role) {
-      result.push({ type: "tagName", content: tagName });
+  if (isTableCell(el)) {
+    const cell = internalTable.getCell(el);
+    if (cell) {
+      internalTable.getHeaderElements(cell).forEach((header) => {
+        result.push({
+          type: "tableHeader",
+          content: computeAccessibleName(header),
+        });
+      });
     }
   }
+
   return result;
 };

@@ -36,9 +36,14 @@
 .ElementInfo__border--section {
   border-color: var(--accent-skyblue);
 }
+
 .ElementInfo__border--fieldset {
   border-color: var(--accent-brown);
   border-style: dotted;
+}
+.ElementInfo__border--table,
+.ElementInfo__border--tableCell {
+  border-color: var(--accent-skyblue);
 }
 
 .ElementInfo__tips {
@@ -49,6 +54,7 @@
   flex-direction: row;
   width: max-content;
   flex-wrap: wrap;
+  gap: 0.2em;
 }
 
 .ElementInfo__tips--left {

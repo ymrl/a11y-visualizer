@@ -22,6 +22,7 @@ export type TipType =
   | "ariaStatus"
   | "lang"
   | "pageTitle"
+  | "tableHeader"
   | "warning"
   | "error";
 export type ElementTip = {

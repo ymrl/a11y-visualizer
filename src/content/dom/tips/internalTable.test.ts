@@ -298,6 +298,41 @@ describe("InternalTable", () => {
     expect(colCount).toBe(5);
   });
 
+  describe("getCell", () => {
+    test("table", () => {
+      const table = document.createElement("table");
+      table.innerHTML = `
+      <tr>
+        <th id="cell-0-0">0-0</th>
+        <td id="cell-0-1">0-1</td>
+        <td id="cell-0-2">0-2</td>
+      </tr>
+      <tr>
+        <th id="cell-1-0">1-0</th>
+        <td id="cell-1-1">1-1</td>
+        <td id="cell-1-2">1-2</td>
+      </tr>
+      <tr>
+        <th id="cell-2-0">2-0</th>
+        <td id="cell-2-1">2-1</td>
+        <td id="cell-2-2">2-2</td>
+      </tr>
+      `;
+      const result = new InternalTable(table);
+      const el = table.querySelector("#cell-1-2");
+      expect(el).toBeDefined();
+      if (!el) return;
+      const cell = result.getCell(el);
+      expect(cell).toBeDefined();
+      if (!cell) return;
+      expect(cell.element).toBe(el);
+      expect(cell.positionX).toBe(2);
+      expect(cell.positionY).toBe(1);
+      expect(cell.sizeX).toBe(1);
+      expect(cell.sizeY).toBe(1);
+    });
+  });
+
   describe("getHeaderElements", () => {
     test("table", () => {
       const table = document.createElement("table");

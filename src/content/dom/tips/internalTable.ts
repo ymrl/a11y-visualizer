@@ -204,6 +204,13 @@ export class InternalTable {
     this.colCount = colCount;
   }
 
+  getCell = (el: Element): Cell | null => {
+    const cell = this.cells
+      .map((row) => row.find((cell) => cell.element === el))
+      .filter((cell): cell is Cell => !!cell);
+    return cell ? cell[0] : null;
+  };
+
   getHeaderElements = (cell: Cell): Element[] =>
     [
       ...this.getRowHeaderElements(cell),

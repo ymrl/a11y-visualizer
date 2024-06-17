@@ -44,6 +44,8 @@
     "ariaStatus": "WAI-ARIAステータス",
     "pageTitle": "ページタイトル",
     "tableHeader": "表見出し",
+    "tableSize": "表の大きさ",
+    "tablePosition": "位置",
     "lang": "言語",
     "warning": "警告",
     "error": "エラー"

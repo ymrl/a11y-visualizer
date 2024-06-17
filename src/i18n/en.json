@@ -44,6 +44,8 @@
     "ariaStatus": "WAI-ARIA Status",
     "pageTitle": "Page title",
     "tableHeader": "Table header",
+    "tableSize": "Table size",
+    "tablePosition": "Position",
     "lang": "Language",
     "warning": "Warning",
     "error": "Error"

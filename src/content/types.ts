@@ -23,6 +23,8 @@ export type TipType =
   | "lang"
   | "pageTitle"
   | "tableHeader"
+  | "tableSize"
+  | "tablePosition"
   | "warning"
   | "error";
 export type ElementTip = {

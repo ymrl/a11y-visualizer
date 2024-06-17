@@ -30,6 +30,12 @@
 .Tip--tableHeader {
   background-color: var(--base-skyblue);
 }
+.Tip--tableSize {
+  background-color: var(--base-beige);
+}
+.Tip--tablePosition {
+  background-color: var(--base-beige);
+}
 
 .Tip--description {
   background-color: var(--light-gray);

@@ -54,6 +54,12 @@ export const tableTips = (
 ): ElementTip[] => {
   const result: ElementTip[] = [];
 
+  if (isTable(el)) {
+    result.push({
+      type: "tableSize",
+      content: `${internalTable.colCount}x${internalTable.rowCount}`,
+    });
+  }
   if (isTableCell(el)) {
     const cell = internalTable.getCell(el);
     if (cell) {
@@ -62,6 +68,10 @@ export const tableTips = (
           type: "tableHeader",
           content: computeAccessibleName(header),
         });
+      });
+      result.push({
+        type: "tablePosition",
+        content: `${cell.positionX + 1},${cell.positionY + 1}`,
       });
     }
   }

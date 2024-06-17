@@ -120,6 +120,75 @@ describe("InternalTable", () => {
     expect(colGroups).toHaveLength(4);
   });
 
+  test("rowspan", () => {
+    const table = document.createElement("table");
+    table.innerHTML = `
+    <thead>
+      <tr>
+        <th id="cell-0-0">0-0</th>
+        <th id="cell-0-1">0-1</th>
+        <th id="cell-0-2">0-2</th>
+        <th id="cell-0-3">0-3</th>
+        <th id="cell-0-4">0-4</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td id="cell-1-0">1-0</td>
+        <td id="cell-1-1">1-1</td>
+        <td id="cell-1-2" rowspan="5">1-2</td>
+        <td id="cell-1-3">1-3</td>
+        <td id="cell-1-3">1-4</td>
+      </tr>
+      <tr>
+        <td id="cell-2-0" rowspan="2">2-0</td>
+        <td id="cell-2-1" rowspan="3">2-1</td>
+        <td id="cell-2-3">2-3</td>
+        <td id="cell-2-4">2-4</td>
+      </tr>
+      <tr>
+        <td id="cell-3-3">3-3(0)</td>
+        <td id="cell-3-4">3-4(1)</td>
+      </tr>
+      <tr>
+        <td id="cell-4-0">4-0(0)</td>
+        <td id="cell-4-3">4-3(1)</td>
+        <td id="cell-4-4">4-4(2)</td>
+      </tr>
+      <tr>
+        <td id="cell-5-0">5-0(0)</td>
+        <td id="cell-5-1">5-1(1)</td>
+        <td id="cell-5-2">5-3(2)</td>
+        <td id="cell-5-4">5-4(3)</td>
+      </tr>
+      <tr>
+        <td id="cell-6-0">6-0</td>
+        <td id="cell-6-1">6-1</td>
+        <td id="cell-6-2">6-2</td>
+        <td id="cell-6-3">6-3</td>
+        <td id="cell-6-4">6-4</td>
+      </tr>
+    </tbody>
+    `;
+    const result = new InternalTable(table);
+    const { cells } = result;
+    expect(cells[2][0].positionX).toBe(0);
+    expect(cells[2][1].positionX).toBe(1);
+    expect(cells[2][2].positionX).toBe(3);
+    expect(cells[2][3].positionX).toBe(4);
+
+    expect(cells[3][0].positionX).toBe(3);
+    expect(cells[4][0].positionX).toBe(0);
+    expect(cells[4][1].positionX).toBe(3);
+    expect(cells[5][0].positionX).toBe(0);
+    expect(cells[5][1].positionX).toBe(1);
+    expect(cells[5][2].positionX).toBe(3);
+    expect(cells[5][3].positionX).toBe(4);
+    for (let i = 0; i < 5; i++) {
+      expect(cells[6][i].positionX).toBe(i);
+    }
+  });
+
   test("complex table", () => {
     const table = document.createElement("table");
     table.innerHTML = `
@@ -346,6 +415,7 @@ describe("InternalTable", () => {
             <th id="cell-0-1" scope="colgroup">0-1</th>
             <th id="cell-0-2" scope="col">0-2</th>
             <th id="cell-0-3" colspan="2">0-3</th>
+            <th id="cell-0-5" colspan="2">0-5</th>
           </tr>
         </thead>
         <tbody>
@@ -355,19 +425,21 @@ describe("InternalTable", () => {
             <td id="cell-1-2">1-2</td>
             <td id="cell-1-3">1-3</td>
             <td id="cell-1-4">1-4</td>
+            <td id="cell-1-5">1-5</td>
           </tr>
           <tr>
             <th id="cell-2-1" scope="row">2-1(0)</th>
             <td id="cell-2-2">2-2(1)</td>
             <td id="cell-2-3">2-3(2)</td>
-            <td id="cell-2-4">2-4(3)</td>
+            <td id="cell-2-4" rowspan="2">2-4(3)</td>
+            <td id="cell-2-5">2-5(4)</td>
           </tr>
           <tr>
             <th id="cell-3-0" scope="row">3-0</th>
             <td id="cell-3-1">3-1</td>
             <td id="cell-3-2">3-2</td>
             <td id="cell-3-3">3-3</td>
-            <td id="cell-3-4">3-4</td>
+            <td id="cell-3-5">3-5(4)</td>
           </tr>
         </tbody>
         <tbody>
@@ -398,7 +470,12 @@ describe("InternalTable", () => {
       expect(headers_2_4.find((e) => e.id === "cell-2-1")).toBeDefined();
       expect(headers_2_4.find((e) => e.id === "cell-1-0")).toBeDefined();
       expect(headers_2_4.find((e) => e.id === "cell-0-3")).toBeDefined();
-      expect(headers_2_4).toHaveLength(3);
+      expect(headers_2_4.find((e) => e.id === "cell-3-0")).toBeDefined();
+      expect(headers_2_4).toHaveLength(4);
+      const headers_3_5 = result.getHeaderElements(cells[3][4]);
+      expect(headers_3_5.find((e) => e.id === "cell-3-0")).toBeDefined();
+      expect(headers_3_5.find((e) => e.id === "cell-0-5")).toBeDefined();
+      expect(headers_3_5).toHaveLength(2);
       const headers_3_0 = result.getHeaderElements(cells[3][0]);
       expect(headers_3_0.find((e) => e.id === "cell-0-0")).toBeDefined();
       expect(headers_3_0).toHaveLength(1);
@@ -414,6 +491,72 @@ describe("InternalTable", () => {
       expect(headers_5_4.find((e) => e.id === "cell-4-0")).toBeDefined();
       expect(headers_5_4.find((e) => e.id === "cell-0-3")).toBeDefined();
       expect(headers_5_4).toHaveLength(5);
+    });
+
+    test("rowspan", () => {
+      const table = document.createElement("table");
+      table.innerHTML = `
+        <thead>
+          <tr>
+            <th id="cell-0-0">0-0</th>
+            <th id="cell-0-1">0-1</th>
+            <th id="cell-0-2">0-2</th>
+            <th id="cell-0-3">0-3</th>
+            <th id="cell-0-4">0-4</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td id="cell-1-0">1-0</td>
+            <td id="cell-1-1">1-1</td>
+            <td id="cell-1-2" rowspan="5">1-2</td>
+            <td id="cell-1-3">1-3</td>
+            <td id="cell-1-3">1-4</td>
+          </tr>
+          <tr>
+            <td id="cell-2-0" rowspan="2">2-0</td>
+            <td id="cell-2-1" rowspan="3">2-1</td>
+            <td id="cell-2-3">2-3(2)</td>
+            <td id="cell-2-4">2-4(3)</td>
+          </tr>
+          <tr>
+            <td id="cell-3-3">3-3(0)</td>
+            <td id="cell-3-4">3-4(1)</td>
+          </tr>
+          <tr>
+            <td id="cell-4-0">4-0(0)</td>
+            <td id="cell-4-3">4-3(1)</td>
+            <td id="cell-4-4">4-4(2)</td>
+          </tr>
+          <tr>
+            <td id="cell-5-0">5-0(0)</td>
+            <td id="cell-5-1">5-1(1)</td>
+            <td id="cell-5-2">5-3(2)</td>
+            <td id="cell-5-4">5-4(3)</td>
+          </tr>
+          <tr>
+            <td id="cell-6-0">6-0</td>
+            <td id="cell-6-1">6-1</td>
+            <td id="cell-6-2">6-2</td>
+            <td id="cell-6-3">6-3</td>
+            <td id="cell-6-4">6-4</td>
+          </tr>
+        </tbody>
+      `;
+      const result = new InternalTable(table);
+      const { cells } = result;
+      const headers_2_3 = result.getHeaderElements(cells[2][2]);
+      expect(headers_2_3.find((c) => c.id === "cell-0-3")).toBeDefined();
+      expect(headers_2_3).toHaveLength(1);
+      const headers_3_3 = result.getHeaderElements(cells[3][0]);
+      expect(headers_3_3.find((c) => c.id === "cell-0-3")).toBeDefined();
+      expect(headers_3_3).toHaveLength(1);
+      const headers_4_0 = result.getHeaderElements(cells[4][0]);
+      expect(headers_4_0.find((c) => c.id === "cell-0-0")).toBeDefined();
+      expect(headers_4_0).toHaveLength(1);
+      const headers_5_1 = result.getHeaderElements(cells[5][1]);
+      expect(headers_5_1.find((c) => c.id === "cell-0-1")).toBeDefined();
+      expect(headers_5_1).toHaveLength(1);
     });
   });
 });

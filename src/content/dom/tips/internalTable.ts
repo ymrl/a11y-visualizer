@@ -81,24 +81,32 @@ export class InternalTable {
             ? parseInt(ariaRowIndex, 10) - 1
             : rowPositionY;
           const leftCell = cells.length > 0 ? cells[cells.length - 1] : null;
-          const dx = ariaColIndex
+          let positionX = ariaColIndex
             ? parseInt(ariaColIndex, 10) - 1
             : leftCell
               ? leftCell.positionX + leftCell.sizeX
               : 0;
-          let positionX: number = dx;
+          // let positionX: number = dx;
           if (!ariaColIndex && rowIndex > 0) {
             let dy = rowIndex - 1;
             while (dy >= 0) {
-              const upper = rows[dy].find(
-                (cell) =>
-                  cell.positionX <= dx && dx < cell.positionX + cell.sizeX,
-              );
-              if (upper) {
-                if (upper.sizeY > rowIndex - dy) {
-                  positionX = upper.positionX + upper.sizeX;
+              for (let i = 0; i < rows[dy].length; i++) {
+                const cell = rows[dy][i];
+                if (cell.positionX + cell.sizeX <= positionX) {
+                  // positionXより左にあるセルは無視
+                  continue;
+                } else if (
+                  cell.positionX <= positionX &&
+                  positionX < cell.positionX + cell.sizeX
+                ) {
+                  // positionXがセルの範囲内にある場合
+                  if (cell.positionY + cell.sizeY > positionY) {
+                    // rowspanで行に割り込んできている: positionXはそれより右
+                    positionX = cell.positionX + cell.sizeX;
+                  } else {
+                    break;
+                  }
                 }
-                break;
               }
               dy--;
             }

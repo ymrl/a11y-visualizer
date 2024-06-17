@@ -8,8 +8,11 @@ import {
   IoCodeSlash,
   IoDocument,
   IoFlag,
+  IoGrid,
+  IoGridOutline,
   IoInformationCircle,
   IoLanguage,
+  IoPin,
   IoPricetag,
   IoWarning,
 } from "react-icons/io5";
@@ -87,6 +90,30 @@ const Icon = ({ type }: { type: TipType }) => {
           className="Tip__icon"
           role="img"
           aria-label={t("tip.ariaStatus")}
+        />
+      );
+    case "tableHeader":
+      return (
+        <IoGrid
+          className="Tip__icon"
+          role="img"
+          aria-label={t("tip.tableHeader")}
+        />
+      );
+    case "tableSize":
+      return (
+        <IoGridOutline
+          className="Tip__icon"
+          role="img"
+          aria-label={t("tip.tableSize")}
+        />
+      );
+    case "tablePosition":
+      return (
+        <IoPin
+          className="Tip__icon"
+          role="img"
+          aria-label={t("tip.tablePosition")}
         />
       );
 

@@ -48,11 +48,13 @@ export const ElementInfo = ({
   const verticalPosition: VerticalPosition =
     category === "page"
       ? "inner-top"
-      : category === "section" || category === "heading"
+      : category === "section" || category === "heading" || category === "table"
         ? y < tipFontSize * 2.4
           ? "inner-top"
           : "outer-top"
-        : category === "image" || category === "fieldset"
+        : category === "image" ||
+            category === "fieldset" ||
+            category === "tableCell"
           ? y > tipFontSize * 2.4 && height < tipFontSize * 3.2
             ? "outer-top"
             : "inner-top"

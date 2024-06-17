@@ -19,6 +19,14 @@ import { CategorySettings } from "../../settings";
 import { SectionSelectors, isSection, sectionTips } from "./tips/sectionTips";
 import { isPage, pageTips } from "./tips/pageTips";
 import { LangSelectors, langTips, isLang } from "./tips/langTips";
+import {
+  TableSelectors,
+  isTable,
+  isTableCell,
+  tableTips,
+} from "./tips/tableTips";
+import { InternalTable } from "./tips/internalTable";
+import { getClosestByRoles } from "./getClosestByRoles";
 
 const getSelector = (settings: Partial<CategorySettings>) => {
   return [
@@ -30,20 +38,14 @@ const getSelector = (settings: Partial<CategorySettings>) => {
     ...(settings.ariaHidden ? AriraHiddenSelectors : []),
     ...(settings.section ? SectionSelectors : []),
     ...(settings.lang ? LangSelectors : []),
+    ...(settings.table ? TableSelectors : []),
   ].join(",");
 };
 
 export const collectElements = (
   root: Element,
   excludes: Element[],
-  settings: Partial<CategorySettings> = {
-    image: true,
-    formControl: true,
-    link: true,
-    button: true,
-    heading: true,
-    ariaHidden: true,
-  },
+  settings: Partial<CategorySettings>,
   options: {
     srcdoc?: boolean;
   } = {},
@@ -84,54 +86,86 @@ export const collectElements = (
   const visibleHeight = w.innerHeight;
 
   const selector = getSelector(settings);
+  const internalTables: InternalTable[] = [];
 
   return {
     rootHeight,
     rootWidth,
-    elements: selector
-      ? [
-          ...(settings.page && rootTagName === "body" ? [root] : []),
-          ...root.querySelectorAll(getSelector(settings)),
-        ]
-          .filter((el) => !isHidden(el))
-          .map((el: Element) => {
-            if (excludes.some((exclude: Element) => exclude.contains(el)))
-              return null;
-            const elementPosition = getElementPosition(el, w, offsetX, offsetY);
-            if (
-              elementPosition.absoluteX + elementPosition.width < visibleX ||
-              elementPosition.absoluteY + elementPosition.height < visibleY ||
-              elementPosition.absoluteX > visibleX + visibleWidth ||
-              elementPosition.absoluteY > visibleY + visibleHeight
-            ) {
-              return null;
-            }
-
-            const name = computeAccessibleName(el);
-            const nameTips: ElementTip[] = name
-              ? [{ type: "name", content: name }]
-              : [];
-            return {
-              ...elementPosition,
-              category: getElementCategory(el),
-              tips: [
-                ...headingTips(el, name),
-                ...nameTips,
-                ...imageTips(el, name),
-                ...formTips(el, name),
-                ...buttonTips(el, name),
-                ...linkTips(el, name),
-                ...ariaHiddenTips(el),
-                ...sectionTips(el, name),
-                ...langTips(el),
-                ...pageTips(el, !!options.srcdoc),
-                ...globalTips(el),
-              ],
-            };
-          })
-          .filter((el): el is ElementMeta => el !== null)
-      : [],
+    elements: [
+      ...(settings.page && rootTagName === "body" ? [root] : []),
+      ...(selector ? [...root.querySelectorAll(getSelector(settings))] : []),
+    ]
+      .filter((el) => !isHidden(el))
+      .map((el: Element) => {
+        if (excludes.some((exclude: Element) => exclude.contains(el)))
+          return null;
+        const elementPosition = getElementPosition(el, w, offsetX, offsetY);
+        if (
+          elementPosition.absoluteX + elementPosition.width < visibleX ||
+          elementPosition.absoluteY + elementPosition.height < visibleY ||
+          elementPosition.absoluteX > visibleX + visibleWidth ||
+          elementPosition.absoluteY > visibleY + visibleHeight
+        ) {
+          return null;
+        }
+        return {
+          ...elementPosition,
+          category: getElementCategory(el),
+          tips: tipsForElement(el, { ...options, internalTables }),
+        };
+      })
+      .filter((el): el is ElementMeta => el !== null),
   };
+};
+
+const getTableTips = (
+  el: Element,
+  internalTables: InternalTable[],
+): ElementTip[] => {
+  if (isTable(el) || isTableCell(el)) {
+    const tagName = el.tagName.toLowerCase();
+    const tableEl =
+      tagName === "table"
+        ? el
+        : ["th", "td"].includes(tagName)
+          ? el.closest("table")
+          : getClosestByRoles(el, ["table", "grid", "treegrid"]);
+    if (tableEl) {
+      const internalTable = internalTables.find((t) => t.element === tableEl);
+      if (!internalTable) {
+        const newTable = new InternalTable(tableEl);
+        internalTables.push(newTable);
+        return tableTips(el, newTable);
+      }
+      return tableTips(el, internalTable);
+    }
+  }
+  return [];
+};
+
+const tipsForElement = (
+  el: Element,
+  options: {
+    srcdoc?: boolean;
+    internalTables: InternalTable[];
+  },
+): ElementTip[] => {
+  const name = computeAccessibleName(el);
+  const nameTips: ElementTip[] = name ? [{ type: "name", content: name }] : [];
+  return [
+    ...headingTips(el, name),
+    ...nameTips,
+    ...imageTips(el, name),
+    ...formTips(el, name),
+    ...buttonTips(el, name),
+    ...linkTips(el, name),
+    ...ariaHiddenTips(el),
+    ...sectionTips(el, name),
+    ...getTableTips(el, options.internalTables),
+    ...langTips(el),
+    ...pageTips(el, !!options.srcdoc),
+    ...globalTips(el),
+  ];
 };
 
 const getElementCategory = (el: Element): Category => {
@@ -139,6 +173,9 @@ const getElementCategory = (el: Element): Category => {
   if (isImage(el)) return "image";
   if (isHeading(el)) return "heading";
   if (isFormControl(el) || isLink(el) || isButton(el)) return "control";
+  if (isSection(el)) return "section";
+  if (isTable(el)) return "table";
+  if (isTableCell(el)) return "tableCell";
   if (isFieldset(el)) return "fieldset";
   if (isSection(el) || isLang(el)) return "section";
   return "general";

@@ -22,6 +22,7 @@
     "sections": "Sections",
     "lang": "Langage",
     "page": "Page",
+    "tables": "Tables",
     "tipOpacityPercent": "Tips opacity (%)",
     "interactiveMode": "Interactive mode",
     "hideLabels": "Hide labels",
@@ -42,6 +43,9 @@
     "heading": "Heading",
     "ariaStatus": "WAI-ARIA Status",
     "pageTitle": "Page title",
+    "tableHeader": "Table header",
+    "tableSize": "Table size",
+    "tablePosition": "Position",
     "lang": "Language",
     "warning": "Warning",
     "error": "Error"

@@ -22,6 +22,9 @@ export type TipType =
   | "ariaStatus"
   | "lang"
   | "pageTitle"
+  | "tableHeader"
+  | "tableSize"
+  | "tablePosition"
   | "warning"
   | "error";
 export type ElementTip = {
@@ -34,6 +37,8 @@ export type Category =
   | "heading"
   | "control"
   | "section"
+  | "table"
+  | "tableCell"
   | "fieldset"
   | "page"
   | "general";

@@ -367,6 +367,33 @@ describe("InternalTable", () => {
     expect(colCount).toBe(5);
   });
 
+  describe("getSlotCells", () => {
+    test("table", () => {
+      const table = document.createElement("table");
+      table.innerHTML = `
+      <tr>
+        <th id="cell-0-0">0-0</th>
+        <td id="cell-0-1" rowspan="2" colspan="2">0-1</td>
+      </tr>
+      <tr>
+        <th id="cell-1-0" colspan="3">1-0</th>
+      </tr>
+      <tr>
+        <th id="cell-2-0">2-0</th>
+        <td id="cell-2-1">2-1</td>
+        <td id="cell-2-2">2-2</td>
+      </tr>
+      `;
+      const result = new InternalTable(table);
+      const cell_2_1 = result.getSlotCells(1, 2);
+      expect(cell_2_1).toHaveLength(1);
+      expect(cell_2_1[0].element.id).toBe("cell-2-1");
+      const cell_1_1 = result.getSlotCells(1, 1);
+      expect(cell_1_1).toHaveLength(2);
+      expect(cell_1_1.find((c) => c.element.id === "cell-0-1")).toBeDefined();
+      expect(cell_1_1.find((c) => c.element.id === "cell-1-0")).toBeDefined();
+    });
+  });
   describe("getCell", () => {
     test("table", () => {
       const table = document.createElement("table");
@@ -451,7 +478,7 @@ describe("InternalTable", () => {
             <td id="cell-4-4">4-4</td>
           </tr>
           <tr>
-            <th id="cell-5-0"scope="row">5-0</th>
+            <th id="cell-5-0" scope="row">5-0</th>
             <td id="cell-5-1">5-1</td>
             <td id="cell-5-2">5-2</td>
             <td id="cell-5-3">5-3</td>
@@ -484,13 +511,16 @@ describe("InternalTable", () => {
       expect(headers_4_2.find((e) => e.id === "cell-0-1")).toBeDefined();
       expect(headers_4_2.find((e) => e.id === "cell-0-2")).toBeDefined();
       expect(headers_4_2).toHaveLength(3);
+      const headers_5_2 = result.getHeaderElements(cells[5][2]);
+      expect(headers_5_2.find((e) => e.id === "cell-4-0")).toBeDefined();
+      expect(headers_5_2.find((e) => e.id === "cell-5-0")).toBeDefined();
+      expect(headers_5_2.find((e) => e.id === "cell-0-1")).toBeDefined();
+      expect(headers_5_2.find((e) => e.id === "cell-0-2")).toBeDefined();
+      expect(headers_5_2).toHaveLength(4);
       const headers_5_4 = result.getHeaderElements(cells[5][4]);
       expect(headers_5_4.find((e) => e.id === "cell-0-0")).toBeDefined();
       expect(headers_5_4.find((e) => e.id === "cell-0-1")).toBeDefined();
-      expect(headers_5_4.find((e) => e.id === "cell-5-0")).toBeDefined();
-      expect(headers_5_4.find((e) => e.id === "cell-4-0")).toBeDefined();
-      expect(headers_5_4.find((e) => e.id === "cell-0-3")).toBeDefined();
-      expect(headers_5_4).toHaveLength(5);
+      expect(headers_5_4).toHaveLength(2);
     });
 
     test("rowspan", () => {

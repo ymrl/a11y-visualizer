@@ -8,7 +8,7 @@ import {
   IoCodeSlash,
   IoDocument,
   IoFlag,
-  IoGridOutline,
+  IoGrid,
   IoInformationCircle,
   IoLanguage,
   IoPricetag,
@@ -92,7 +92,7 @@ const Icon = ({ type }: { type: TipType }) => {
       );
     case "tableHeader":
       return (
-        <IoGridOutline
+        <IoGrid
           className="Tip__icon"
           role="img"
           aria-label={t("tip.tableHeader")}

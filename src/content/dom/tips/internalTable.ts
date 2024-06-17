@@ -219,35 +219,111 @@ export class InternalTable {
     return cell ? cell[0] : null;
   };
 
-  getHeaderElements = (cell: Cell): Element[] =>
-    [
-      ...this.getRowHeaderElements(cell),
-      ...this.getRowGroupHeaderElements(cell),
-      ...this.getColHeaderElements(cell),
-      ...this.getColGroupHeaderElements(cell),
-      ...this.getAttributeHeaderElements(cell),
-    ].reduce(
+  getHeaderElements = (cell: Cell): Element[] => {
+    const tagName = cell.element.tagName.toLowerCase();
+    return (
+      ["th", "td"].includes(tagName) && cell.element.hasAttribute("headers")
+        ? this.getAttributeHeaderElements(cell)
+        : [
+            ...this.getRowHeaderElements(cell),
+            ...this.getRowGroupHeaderElements(cell),
+            ...this.getColHeaderElements(cell),
+            ...this.getColGroupHeaderElements(cell),
+          ]
+    ).reduce(
       (prev, el) => (prev.includes(el) ? prev : [...prev, el]),
       [] as Element[],
     );
+  };
+
+  getSlotCells = (x: number, y: number): Cell[] => {
+    return this.cells
+      .map((row) =>
+        row.find(
+          (cell) =>
+            cell.positionX <= x &&
+            cell.positionX + cell.sizeX > x &&
+            cell.positionY <= y &&
+            cell.positionY + cell.sizeY > y,
+        ),
+      )
+      .filter((cell): cell is Cell => !!cell);
+  };
+
+  isColHeader = (cell: Cell): boolean => {
+    const { headerScope } = cell;
+    return (
+      headerScope === "col" ||
+      (headerScope === "auto" &&
+        !this.cells.some((row) =>
+          row.some(
+            (c) =>
+              c.headerScope === "none" &&
+              c.positionY < cell.positionY + cell.sizeY &&
+              c.positionY + c.sizeY > cell.positionY,
+          ),
+        ))
+    );
+  };
+
+  isRowHeader = (cell: Cell): boolean => {
+    const { headerScope } = cell;
+    return (
+      headerScope === "row" ||
+      (headerScope === "auto" &&
+        !this.cells.some((row) =>
+          row.some(
+            (c) =>
+              c.headerScope === "none" &&
+              c.positionX < cell.positionX + cell.sizeX &&
+              c.positionX + c.sizeX > cell.positionX,
+          ),
+        ))
+    );
+  };
 
   getRowHeaderElements = (cell: Cell): Element[] => {
     const { positionY, sizeY, positionX } = cell;
-    return this.cells
-      .map((row) =>
-        row.filter(
-          (c) =>
-            c.headerScope === "row" &&
-            c.positionY < positionY + sizeY &&
-            c.positionY + c.sizeY > positionY &&
-            c.positionX < positionX,
-        ),
-      )
-      .flat()
-      .map((c) => c.element);
+    const headers: Element[] = [];
+    Array(sizeY)
+      .fill(0)
+      .map((_, i) => positionY + i)
+      .forEach((y) => {
+        let inHeaderBlock: boolean = cell.headerScope !== "none";
+        let headersFromCurrentHeaderBlock: Cell[] = inHeaderBlock ? [cell] : [];
+        let opaqueHeaders: Cell[] = [];
+        Array(positionX)
+          .fill(0)
+          .map((_, i) => positionX - 1 - i)
+          .forEach((x) => {
+            const candidates = this.getSlotCells(x, y);
+            candidates.map((c) => {
+              if (c.headerScope !== "none") {
+                inHeaderBlock = true;
+                headersFromCurrentHeaderBlock.push(c);
+                const blocked =
+                  opaqueHeaders.some(
+                    (cell) => cell.positionY === y && cell.sizeY === sizeY,
+                  ) || !this.isRowHeader(c);
+                if (!blocked) {
+                  headers.push(c.element);
+                }
+              } else if (inHeaderBlock) {
+                inHeaderBlock = false;
+                opaqueHeaders = [
+                  ...opaqueHeaders,
+                  ...headersFromCurrentHeaderBlock,
+                ];
+                headersFromCurrentHeaderBlock = [];
+              }
+            });
+          });
+      });
+    return headers;
   };
+
   getRowGroupHeaderElements = (cell: Cell): Element[] => {
-    const { positionY, positionX } = cell;
+    const { positionY } = cell;
     const rowGroup = this.rowGroups.find(
       (group) =>
         group.positionY <= positionY &&
@@ -260,9 +336,7 @@ export class InternalTable {
           (c) =>
             c.headerScope === "rowgroup" &&
             c.positionY < rowGroup.positionY + rowGroup.sizeY &&
-            c.positionY + c.sizeY > rowGroup.positionY &&
-            c.positionX < positionX &&
-            c.positionY <= positionY,
+            c.positionY + c.sizeY > rowGroup.positionY,
         ),
       )
       .flat()
@@ -271,18 +345,43 @@ export class InternalTable {
 
   getColHeaderElements = (cell: Cell): Element[] => {
     const { positionY, positionX, sizeX } = cell;
-    return this.cells
-      .map((row) =>
-        row.filter(
-          (c) =>
-            c.positionY < positionY &&
-            (c.headerScope === "col" || c.headerScope === "auto") &&
-            c.positionX < positionX + sizeX &&
-            c.positionX + c.sizeX > positionX,
-        ),
-      )
-      .flat()
-      .map((c) => c.element);
+    const headers: Element[] = [];
+
+    Array(sizeX)
+      .fill(0)
+      .map((_, i) => positionX + i)
+      .forEach((x) => {
+        let inHeaderBlock: boolean = cell.headerScope !== "none";
+        let headersFromCurrentHeaderBlock: Cell[] = inHeaderBlock ? [cell] : [];
+        let opaqueHeaders: Cell[] = [];
+        Array(positionY)
+          .fill(0)
+          .map((_, i) => positionY - 1 - i)
+          .forEach((y) => {
+            const candidates = this.getSlotCells(x, y);
+            candidates.map((c) => {
+              if (c.headerScope !== "none") {
+                inHeaderBlock = true;
+                headersFromCurrentHeaderBlock.push(c);
+                const blocked =
+                  opaqueHeaders.some(
+                    (cell) => cell.positionX === x && cell.sizeX === sizeX,
+                  ) || !this.isColHeader(c);
+                if (!blocked) {
+                  headers.push(c.element);
+                }
+              } else if (inHeaderBlock) {
+                inHeaderBlock = false;
+                opaqueHeaders = [
+                  ...opaqueHeaders,
+                  ...headersFromCurrentHeaderBlock,
+                ];
+                headersFromCurrentHeaderBlock = [];
+              }
+            });
+          });
+      });
+    return headers;
   };
 
   getColGroupHeaderElements = (cell: Cell): Element[] => {

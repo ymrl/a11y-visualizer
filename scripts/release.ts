@@ -23,7 +23,7 @@ const currentVersion = execSync(
   .trim();
 const nextVersion = semver.inc(currentVersion, releaseLevel);
 
-const manifests = ["manifest.json", "manifest.firefox.json"];
+const manifests = ["manifests/version.json"];
 manifests.forEach((manifest) => {
   const manifestContent = JSON.parse(readFileSync(manifest, "utf8"));
   manifestContent.version = nextVersion;

@@ -4,6 +4,7 @@ import {
   getRowElements,
   getRowGroupElements,
   getCellElements,
+  isEmptyCellElement,
 } from "./internalTable";
 
 describe("InternalTable", () => {
@@ -821,5 +822,32 @@ describe("getCellElements", () => {
       expect(result[i * 4 + 3].getAttribute("role")).toBe("gridcell");
     }
     expect(result).toHaveLength(12);
+  });
+});
+
+describe("isEmptyCellElement", () => {
+  test("empty cell", () => {
+    const cell = document.createElement("td");
+    expect(isEmptyCellElement(cell)).toBe(true);
+  });
+  test("cell with text", () => {
+    const cell = document.createElement("td");
+    cell.textContent = "text";
+    expect(isEmptyCellElement(cell)).toBe(false);
+  });
+  test("cell with space", () => {
+    const cell = document.createElement("td");
+    cell.textContent = " ";
+    expect(isEmptyCellElement(cell)).toBe(true);
+  });
+  test("cell with br", () => {
+    const cell = document.createElement("td");
+    cell.appendChild(document.createElement("br"));
+    expect(isEmptyCellElement(cell)).toBe(false);
+  });
+  test("cell with img", () => {
+    const cell = document.createElement("td");
+    cell.appendChild(document.createElement("img"));
+    expect(isEmptyCellElement(cell)).toBe(false);
   });
 });

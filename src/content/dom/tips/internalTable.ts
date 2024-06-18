@@ -271,6 +271,7 @@ export class InternalTable {
     return (
       headerScope === "row" ||
       (headerScope === "auto" &&
+        !this.isColHeader(cell) &&
         !this.cells.some((row) =>
           row.some(
             (c) =>
@@ -283,7 +284,7 @@ export class InternalTable {
   };
 
   getRowHeaderElements = (cell: Cell): Element[] => {
-    const { positionY, sizeY, positionX } = cell;
+    const { positionY, sizeY, positionX, element } = cell;
     const headers: Element[] = [];
     Array(sizeY)
       .fill(0)
@@ -319,11 +320,11 @@ export class InternalTable {
             });
           });
       });
-    return headers;
+    return headers.filter((el) => el !== element && !isEmptyCellElement(el));
   };
 
   getRowGroupHeaderElements = (cell: Cell): Element[] => {
-    const { positionY } = cell;
+    const { positionY, element } = cell;
     const rowGroup = this.rowGroups.find(
       (group) =>
         group.positionY <= positionY &&
@@ -340,11 +341,12 @@ export class InternalTable {
         ),
       )
       .flat()
-      .map((c) => c.element);
+      .map((c) => c.element)
+      .filter((el) => el !== element && !isEmptyCellElement(el));
   };
 
   getColHeaderElements = (cell: Cell): Element[] => {
-    const { positionY, positionX, sizeX } = cell;
+    const { positionY, positionX, sizeX, element } = cell;
     const headers: Element[] = [];
 
     Array(sizeX)
@@ -381,11 +383,11 @@ export class InternalTable {
             });
           });
       });
-    return headers;
+    return headers.filter((el) => el !== element && !isEmptyCellElement(el));
   };
 
   getColGroupHeaderElements = (cell: Cell): Element[] => {
-    const { positionY, positionX } = cell;
+    const { positionY, positionX, element } = cell;
     const colGroup = this.colGroups.find(
       (group) =>
         group.positionX <= positionX &&
@@ -403,7 +405,8 @@ export class InternalTable {
         ),
       )
       .flat()
-      .map((c) => c.element);
+      .map((c) => c.element)
+      .filter((el) => el !== element && !isEmptyCellElement(el));
   };
 
   getAttributeHeaderElements = (cell: Cell): Element[] => {
@@ -415,7 +418,10 @@ export class InternalTable {
     const headerIds = headers.split(" ");
     return headerIds
       .map((id) => this.element.querySelector(`th#${id}, td#${id}`))
-      .filter((el): el is Element => !!el);
+      .filter(
+        (el): el is Element =>
+          !!el && el !== element && !isEmptyCellElement(el),
+      );
   };
 }
 
@@ -527,3 +533,6 @@ export const getCellElements = (el: Element): Element[] => {
   }
   return [];
 };
+
+export const isEmptyCellElement = (el: Element): boolean =>
+  el.children.length === 0 && (!el.textContent || el.textContent.trim() === "");

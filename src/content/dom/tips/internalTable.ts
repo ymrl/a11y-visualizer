@@ -112,14 +112,20 @@ export class InternalTable {
             }
           }
           const isNativeTag = ["th", "td"].includes(cellTagName);
-          const colSpan =
-            (!isNativeTag && cell.getAttribute("aria-colspan")) ||
-            cell.getAttribute("colspan");
-          const rowSpan =
-            (!isNativeTag && cell.getAttribute("aria-rowspan")) ||
-            cell.getAttribute("rowspan");
-          const sizeX = colSpan ? parseInt(colSpan, 10) : 1;
-          const sizeY = rowSpan ? parseInt(rowSpan, 10) : 1;
+          const ariaColSpan = !isNativeTag && cell.getAttribute("aria-colspan");
+          const ariaRowSpan = !isNativeTag && cell.getAttribute("aria-rowspan");
+          const nativeColSpan = isNativeTag && cell.getAttribute("colspan");
+          const nativeRowSpan = isNativeTag && cell.getAttribute("rowspan");
+          const sizeX = ariaColSpan
+            ? parseInt(ariaColSpan, 10)
+            : nativeColSpan
+              ? Math.min(parseInt(nativeColSpan, 10), 1000)
+              : 1;
+          const sizeY = ariaRowSpan
+            ? parseInt(ariaRowSpan, 10)
+            : nativeRowSpan
+              ? Math.min(parseInt(nativeRowSpan, 10), 65534)
+              : 1;
           const scopeAttr = cell.getAttribute("scope")?.toLowerCase();
           const headerScope: Scope =
             cellTagName === "th"

@@ -3,12 +3,13 @@ import { getKnownRole } from "../getKnownRole";
 type RowGroup = {
   positionY: number;
   sizeY: number;
-  element: Element | null;
+  element: Element;
 };
 
 type ColGroup = {
   positionX: number;
   sizeX: number;
+  element: Element;
 };
 
 type Scope = "row" | "col" | "rowgroup" | "colgroup" | "auto" | "none";
@@ -33,33 +34,6 @@ export class InternalTable {
     this.element = table;
     const tagName = table.tagName.toLowerCase();
     const rowElements = getRowElements(table);
-    const rowGroupElements = getRowGroupElements(table);
-
-    const { rowGroups } = rowElements.reduce(
-      (prev, row, rowIndex) => {
-        const { rowGroups, groupElements } = prev;
-        const prevGroup =
-          rowGroups.length > 0 ? rowGroups[rowGroups.length - 1] : null;
-        if (
-          prevGroup &&
-          ((prevGroup.element && prevGroup.element.contains(row)) ||
-            (!prevGroup.element && !rowGroupElements[0]) ||
-            (!prevGroup.element && !groupElements[0].contains(row)))
-        ) {
-          prevGroup.sizeY += 1;
-          return prev;
-        }
-        const element = groupElements[0]?.contains(row)
-          ? groupElements[0]
-          : null;
-        const restElements = element ? groupElements.slice(1) : groupElements;
-        return {
-          rowGroups: [...rowGroups, { positionY: rowIndex, sizeY: 1, element }],
-          groupElements: restElements,
-        };
-      },
-      { rowGroups: [] as RowGroup[], groupElements: rowGroupElements },
-    );
     const cells: Cell[][] = rowElements.reduce((rows, row, rowIndex) => {
       const cellElements = getCellElements(row);
       const prevRow = rows.length > 0 ? rows[rows.length - 1] : null;
@@ -170,6 +144,36 @@ export class InternalTable {
             ),
           0,
         );
+
+    const rowGroupElements = getRowGroupElements(table);
+    const { rowGroups } = rowElements.reduce(
+      (prev, row, rowIndex) => {
+        const { rowGroups, groupElements } = prev;
+        const prevGroup =
+          rowGroups.length > 0 ? rowGroups[rowGroups.length - 1] : null;
+        if (
+          prevGroup &&
+          ((prevGroup.element && prevGroup.element.contains(row)) ||
+            (!prevGroup.element && !rowGroupElements[0]) ||
+            (!prevGroup.element && !groupElements[0].contains(row)))
+        ) {
+          prevGroup.sizeY += 1;
+          return prev;
+        }
+        if (groupElements[0]?.contains(row)) {
+          return {
+            rowGroups: [
+              ...rowGroups,
+              { positionY: rowIndex, sizeY: 1, element: groupElements[0] },
+            ],
+            groupElements: groupElements.slice(1),
+          };
+        }
+        return prev;
+      },
+      { rowGroups: [] as RowGroup[], groupElements: rowGroupElements },
+    );
+
     const colGroupElements =
       tagName === "table"
         ? [...table.children].filter(
@@ -182,7 +186,7 @@ export class InternalTable {
     );
     const colGroups: ColGroup[] =
       colGroupElements.length > 0
-        ? colGroupElements.reduce((groups, group, groupIndex) => {
+        ? colGroupElements.reduce((groups, group) => {
             const lastGroup =
               groups.length > 0 ? groups[groups.length - 1] : null;
             const positionX = lastGroup
@@ -190,27 +194,19 @@ export class InternalTable {
               : minPositionX;
             const span = group.getAttribute("span");
             const sizeX = span
-              ? parseInt(span, 10)
-              : [...group.querySelectorAll("col")].reduce((prev, col) => {
-                  const span = col.getAttribute("span");
-                  return prev + (span ? parseInt(span, 10) : 1);
-                }, 0);
-            if (
-              groupIndex === colGroupElements.length - 1 &&
-              positionX + sizeX < colCount
-            ) {
-              return [
-                ...groups,
-                { positionX, sizeX },
-                {
-                  positionX: positionX + sizeX,
-                  sizeX: colCount - (positionX + sizeX),
-                },
-              ];
-            }
-            return [...groups, { positionX, sizeX }];
+              ? Math.min(parseInt(span, 10), 1000)
+              : Math.max(
+                  [...group.querySelectorAll("col")].reduce((prev, col) => {
+                    const span = col.getAttribute("span");
+                    return (
+                      prev + (span ? Math.min(parseInt(span, 10), 1000) : 1)
+                    );
+                  }, 0),
+                  1,
+                );
+            return [...groups, { positionX, sizeX, element: group }];
           }, [] as ColGroup[])
-        : [{ positionX: 0, sizeX: colCount }];
+        : [];
     this.rowGroups = rowGroups;
     this.colGroups = colGroups;
     this.cells = cells;

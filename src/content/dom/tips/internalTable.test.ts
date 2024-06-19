@@ -78,9 +78,7 @@ describe("InternalTable", () => {
     table.appendChild(document.createElement("tr"));
     const result = new InternalTable(table);
     const { rowGroups, cells } = result;
-    expect(rowGroups[0].positionY).toBe(0);
-    expect(rowGroups[0].sizeY).toBe(3);
-    expect(rowGroups[0].element).toBeNull();
+    expect(rowGroups).toHaveLength(0);
     expect(cells).toHaveLength(3);
   });
 
@@ -115,6 +113,7 @@ describe("InternalTable", () => {
       <col></col>
       <col></col>
     </colgroup>
+    <colgroup id="3-8"></colgroup>
     <tbody>
       <tr>
         <td>0</td><td>1</td><td>2</td><td>3</td><td>4</td>
@@ -135,9 +134,8 @@ describe("InternalTable", () => {
     expect(colGroups[1].sizeX).toBe(3);
     expect(colGroups[2].positionX).toBe(4);
     expect(colGroups[2].sizeX).toBe(4);
-    expect(colGroups[3]).toBeDefined();
     expect(colGroups[3].positionX).toBe(8);
-    expect(colGroups[3].sizeX).toBe(2);
+    expect(colGroups[3].sizeX).toBe(1);
     expect(colGroups).toHaveLength(4);
   });
 

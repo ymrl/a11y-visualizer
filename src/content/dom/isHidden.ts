@@ -1,5 +1,10 @@
 export const isHidden = (el: Element): boolean => {
-  if (el.matches("details:not([open]) > *:not(summary)")) return true;
+  if (el.matches("details:not([open]) *")) {
+    if (el.tagName.toLowerCase() === "summary" && el.parentElement) {
+      return isHidden(el.parentElement);
+    }
+    return true;
+  }
   if (el.matches("[hidden]")) return true;
 
   const d = el.ownerDocument;

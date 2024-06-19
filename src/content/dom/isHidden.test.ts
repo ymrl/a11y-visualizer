@@ -110,12 +110,24 @@ describe("isHidden", () => {
     const details = document.createElement("details");
     const summary = document.createElement("summary");
     const content = document.createElement("div");
+    const grandchild = document.createElement("div");
+    const grandchildDetails = document.createElement("details");
+    const grandchildSummary = document.createElement("summary");
+    const grandchildContent = document.createElement("div");
     details.appendChild(summary);
     details.appendChild(content);
+    content.appendChild(grandchild);
+    content.appendChild(grandchildDetails);
+    grandchildDetails.appendChild(grandchildSummary);
+    grandchildDetails.appendChild(grandchildContent);
     document.body.appendChild(details);
     expect(isHidden(details)).toBe(false);
     expect(isHidden(summary)).toBe(false);
     expect(isHidden(content)).toBe(true);
+    expect(isHidden(grandchild)).toBe(true);
+    expect(isHidden(grandchildDetails)).toBe(true);
+    expect(isHidden(grandchildSummary)).toBe(true);
+    expect(isHidden(grandchildContent)).toBe(true);
   });
 
   test("body > details[open] > summary + div", () => {
@@ -123,11 +135,23 @@ describe("isHidden", () => {
     details.open = true;
     const summary = document.createElement("summary");
     const content = document.createElement("div");
+    const grandchild = document.createElement("div");
+    const grandchildDetails = document.createElement("details");
+    const grandchildSummary = document.createElement("summary");
+    const grandchildContent = document.createElement("div");
     details.appendChild(summary);
     details.appendChild(content);
+    content.appendChild(grandchild);
+    content.appendChild(grandchildDetails);
+    grandchildDetails.appendChild(grandchildSummary);
+    grandchildDetails.appendChild(grandchildContent);
     document.body.appendChild(details);
     expect(isHidden(details)).toBe(false);
     expect(isHidden(summary)).toBe(false);
     expect(isHidden(content)).toBe(false);
+    expect(isHidden(grandchild)).toBe(false);
+    expect(isHidden(grandchildDetails)).toBe(false);
+    expect(isHidden(grandchildSummary)).toBe(false);
+    expect(isHidden(grandchildContent)).toBe(true);
   });
 });

@@ -440,9 +440,20 @@ export const getRowElements = (el: Element): Element[] => {
     role === "grid" ||
     role === "treegrid"
   ) {
-    return [...el.children].reduce((prev, child) => {
-      return [...prev, ...getRowElementsInElement(child, tagName === "table")];
-    }, [] as Element[]);
+    return [...el.children]
+      .sort((a, b) =>
+        b.tagName.toLowerCase() === "tfoot"
+          ? a.tagName.toLowerCase() !== "tfoot"
+            ? -1
+            : 1
+          : 1,
+      )
+      .reduce((prev, child) => {
+        return [
+          ...prev,
+          ...getRowElementsInElement(child, tagName === "table"),
+        ];
+      }, [] as Element[]);
   }
 
   return [];
@@ -458,9 +469,7 @@ const getRowElementsInElement = (
     return [el];
   } else if (
     (inTableElement && ["thead", "tbody", "tfoot"].includes(tagName)) ||
-    role === "rowgroup" ||
-    role === "presentation" ||
-    role === "none"
+    ["rowgroup", "none", "presentation"].includes(role as string)
   ) {
     return [...el.children].reduce((prev, child) => {
       return [...prev, ...getRowElementsInElement(child, inTableElement)];
@@ -478,12 +487,20 @@ export const getRowGroupElements = (el: Element): Element[] => {
     role === "grid" ||
     role === "treegrid"
   ) {
-    return [...el.children].reduce((prev, child) => {
-      return [
-        ...prev,
-        ...getRowGroupElementsInElement(child, tagName === "table"),
-      ];
-    }, [] as Element[]);
+    return [...el.children]
+      .sort((a, b) =>
+        b.tagName.toLowerCase() === "tfoot"
+          ? a.tagName.toLowerCase() !== "tfoot"
+            ? -1
+            : 1
+          : 1,
+      )
+      .reduce((prev, child) => {
+        return [
+          ...prev,
+          ...getRowGroupElementsInElement(child, tagName === "table"),
+        ];
+      }, [] as Element[]);
   }
   return [];
 };

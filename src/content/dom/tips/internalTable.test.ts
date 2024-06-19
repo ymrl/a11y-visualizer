@@ -84,6 +84,26 @@ describe("InternalTable", () => {
     expect(cells).toHaveLength(3);
   });
 
+  test("wrong tfoot position", () => {
+    const table = document.createElement("table");
+    table.innerHTML = `
+      <caption>caption</caption>
+      <tfoot>
+        <tr><td id="cell-2-0">2-0</td></tr>
+      </tfoot>
+      <tbody>
+        <tr><td id="cell-0-0">0-0</td></tr>
+        <tr><td id="cell-1-0">1-0</td></tr>
+      </tbody>
+    `;
+    const result = new InternalTable(table);
+    const { cells } = result;
+    expect(cells).toHaveLength(3);
+    expect(cells[0][0].element.id).toBe("cell-0-0");
+    expect(cells[1][0].element.id).toBe("cell-1-0");
+    expect(cells[2][0].element.id).toBe("cell-2-0");
+  });
+
   test("colgroups", () => {
     const table = document.createElement("table");
     table.innerHTML = `
@@ -612,25 +632,50 @@ describe("getRowElements", () => {
     table.innerHTML = `
       <caption>caption</caption>
       <thead>
-        <tr><td>thead row 0</td></tr>
+        <tr id="row-0"><td>thead row 0</td></tr>
       </thead>
       <tbody>
-        <tr><td>tbody0 row 0</td></tr>
-        <tr><td>tbody0 row 1</td></tr>
+        <tr id="row-1"><td>tbody0 row 0</td></tr>
+        <tr id="row-2"><td>tbody0 row 1</td></tr>
       </tbody>
       <tbody>
-        <tr><td>tbody1 row 0</td></tr>
+        <tr id="row-3"><td>tbody1 row 0</td></tr>
       </tbody>
       <tfoot>
-        <tr><td>tfoot row 0</td></tr>
+        <tr id="row-4"><td>tfoot row 0</td></tr>
       </tfoot>
     `;
     const result = getRowElements(table);
-    result.forEach((row) => {
+    result.forEach((row, i) => {
       expect(row.tagName.toLowerCase()).toBe("tr");
+      expect(row.id).toBe(`row-${i}`);
     });
     expect(result).toHaveLength(5);
   });
+
+  test("wrong tfoot position", () => {
+    const table = document.createElement("table");
+    table.innerHTML = `
+      <caption>caption</caption>
+      <tfoot>
+        <tr id="row-2"><td id="cell-2-0">2-0</td></tr>
+      </tfoot>
+      <tbody>
+        <tr id="row-0"><td>0-0</td></tr>
+        <tr id="row-1"><td>1-0</td></tr>
+      </tbody>
+      <tfoot>
+        <tr id="row-3"><td>3-0</td></tr>
+      </tfoot>
+    `;
+    const result = getRowElements(table);
+    result.forEach((row, i) => {
+      expect(row.tagName.toLowerCase()).toBe("tr");
+      expect(row.id).toBe(`row-${i}`);
+    });
+    expect(result).toHaveLength(4);
+  });
+
   test("table has directly added tr", () => {
     const table = document.createElement("table");
     table.appendChild(document.createElement("tr"));
@@ -722,6 +767,31 @@ describe("getRowGroupElements", () => {
     expect(result[0].tagName.toLowerCase()).toBe("thead");
     expect(result[1].tagName.toLowerCase()).toBe("tbody");
     expect(result[2].tagName.toLowerCase()).toBe("tbody");
+    expect(result[3].tagName.toLowerCase()).toBe("tfoot");
+    expect(result).toHaveLength(4);
+  });
+
+  test("wrong tfoot position", () => {
+    const table = document.createElement("table");
+    table.innerHTML = `
+      <caption>caption</caption>
+      <tfoot id="group-2">
+        <tr><td>2-0</td></tr>
+      </tfoot>
+      <thead id="group-0">
+        <tr><td>0-0</td></tr>
+      </thead>
+      <tbody id="group-1">
+        <tr><td>1-0</td></tr>
+      </tbody>
+      <tfoot id="group-3">
+        <tr><td>3-0</td></tr>
+      </tfoot>
+    `;
+    const result = getRowGroupElements(table);
+    expect(result[0].tagName.toLowerCase()).toBe("thead");
+    expect(result[1].tagName.toLowerCase()).toBe("tbody");
+    expect(result[2].tagName.toLowerCase()).toBe("tfoot");
     expect(result[3].tagName.toLowerCase()).toBe("tfoot");
     expect(result).toHaveLength(4);
   });

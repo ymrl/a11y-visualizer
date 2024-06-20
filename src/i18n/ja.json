@@ -46,6 +46,7 @@
     "tableHeader": "表見出し",
     "tableSize": "表の大きさ",
     "tablePosition": "位置",
+    "linkTarget": "リンクのターゲット",
     "lang": "言語",
     "warning": "警告",
     "error": "エラー"

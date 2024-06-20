@@ -46,6 +46,7 @@
     "tableHeader": "Table header",
     "tableSize": "Table size",
     "tablePosition": "Position",
+    "linkTarget": "Link Target",
     "lang": "Language",
     "warning": "Warning",
     "error": "Error"

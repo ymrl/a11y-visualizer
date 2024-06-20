@@ -36,6 +36,9 @@
 .Tip--tablePosition {
   background-color: var(--base-beige);
 }
+.Tip--linkTarget {
+  background-color: var(--base-beige);
+}
 
 .Tip--description {
   background-color: var(--light-gray);

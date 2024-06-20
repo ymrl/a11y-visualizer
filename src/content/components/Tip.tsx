@@ -12,6 +12,7 @@ import {
   IoGridOutline,
   IoInformationCircle,
   IoLanguage,
+  IoOpenOutline,
   IoPin,
   IoPricetag,
   IoWarning,
@@ -114,6 +115,15 @@ const Icon = ({ type }: { type: TipType }) => {
           className="Tip__icon"
           role="img"
           aria-label={t("tip.tablePosition")}
+        />
+      );
+
+    case "linkTarget":
+      return (
+        <IoOpenOutline
+          className="Tip__icon"
+          role="img"
+          aria-label={t("tip.linkTarget")}
         />
       );
 

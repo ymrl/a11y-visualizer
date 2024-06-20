@@ -25,6 +25,7 @@ export type TipType =
   | "tableHeader"
   | "tableSize"
   | "tablePosition"
+  | "linkTarget"
   | "warning"
   | "error";
 export type ElementTip = {

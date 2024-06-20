@@ -23,6 +23,7 @@ export const linkTips = (
   const hasTag = hasLinkTag(el);
   const hasRole = hasLinkRole(el);
   const href = el.getAttribute("href");
+  const target = el.getAttribute("target");
 
   if (hasTag || hasRole) {
     if (!name && (hasRole || href) && !hidden) {
@@ -32,6 +33,9 @@ export const linkTips = (
   if (hasTag) {
     if (!el.hasAttribute("href")) {
       result.push({ type: "warning", content: "messages.noHref" });
+    }
+    if (target) {
+      result.push({ type: "linkTarget", content: target });
     }
   }
   if (hasRole && !isFocusable(el)) {

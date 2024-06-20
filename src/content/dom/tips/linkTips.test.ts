@@ -51,6 +51,20 @@ describe("linkTips()", () => {
     expect(result).toHaveLength(0);
   });
 
+  test("a with target", () => {
+    const element = document.createElement("a");
+    element.textContent = "Hello";
+    element.href = "https://example.com";
+    element.target = "_blank";
+    document.body.appendChild(element);
+    const result = linkTips(element);
+    expect(result).toHaveLength(1);
+    expect(result.find((t) => t.type === "linkTarget")).toEqual({
+      type: "linkTarget",
+      content: "_blank",
+    });
+  });
+
   test("a without href", () => {
     const element = document.createElement("a");
     element.textContent = "Hello";

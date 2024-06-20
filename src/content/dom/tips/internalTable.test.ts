@@ -4,6 +4,7 @@ import {
   getRowElements,
   getRowGroupElements,
   getCellElements,
+  isEmptyCellElement,
 } from "./internalTable";
 
 describe("InternalTable", () => {
@@ -77,10 +78,28 @@ describe("InternalTable", () => {
     table.appendChild(document.createElement("tr"));
     const result = new InternalTable(table);
     const { rowGroups, cells } = result;
-    expect(rowGroups[0].positionY).toBe(0);
-    expect(rowGroups[0].sizeY).toBe(3);
-    expect(rowGroups[0].element).toBeNull();
+    expect(rowGroups).toHaveLength(0);
     expect(cells).toHaveLength(3);
+  });
+
+  test("wrong tfoot position", () => {
+    const table = document.createElement("table");
+    table.innerHTML = `
+      <caption>caption</caption>
+      <tfoot>
+        <tr><td id="cell-2-0">2-0</td></tr>
+      </tfoot>
+      <tbody>
+        <tr><td id="cell-0-0">0-0</td></tr>
+        <tr><td id="cell-1-0">1-0</td></tr>
+      </tbody>
+    `;
+    const result = new InternalTable(table);
+    const { cells } = result;
+    expect(cells).toHaveLength(3);
+    expect(cells[0][0].element.id).toBe("cell-0-0");
+    expect(cells[1][0].element.id).toBe("cell-1-0");
+    expect(cells[2][0].element.id).toBe("cell-2-0");
   });
 
   test("colgroups", () => {
@@ -94,6 +113,7 @@ describe("InternalTable", () => {
       <col></col>
       <col></col>
     </colgroup>
+    <colgroup id="3-8"></colgroup>
     <tbody>
       <tr>
         <td>0</td><td>1</td><td>2</td><td>3</td><td>4</td>
@@ -114,9 +134,8 @@ describe("InternalTable", () => {
     expect(colGroups[1].sizeX).toBe(3);
     expect(colGroups[2].positionX).toBe(4);
     expect(colGroups[2].sizeX).toBe(4);
-    expect(colGroups[3]).toBeDefined();
     expect(colGroups[3].positionX).toBe(8);
-    expect(colGroups[3].sizeX).toBe(2);
+    expect(colGroups[3].sizeX).toBe(1);
     expect(colGroups).toHaveLength(4);
   });
 
@@ -611,25 +630,50 @@ describe("getRowElements", () => {
     table.innerHTML = `
       <caption>caption</caption>
       <thead>
-        <tr><td>thead row 0</td></tr>
+        <tr id="row-0"><td>thead row 0</td></tr>
       </thead>
       <tbody>
-        <tr><td>tbody0 row 0</td></tr>
-        <tr><td>tbody0 row 1</td></tr>
+        <tr id="row-1"><td>tbody0 row 0</td></tr>
+        <tr id="row-2"><td>tbody0 row 1</td></tr>
       </tbody>
       <tbody>
-        <tr><td>tbody1 row 0</td></tr>
+        <tr id="row-3"><td>tbody1 row 0</td></tr>
       </tbody>
       <tfoot>
-        <tr><td>tfoot row 0</td></tr>
+        <tr id="row-4"><td>tfoot row 0</td></tr>
       </tfoot>
     `;
     const result = getRowElements(table);
-    result.forEach((row) => {
+    result.forEach((row, i) => {
       expect(row.tagName.toLowerCase()).toBe("tr");
+      expect(row.id).toBe(`row-${i}`);
     });
     expect(result).toHaveLength(5);
   });
+
+  test("wrong tfoot position", () => {
+    const table = document.createElement("table");
+    table.innerHTML = `
+      <caption>caption</caption>
+      <tfoot>
+        <tr id="row-2"><td id="cell-2-0">2-0</td></tr>
+      </tfoot>
+      <tbody>
+        <tr id="row-0"><td>0-0</td></tr>
+        <tr id="row-1"><td>1-0</td></tr>
+      </tbody>
+      <tfoot>
+        <tr id="row-3"><td>3-0</td></tr>
+      </tfoot>
+    `;
+    const result = getRowElements(table);
+    result.forEach((row, i) => {
+      expect(row.tagName.toLowerCase()).toBe("tr");
+      expect(row.id).toBe(`row-${i}`);
+    });
+    expect(result).toHaveLength(4);
+  });
+
   test("table has directly added tr", () => {
     const table = document.createElement("table");
     table.appendChild(document.createElement("tr"));
@@ -721,6 +765,31 @@ describe("getRowGroupElements", () => {
     expect(result[0].tagName.toLowerCase()).toBe("thead");
     expect(result[1].tagName.toLowerCase()).toBe("tbody");
     expect(result[2].tagName.toLowerCase()).toBe("tbody");
+    expect(result[3].tagName.toLowerCase()).toBe("tfoot");
+    expect(result).toHaveLength(4);
+  });
+
+  test("wrong tfoot position", () => {
+    const table = document.createElement("table");
+    table.innerHTML = `
+      <caption>caption</caption>
+      <tfoot id="group-2">
+        <tr><td>2-0</td></tr>
+      </tfoot>
+      <thead id="group-0">
+        <tr><td>0-0</td></tr>
+      </thead>
+      <tbody id="group-1">
+        <tr><td>1-0</td></tr>
+      </tbody>
+      <tfoot id="group-3">
+        <tr><td>3-0</td></tr>
+      </tfoot>
+    `;
+    const result = getRowGroupElements(table);
+    expect(result[0].tagName.toLowerCase()).toBe("thead");
+    expect(result[1].tagName.toLowerCase()).toBe("tbody");
+    expect(result[2].tagName.toLowerCase()).toBe("tfoot");
     expect(result[3].tagName.toLowerCase()).toBe("tfoot");
     expect(result).toHaveLength(4);
   });
@@ -821,5 +890,32 @@ describe("getCellElements", () => {
       expect(result[i * 4 + 3].getAttribute("role")).toBe("gridcell");
     }
     expect(result).toHaveLength(12);
+  });
+});
+
+describe("isEmptyCellElement", () => {
+  test("empty cell", () => {
+    const cell = document.createElement("td");
+    expect(isEmptyCellElement(cell)).toBe(true);
+  });
+  test("cell with text", () => {
+    const cell = document.createElement("td");
+    cell.textContent = "text";
+    expect(isEmptyCellElement(cell)).toBe(false);
+  });
+  test("cell with space", () => {
+    const cell = document.createElement("td");
+    cell.textContent = " ";
+    expect(isEmptyCellElement(cell)).toBe(true);
+  });
+  test("cell with br", () => {
+    const cell = document.createElement("td");
+    cell.appendChild(document.createElement("br"));
+    expect(isEmptyCellElement(cell)).toBe(false);
+  });
+  test("cell with img", () => {
+    const cell = document.createElement("td");
+    cell.appendChild(document.createElement("img"));
+    expect(isEmptyCellElement(cell)).toBe(false);
   });
 });

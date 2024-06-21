@@ -5,6 +5,7 @@
     "iconEyesOpen": "Icon: eyes open",
     "iconEyesClosed": "Icon: eyes closed",
     "settingsForHost": "Settings for {{host}}",
+    "settingsForFile": "Settings for local files",
     "rerun": "Re-run",
     "reset": "Reset to defaults",
     "hostDesc": "Settings on this popup are saved per host. Default values for new hosts can be set in the extension options.",

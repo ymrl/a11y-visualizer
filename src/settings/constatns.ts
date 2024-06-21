@@ -2,6 +2,7 @@ import { Settings } from "./types";
 
 export const DEFAULT_SETTING_KEY = "__default__";
 export const OBSOLETE_SETTING_KEY = "settings";
+export const FILE_SETTING_KEY = "__file__";
 
 export const initialSettings: Settings = {
   accessibilityInfo: true,

@@ -5,6 +5,7 @@
     "iconEyesOpen": "アイコン: 目が開いている",
     "iconEyesClosed": "アイコン: 目が閉じている",
     "settingsForHost": "{{host}} の設定",
+    "settingsForFile": "ローカルファイルの設定",
     "rerun": "再実行",
     "reset": "設定をリセット",
     "hostDesc": "この画面で設定した内容は、Webページのホストごとに保存されます。設定のデフォルト値は、拡張機能のオプションで設定できます。",

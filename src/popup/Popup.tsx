@@ -4,9 +4,9 @@ import {
   SettingsMessage,
   Settings,
   initialSettings,
-  loadHostSettings,
-  saveHostSettings,
-  resetHostSettings,
+  loadUrlSettings,
+  resetUrlSettings,
+  saveUrlSettings,
 } from "../settings";
 import { useLang } from "../useLang";
 import {
@@ -20,25 +20,35 @@ import icon from "../assets/icon.svg";
 import iconDisabled from "../assets/icon-disabled.svg";
 import { IoBackspaceOutline, IoReloadOutline } from "react-icons/io5";
 
-const getCurrentHost = async () => {
+const getUrl = async () => {
   const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
-  const url = tabs[0]?.url;
-  return url && url.match(/^https?:\/\//) ? new URL(url).host : undefined;
+  return tabs[0]?.url;
 };
 
 export const Popup = () => {
   const [settings, setSettings] = React.useState<Settings>(initialSettings);
   const [enabled, setEnabled] = React.useState<boolean>(false);
+  const [url, setUrl] = React.useState<string | undefined>(undefined);
   const [host, setHost] = React.useState<string | undefined>(undefined);
+  const [isFile, setIsFile] = React.useState<boolean>(false);
   const [hostSetting, setHostSetting] = React.useState<boolean>(false);
   const { t, lang } = useLang();
 
   const loadSettings = async () => {
     const loadedEnabled = await loadEnabled();
     setEnabled(loadedEnabled);
-    const host = await getCurrentHost();
-    setHost(host);
-    const [newSettings, found] = await loadHostSettings(host);
+    const url = await getUrl();
+    setUrl(url);
+    const [newSettings, found] = await loadUrlSettings(url);
+    if (url) {
+      const parsedURL = new URL(url);
+      if (["http:", "https:"].includes(parsedURL.protocol) && parsedURL.host) {
+        setHost(parsedURL.host);
+      }
+      if (parsedURL.protocol === "file:") {
+        setIsFile(true);
+      }
+    }
     setHostSetting(found);
     setSettings(newSettings);
     return newSettings;
@@ -50,14 +60,14 @@ export const Popup = () => {
 
   const updateSettings = async (newSettings: Settings) => {
     setSettings(newSettings);
-    if (host) {
+    if (url) {
       setHostSetting(true);
-      saveHostSettings(host, newSettings);
+      saveUrlSettings(url, newSettings);
       sendMessageToActiveTabs<SettingsMessage>({
-        type: "updateHostSettings",
+        type: "updateUrlSettings",
         settings: newSettings,
         enabled: enabled,
-        host: host,
+        url: url,
       });
     }
   };
@@ -130,11 +140,12 @@ export const Popup = () => {
           <span className="absolute inset-0" />
         </Checkbox>
       </div>
-      {host && (
+      {(host || isFile) && (
         <div className="p-2 flex flex-col gap-2 items-stretch">
           <div className="flex flex-row gap-2 items-center">
             <h2 className="text-sm font-bold text-teal-800 dark:text-teal-200 shrink">
-              {t("popup.settingsForHost", { host })}
+              {host && t("popup.settingsForHost", { host })}
+              {isFile && t("popup.settingsForFile")}
             </h2>
             <button
               type="button"
@@ -144,14 +155,15 @@ export const Popup = () => {
                 dark:hover:enabled:bg-teal-800
                 disabled:text-zinc-400 disabled:cursor-not-allowed"
               onClick={async () => {
-                await resetHostSettings(host);
+                await resetUrlSettings(url);
                 const defaultSettings = await loadSettings();
-                sendMessageToActiveTabs<SettingsMessage>({
-                  type: "updateHostSettings",
-                  settings: defaultSettings,
-                  enabled: enabled,
-                  host: host,
-                });
+                url &&
+                  sendMessageToActiveTabs<SettingsMessage>({
+                    type: "updateUrlSettings",
+                    settings: defaultSettings,
+                    enabled: enabled,
+                    url: url,
+                  });
               }}
               disabled={!enabled || !hostSetting}
               title={t("popup.reset")}

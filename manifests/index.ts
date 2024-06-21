@@ -24,7 +24,7 @@ const manifestBase: ManifestV3Export = {
   content_scripts: [
     {
       js: ["src/content/index.ts"],
-      matches: ["*://*/*"],
+      matches: ["*://*/*", "file:///*"],
       exclude_matches: ["*://docs.google.com/*"],
     },
   ],

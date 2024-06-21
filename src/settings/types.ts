@@ -26,10 +26,10 @@ export type Settings = {
 
 export type SettingsMessage =
   | {
-      type: "updateHostSettings";
+      type: "updateUrlSettings";
       settings: Settings;
       enabled: boolean;
-      host: string;
+      url: string;
     }
   | {
       type: "updateEnabled";

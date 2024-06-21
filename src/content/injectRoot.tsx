@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { Root, RootOptions } from "./Root";
-import { Settings, SettingsMessage, loadHostSettings } from "../settings";
+import { Settings, SettingsMessage, loadUrlSettings } from "../settings";
 import { SettingsProvider } from "./components/SettingsProvider";
 import { loadEnabled } from "../enabled";
 
@@ -34,10 +34,10 @@ export const injectRoot = async (
   parent: Element,
   options?: RootOptions,
 ) => {
-  if (!w.location.href.startsWith("http")) {
+  if (!w.location.href.match(/^(?:https?)|(?:file):\/\//)) {
     return;
   }
-  let [settings] = await loadHostSettings(w.location.host);
+  let [settings] = await loadUrlSettings(location.href);
   const enabled = await loadEnabled();
 
   let mountReturn = enabled ? mount(w, parent, options) : null;
@@ -45,16 +45,24 @@ export const injectRoot = async (
 
   const listener = (message: SettingsMessage) => {
     if (
-      !["updateHostSettings", "applySettings", "updateEnabled"].includes(
+      !["updateUrlSettings", "applySettings", "updateEnabled"].includes(
         message.type,
       )
     )
       return;
-    if (
-      message.type === "applySettings" ||
-      message.type === "updateHostSettings"
-    ) {
+    if (message.type === "applySettings") {
       settings = message.settings;
+    }
+    if (message.type === "updateUrlSettings") {
+      const parsedUrl = new URL(message.url);
+      if (parsedUrl.host === location.host) {
+        settings = message.settings;
+      } else if (
+        parsedUrl.protocol === "file:" &&
+        location.protocol === "file:"
+      ) {
+        settings = message.settings;
+      }
     }
     if (message.enabled) {
       (mountReturn || (mountReturn = mount(w, parent))).render(settings);

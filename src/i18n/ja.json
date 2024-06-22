@@ -105,6 +105,7 @@
     "mayBeSkipped": "読み飛ばされる可能性あり",
     "noName": "名前（ラベル）なし",
     "noHref": "href属性なし",
+    "nestedInteractive": "インタラクティブ要素の入れ子",
     "emptyHeading": "空の見出し",
     "noHeadingLevel": "見出しレベルなし",
     "ariaHidden": "aria-hidden",

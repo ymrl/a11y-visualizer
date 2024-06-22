@@ -138,4 +138,55 @@ describe("linkTips()", () => {
       result.find((t) => t.type === "error" && t.content === "messages.noName"),
     ).not.toBeUndefined();
   });
+
+  test("nested interactive", () => {
+    const element = document.createElement("a");
+    element.textContent = "Hello";
+    element.href = "https://example.com";
+    const child = document.createElement("button");
+    child.textContent = "world";
+    element.appendChild(child);
+    document.body.appendChild(element);
+    const result = linkTips(element);
+    expect(result).toHaveLength(1);
+    expect(
+      result.find(
+        (t) => t.type === "error" && t.content === "messages.nestedInteractive",
+      ),
+    ).toBeDefined();
+  });
+
+  test("nested tabindex", () => {
+    const element = document.createElement("a");
+    element.textContent = "Hello";
+    element.href = "https://example.com";
+    const child = document.createElement("div");
+    child.setAttribute("tabindex", "0");
+    element.appendChild(child);
+    document.body.appendChild(element);
+    const result = linkTips(element);
+    expect(result).toHaveLength(1);
+    expect(
+      result.find(
+        (t) => t.type === "error" && t.content === "messages.nestedInteractive",
+      ),
+    ).toBeDefined();
+  });
+
+  test("nested a", () => {
+    const element = document.createElement("a");
+    element.textContent = "Hello";
+    element.href = "https://example.com";
+    const child = document.createElement("a");
+    child.textContent = "world";
+    element.appendChild(child);
+    document.body.appendChild(element);
+    const result = linkTips(element);
+    expect(result).toHaveLength(1);
+    expect(
+      result.find(
+        (t) => t.type === "error" && t.content === "messages.nestedInteractive",
+      ),
+    ).toBeDefined();
+  });
 });

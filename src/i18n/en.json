@@ -99,6 +99,7 @@
     "mayBeSkipped": "May be skipped",
     "noName": "No name (label)",
     "noHref": "No href attribute",
+    "nestedInteractive": "No nested interactive element",
     "emptyHeading": "Empty heading",
     "noHeadingLevel": "No heading level",
     "ariaHidden": "aria-hidden",

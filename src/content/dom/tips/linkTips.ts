@@ -2,6 +2,8 @@ import { computeAccessibleName } from "dom-accessibility-api";
 import { ElementTip } from "../../types";
 import { isAriaHidden } from "../isAriaHidden";
 import { isFocusable } from "../isFocusable";
+import { hasInteractiveDescendant } from "../hasInteractiveDescendant";
+import { hasTabIndexDescendant } from "../hasTabIndexDescendant";
 
 export const LinkSelectors = ["a", "area", '[role="link"]'] as const;
 
@@ -28,6 +30,13 @@ export const linkTips = (
   if (hasTag || hasRole) {
     if (!name && (hasRole || href) && !hidden) {
       result.push({ type: "error", content: "messages.noName" });
+    }
+    if (
+      hasInteractiveDescendant(el) ||
+      hasTabIndexDescendant(el) ||
+      (el.tagName.toLowerCase() === "a" && el.querySelector("a"))
+    ) {
+      result.push({ type: "error", content: "messages.nestedInteractive" });
     }
   }
   if (hasTag) {

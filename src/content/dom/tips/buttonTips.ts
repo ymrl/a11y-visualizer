@@ -2,6 +2,8 @@ import { computeAccessibleName } from "dom-accessibility-api";
 import { ElementTip } from "../../types";
 import { isAriaHidden } from "../isAriaHidden";
 import { isFocusable } from "../isFocusable";
+import { hasInteractiveDescendant } from "../hasInteractiveDescendant";
+import { hasTabIndexDescendant } from "../hasTabIndexDescendant";
 
 export const ButtonSelectors = [
   "button",
@@ -40,6 +42,9 @@ export const buttonTips = (
     }
     if (!isFocusable(el)) {
       result.push({ type: "error", content: "messages.notFocusable" });
+    }
+    if (hasInteractiveDescendant(el) || hasTabIndexDescendant(el)) {
+      result.push({ type: "error", content: "messages.nestedInteractive" });
     }
   }
   return result;

@@ -248,4 +248,33 @@ describe("buttonTips()", () => {
     expect(result[0].type).toBe("error");
     expect(result[0].content).toBe("messages.noName");
   });
+
+  test("nested interactive", () => {
+    const element = document.createElement("div");
+    element.role = "button";
+    element.tabIndex = 0;
+    element.appendChild(new Text("Hello"));
+    const button = document.createElement("button");
+    button.textContent = "world";
+    element.appendChild(button);
+    document.body.appendChild(element);
+    const result = buttonTips(element);
+    expect(result).toHaveLength(1);
+    expect(result[0].type).toBe("error");
+    expect(result[0].content).toBe("messages.nestedInteractive");
+  });
+
+  test("nested tabindex", () => {
+    const element = document.createElement("button");
+    element.appendChild(new Text("Hello"));
+    const span = document.createElement("span");
+    span.tabIndex = 0;
+    span.textContent = "world";
+    element.appendChild(span);
+    document.body.appendChild(element);
+    const result = buttonTips(element);
+    expect(result).toHaveLength(1);
+    expect(result[0].type).toBe("error");
+    expect(result[0].content).toBe("messages.nestedInteractive");
+  });
 });

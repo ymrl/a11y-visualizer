@@ -86,6 +86,13 @@ export const formTips = (
     if (!isFocusable(el)) {
       result.push({ type: "error", content: "messages.notFocusable" });
     }
+
+    if (
+      el.parentElement &&
+      el.parentElement.closest('a, button, [role="link"], [role="button"]')
+    ) {
+      result.push({ type: "error", content: "messages.nestedInteractive" });
+    }
   }
   if (tagName === "input" && typeAttr === "radio") {
     const nameAttr = el.getAttribute("name");

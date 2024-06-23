@@ -277,4 +277,18 @@ describe("buttonTips()", () => {
     expect(result[0].type).toBe("error");
     expect(result[0].content).toBe("messages.nestedInteractive");
   });
+
+  test("nested interactive parent", () => {
+    const link = document.createElement("a");
+    link.textContent = "Hello";
+    link.href = "http://example.com";
+    const button = document.createElement("button");
+    button.textContent = "world";
+    link.appendChild(button);
+    document.body.appendChild(link);
+    const result = buttonTips(button);
+    expect(result).toHaveLength(1);
+    expect(result[0].type).toBe("error");
+    expect(result[0].content).toBe("messages.nestedInteractive");
+  });
 });

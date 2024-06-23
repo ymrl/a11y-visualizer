@@ -35,6 +35,8 @@ export const buttonTips = (
   name: string = computeAccessibleName(el),
 ): ElementTip[] => {
   const result: ElementTip[] = [];
+  const tagName = el.tagName.toLowerCase();
+  const role = el.getAttribute("role");
 
   if (isButton(el)) {
     if (!name && !isAriaHidden(el)) {
@@ -43,7 +45,17 @@ export const buttonTips = (
     if (!isFocusable(el)) {
       result.push({ type: "error", content: "messages.notFocusable" });
     }
-    if (hasInteractiveDescendant(el) || hasTabIndexDescendant(el)) {
+    if (
+      (tagName === "button" || role === "button") &&
+      (hasInteractiveDescendant(el) || hasTabIndexDescendant(el))
+    ) {
+      result.push({ type: "error", content: "messages.nestedInteractive" });
+    }
+    if (
+      (tagName === "button" || role === "button") &&
+      el.parentElement &&
+      el.parentElement.closest('a, button, [role="link"], [role="button"]')
+    ) {
       result.push({ type: "error", content: "messages.nestedInteractive" });
     }
   }

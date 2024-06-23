@@ -167,4 +167,20 @@ describe("formTips()", () => {
       ),
     ).toBeDefined();
   });
+
+  test("nested interactive", () => {
+    const element = document.createElement("input");
+    document.body.appendChild(element);
+    element.setAttribute("aria-label", "Name");
+    const parent = document.createElement("a");
+    parent.appendChild(element);
+    document.body.appendChild(parent);
+    const result = formTips(element);
+    expect(result).toHaveLength(1);
+    expect(
+      result.find(
+        (t) => t.type === "error" && t.content === "messages.nestedInteractive",
+      ),
+    ).toBeDefined();
+  });
 });

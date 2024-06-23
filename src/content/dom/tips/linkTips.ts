@@ -38,6 +38,12 @@ export const linkTips = (
     ) {
       result.push({ type: "error", content: "messages.nestedInteractive" });
     }
+    if (
+      el.parentElement &&
+      el.parentElement.closest('a, button, [role="link"], [role="button"]')
+    ) {
+      result.push({ type: "error", content: "messages.nestedInteractive" });
+    }
   }
   if (hasTag) {
     if (!el.hasAttribute("href")) {

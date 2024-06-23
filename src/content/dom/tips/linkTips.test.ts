@@ -189,4 +189,22 @@ describe("linkTips()", () => {
       ),
     ).toBeDefined();
   });
+
+  test("nested a in parent", () => {
+    const parent = document.createElement("a");
+    parent.textContent = "Hello";
+    parent.href = "https://example.com";
+    const child = document.createElement("a");
+    child.textContent = "world";
+    child.href = "https://example.com";
+    parent.appendChild(child);
+    document.body.appendChild(parent);
+    const result = linkTips(child);
+    expect(result).toHaveLength(1);
+    expect(
+      result.find(
+        (t) => t.type === "error" && t.content === "messages.nestedInteractive",
+      ),
+    ).toBeDefined();
+  });
 });

@@ -32,9 +32,8 @@ export const linkTips = (
       result.push({ type: "error", content: "messages.noName" });
     }
     if (
-      hasInteractiveDescendant(el) ||
-      hasTabIndexDescendant(el) ||
-      (el.tagName.toLowerCase() === "a" && el.querySelector("a"))
+      el.parentElement &&
+      el.parentElement.closest('a, button, [role="button"]')
     ) {
       result.push({ type: "error", content: "messages.nestedInteractive" });
     }
@@ -45,6 +44,13 @@ export const linkTips = (
     }
     if (target) {
       result.push({ type: "linkTarget", content: target });
+    }
+    if (
+      hasInteractiveDescendant(el) ||
+      hasTabIndexDescendant(el) ||
+      (el.tagName.toLowerCase() === "a" && el.querySelector("a"))
+    ) {
+      result.push({ type: "error", content: "messages.nestedInteractive" });
     }
   }
   if (hasRole && !isFocusable(el)) {

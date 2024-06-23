@@ -54,7 +54,7 @@ export const buttonTips = (
     if (
       (tagName === "button" || role === "button") &&
       el.parentElement &&
-      el.parentElement.closest('a, button, [role="link"], [role="button"]')
+      el.parentElement.closest('a, button, [role="button"]')
     ) {
       result.push({ type: "error", content: "messages.nestedInteractive" });
     }

@@ -89,7 +89,7 @@ export const formTips = (
 
     if (
       el.parentElement &&
-      el.parentElement.closest('a, button, [role="link"], [role="button"]')
+      el.parentElement.closest('a, button, [role="button"]')
     ) {
       result.push({ type: "error", content: "messages.nestedInteractive" });
     }

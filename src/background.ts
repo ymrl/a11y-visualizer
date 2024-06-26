@@ -53,8 +53,18 @@ chrome.runtime.onStartup.addListener(async () => {
   updateIcons(enabled);
 });
 
-chrome.runtime.onMessage.addListener((message) => {
+chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
   if (message.type === "updateEnabled") {
     updateIcons(message.enabled);
+  }
+  if (message.type === "isEnabled") {
+    (async () => {
+      const enabled = await loadEnabled();
+      sendResponse({
+        type: "isEnabledAnswer",
+        enabled,
+      });
+    })();
+    return true;
   }
 });

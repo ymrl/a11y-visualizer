@@ -14,8 +14,19 @@ const listener = (message: SettingsMessage) => {
   if (message.enabled && !injected) {
     injectRoot(window, window.document.body);
     injected = true;
-  } else {
-    injected = false;
   }
 };
+
 chrome.runtime.onMessage.addListener(listener);
+
+document.addEventListener("visibilitychange", async () => {
+  if (document.visibilityState === "visible") {
+    const { enabled } = await chrome.runtime.sendMessage({
+      type: "isEnabled",
+    });
+    if (enabled && !injected) {
+      injectRoot(window, window.document.body);
+      injected = true;
+    }
+  }
+});

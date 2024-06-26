@@ -69,8 +69,21 @@ export const injectRoot = async (
     } else {
       mountReturn?.unmount();
       mountReturn = null;
-      chrome.runtime.onMessage.removeListener(listener);
     }
   };
   chrome.runtime.onMessage.addListener(listener);
+
+  w.document.addEventListener("visibilitychange", async () => {
+    if (w.document.visibilityState === "visible") {
+      const { enabled } = await chrome.runtime.sendMessage({
+        type: "isEnabled",
+      });
+      if (enabled) {
+        (mountReturn || (mountReturn = mount(w, parent))).render(settings);
+      } else {
+        mountReturn?.unmount();
+        mountReturn = null;
+      }
+    }
+  });
 };

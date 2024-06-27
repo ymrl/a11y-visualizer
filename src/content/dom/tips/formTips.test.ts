@@ -1,6 +1,18 @@
 import { describe, test, expect, afterEach } from "vitest";
 import { formTips, isFormControl } from "./formTips";
 
+const getBoundingClientRect = () => ({
+  width: 24,
+  height: 24,
+  x: 0,
+  y: 0,
+  left: 0,
+  top: 0,
+  bottom: 0,
+  right: 0,
+  toJSON: () => "",
+});
+
 describe("isFormControl()", () => {
   test("div", () => {
     const element = document.createElement("div");
@@ -40,6 +52,7 @@ describe("formTips()", () => {
 
   test("empty input", () => {
     const element = document.createElement("input");
+    element.getBoundingClientRect = getBoundingClientRect;
     document.body.appendChild(element);
     const result = formTips(element);
     expect(result).toHaveLength(1);
@@ -55,6 +68,7 @@ describe("formTips()", () => {
     const label = document.createElement("label");
     label.textContent = "Name";
     label.htmlFor = "name";
+    element.getBoundingClientRect = getBoundingClientRect;
     document.body.appendChild(label);
     const result = formTips(element);
     expect(result).toHaveLength(0);
@@ -175,6 +189,7 @@ describe("formTips()", () => {
     const parent = document.createElement("a");
     parent.appendChild(element);
     document.body.appendChild(parent);
+    element.getBoundingClientRect = getBoundingClientRect;
     const result = formTips(element);
     expect(result).toHaveLength(1);
     expect(

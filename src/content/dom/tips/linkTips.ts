@@ -4,6 +4,8 @@ import { isAriaHidden } from "../isAriaHidden";
 import { isFocusable } from "../isFocusable";
 import { hasInteractiveDescendant } from "../hasInteractiveDescendant";
 import { hasTabIndexDescendant } from "../hasTabIndexDescendant";
+import { isInline } from "../isInline";
+import { isDefaultSize } from "./isDefaultSize";
 
 export const LinkSelectors = ["a", "area", '[role="link"]'] as const;
 
@@ -36,6 +38,14 @@ export const linkTips = (
       el.parentElement.closest('a, button, [role="button"]')
     ) {
       result.push({ type: "error", content: "messages.nestedInteractive" });
+    }
+
+    const rect = el.getBoundingClientRect();
+    if (
+      (rect.width < 24 || rect.height < 24) &&
+      !(isInline(el) || isDefaultSize(el))
+    ) {
+      result.push({ type: "warning", content: "messages.smallTargetSize" });
     }
   }
   if (hasTag) {

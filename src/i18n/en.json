@@ -112,7 +112,8 @@
     "invalidAriaValue": "Invalid WAI-ARIA Attribute Value",
     "noTitlePage": "No <title> element",
     "noLangPage": "No lang attribute on <html>",
-    "langAndXmlLangMustBeSame": "lang and xml:lang attributes must have the same value"
+    "langAndXmlLangMustBeSame": "lang and xml:lang attributes must have the same value",
+    "smallTargetSize": "Small target"
   },
   "optionsPage": {
     "description": "Settings changed from the popup are saved per host of the web page, and will be applied to other pages on the same host. Changing settings here does not affect those values.",

@@ -1,6 +1,18 @@
 import { afterEach, describe, expect, test } from "vitest";
 import { linkTips, isLink } from "./linkTips";
 
+const getBoundingClientRect = () => ({
+  width: 24,
+  height: 24,
+  x: 0,
+  y: 0,
+  left: 0,
+  top: 0,
+  bottom: 0,
+  right: 0,
+  toJSON: () => "",
+});
+
 describe("isLink()", () => {
   test("div", () => {
     const element = document.createElement("div");
@@ -34,6 +46,7 @@ describe("linkTips()", () => {
   test("empty a", () => {
     const element = document.createElement("a");
     document.body.appendChild(element);
+    element.getBoundingClientRect = getBoundingClientRect;
     const result = linkTips(element);
     expect(result).toHaveLength(1);
     expect(result.find((t) => t.type === "warning")).toEqual({
@@ -44,6 +57,7 @@ describe("linkTips()", () => {
 
   test("a with name and href", () => {
     const element = document.createElement("a");
+    element.getBoundingClientRect = getBoundingClientRect;
     element.textContent = "Hello";
     element.href = "https://example.com";
     document.body.appendChild(element);
@@ -53,6 +67,7 @@ describe("linkTips()", () => {
 
   test("a with target", () => {
     const element = document.createElement("a");
+    element.getBoundingClientRect = getBoundingClientRect;
     element.textContent = "Hello";
     element.href = "https://example.com";
     element.target = "_blank";
@@ -67,6 +82,7 @@ describe("linkTips()", () => {
 
   test("a without href", () => {
     const element = document.createElement("a");
+    element.getBoundingClientRect = getBoundingClientRect;
     element.textContent = "Hello";
     document.body.appendChild(element);
     const result = linkTips(element);
@@ -78,6 +94,7 @@ describe("linkTips()", () => {
   });
   test("a without name", () => {
     const element = document.createElement("a");
+    element.getBoundingClientRect = getBoundingClientRect;
     element.href = "https://example.com";
     document.body.appendChild(element);
     const result = linkTips(element);
@@ -90,6 +107,7 @@ describe("linkTips()", () => {
 
   test("area", () => {
     const element = document.createElement("area");
+    element.getBoundingClientRect = getBoundingClientRect;
     element.href = "https://example.com";
     element.alt = "Hello";
     const mapElement = document.createElement("map");
@@ -101,6 +119,7 @@ describe("linkTips()", () => {
 
   test("area without href", () => {
     const element = document.createElement("area");
+    element.getBoundingClientRect = getBoundingClientRect;
     element.alt = "Hello";
     const mapElement = document.createElement("map");
     document.body.appendChild(mapElement);
@@ -115,6 +134,7 @@ describe("linkTips()", () => {
 
   test("role = link", () => {
     const element = document.createElement("div");
+    element.getBoundingClientRect = getBoundingClientRect;
     element.setAttribute("role", "link");
     document.body.appendChild(element);
     element.textContent = "Hello";
@@ -125,6 +145,7 @@ describe("linkTips()", () => {
 
   test("invalid role = link", () => {
     const element = document.createElement("div");
+    element.getBoundingClientRect = getBoundingClientRect;
     element.setAttribute("role", "link");
     document.body.appendChild(element);
     const result = linkTips(element);
@@ -141,6 +162,7 @@ describe("linkTips()", () => {
 
   test("nested interactive", () => {
     const element = document.createElement("a");
+    element.getBoundingClientRect = getBoundingClientRect;
     element.textContent = "Hello";
     element.href = "https://example.com";
     const child = document.createElement("button");
@@ -158,6 +180,7 @@ describe("linkTips()", () => {
 
   test("nested tabindex", () => {
     const element = document.createElement("a");
+    element.getBoundingClientRect = getBoundingClientRect;
     element.textContent = "Hello";
     element.href = "https://example.com";
     const child = document.createElement("div");
@@ -175,6 +198,7 @@ describe("linkTips()", () => {
 
   test("nested a", () => {
     const element = document.createElement("a");
+    element.getBoundingClientRect = getBoundingClientRect;
     element.textContent = "Hello";
     element.href = "https://example.com";
     const child = document.createElement("a");
@@ -199,6 +223,7 @@ describe("linkTips()", () => {
     child.href = "https://example.com";
     parent.appendChild(child);
     document.body.appendChild(parent);
+    child.getBoundingClientRect = getBoundingClientRect;
     const result = linkTips(child);
     expect(result).toHaveLength(1);
     expect(

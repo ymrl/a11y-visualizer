@@ -1,6 +1,18 @@
 import { afterEach, describe, expect, test } from "vitest";
 import { buttonTips, isButton } from "./buttonTips";
 
+const getBoundingClientRect = () => ({
+  width: 24,
+  height: 24,
+  x: 0,
+  y: 0,
+  left: 0,
+  top: 0,
+  bottom: 0,
+  right: 0,
+  toJSON: () => "",
+});
+
 describe("isButton()", () => {
   test("div", () => {
     const element = document.createElement("div");
@@ -152,6 +164,7 @@ describe("buttonTips()", () => {
     const element = document.createElement("input");
     element.setAttribute("type", "image");
     element.setAttribute("alt", "Hello");
+    element.getBoundingClientRect = getBoundingClientRect;
     document.body.appendChild(element);
     const result = buttonTips(element);
     expect(result).toHaveLength(0);
@@ -160,6 +173,7 @@ describe("buttonTips()", () => {
   test("input type = image without alt", () => {
     const element = document.createElement("input");
     element.setAttribute("type", "image");
+    element.getBoundingClientRect = getBoundingClientRect;
     document.body.appendChild(element);
     const result = buttonTips(element);
     expect(result).toHaveLength(0);
@@ -170,6 +184,7 @@ describe("buttonTips()", () => {
     element.setAttribute("role", "button");
     element.textContent = "Hello";
     element.tabIndex = 0;
+    element.getBoundingClientRect = getBoundingClientRect;
     document.body.appendChild(element);
     const result = buttonTips(element);
     expect(result).toHaveLength(0);
@@ -180,6 +195,7 @@ describe("buttonTips()", () => {
     element.setAttribute("role", "button");
     element.tabIndex = 0;
     document.body.appendChild(element);
+    element.getBoundingClientRect = getBoundingClientRect;
     const result = buttonTips(element);
     expect(result).toHaveLength(1);
     expect(
@@ -192,6 +208,7 @@ describe("buttonTips()", () => {
     element.setAttribute("role", "button");
     element.textContent = "Hello";
     document.body.appendChild(element);
+    element.getBoundingClientRect = getBoundingClientRect;
     const result = buttonTips(element);
     expect(result).toHaveLength(1);
     expect(
@@ -205,6 +222,7 @@ describe("buttonTips()", () => {
     const element = document.createElement("div");
     element.setAttribute("role", "button");
     document.body.appendChild(element);
+    element.getBoundingClientRect = getBoundingClientRect;
     const result = buttonTips(element);
     expect(result).toHaveLength(2);
     expect(
@@ -223,6 +241,7 @@ describe("buttonTips()", () => {
     element.setAttribute("aria-hidden", "true");
     element.setAttribute("tabindex", "0");
     element.textContent = "Hello";
+    element.getBoundingClientRect = getBoundingClientRect;
     document.body.appendChild(element);
     const result = buttonTips(element);
     expect(result).toHaveLength(0);
@@ -233,6 +252,7 @@ describe("buttonTips()", () => {
     const details = document.createElement("details");
     element.textContent = "Hello";
     details.appendChild(element);
+    element.getBoundingClientRect = getBoundingClientRect;
     document.body.appendChild(details);
     const result = buttonTips(element);
     expect(result).toHaveLength(0);
@@ -242,6 +262,7 @@ describe("buttonTips()", () => {
     const element = document.createElement("summary");
     const details = document.createElement("details");
     details.appendChild(element);
+    element.getBoundingClientRect = getBoundingClientRect;
     document.body.appendChild(details);
     const result = buttonTips(element);
     expect(result).toHaveLength(1);
@@ -258,6 +279,7 @@ describe("buttonTips()", () => {
     button.textContent = "world";
     element.appendChild(button);
     document.body.appendChild(element);
+    element.getBoundingClientRect = getBoundingClientRect;
     const result = buttonTips(element);
     expect(result).toHaveLength(1);
     expect(result[0].type).toBe("error");
@@ -290,5 +312,26 @@ describe("buttonTips()", () => {
     expect(result).toHaveLength(1);
     expect(result[0].type).toBe("error");
     expect(result[0].content).toBe("messages.nestedInteractive");
+  });
+
+  test("small button", () => {
+    const element = document.createElement("button");
+    element.getBoundingClientRect = () => ({
+      width: 20,
+      height: 20,
+      x: 0,
+      y: 0,
+      left: 0,
+      top: 0,
+      bottom: 0,
+      right: 0,
+      toJSON: () => "",
+    });
+    element.setAttribute("style", "padding: 0");
+    element.textContent = "hello";
+    const result = buttonTips(element);
+    expect(result).toHaveLength(1);
+    expect(result[0].type).toBe("warning");
+    expect(result[0].content).toBe("messages.smallTargetSize");
   });
 });

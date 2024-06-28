@@ -118,7 +118,8 @@
     "invalidAriaValue": "WAI-ARIA属性値が不正",
     "noTitlePage": "<title>要素なし",
     "noLangPage": "<html>要素にlang属性なし",
-    "langAndXmlLangMustBeSame": "lang属性とxml:lang属性の値が異なる"
+    "langAndXmlLangMustBeSame": "lang属性とxml:lang属性の値が異なる",
+    "smallTargetSize": "ターゲットが小さい"
   },
   "optionsPage": {
     "description": "拡張機能のポップアップから設定を変更すると、閲覧中のWebページのホストごとに設定が保存され、同じホストのWebページに対して適用されます。この画面で設定を変更しても、それらの設定値は変更されません。",

@@ -1,6 +1,8 @@
 import { computeAccessibleName } from "dom-accessibility-api";
 import { ElementTip } from "../../types";
 import { isAriaHidden, isFocusable, isHidden } from "../index";
+import { isInline } from "../isInline";
+import { isDefaultSize } from "./isDefaultSize";
 
 export const FormSelectors = [
   "input:not([type='hidden']):not([type='button']):not([type='submit']):not([type='reset']):not([type='image'])",
@@ -92,6 +94,24 @@ export const formTips = (
       el.parentElement.closest('a, button, [role="button"]')
     ) {
       result.push({ type: "error", content: "messages.nestedInteractive" });
+    }
+
+    const rect = el.getBoundingClientRect();
+    const checkboxLabel =
+      tagName === "input" &&
+      (typeAttr === "checkbox" || typeAttr === "radio") &&
+      ((el.id && el.ownerDocument.querySelector(`[for="${el.id}"]`)) ||
+        el.closest("label"));
+    const checkboxLabelRect =
+      checkboxLabel && checkboxLabel.getBoundingClientRect();
+    if (
+      (rect.width < 24 || rect.height < 24) &&
+      (!checkboxLabelRect ||
+        checkboxLabelRect.width < 24 ||
+        checkboxLabelRect.height < 24) &&
+      !(isInline(el) || isDefaultSize(el))
+    ) {
+      result.push({ type: "warning", content: "messages.smallTargetSize" });
     }
   }
   if (tagName === "input" && typeAttr === "radio") {

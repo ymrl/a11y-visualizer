@@ -6,6 +6,7 @@ import { hasInteractiveDescendant } from "../hasInteractiveDescendant";
 import { hasTabIndexDescendant } from "../hasTabIndexDescendant";
 import { isInline } from "../isInline";
 import { isDefaultSize } from "./isDefaultSize";
+import { isSmallTarget } from "./isSmallTarget";
 
 export const LinkSelectors = ["a", "area", '[role="link"]'] as const;
 
@@ -40,14 +41,11 @@ export const linkTips = (
       result.push({ type: "error", content: "messages.nestedInteractive" });
     }
 
-    const rect = el.getBoundingClientRect();
-    if (
-      (rect.width < 24 || rect.height < 24) &&
-      !(isInline(el) || isDefaultSize(el))
-    ) {
+    if (isSmallTarget(el) && !(isInline(el) || isDefaultSize(el))) {
       result.push({ type: "warning", content: "messages.smallTargetSize" });
     }
   }
+
   if (hasTag) {
     if (!el.hasAttribute("href")) {
       result.push({ type: "warning", content: "messages.noHref" });

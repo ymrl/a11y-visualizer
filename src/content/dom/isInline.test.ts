@@ -11,27 +11,114 @@ describe("isInline", () => {
     expect(isInline(el)).toBe(false);
   });
 
-  test("element is the only child of block", () => {
-    const p = document.createElement("p");
-    p.setAttribute("style", "display: block");
+  test("display: block", () => {
     const el = document.createElement("span");
-    el.setAttribute("style", "display: inline");
-    document.body.appendChild(p);
-    p.appendChild(el);
+    el.style.display = "block";
+    document.body.appendChild(el);
+    expect(isInline(el)).toBe(false);
+  });
+
+  test("display: flex", () => {
+    const el = document.createElement("span");
+    el.style.display = "flex";
+    document.body.appendChild(el);
+    expect(isInline(el)).toBe(false);
+  });
+
+  test("display: grid", () => {
+    const el = document.createElement("span");
+    el.style.display = "grid";
+    document.body.appendChild(el);
+    expect(isInline(el)).toBe(false);
+  });
+
+  test("parent is flex", () => {
+    const parent = document.createElement("div");
+    parent.style.display = "flex";
+    const el = document.createElement("span");
+    parent.appendChild(el);
+    document.body.appendChild(parent);
+    expect(isInline(el)).toBe(false);
+  });
+
+  test("parent is grid", () => {
+    const parent = document.createElement("div");
+    parent.style.display = "grid";
+    const el = document.createElement("span");
+    parent.appendChild(el);
+    document.body.appendChild(parent);
+    expect(isInline(el)).toBe(false);
+  });
+
+  test("bigger height than parent line height", () => {
+    const parent = document.createElement("div");
+    parent.style.fontSize = "16px";
+    parent.style.lineHeight = "normal"; // 1.2 * 16 = 19.2
+    const el = document.createElement("span");
+    el.style.display = "inline-block";
+    el.getBoundingClientRect = () => ({ height: 20 }) as DOMRect;
+    parent.appendChild(el);
+    document.body.appendChild(parent);
+    expect(isInline(el)).toBe(false);
+  });
+
+  test("has inline sibling", () => {
+    const parent = document.createElement("div");
+    const el = document.createElement("span");
+    el.style.display = "inline-block";
+    el.getBoundingClientRect = () => ({ height: 19.2 }) as DOMRect;
+    const sibling = document.createElement("span");
+    sibling.style.display = "inline-block";
+    parent.appendChild(el);
+    parent.appendChild(sibling);
+    document.body.appendChild(parent);
     expect(isInline(el)).toBe(true);
   });
 
-  test("element is in inline element", () => {
-    const p = document.createElement("p");
-    p.setAttribute("style", "display: block");
-    const span = document.createElement("span");
+  test("has test sibling", () => {
+    const parent = document.createElement("div");
     const el = document.createElement("span");
-    const prev = document.createElement("span");
-    [span, el, prev].forEach((e) => e.setAttribute("style", "display: inline"));
-    document.body.appendChild(p);
-    p.appendChild(prev);
-    p.appendChild(span);
-    span.appendChild(el);
+    el.style.display = "inline-block";
+    el.getBoundingClientRect = () => ({ height: 19.2 }) as DOMRect;
+    const sibling = document.createTextNode("test");
+    parent.appendChild(el);
+    parent.appendChild(sibling);
+    document.body.appendChild(parent);
+    expect(isInline(el)).toBe(true);
+  });
+
+  test("display:inline and has text", () => {
+    const el = document.createElement("span");
+    el.style.display = "inline";
+    el.textContent = "test";
+    el.getBoundingClientRect = () => ({ height: 19.2 }) as DOMRect;
+    document.body.appendChild(el);
+    expect(isInline(el)).toBe(true);
+  });
+
+  test("display:inline and does not have text", () => {
+    const el = document.createElement("span");
+    el.style.display = "inline";
+    el.getBoundingClientRect = () => ({ height: 19.2 }) as DOMRect;
+    document.body.appendChild(el);
+    expect(isInline(el)).toBe(false);
+  });
+
+  test("nested span", () => {
+    const grandParent = document.createElement("div");
+    grandParent.style.display = "block";
+    const el = document.createElement("span");
+    const parent = document.createElement("span");
+    const parentSibling = document.createElement("span");
+    parentSibling.textContent = "test";
+    [el, parent, parentSibling].forEach((e) => {
+      e.style.display = "inline-block";
+      e.getBoundingClientRect = () => ({ height: 19.2 }) as DOMRect;
+    });
+    parent.appendChild(el);
+    grandParent.appendChild(parent);
+    grandParent.appendChild(parentSibling);
+    document.body.appendChild(grandParent);
     expect(isInline(el)).toBe(true);
   });
 });

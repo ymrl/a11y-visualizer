@@ -1,6 +1,5 @@
-const hasInlineSibling = (el: Element): boolean => {
+const hasPreviousInlineSibling = (el: Element): boolean => {
   let prev = el.previousSibling;
-  let next = el.nextSibling;
   while (prev) {
     if (prev.nodeType === Node.TEXT_NODE) {
       if (prev.textContent?.trim()) {
@@ -8,26 +7,15 @@ const hasInlineSibling = (el: Element): boolean => {
       }
     } else if (prev.nodeType === Node.ELEMENT_NODE) {
       const style = window.getComputedStyle(prev as HTMLElement);
+      if (style.position === "absolute" || style.position === "fixed") {
+        continue;
+      }
       if (style.display.startsWith("inline")) {
         return true;
       }
       break;
     }
     prev = prev.previousSibling;
-  }
-  while (next) {
-    if (next.nodeType === Node.TEXT_NODE) {
-      if (next.textContent?.trim()) {
-        return true;
-      }
-    } else if (next.nodeType === Node.ELEMENT_NODE) {
-      const style = window.getComputedStyle(next as HTMLElement);
-      if (style.display.startsWith("inline")) {
-        return true;
-      }
-      break;
-    }
-    next = next.nextSibling;
   }
   return false;
 };
@@ -67,8 +55,8 @@ export const isInline = (el: Element): boolean => {
     return false;
   }
 
-  // テキスト、またはインラインの兄弟がいる場合はtrue
-  if (hasInlineSibling(el)) {
+  // 自身よりも前にテキスト、またはインラインの兄弟がいる場合はtrue
+  if (hasPreviousInlineSibling(el)) {
     return true;
   }
 

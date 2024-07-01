@@ -62,7 +62,20 @@ describe("isInline", () => {
     expect(isInline(el)).toBe(false);
   });
 
-  test("has inline sibling", () => {
+  test("has previous inline sibling", () => {
+    const parent = document.createElement("div");
+    const el = document.createElement("span");
+    el.style.display = "inline-block";
+    el.getBoundingClientRect = () => ({ height: 19.2 }) as DOMRect;
+    const sibling = document.createElement("span");
+    sibling.style.display = "inline-block";
+    parent.appendChild(sibling);
+    parent.appendChild(el);
+    document.body.appendChild(parent);
+    expect(isInline(el)).toBe(true);
+  });
+
+  test("has next inline sibling", () => {
     const parent = document.createElement("div");
     const el = document.createElement("span");
     el.style.display = "inline-block";
@@ -72,10 +85,22 @@ describe("isInline", () => {
     parent.appendChild(el);
     parent.appendChild(sibling);
     document.body.appendChild(parent);
+    expect(isInline(el)).toBe(false);
+  });
+
+  test("has previous text sibling", () => {
+    const parent = document.createElement("div");
+    const el = document.createElement("span");
+    el.style.display = "inline-block";
+    el.getBoundingClientRect = () => ({ height: 19.2 }) as DOMRect;
+    const sibling = document.createTextNode("test");
+    parent.appendChild(sibling);
+    parent.appendChild(el);
+    document.body.appendChild(parent);
     expect(isInline(el)).toBe(true);
   });
 
-  test("has test sibling", () => {
+  test("has next text sibling", () => {
     const parent = document.createElement("div");
     const el = document.createElement("span");
     el.style.display = "inline-block";
@@ -84,7 +109,7 @@ describe("isInline", () => {
     parent.appendChild(el);
     parent.appendChild(sibling);
     document.body.appendChild(parent);
-    expect(isInline(el)).toBe(true);
+    expect(isInline(el)).toBe(false);
   });
 
   test("display:inline and has text", () => {
@@ -116,8 +141,8 @@ describe("isInline", () => {
       e.getBoundingClientRect = () => ({ height: 19.2 }) as DOMRect;
     });
     parent.appendChild(el);
-    grandParent.appendChild(parent);
     grandParent.appendChild(parentSibling);
+    grandParent.appendChild(parent);
     document.body.appendChild(grandParent);
     expect(isInline(el)).toBe(true);
   });

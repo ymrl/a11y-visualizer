@@ -8,12 +8,12 @@ const hasPreviousInlineSibling = (el: Element): boolean => {
     } else if (prev.nodeType === Node.ELEMENT_NODE) {
       const style = window.getComputedStyle(prev as HTMLElement);
       if (style.position === "absolute" || style.position === "fixed") {
-        continue;
-      }
-      if (style.display.startsWith("inline")) {
+        /* no op */
+      } else if (style.display.startsWith("inline")) {
         return true;
+      } else {
+        break;
       }
-      break;
     }
     prev = prev.previousSibling;
   }

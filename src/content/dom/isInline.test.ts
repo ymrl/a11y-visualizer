@@ -74,6 +74,19 @@ describe("isInline", () => {
     document.body.appendChild(parent);
     expect(isInline(el)).toBe(true);
   });
+  test("previous sibling is position: absolute", () => {
+    const parent = document.createElement("div");
+    const el = document.createElement("span");
+    el.style.display = "inline-block";
+    el.getBoundingClientRect = () => ({ height: 19.2 }) as DOMRect;
+    const sibling = document.createElement("span");
+    sibling.style.display = "inline-block";
+    sibling.style.position = "absolute";
+    parent.appendChild(sibling);
+    parent.appendChild(el);
+    document.body.appendChild(parent);
+    expect(isInline(el)).toBe(false);
+  });
 
   test("has next inline sibling", () => {
     const parent = document.createElement("div");

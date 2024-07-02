@@ -109,8 +109,8 @@ export const ElementInfo = ({
       style={{
         top: y,
         left: x,
-        width,
-        height,
+        width: x + width > rootWidth ? rootWidth - x : width,
+        height: y + height > rootHeight ? rootHeight - y : height,
       }}
       ref={selfRef}
     >

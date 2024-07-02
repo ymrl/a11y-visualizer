@@ -68,20 +68,36 @@ describe("isInline", () => {
     el.style.display = "inline-block";
     el.getBoundingClientRect = () => ({ height: 19.2 }) as DOMRect;
     const sibling = document.createElement("span");
+    sibling.textContent = "test";
     sibling.style.display = "inline-block";
     parent.appendChild(sibling);
     parent.appendChild(el);
     document.body.appendChild(parent);
     expect(isInline(el)).toBe(true);
   });
+
   test("previous sibling is position: absolute", () => {
     const parent = document.createElement("div");
     const el = document.createElement("span");
     el.style.display = "inline-block";
     el.getBoundingClientRect = () => ({ height: 19.2 }) as DOMRect;
     const sibling = document.createElement("span");
+    sibling.textContent = "test";
     sibling.style.display = "inline-block";
     sibling.style.position = "absolute";
+    parent.appendChild(sibling);
+    parent.appendChild(el);
+    document.body.appendChild(parent);
+    expect(isInline(el)).toBe(false);
+  });
+
+  test("previous sibling does not have text content", () => {
+    const parent = document.createElement("div");
+    const el = document.createElement("span");
+    el.style.display = "inline-block";
+    el.getBoundingClientRect = () => ({ height: 19.2 }) as DOMRect;
+    const sibling = document.createElement("span");
+    sibling.style.display = "inline-block";
     parent.appendChild(sibling);
     parent.appendChild(el);
     document.body.appendChild(parent);

@@ -9,7 +9,10 @@ const hasPreviousInlineSibling = (el: Element): boolean => {
       const style = window.getComputedStyle(prev as HTMLElement);
       if (style.position === "absolute" || style.position === "fixed") {
         /* no op */
-      } else if (style.display.startsWith("inline")) {
+      } else if (
+        style.display.startsWith("inline") &&
+        prev.textContent?.trim()
+      ) {
         return true;
       } else {
         break;

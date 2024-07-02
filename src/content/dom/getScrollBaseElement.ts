@@ -6,7 +6,7 @@ export const getScrollBaseElement = (
   if (!w) return undefined;
   const style = w.getComputedStyle(el);
   const { overflowX, overflowY } = style;
-  if (el === d.body) return d.body;
+  if (el === d.body) return undefined;
   if (
     ["auto", "scroll"].includes(overflowX) ||
     ["auto", "scroll"].includes(overflowY)

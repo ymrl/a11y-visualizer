@@ -22,6 +22,7 @@ const SizePropertiesWithoutWidth = [
   "padding-inline-start",
   "box-sizing",
   "appearance",
+  "opacity",
 ] as const;
 
 const SizeProperties = ["width", ...SizePropertiesWithoutWidth] as const;

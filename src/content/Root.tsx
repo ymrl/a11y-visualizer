@@ -82,7 +82,9 @@ export const Root = ({
   const updateInfo = useDebouncedCallback(
     () => {
       setOutDated(false);
+      if (!containerRef.current) return;
       if (!parentRef.current) return;
+      containerRef.current.style.display = "none";
       injectToFrames(parentRef.current);
       observeLiveRegion(parentRef.current);
       if (settings.accessibilityInfo) {
@@ -102,6 +104,7 @@ export const Root = ({
         setMetaList(elements);
         setWidth(rootWidth);
         setHeight(rootHeight);
+        containerRef.current.style.display = "block";
       } else {
         setWidth(0);
         setHeight(0);

@@ -7,6 +7,7 @@ import { hasTabIndexDescendant } from "../hasTabIndexDescendant";
 import { isInline } from "../isInline";
 import { isDefaultSize } from "./isDefaultSize";
 import { isSmallTarget } from "./isSmallTarget";
+import { hasSpacing } from "../hasSpacing";
 
 export const LinkSelectors = ["a", "area", '[role="link"]'] as const;
 
@@ -42,7 +43,10 @@ export const linkTips = (
       result.push({ type: "error", content: "messages.nestedInteractive" });
     }
 
-    if (isSmallTarget(el) && !(isInline(el) || isDefaultSize(el))) {
+    if (
+      isSmallTarget(el) &&
+      !(isInline(el) || isDefaultSize(el) || hasSpacing(el))
+    ) {
       result.push({ type: "warning", content: "messages.smallTargetSize" });
     }
   }

@@ -3,6 +3,7 @@ import { ElementTip } from "../../types";
 import { isAriaHidden, isFocusable, isHidden } from "../index";
 import { isInline } from "../isInline";
 import { isDefaultSize } from "./isDefaultSize";
+import { hasSpacing } from "../hasSpacing";
 
 export const FormSelectors = [
   "input:not([type='hidden']):not([type='button']):not([type='submit']):not([type='reset']):not([type='image'])",
@@ -109,7 +110,7 @@ export const formTips = (
       (!checkboxLabelRect ||
         checkboxLabelRect.width < 24 ||
         checkboxLabelRect.height < 24) &&
-      !(isInline(el) || isDefaultSize(el))
+      !(isInline(el) || isDefaultSize(el) || hasSpacing(el))
     ) {
       result.push({ type: "warning", content: "messages.smallTargetSize" });
     }

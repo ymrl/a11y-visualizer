@@ -95,6 +95,7 @@
   },
   "messages": {
     "noAltImage": "No alt attribute",
+    "noAltImageMap": "No alt attribute",
     "emptyAltImage": "Image has alt=\"\"",
     "mayBeSkipped": "May be skipped",
     "noName": "No name (label)",

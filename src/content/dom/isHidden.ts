@@ -1,6 +1,7 @@
 export const isHidden = (el: Element): boolean => {
+  const tagName = el.tagName.toLowerCase();
   if (el.matches("details:not([open]) *")) {
-    if (el.tagName.toLowerCase() === "summary" && el.parentElement) {
+    if (tagName === "summary" && el.parentElement) {
       return isHidden(el.parentElement);
     }
     return true;
@@ -13,7 +14,8 @@ export const isHidden = (el: Element): boolean => {
   while (t && t !== el.ownerDocument.body) {
     const style = w.getComputedStyle(t);
     if (
-      style.display === "none" ||
+      // area elements are display:hidden by default in Firefox
+      (style.display === "none" && tagName !== "area") ||
       style.visibility === "hidden" ||
       style.getPropertyValue("content-visibility") === "hidden"
     )

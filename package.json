@@ -24,7 +24,9 @@
     "release": "tsx scripts/release.ts",
     "preview": "vite preview",
     "prepare": "husky",
-    "test": "vitest run",
+    "test": "run-p test:*",
+    "test:chromium": "vitest run --browser chromium",
+    "test:firefox": "vitest run --browser firefox",
     "test-watch": "vitest"
   },
   "dependencies": {
@@ -48,6 +50,7 @@
     "@typescript-eslint/eslint-plugin": "^7.2.0",
     "@typescript-eslint/parser": "^7.2.0",
     "@vitejs/plugin-react": "^4.2.1",
+    "@vitest/browser": "^1.6.0",
     "autoprefixer": "^10.4.19",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
@@ -58,6 +61,7 @@
     "lint-staged": "^15.2.2",
     "markuplint": "^4.8.1",
     "npm-run-all": "^4.1.5",
+    "playwright": "^1.45.1",
     "postcss": "^8.4.38",
     "prettier": "3.2.5",
     "semver": "^7.6.0",

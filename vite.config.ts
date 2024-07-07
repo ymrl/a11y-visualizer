@@ -11,6 +11,12 @@ export default defineConfig({
     target: ["es2022", "chrome89", "edge89"],
   },
   test: {
-    environment: "jsdom",
+    // environment: "jsdom",
+    browser: {
+      enabled: true,
+      provider: "playwright",
+      name: "chromium",
+      headless: true,
+    },
   },
 });

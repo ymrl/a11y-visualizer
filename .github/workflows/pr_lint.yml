@@ -44,5 +44,23 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Get installed Playwright version
+        id: playwright_version
+        run: echo VERSION="$(node -e "console.log(require('./package-lock.json').packages['node_modules/playwright'].version)")" >> $GITHUB_OUTPUT
+
+      - name: Cache playwright binaries
+        uses: actions/cache@v4
+        id: playwright_cache
+        with:
+          path: |
+            ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ steps.playwright_version.outputs.VERSION }}
+
+      - run: npx playwright install chromium
+        if: steps.playwright_cache.outputs.cache-hit != 'true'
+
+      - run: npx playwright install firefox
+        if: steps.playwright_cache.outputs.cache-hit != 'true'
+
       - name: Run test
         run: npm run test

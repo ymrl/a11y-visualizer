@@ -436,20 +436,16 @@ export const getRowElements = (el: Element): Element[] => {
     role === "grid" ||
     role === "treegrid"
   ) {
-    return [...el.children]
-      .sort((a, b) =>
-        b.tagName.toLowerCase() === "tfoot"
-          ? a.tagName.toLowerCase() !== "tfoot"
-            ? -1
-            : 1
-          : 1,
-      )
-      .reduce((prev, child) => {
-        return [
-          ...prev,
-          ...getRowElementsInElement(child, tagName === "table"),
-        ];
-      }, [] as Element[]);
+    const children = [...el.children];
+    const footers = children.filter(
+      (child) => child.tagName.toLowerCase() === "tfoot",
+    );
+    const exceptFooters = children.filter(
+      (child) => child.tagName.toLowerCase() !== "tfoot",
+    );
+    return [...exceptFooters, ...footers].reduce((prev, child) => {
+      return [...prev, ...getRowElementsInElement(child, tagName === "table")];
+    }, [] as Element[]);
   }
 
   return [];
@@ -483,20 +479,19 @@ export const getRowGroupElements = (el: Element): Element[] => {
     role === "grid" ||
     role === "treegrid"
   ) {
-    return [...el.children]
-      .sort((a, b) =>
-        b.tagName.toLowerCase() === "tfoot"
-          ? a.tagName.toLowerCase() !== "tfoot"
-            ? -1
-            : 1
-          : 1,
-      )
-      .reduce((prev, child) => {
-        return [
-          ...prev,
-          ...getRowGroupElementsInElement(child, tagName === "table"),
-        ];
-      }, [] as Element[]);
+    const children = [...el.children];
+    const footers = children.filter(
+      (child) => child.tagName.toLowerCase() === "tfoot",
+    );
+    const exceptFooters = children.filter(
+      (child) => child.tagName.toLowerCase() !== "tfoot",
+    );
+    return [...exceptFooters, ...footers].reduce((prev, child) => {
+      return [
+        ...prev,
+        ...getRowGroupElementsInElement(child, tagName === "table"),
+      ];
+    }, [] as Element[]);
   }
   return [];
 };

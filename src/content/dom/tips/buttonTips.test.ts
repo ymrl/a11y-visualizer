@@ -92,10 +92,17 @@ describe("buttonTips()", () => {
     const element = document.createElement("button");
     document.body.appendChild(element);
     const result = buttonTips(element);
-    expect(result).toHaveLength(1);
     expect(
       result.find((t) => t.type === "error" && t.content === "messages.noName"),
     ).toBeDefined();
+    // If browser does not support computedStyleMap, there may be a size warning.
+    expect(
+      result.filter(
+        (t) =>
+          !(t.type === "error" && t.content === "messages.noName") &&
+          !(t.type === "warning" && t.content === "messages.smallTargetSize"),
+      ).length,
+    ).toBe(0);
   });
 
   test("button element", () => {

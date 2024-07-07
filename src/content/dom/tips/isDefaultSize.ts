@@ -31,9 +31,19 @@ type SizeDeclaration = {
   [key in (typeof SizeProperties)[number]]: string;
 };
 
-const DefaultStyles: { [key: string]: SizeDeclaration } = {};
+const ElementTypes = [
+  "button",
+  "input-text",
+  "input-range",
+  "input-color",
+  "input-checkbox",
+  "input-radio",
+  "input-file",
+] as const;
+type ElementTypeT = (typeof ElementTypes)[number];
+const DefaultStyles: Partial<{ [key in ElementTypeT]: SizeDeclaration }> = {};
 
-const elementType = (el: Element): string | null => {
+const elementType = (el: Element): ElementTypeT | null => {
   const tagName = el.tagName.toLowerCase();
   if (tagName === "button") {
     return "button";
@@ -78,8 +88,47 @@ const elementType = (el: Element): string | null => {
   return null;
 };
 
+const getDefaultElement = (elementType: ElementTypeT, d: Document): Element => {
+  switch (elementType) {
+    case "button": {
+      const el = d.createElement("button");
+      el.textContent = "hello";
+      return el;
+    }
+    case "input-text": {
+      const el = d.createElement("input");
+      el.setAttribute("type", "text");
+      return el;
+    }
+    case "input-range": {
+      const el = d.createElement("input");
+      el.setAttribute("type", "range");
+      return el;
+    }
+    case "input-color": {
+      const el = d.createElement("input");
+      el.setAttribute("type", "color");
+      return el;
+    }
+    case "input-checkbox": {
+      const el = d.createElement("input");
+      el.setAttribute("type", "checkbox");
+      return el;
+    }
+    case "input-radio": {
+      const el = d.createElement("input");
+      el.setAttribute("type", "radio");
+      return el;
+    }
+    case "input-file": {
+      const el = d.createElement("input");
+      el.setAttribute("type", "file");
+      return el;
+    }
+  }
+};
+
 const getDefaultStyle = (el: Element): SizeDeclaration | undefined => {
-  const tagName = el.tagName.toLowerCase();
   const type = elementType(el);
   if (!type) {
     return undefined;
@@ -94,11 +143,7 @@ const getDefaultStyle = (el: Element): SizeDeclaration | undefined => {
     return undefined;
   }
 
-  const defaultEl = d.createElement(tagName);
-  if (el.hasAttribute("type")) {
-    defaultEl.setAttribute("type", el.getAttribute("type")!);
-  }
-
+  const defaultEl = getDefaultElement(type, d);
   d.body.appendChild(defaultEl);
   if ("computedStyleMap" in defaultEl) {
     // Chrome
@@ -108,15 +153,6 @@ const getDefaultStyle = (el: Element): SizeDeclaration | undefined => {
         prop,
         styles.get(prop)?.toString() || "",
       ]),
-    ) as SizeDeclaration;
-    DefaultStyles[type] = decls;
-  } else if (w.getDefaultComputedStyle) {
-    // Firefox
-    const styles = w.getDefaultComputedStyle(defaultEl);
-    const decls = Object.fromEntries(
-      (type === "button" ? SizePropertiesWithoutWidth : SizeProperties).map(
-        (prop) => [prop, styles.getPropertyValue(prop)],
-      ),
     ) as SizeDeclaration;
     DefaultStyles[type] = decls;
   } else {

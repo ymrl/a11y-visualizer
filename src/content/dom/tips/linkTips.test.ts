@@ -114,13 +114,25 @@ describe("linkTips()", () => {
     document.body.appendChild(mapElement);
     mapElement.appendChild(element);
     const result = linkTips(element);
-    // FIXME: Firefox cannot get accessible name
-    // expect(result).toHaveLength(0);
+    // If using firefox, name will be added to the result
     expect(
-      result.filter(
-        (t) => !(t.type === "error" && t.content === "messages.noName"),
-      ),
+      result.filter((t) => !(t.type === "name" && t.content === "Hello")),
     ).toHaveLength(0);
+  });
+
+  test("area without name", () => {
+    const element = document.createElement("area");
+    element.getBoundingClientRect = getBoundingClientRect;
+    element.href = "https://example.com";
+    const mapElement = document.createElement("map");
+    document.body.appendChild(mapElement);
+    mapElement.appendChild(element);
+    const result = linkTips(element);
+    expect(result).toHaveLength(1);
+    expect(result.find((t) => t.type === "error")).toEqual({
+      type: "error",
+      content: "messages.noAltImageMap",
+    });
   });
 
   test("area without href", () => {
@@ -131,7 +143,10 @@ describe("linkTips()", () => {
     document.body.appendChild(mapElement);
     mapElement.appendChild(element);
     const result = linkTips(element);
-    expect(result).toHaveLength(1);
+    // If using firefox, name will be added to the result
+    expect(
+      result.filter((t) => !(t.type === "name" && t.content === "Hello")),
+    ).toHaveLength(1);
     expect(result.find((t) => t.type === "warning")).toEqual({
       type: "warning",
       content: "messages.noHref",

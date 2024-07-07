@@ -154,4 +154,14 @@ describe("isHidden", () => {
     expect(isHidden(grandchildSummary)).toBe(false);
     expect(isHidden(grandchildContent)).toBe(true);
   });
+
+  test("area element", () => {
+    const map = document.createElement("map");
+    const area = document.createElement("area");
+    area.setAttribute("shape", "rect");
+    area.setAttribute("coords", "0,0,100,100");
+    map.appendChild(area);
+    document.body.appendChild(map);
+    expect(isHidden(area)).toBe(false);
+  });
 });

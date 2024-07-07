@@ -101,6 +101,7 @@
   },
   "messages": {
     "noAltImage": "alt属性のない画像",
+    "noAltImageMap": "alt属性なし",
     "emptyAltImage": "alt=\"\"の画像",
     "mayBeSkipped": "読み飛ばされる可能性あり",
     "noName": "名前（ラベル）なし",

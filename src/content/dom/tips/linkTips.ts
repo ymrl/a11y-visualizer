@@ -25,12 +25,13 @@ export const linkTips = (
 ): ElementTip[] => {
   const result: ElementTip[] = [];
   const hidden = isAriaHidden(el);
+  const tagName = el.tagName.toLowerCase();
   const hasTag = hasLinkTag(el);
   const hasRole = hasLinkRole(el);
   const href = el.getAttribute("href");
   const target = el.getAttribute("target");
 
-  if (hasTag || hasRole) {
+  if (tagName === "a" || hasRole) {
     if (!name && (hasRole || href) && !hidden) {
       result.push({ type: "error", content: "messages.noName" });
     }
@@ -43,6 +44,25 @@ export const linkTips = (
 
     if (isSmallTarget(el) && !(isInline(el) || isDefaultSize(el))) {
       result.push({ type: "warning", content: "messages.smallTargetSize" });
+    }
+  }
+
+  if (tagName === "area") {
+    // area elements are display:hidden by default in Firefox,
+    // name may be empty even if alt is present
+    const alt = el.getAttribute("alt");
+    const title = el.getAttribute("title");
+    if (!alt && href) {
+      result.push({ type: "error", content: "messages.noAltImageMap" });
+    }
+
+    // for Firefox
+    if (!name) {
+      if (alt) {
+        result.push({ type: "name", content: alt });
+      } else if (title) {
+        result.push({ type: "name", content: title });
+      }
     }
   }
 

@@ -27,7 +27,9 @@
     "test": "run-p test:*",
     "test:chromium": "vitest run --browser chromium",
     "test:firefox": "vitest run --browser firefox",
-    "test-watch": "vitest"
+    "test-watch": "run-p test-watch:*",
+    "test-watch:chromium": "vitest --browser chromium",
+    "test-watch:firefox": "vitest --browser firefox"
   },
   "dependencies": {
     "dom-accessibility-api": "^0.6.3",

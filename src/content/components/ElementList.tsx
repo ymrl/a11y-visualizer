@@ -13,7 +13,7 @@ export const ElementList = ({
   height: number;
 }) => {
   return (
-    <root.div>
+    <root.div mode="closed">
       <Style />
       <div
         className="ElementList"

@@ -1,32 +1,20 @@
-import { ElementMeta, Category, ElementTip } from "../types";
+import { ElementMeta, Category } from "../types";
 import { getPositionBaseElement } from "./getPositionBaseElement";
 import { isHidden } from "../../dom/isHidden";
 import { getElementPosition } from "./getElementPosition";
-import { globalTips } from "./tips/globalTips";
-import { AriraHiddenSelectors, ariaHiddenTips } from "./tips/ariaHiddenTips";
-import { HeadingSelectors, headingTips, isHeading } from "./tips/headingTips";
-import { LinkSelectors, isLink, linkTips } from "./tips/linkTips";
-import { ButtonSelectors, buttonTips, isButton } from "./tips/buttonTips";
-import {
-  FormSelectors,
-  formTips,
-  isFieldset,
-  isFormControl,
-} from "./tips/formTips";
-import { imageTips, isImage, ImageSelectors } from "./tips/imageTips";
+import { AriraHiddenSelectors } from "./tips/ariaHiddenTips";
+import { HeadingSelectors, isHeading } from "./tips/headingTips";
+import { LinkSelectors, isLink } from "./tips/linkTips";
+import { ButtonSelectors, isButton } from "./tips/buttonTips";
+import { FormSelectors, isFieldset, isFormControl } from "./tips/formTips";
+import { isImage, ImageSelectors } from "./tips/imageTips";
 import { computeAccessibleName } from "dom-accessibility-api";
 import { CategorySettings } from "../../settings";
-import { SectionSelectors, isSection, sectionTips } from "./tips/sectionTips";
-import { isPage, pageTips } from "./tips/pageTips";
-import { LangSelectors, langTips, isLang } from "./tips/langTips";
-import {
-  TableSelectors,
-  isTable,
-  isTableCell,
-  tableTips,
-} from "./tips/tableTips";
+import { SectionSelectors, isSection } from "./tips/sectionTips";
+import { isPage } from "./tips/pageTips";
+import { LangSelectors, isLang } from "./tips/langTips";
+import { TableSelectors, isTable, isTableCell } from "./tips/tableTips";
 import { Table } from "../../table";
-import { getClosestByRoles } from "../../dom/getClosestByRoles";
 import { getScrollBaseElement } from "./getScrollBaseElement";
 import { isRuleTargetElement, RuleResult, Rules } from "../../rules";
 import { getKnownRole } from "../../dom/getKnownRole";
@@ -132,8 +120,8 @@ export const collectElements = (
 
         return {
           ...elementPosition,
+          name: name || "",
           category: getElementCategory(el),
-          tips: tipsForElement(el, { ...options, internalTables }),
           ruleResults: Rules.reduce((prev, rule) => {
             const result = isRuleTargetElement(el, rule, role)
               ? rule.evaluate(el, rule.defaultOptions, {
@@ -142,6 +130,7 @@ export const collectElements = (
                   elementWindow: w,
                   name,
                   role,
+                  srcdoc: options.srcdoc,
                 })
               : undefined;
             return result ? prev.concat(result) : prev;
@@ -150,53 +139,6 @@ export const collectElements = (
       })
       .filter((el): el is ElementMeta => el !== null),
   };
-};
-
-const getTableTips = (el: Element, internalTables: Table[]): ElementTip[] => {
-  if (isTable(el) || isTableCell(el)) {
-    const tagName = el.tagName.toLowerCase();
-    const tableEl =
-      tagName === "table"
-        ? el
-        : ["th", "td"].includes(tagName)
-          ? el.closest("table")
-          : getClosestByRoles(el, ["table", "grid", "treegrid"]);
-    if (tableEl) {
-      const internalTable = internalTables.find((t) => t.element === tableEl);
-      if (!internalTable) {
-        const newTable = new Table(tableEl);
-        internalTables.push(newTable);
-        return tableTips(el, newTable);
-      }
-      return tableTips(el, internalTable);
-    }
-  }
-  return [];
-};
-
-const tipsForElement = (
-  el: Element,
-  options: {
-    srcdoc?: boolean;
-    internalTables: Table[];
-  },
-): ElementTip[] => {
-  const name = computeAccessibleName(el);
-  const nameTips: ElementTip[] = name ? [{ type: "name", content: name }] : [];
-  return [
-    ...headingTips(el, name),
-    ...nameTips,
-    ...imageTips(el, name),
-    ...formTips(el, name),
-    ...buttonTips(el, name),
-    ...linkTips(el, name),
-    ...ariaHiddenTips(el),
-    ...sectionTips(el, name),
-    ...getTableTips(el, options.internalTables),
-    ...langTips(el),
-    ...pageTips(el, !!options.srcdoc),
-    ...globalTips(el),
-  ];
 };
 
 const getElementCategory = (el: Element): Category => {

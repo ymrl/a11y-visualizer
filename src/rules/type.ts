@@ -52,6 +52,7 @@ export type RuleEvaluationCondition = {
   elementDocument?: Document;
   elementWindow?: Window;
   tables?: Table[];
+  srcdoc?: boolean;
 };
 
 export type RuleEvaluation<

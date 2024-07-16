@@ -16,6 +16,14 @@ describe("page-title", () => {
       },
     ]);
   });
+  test("no title srcdoc", () => {
+    const result = PageTitle.evaluate(
+      document.body,
+      { enabled: true },
+      { srcdoc: true },
+    );
+    expect(result).toBeUndefined();
+  });
 
   test("title", () => {
     document.title = "title";

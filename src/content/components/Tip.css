@@ -33,7 +33,6 @@
 .Tip--tableSize {
   background-color: var(--base-beige);
 }
-.Tip--tablePosition,
 .Tip--tableCellPosition {
   background-color: var(--base-beige);
 }
@@ -45,7 +44,6 @@
   background-color: var(--light-gray);
 }
 
-.Tip--level,
 .Tip--heading {
   background-color: var(--base-skyblue);
 }
@@ -59,7 +57,6 @@
   color: #fff;
 }
 
-.Tip--ariaStatus,
 .Tip--state {
   background-color: var(--base-beige);
 }

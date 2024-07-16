@@ -10,7 +10,7 @@ export const PageTitle: RuleObject = {
   evaluate: (
     element,
     { enabled },
-    { elementDocument = element.ownerDocument },
+    { elementDocument = element.ownerDocument, srcdoc = false },
   ) => {
     if (!enabled) {
       return undefined;
@@ -25,12 +25,14 @@ export const PageTitle: RuleObject = {
         },
       ];
     }
-    return [
-      {
-        type: "error",
-        ruleName,
-        message: "No <title> element",
-      },
-    ];
+    if (!srcdoc && !title) {
+      return [
+        {
+          type: "error",
+          ruleName,
+          message: "No <title> element",
+        },
+      ];
+    }
   },
 };

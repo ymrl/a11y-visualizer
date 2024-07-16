@@ -26,7 +26,7 @@ export const ElementList = ({
         {list.map((meta, i) => {
           return (
             <ElementInfo
-              key={`${i}-${meta.category}-${meta.tips.map((tip) => tip.content).join("-")}`}
+              key={`${i}-${meta.category}-${meta.name}`}
               meta={meta}
               rootHeight={height}
               rootWidth={width}

@@ -1,12 +1,13 @@
 import { computeAccessibleName } from "dom-accessibility-api";
 import { ElementTip } from "../../types";
 import { isAriaHidden } from "../isAriaHidden";
-import { isFocusable } from "../isFocusable";
-import { hasInteractiveDescendant } from "../hasInteractiveDescendant";
-import { hasTabIndexDescendant } from "../hasTabIndexDescendant";
-import { isInline } from "../isInline";
-import { isDefaultSize } from "./isDefaultSize";
+import { isFocusable } from "../../../dom/isFocusable";
+import { hasInteractiveDescendant } from "../../../dom/hasInteractiveDescendant";
+import { hasTabIndexDescendant } from "../../../dom/hasTabIndexDescendant";
+import { isInline } from "../../../dom/isInline";
+import { isDefaultSize } from "../../../dom/isDefaultSize";
 import { isSmallTarget } from "./isSmallTarget";
+import { getKnownRole } from "../../../dom/getKnownRole";
 
 export const ButtonSelectors = [
   "button",
@@ -19,16 +20,18 @@ export const ButtonSelectors = [
   'input[type="image"]',
 ] as const;
 
-export const isButton = (el: Element): boolean => {
+export const isButton = (
+  el: Element,
+  role: string | null = getKnownRole(el),
+): boolean => {
   const tagName = el.tagName.toLowerCase();
   const typeAttr = el.getAttribute("type");
   const hasButtonTag =
     tagName === "button" ||
-    (tagName === "summary" && el.matches("details > summary:first-child")) ||
+    tagName === "summary" ||
     (tagName === "input" &&
       !!typeAttr &&
       ["button", "submit", "reset", "image"].includes(typeAttr));
-  const role = el.getAttribute("role");
   const hasButtonRole = role === "button" || role === "menuitem";
   return hasButtonTag || hasButtonRole;
 };

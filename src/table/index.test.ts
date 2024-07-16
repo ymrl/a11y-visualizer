@@ -1,13 +1,13 @@
 import { describe, expect, test } from "vitest";
 import {
-  InternalTable,
+  Table,
   getRowElements,
   getRowGroupElements,
   getCellElements,
   isEmptyCellElement,
-} from "./internalTable";
+} from ".";
 
-describe("InternalTable", () => {
+describe("Table", () => {
   test("table (will be automatically inserted tbody)", () => {
     const table = document.createElement("table");
     table.innerHTML = `
@@ -15,7 +15,7 @@ describe("InternalTable", () => {
       <tr><td>0-0</td><td>0-1</td></tr>
       <tr><td>1-0</td><td>1-1</td></tr>
     `;
-    const result = new InternalTable(table);
+    const result = new Table(table);
     const { rowGroups, cells, rowCount, colCount } = result;
     expect(rowGroups[0].positionY).toBe(0);
     expect(rowGroups[0].sizeY).toBe(2);
@@ -55,7 +55,7 @@ describe("InternalTable", () => {
         <tr><td>4-0</td></tr>
       </tfoot>
     `;
-    const result = new InternalTable(table);
+    const result = new Table(table);
     const { rowGroups } = result;
     expect(rowGroups[0].positionY).toBe(0);
     expect(rowGroups[0].sizeY).toBe(1);
@@ -76,7 +76,7 @@ describe("InternalTable", () => {
     table.appendChild(document.createElement("tr"));
     table.appendChild(document.createElement("tr"));
     table.appendChild(document.createElement("tr"));
-    const result = new InternalTable(table);
+    const result = new Table(table);
     const { rowGroups, cells } = result;
     expect(rowGroups).toHaveLength(0);
     expect(cells).toHaveLength(3);
@@ -94,7 +94,7 @@ describe("InternalTable", () => {
         <tr><td id="cell-1-0">1-0</td></tr>
       </tbody>
     `;
-    const result = new InternalTable(table);
+    const result = new Table(table);
     const { cells } = result;
     expect(cells).toHaveLength(3);
     expect(cells[0][0].element.id).toBe("cell-0-0");
@@ -125,7 +125,7 @@ describe("InternalTable", () => {
       </tr>
     </tbody>
     `;
-    const result = new InternalTable(table);
+    const result = new Table(table);
     const { colGroups, colCount } = result;
     expect(colCount).toBe(10);
     expect(colGroups[0].positionX).toBe(0);
@@ -189,7 +189,7 @@ describe("InternalTable", () => {
       </tr>
     </tbody>
     `;
-    const result = new InternalTable(table);
+    const result = new Table(table);
     const { cells } = result;
     expect(cells[2][0].positionX).toBe(0);
     expect(cells[2][1].positionX).toBe(1);
@@ -228,7 +228,7 @@ describe("InternalTable", () => {
         <tr><td>5-0</td><td>5-1</td><td>5-2</td><td>5-3</td><td>5-4</td></tr>
       </tfoot>
     `;
-    const result = new InternalTable(table);
+    const result = new Table(table);
     const { rowGroups, cells, rowCount, colCount } = result;
     expect(rowGroups[0].positionY).toBe(0);
     expect(rowGroups[0].sizeY).toBe(1);
@@ -331,7 +331,7 @@ describe("InternalTable", () => {
         </div>
       </div>
     `;
-    const result = new InternalTable(div);
+    const result = new Table(div);
     const { cells, rowCount, colCount } = result;
     expect(cells).toHaveLength(7);
     for (let x = 0; x < 5; x++) {
@@ -403,7 +403,7 @@ describe("InternalTable", () => {
         <td id="cell-2-2">2-2</td>
       </tr>
       `;
-      const result = new InternalTable(table);
+      const result = new Table(table);
       const cell_2_1 = result.getSlotCells(1, 2);
       expect(cell_2_1).toHaveLength(1);
       expect(cell_2_1[0].element.id).toBe("cell-2-1");
@@ -433,7 +433,7 @@ describe("InternalTable", () => {
         <td id="cell-2-2">2-2</td>
       </tr>
       `;
-      const result = new InternalTable(table);
+      const result = new Table(table);
       const el = table.querySelector("#cell-1-2");
       expect(el).toBeDefined();
       if (!el) return;
@@ -505,7 +505,7 @@ describe("InternalTable", () => {
           </tr>
         </tbody>
       `;
-      const result = new InternalTable(table);
+      const result = new Table(table);
       const { cells } = result;
       const headers_1_2 = result.getHeaderElements(cells[1][2]);
       expect(headers_1_2.find((e) => e.id === "cell-1-0")).toBeDefined();
@@ -592,7 +592,7 @@ describe("InternalTable", () => {
           </tr>
         </tbody>
       `;
-      const result = new InternalTable(table);
+      const result = new Table(table);
       const { cells } = result;
       const headers_2_3 = result.getHeaderElements(cells[2][2]);
       expect(headers_2_3.find((c) => c.id === "cell-0-3")).toBeDefined();

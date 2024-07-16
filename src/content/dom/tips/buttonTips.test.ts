@@ -67,11 +67,6 @@ describe("isButton()", () => {
     expect(isButton(element)).toBe(true);
   });
 
-  test("summary without details", () => {
-    const element = document.createElement("summary");
-    expect(isButton(element)).toBe(false);
-  });
-
   test("role = menuitem", () => {
     const element = document.createElement("div");
     element.setAttribute("role", "menuitem");

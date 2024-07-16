@@ -1,6 +1,6 @@
 import { ElementMeta, Category, ElementTip } from "../types";
 import { getPositionBaseElement } from "./getPositionBaseElement";
-import { isHidden } from "./isHidden";
+import { isHidden } from "../../dom/isHidden";
 import { getElementPosition } from "./getElementPosition";
 import { globalTips } from "./tips/globalTips";
 import { AriraHiddenSelectors, ariaHiddenTips } from "./tips/ariaHiddenTips";
@@ -25,9 +25,11 @@ import {
   isTableCell,
   tableTips,
 } from "./tips/tableTips";
-import { InternalTable } from "./tips/internalTable";
-import { getClosestByRoles } from "./getClosestByRoles";
+import { Table } from "../../table";
+import { getClosestByRoles } from "../../dom/getClosestByRoles";
 import { getScrollBaseElement } from "./getScrollBaseElement";
+import { isRuleTargetElement, RuleResult, Rules } from "../../rules";
+import { getKnownRole } from "../../dom/getKnownRole";
 
 const getSelector = (settings: Partial<CategorySettings>) => {
   return [
@@ -88,8 +90,7 @@ export const collectElements = (
   const visibleHeight = w.innerHeight;
 
   const selector = getSelector(settings);
-  const internalTables: InternalTable[] = [];
-
+  const internalTables: Table[] = [];
   return {
     rootHeight,
     rootWidth,
@@ -126,20 +127,32 @@ export const collectElements = (
         ) {
           return null;
         }
+        const role = getKnownRole(el);
+        const name = computeAccessibleName(el);
+
         return {
           ...elementPosition,
           category: getElementCategory(el),
           tips: tipsForElement(el, { ...options, internalTables }),
+          ruleResults: Rules.reduce((prev, rule) => {
+            const result = isRuleTargetElement(el, rule, role)
+              ? rule.evaluate(el, rule.defaultOptions, {
+                  tables: internalTables,
+                  elementDocument: d,
+                  elementWindow: w,
+                  name,
+                  role,
+                })
+              : undefined;
+            return result ? prev.concat(result) : prev;
+          }, [] as RuleResult[]),
         };
       })
       .filter((el): el is ElementMeta => el !== null),
   };
 };
 
-const getTableTips = (
-  el: Element,
-  internalTables: InternalTable[],
-): ElementTip[] => {
+const getTableTips = (el: Element, internalTables: Table[]): ElementTip[] => {
   if (isTable(el) || isTableCell(el)) {
     const tagName = el.tagName.toLowerCase();
     const tableEl =
@@ -151,7 +164,7 @@ const getTableTips = (
     if (tableEl) {
       const internalTable = internalTables.find((t) => t.element === tableEl);
       if (!internalTable) {
-        const newTable = new InternalTable(tableEl);
+        const newTable = new Table(tableEl);
         internalTables.push(newTable);
         return tableTips(el, newTable);
       }
@@ -165,7 +178,7 @@ const tipsForElement = (
   el: Element,
   options: {
     srcdoc?: boolean;
-    internalTables: InternalTable[];
+    internalTables: Table[];
   },
 ): ElementTip[] => {
   const name = computeAccessibleName(el);

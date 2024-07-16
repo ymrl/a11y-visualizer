@@ -1,6 +1,9 @@
+import { RuleResult } from "../rules";
+
 export type ElementMeta = {
   tips: ElementTip[];
   category: Category;
+  ruleResults: RuleResult[];
 } & ElementPosition;
 
 export type ElementPosition = {

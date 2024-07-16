@@ -1,8 +1,10 @@
 import { computeAccessibleName } from "dom-accessibility-api";
 import { ElementTip } from "../../types";
-import { isAriaHidden, isFocusable, isHidden } from "../index";
-import { isInline } from "../isInline";
-import { isDefaultSize } from "./isDefaultSize";
+import { isAriaHidden } from "../index";
+import { isDefaultSize } from "../../../dom/isDefaultSize";
+import { isFocusable } from "../../../dom/isFocusable";
+import { isInline } from "../../../dom/isInline";
+import { isHidden } from "../../../dom/isHidden";
 
 export const FormSelectors = [
   "input:not([type='hidden']):not([type='button']):not([type='submit']):not([type='reset']):not([type='image'])",

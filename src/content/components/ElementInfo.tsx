@@ -2,6 +2,7 @@ import React from "react";
 import { ElementMeta } from "../types";
 import { SettingsContext } from "./SettingsProvider";
 import { Tip } from "./Tip";
+import { RuleTip } from "./RuleTip";
 
 const ELEMENT_SIZE_ENHANCEMENT = 4;
 const TIP_SIDE_MARGIN = 8;
@@ -12,7 +13,17 @@ type VerticalPosition =
   | "outer-top"
   | "outer-bottom";
 export const ElementInfo = ({
-  meta: { x, y, absoluteX, absoluteY, width, height, tips, category },
+  meta: {
+    x,
+    y,
+    absoluteX,
+    absoluteY,
+    width,
+    height,
+    tips,
+    ruleResults,
+    category,
+  },
   rootWidth,
   rootHeight,
 }: {
@@ -163,6 +174,14 @@ export const ElementInfo = ({
               hideLabel={interactiveMode && hideTips ? !hovered : false}
               key={i}
               tip={tip}
+            />
+          ))}
+          {ruleResults.map((result, i) => (
+            <RuleTip
+              maxWidth={tipMaxWidth}
+              hideLabel={interactiveMode && hideTips ? !hovered : false}
+              key={i}
+              result={result}
             />
           ))}
         </div>

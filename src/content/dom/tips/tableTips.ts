@@ -1,7 +1,7 @@
 import { computeAccessibleName } from "dom-accessibility-api";
 import { ElementTip } from "../../types";
-import { getKnownRole } from "../getKnownRole";
-import { InternalTable } from "./internalTable";
+import { getKnownRole } from "../../../dom/getKnownRole";
+import { Table } from "../../../table";
 const TableElements = [
   "table",
   // 'thead',
@@ -48,10 +48,7 @@ export const isTableCell = (el: Element): boolean => {
   );
 };
 
-export const tableTips = (
-  el: Element,
-  internalTable: InternalTable,
-): ElementTip[] => {
+export const tableTips = (el: Element, internalTable: Table): ElementTip[] => {
   const result: ElementTip[] = [];
 
   if (isTable(el)) {

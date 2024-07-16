@@ -1,6 +1,6 @@
 import { computeAccessibleDescription } from "dom-accessibility-api";
 import { ElementTip } from "../../types";
-import { getKnownRole, KnownRole } from "../getKnownRole";
+import { getKnownRole, KnownRole } from "../../../dom/getKnownRole";
 
 const globalAriaStates = [
   "aria-busy",

@@ -1,6 +1,7 @@
 import { computeAccessibleName } from "dom-accessibility-api";
 import { ElementTip } from "../../types";
-import { isAriaHidden, isPresentationalChildren } from "../index";
+import { isAriaHidden } from "../index";
+import { isPresentationalChildren } from "../../../dom/isPresentationalChildren";
 
 export const ImageSelectors = ["img", "svg", '[role="img"]'] as const;
 

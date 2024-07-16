@@ -1,7 +1,3 @@
-import { computeAccessibleName } from "dom-accessibility-api";
-import { ElementTip } from "../../types";
-import { isAriaHidden } from "../isAriaHidden";
-
 export const HeadingSelectors = [
   "h1",
   "h2",
@@ -22,35 +18,3 @@ const hasHeadingRole = (el: Element): boolean =>
 
 export const isHeading = (el: Element): boolean =>
   hasHeadingRole(el) || hasHeadingTag(el);
-
-export const headingTips = (
-  el: Element,
-  name: string = computeAccessibleName(el),
-): ElementTip[] => {
-  const result: ElementTip[] = [];
-  const tagName = el.tagName.toLowerCase();
-  const hidden = isAriaHidden(el);
-  const hasTag = hasHeadingTag(el);
-  const hasRole = hasHeadingRole(el);
-
-  if (hasTag) {
-    result.push({ type: "level", content: `${tagName.slice(1)}` });
-  } else if (hasRole) {
-    const ariaLevel = el.getAttribute("aria-level");
-    if (ariaLevel) {
-      result.push({ type: "level", content: `${ariaLevel}` });
-    } else if (!hidden) {
-      result.push({
-        type: "error",
-        content: "messages.noHeadingLevel",
-      });
-    }
-  }
-  if (hasTag || hasRole) {
-    if (!name && !hidden) {
-      result.push({ type: "error", content: "messages.noName" });
-    }
-  }
-
-  return result;
-};

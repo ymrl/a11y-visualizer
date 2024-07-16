@@ -7,8 +7,8 @@ import {
   AriaHidden,
   Layout,
   LiveRegion,
+  Table,
 } from "./categories";
-import { Table } from "./categories/Table";
 
 export const TestPage = () => (
   <main className="p-3">

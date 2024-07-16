@@ -1,5 +1,5 @@
-import { describe, test, expect, afterEach } from "vitest";
-import { imageTips, isImage } from "./imageTips";
+import { describe, test, expect } from "vitest";
+import { isImage } from "./imageTips";
 
 describe("isImage()", () => {
   test("div", () => {
@@ -28,92 +28,5 @@ describe("isImage()", () => {
     const element = document.createElement("svg");
     element.setAttribute("role", "presentation");
     expect(isImage(element)).toBe(true);
-  });
-});
-
-describe("imageTips()", () => {
-  afterEach(() => {
-    document.body.innerHTML = "";
-  });
-  test("div", () => {
-    const element = document.createElement("div");
-    document.body.appendChild(element);
-    expect(imageTips(element)).toHaveLength(0);
-  });
-  test("img with alt", () => {
-    const element = document.createElement("img");
-    element.setAttribute("alt", "Hello");
-    element.setAttribute("src", "hello.png");
-    document.body.appendChild(element);
-    expect(imageTips(element)).toHaveLength(0);
-  });
-
-  test("img without alt", () => {
-    const element = document.createElement("img");
-    element.setAttribute("src", "hello.png");
-    document.body.appendChild(element);
-    expect(imageTips(element)).toEqual([
-      { type: "error", content: "messages.noAltImage" },
-    ]);
-  });
-
-  test("img with empty alt", () => {
-    const element = document.createElement("img");
-    element.setAttribute("alt", "");
-    element.setAttribute("src", "hello.png");
-    document.body.appendChild(element);
-    expect(imageTips(element)).toEqual([
-      { type: "warning", content: "messages.emptyAltImage" },
-    ]);
-  });
-
-  test("img inside link", () => {
-    const link = document.createElement("a");
-    link.setAttribute("href", "hello.html");
-    const img = document.createElement("img");
-    link.appendChild(img);
-    document.body.appendChild(link);
-    expect(imageTips(img)).toEqual([
-      { type: "error", content: "messages.noAltImage" },
-    ]);
-  });
-
-  test("svg inside link", () => {
-    const link = document.createElement("a");
-    link.setAttribute("href", "hello.html");
-    link.setAttribute("aria-label", "Hello");
-    const svg = document.createElement("svg");
-    link.appendChild(svg);
-    document.body.appendChild(link);
-    expect(imageTips(svg)).toEqual([
-      { type: "warning", content: "messages.mayBeSkipped" },
-    ]);
-  });
-
-  test("svg inside button", () => {
-    const button = document.createElement("button");
-    const svg = document.createElement("svg");
-    button.appendChild(svg);
-    document.body.appendChild(button);
-    expect(imageTips(svg)).toHaveLength(0);
-  });
-
-  test("svg", () => {
-    const element = document.createElement("svg");
-    document.body.appendChild(element);
-    const result = imageTips(element);
-    expect(result).toHaveLength(1);
-    expect(result.find((e) => e.type === "warning")).toEqual({
-      type: "warning",
-      content: "messages.mayBeSkipped",
-    });
-  });
-
-  test("aria-hidden svg", () => {
-    const element = document.createElement("svg");
-    element.setAttribute("aria-hidden", "true");
-    document.body.appendChild(element);
-    const result = imageTips(element);
-    expect(result).toHaveLength(0);
   });
 });

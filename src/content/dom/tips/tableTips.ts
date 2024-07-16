@@ -1,7 +1,4 @@
-import { computeAccessibleName } from "dom-accessibility-api";
-import { ElementTip } from "../../types";
-import { getKnownRole } from "../getKnownRole";
-import { InternalTable } from "./internalTable";
+import { getKnownRole } from "../../../dom/getKnownRole";
 const TableElements = [
   "table",
   // 'thead',
@@ -46,35 +43,4 @@ export const isTableCell = (el: Element): boolean => {
     ["th", "td"].includes(tagName) ||
     (!!role && ["columnheader", "rowheader", "gridcell", "cell"].includes(role))
   );
-};
-
-export const tableTips = (
-  el: Element,
-  internalTable: InternalTable,
-): ElementTip[] => {
-  const result: ElementTip[] = [];
-
-  if (isTable(el)) {
-    result.push({
-      type: "tableSize",
-      content: `${internalTable.colCount}x${internalTable.rowCount}`,
-    });
-  }
-  if (isTableCell(el)) {
-    const cell = internalTable.getCell(el);
-    if (cell) {
-      internalTable.getHeaderElements(cell).forEach((header) => {
-        result.push({
-          type: "tableHeader",
-          content: computeAccessibleName(header),
-        });
-      });
-      result.push({
-        type: "tablePosition",
-        content: `${cell.positionX + 1},${cell.positionY + 1}`,
-      });
-    }
-  }
-
-  return result;
 };

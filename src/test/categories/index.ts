@@ -6,3 +6,4 @@ export * from "./Heading";
 export * from "./AriaHidden";
 export * from "./Layout";
 export * from "./LiveRegion";
+export * from "./Table";

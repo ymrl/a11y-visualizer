@@ -1,6 +1,7 @@
 import React from "react";
 import { SettingsContext } from "../components/SettingsProvider";
-import { isHidden, isInAriaHidden } from "../dom";
+import { isInAriaHidden } from "../dom";
+import { isHidden } from "../../dom/isHidden";
 
 const LIVEREGION_SELECTOR =
   "output, [role='status'], [role='alert'], [role='log'], [aria-live]:not([aria-live='off'])";

@@ -1,4 +1,4 @@
-import { getKnownRole } from "../getKnownRole";
+import { getKnownRole } from "../dom/getKnownRole";
 
 type RowGroup = {
   positionY: number;
@@ -22,7 +22,7 @@ type Cell = {
   headerScope: Scope;
 };
 
-export class InternalTable {
+export class Table {
   element: Element;
   rowGroups: RowGroup[];
   colGroups: ColGroup[];

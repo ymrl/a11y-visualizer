@@ -1,6 +1,9 @@
+import { RuleResult } from "../rules";
+
 export type ElementMeta = {
-  tips: ElementTip[];
+  name: string;
   category: Category;
+  ruleResults: RuleResult[];
 } & ElementPosition;
 
 export type ElementPosition = {
@@ -10,27 +13,6 @@ export type ElementPosition = {
   absoluteY: number;
   width: number;
   height: number;
-};
-
-export type TipType =
-  | "name"
-  | "role"
-  | "tagName"
-  | "landmark"
-  | "description"
-  | "level"
-  | "ariaStatus"
-  | "lang"
-  | "pageTitle"
-  | "tableHeader"
-  | "tableSize"
-  | "tablePosition"
-  | "linkTarget"
-  | "warning"
-  | "error";
-export type ElementTip = {
-  type: TipType;
-  content: string;
 };
 
 export type Category =

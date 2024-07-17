@@ -26,8 +26,7 @@ export const Root = ({
   const containerRef = React.useRef<HTMLDivElement>(null);
   const announcementsRef = React.useRef<HTMLDivElement>(null);
   const framesRef = React.useRef<Element[]>([]);
-  const dialogsRef = React.useRef<Element[]>([]);
-  const popoversRef = React.useRef<Element[]>([]);
+  const excludedRef = React.useRef<Element[]>([]);
   const { announcements, observeLiveRegion } = useLiveRegion();
 
   const [outdated, setOutDated] = React.useState(false);
@@ -44,12 +43,14 @@ export const Root = ({
         const { readyState } = d;
         if (readyState === "complete") {
           injectRoot(frameWindow, d.body, {
+            mountOnce: false,
             srcdoc: frameEl.hasAttribute("srcdoc"),
           });
         } else {
           frameWindow.addEventListener("load", () => {
             injectRoot(frameWindow, d.body, {
               srcdoc: frameEl.hasAttribute("srcdoc"),
+              mountOnce: false,
             });
           });
         }
@@ -65,18 +66,13 @@ export const Root = ({
   }, []);
 
   const injectToDialogs = React.useCallback((el: Element) => {
-    const dialogs = el.querySelectorAll("dialog");
-    const popovers = el.querySelectorAll("[popover]");
-    [...dialogs, ...popovers].forEach((el: Element) => {
-      if (
-        !dialogsRef.current.includes(el) &&
-        !popoversRef.current.includes(el)
-      ) {
-        injectRoot(window, el);
+    const elements = [...el.querySelectorAll("dialog, [popover]")];
+    elements.forEach((el: Element) => {
+      if (!excludedRef.current.includes(el)) {
+        injectRoot(window, el, { mountOnce: true });
       }
     });
-    dialogsRef.current = Array.from(dialogs);
-    popoversRef.current = Array.from(popovers);
+    excludedRef.current = elements;
   }, []);
 
   const updateInfo = useDebouncedCallback(
@@ -94,8 +90,7 @@ export const Root = ({
           [
             containerRef.current,
             announcementsRef.current,
-            ...popoversRef.current,
-            ...dialogsRef.current,
+            ...excludedRef.current,
           ].filter((el): el is Element => !!el),
           settings,
           { srcdoc: options.srcdoc },

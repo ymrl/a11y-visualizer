@@ -5,6 +5,10 @@ import { Settings, SettingsMessage, loadUrlSettings } from "../settings";
 import { SettingsProvider } from "./components/SettingsProvider";
 import { loadEnabled } from "../enabled";
 
+type InjectOptions = RootOptions & {
+  mountOnce?: boolean;
+};
+
 const mount = (w: Window, parent: Element, options?: RootOptions) => {
   const rootElement = w.document.createElement("div");
   parent.append(rootElement);
@@ -32,7 +36,7 @@ const mount = (w: Window, parent: Element, options?: RootOptions) => {
 export const injectRoot = async (
   w: Window,
   parent: Element,
-  options?: RootOptions,
+  { mountOnce, ...options }: InjectOptions,
 ) => {
   if (!w.location.href.match(/^(?:https?)|(?:file):\/\//)) {
     return;
@@ -65,10 +69,14 @@ export const injectRoot = async (
       }
     }
     if (message.enabled) {
-      (mountReturn || (mountReturn = mount(w, parent))).render(settings);
+      !mountOnce &&
+        (mountReturn || (mountReturn = mount(w, parent))).render(settings);
     } else {
       mountReturn?.unmount();
       mountReturn = null;
+      if (mountOnce) {
+        chrome.runtime.onMessage.removeListener(listener);
+      }
     }
   };
   chrome.runtime.onMessage.addListener(listener);

@@ -5,14 +5,14 @@ import { SettingsMessage } from "../settings";
 let injected = false;
 const enabled = await loadEnabled();
 if (enabled) {
-  injectRoot(window, window.document.body);
+  injectRoot(window, window.document.body, { mountOnce: false });
   injected = true;
 }
 
 const listener = (message: SettingsMessage) => {
   if (message.type !== "updateEnabled") return;
   if (message.enabled && !injected) {
-    injectRoot(window, window.document.body);
+    injectRoot(window, window.document.body, { mountOnce: false });
     injected = true;
   }
 };
@@ -25,7 +25,7 @@ document.addEventListener("visibilitychange", async () => {
       type: "isEnabled",
     });
     if (enabled && !injected) {
-      injectRoot(window, window.document.body);
+      injectRoot(window, window.document.body, { mountOnce: false });
       injected = true;
     }
   }

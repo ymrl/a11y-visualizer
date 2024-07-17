@@ -99,29 +99,6 @@
       "undefined": "選択できない"
     }
   },
-  "messages": {
-    "noAltImage": "alt属性のない画像",
-    "noAltImageMap": "alt属性なし",
-    "emptyAltImage": "alt=\"\"の画像",
-    "mayBeSkipped": "読み飛ばされる可能性あり",
-    "noName": "名前（ラベル）なし",
-    "noHref": "href属性なし",
-    "nestedInteractive": "インタラクティブ要素の入れ子",
-    "emptyHeading": "空の見出し",
-    "noHeadingLevel": "見出しレベルなし",
-    "ariaHidden": "aria-hidden",
-    "headingLevel": "見出しレベル",
-    "notFocusable": "フォーカスできない",
-    "noControlForLabel": "フォームコントロールなしのラベル",
-    "noNameAttr": "name属性なし",
-    "noRadioGroup": "ラジオボタングループなし",
-    "noNameSection": "名前なしの <section>",
-    "invalidAriaValue": "WAI-ARIA属性値が不正",
-    "noTitlePage": "<title>要素なし",
-    "noLangPage": "<html>要素にlang属性なし",
-    "langAndXmlLangMustBeSame": "lang属性とxml:lang属性の値が異なる",
-    "smallTargetSize": "ターゲットが小さい"
-  },
   "optionsPage": {
     "description": "拡張機能のポップアップから設定を変更すると、閲覧中のWebページのホストごとに設定が保存され、同じホストのWebページに対して適用されます。この画面で設定を変更しても、それらの設定値は変更されません。",
     "resetSettings": "設定のリセット",

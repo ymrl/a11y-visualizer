@@ -35,20 +35,6 @@
     "warning": "경고",
     "error": "오류"
   },
-  "messages": {
-    "noAltImage": "alt속성이 없는 이미지",
-    "emptyAltImage": "alt=\"\"의 이미지",
-    "noName": "이름(레이블) 없음",
-    "noHref": "href속성 없음",
-    "emptyHeading": "빈 헤딩",
-    "noHeadingLevel": "헤딩 레벨 없음",
-    "ariaHidden": "aria-hidden",
-    "headingLevel": "헤딩 레벨",
-    "notFocusable": "포커싱 불가(키보드 접근 불가)",
-    "noControlForLabel": "연결된 입력 서식이 없는 레이블",
-    "noNameAttr": "name 속성 없음",
-    "noRadioGroup": "라디오 버튼 그룹 없음"
-  },
   "optionsPage": {
     "description": "확장기능의 팝업에서 설정을 변경하면 현재 보고 있는 웹 페이지의 호스트별로 설정이 저장되며 동일한 호스트의 웹 페이지에 적용됩니다.이 화면에서 설정을 변경해도 그 설정값은 변경되지 않습니다."
   },

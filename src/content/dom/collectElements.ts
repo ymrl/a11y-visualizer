@@ -1,23 +1,15 @@
-import { ElementMeta, Category } from "../types";
+import { ElementMeta } from "../types";
 import { getPositionBaseElement } from "./getPositionBaseElement";
 import { isHidden } from "../../dom/isHidden";
 import { getElementPosition } from "./getElementPosition";
-import { isHeading } from "./tips/headingTips";
-import { isLink } from "./tips/linkTips";
-import { isButton } from "./tips/buttonTips";
-import { isFieldset, isFormControl } from "./tips/formTips";
-import { isImage } from "./tips/imageTips";
 import { computeAccessibleName } from "dom-accessibility-api";
 import { CategorySettings } from "../../settings";
-import { isSection } from "./tips/sectionTips";
-import { isPage } from "./tips/pageTips";
-import { isLang } from "./tips/langTips";
-import { isTable, isTableCell } from "./tips/tableTips";
 import { Table } from "../../table";
 import { getScrollBaseElement } from "./getScrollBaseElement";
 import { isRuleTargetElement, RuleResult, Rules } from "../../rules";
 import { getKnownRole } from "../../dom/getKnownRole";
 import { Selectors } from "./Selectors";
+import { getElementCategory } from "./getElementCategory";
 
 const getSelector = (settings: Partial<CategorySettings>) => {
   const s = Object.keys(settings).reduce(
@@ -119,7 +111,7 @@ export const collectElements = (
         return {
           ...elementPosition,
           name: name || "",
-          category: getElementCategory(el),
+          category: getElementCategory(el, role),
           ruleResults: Rules.reduce((prev, rule) => {
             const result = isRuleTargetElement(el, rule, role)
               ? rule.evaluate(el, rule.defaultOptions, {
@@ -137,17 +129,4 @@ export const collectElements = (
       })
       .filter((el): el is ElementMeta => el !== null),
   };
-};
-
-const getElementCategory = (el: Element): Category => {
-  if (isPage(el)) return "page";
-  if (isImage(el)) return "image";
-  if (isHeading(el)) return "heading";
-  if (isFormControl(el) || isLink(el) || isButton(el)) return "control";
-  if (isSection(el)) return "section";
-  if (isTable(el)) return "table";
-  if (isTableCell(el)) return "tableCell";
-  if (isFieldset(el)) return "fieldset";
-  if (isSection(el) || isLang(el)) return "section";
-  return "general";
 };

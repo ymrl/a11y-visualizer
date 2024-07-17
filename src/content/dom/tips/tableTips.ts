@@ -1,29 +1,4 @@
 import { getKnownRole } from "../../../dom/getKnownRole";
-const TableElements = [
-  "table",
-  // 'thead',
-  // 'tbody',
-  // 'tfoot',
-  // 'tr',
-  "th",
-  "td",
-  // 'caption',
-] as const;
-
-const TableRoles = [
-  "table",
-  "grid",
-  // 'row',
-  "columnheader",
-  "rowheader",
-  "gridcell",
-  "cell",
-] as const;
-
-export const TableSelectors = [
-  ...TableElements,
-  ...TableRoles.map((role) => `[role="${role}"]`),
-] as const;
 
 export const isTable = (el: Element): boolean => {
   const role = getKnownRole(el);

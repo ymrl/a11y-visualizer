@@ -1,13 +1,3 @@
-export const HeadingSelectors = [
-  "h1",
-  "h2",
-  "h3",
-  "h4",
-  "h5",
-  "h6",
-  '[role="heading"]',
-] as const;
-
 const hasHeadingTag = (el: Element): boolean => {
   const tagName = el.tagName.toLowerCase();
   return ["h1", "h2", "h3", "h4", "h5", "h6"].includes(tagName);

@@ -22,11 +22,6 @@ const sectionRoles = [
   "application",
 ] as const;
 
-export const SectionSelectors = [
-  ...sectionTags,
-  ...sectionRoles.map((role) => `[role="${role}"]`),
-] as const;
-
 export const isSection = (el: Element): boolean =>
   hasSectionTag(el) || hasSectionRole(el);
 

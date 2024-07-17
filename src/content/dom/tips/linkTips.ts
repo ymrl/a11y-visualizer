@@ -1,5 +1,3 @@
-export const LinkSelectors = ["a", "area", '[role="link"]'] as const;
-
 export const isLink = (el: Element): boolean =>
   hasLinkRole(el) || hasLinkTag(el);
 

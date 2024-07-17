@@ -1,22 +1,3 @@
-export const FormSelectors = [
-  "input:not([type='hidden']):not([type='button']):not([type='submit']):not([type='reset']):not([type='image'])",
-  "textarea",
-  "select",
-  '[role="checkbox"]',
-  '[role="combobox"]',
-  '[role="radio"]',
-  '[role="searchbox"]',
-  '[role="slider"]',
-  '[role="spinbutton"]',
-  '[role="switch"]',
-  '[role="textbox"]',
-  '[role="menuitemcheckbox"]',
-  '[role="menuitemradio"]',
-  "label",
-  "fieldset",
-  "form",
-] as const;
-
 const hasInputRole = (el: Element): boolean =>
   [
     "checkbox",

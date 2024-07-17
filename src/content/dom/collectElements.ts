@@ -2,35 +2,33 @@ import { ElementMeta, Category } from "../types";
 import { getPositionBaseElement } from "./getPositionBaseElement";
 import { isHidden } from "../../dom/isHidden";
 import { getElementPosition } from "./getElementPosition";
-import { AriraHiddenSelectors } from "./tips/ariaHiddenTips";
-import { HeadingSelectors, isHeading } from "./tips/headingTips";
-import { LinkSelectors, isLink } from "./tips/linkTips";
-import { ButtonSelectors, isButton } from "./tips/buttonTips";
-import { FormSelectors, isFieldset, isFormControl } from "./tips/formTips";
-import { isImage, ImageSelectors } from "./tips/imageTips";
+import { isHeading } from "./tips/headingTips";
+import { isLink } from "./tips/linkTips";
+import { isButton } from "./tips/buttonTips";
+import { isFieldset, isFormControl } from "./tips/formTips";
+import { isImage } from "./tips/imageTips";
 import { computeAccessibleName } from "dom-accessibility-api";
 import { CategorySettings } from "../../settings";
-import { SectionSelectors, isSection } from "./tips/sectionTips";
+import { isSection } from "./tips/sectionTips";
 import { isPage } from "./tips/pageTips";
-import { LangSelectors, isLang } from "./tips/langTips";
-import { TableSelectors, isTable, isTableCell } from "./tips/tableTips";
+import { isLang } from "./tips/langTips";
+import { isTable, isTableCell } from "./tips/tableTips";
 import { Table } from "../../table";
 import { getScrollBaseElement } from "./getScrollBaseElement";
 import { isRuleTargetElement, RuleResult, Rules } from "../../rules";
 import { getKnownRole } from "../../dom/getKnownRole";
+import { Selectors } from "./Selectors";
 
 const getSelector = (settings: Partial<CategorySettings>) => {
-  return [
-    ...(settings.image ? ImageSelectors : []),
-    ...(settings.formControl ? FormSelectors : []),
-    ...(settings.link ? LinkSelectors : []),
-    ...(settings.heading ? HeadingSelectors : []),
-    ...(settings.button ? ButtonSelectors : []),
-    ...(settings.ariaHidden ? AriraHiddenSelectors : []),
-    ...(settings.section ? SectionSelectors : []),
-    ...(settings.lang ? LangSelectors : []),
-    ...(settings.table ? TableSelectors : []),
-  ].join(",");
+  const s = Object.keys(settings).reduce(
+    (prev, key) =>
+      settings[key as keyof CategorySettings] &&
+      Selectors[key as keyof CategorySettings]
+        ? [...prev, ...Selectors[key as keyof CategorySettings]]
+        : prev,
+    [] as string[],
+  );
+  return s.join(",");
 };
 
 export const collectElements = (

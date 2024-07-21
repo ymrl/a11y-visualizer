@@ -72,11 +72,8 @@ const isSmallTarget = (
     return false;
   }
 
-  const tagName = element.tagName.toLowerCase();
-  const typeAttr = element.getAttribute("type");
   const checkboxLabel =
-    tagName === "input" &&
-    (typeAttr === "checkbox" || typeAttr === "radio") &&
+    isCheckboxOrRadiobutton(element) &&
     ((element.id &&
       elementDocument.querySelector(`[for="${CSS.escape(element.id)}"]`)) ||
       element.closest("label"));
@@ -88,12 +85,24 @@ const isSmallTarget = (
   // inlineの場合は、子要素に24px以上のものがあればfalse
   if (
     display === "inline" &&
-    [...element.children].some(
-      (child) => !isSmallTarget(child, elementDocument, elementWindow),
-    )
+    [...element.children].some((child) => {
+      // チェックボックス・ラジオボタンはlabelと無限ループになるので除外
+      if (isCheckboxOrRadiobutton(child)) {
+        return false;
+      }
+      return !isSmallTarget(child, elementDocument, elementWindow);
+    })
   ) {
     return false;
   }
 
   return true;
+};
+
+const isCheckboxOrRadiobutton = (element: Element): boolean => {
+  const tagName = element.tagName.toLowerCase();
+  const typeAttr = element.getAttribute("type");
+  return (
+    tagName === "input" && (typeAttr === "checkbox" || typeAttr === "radio")
+  );
 };

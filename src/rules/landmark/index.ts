@@ -15,6 +15,8 @@ const roles: KnownRole[] = [
   "region",
   "search",
   "application",
+  "dialog",
+  "alertdialog",
 ] as const;
 
 const tagToRole: Record<string, string> = {
@@ -23,6 +25,7 @@ const tagToRole: Record<string, string> = {
   main: "main",
   form: "form",
   search: "search",
+  dialog: "dialog",
 } as const;
 
 export const Landmark: RuleObject = {

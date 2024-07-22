@@ -321,7 +321,7 @@ describe("isSection()", () => {
     expect(isSection(element)).toBe(false);
   });
 
-  ["article", "section", "nav", "aside"].forEach((tagName) => {
+  ["article", "section", "nav", "aside", "dialog"].forEach((tagName) => {
     test(tagName, () => {
       const element = document.createElement(tagName);
       expect(isSection(element)).toBe(true);

@@ -74,7 +74,8 @@ export const collectElements = (
     rootWidth,
     elements: [
       ...(settings.page && rootTagName === "body" ? [root] : []),
-      ...(selector ? [...root.querySelectorAll(getSelector(settings))] : []),
+      ...(selector && root.matches(selector) ? [root] : []),
+      ...(selector ? [...root.querySelectorAll(selector)] : []),
     ]
       .filter((el) => !isHidden(el))
       .filter((el) => !excludes.some((exclude) => exclude.contains(el)))

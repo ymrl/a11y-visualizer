@@ -1,23 +1,23 @@
 import { RuleObject } from "../type";
 
-const ruleName = "fieldset";
+const ruleName = "hgroup";
 const defaultOptions = { enabled: true };
-export const Fieldset: RuleObject = {
+export const Hgroup: RuleObject = {
   ruleName,
   defaultOptions,
-  tagNames: ["fieldset"],
+  tagNames: ["hgroup"],
   evaluate: (element, { enabled }) => {
     if (!enabled) {
       return undefined;
     }
     if (
       !element.hasAttribute("role") &&
-      element.tagName.toLowerCase() === "fieldset"
+      element.tagName.toLowerCase() === "hgroup"
     ) {
       return [
         {
           type: "tagName",
-          content: "fieldset",
+          content: "hgroup",
           ruleName,
         },
       ];

@@ -5,7 +5,7 @@ import {
   isPage,
   isHeading,
   isFormControl,
-  isFieldset,
+  isGroup,
   isButton,
   isLang,
   isLink,
@@ -67,7 +67,7 @@ describe("getElementCategory", () => {
   test("fieldset", () => {
     const el = document.createElement("fieldset");
     el.setAttribute("lang", "en");
-    expect(getElementCategory(el)).toBe("fieldset");
+    expect(getElementCategory(el)).toBe("group");
   });
 
   test("div lang en", () => {
@@ -194,15 +194,24 @@ describe("isFormControl()", () => {
   });
 });
 
-describe("isFieldset", () => {
+describe("isGroup", () => {
   test("div", () => {
     const element = document.createElement("div");
-    expect(isFieldset(element)).toBe(false);
+    expect(isGroup(element)).toBe(false);
   });
 
   test("fieldset", () => {
     const element = document.createElement("fieldset");
-    expect(isFieldset(element)).toBe(true);
+    expect(isGroup(element)).toBe(true);
+  });
+  test("hgroup", () => {
+    const element = document.createElement("hgroup");
+    expect(isGroup(element)).toBe(true);
+  });
+  test("role=group", () => {
+    const element = document.createElement("div");
+    element.setAttribute("role", "group");
+    expect(isGroup(element)).toBe(true);
   });
 });
 

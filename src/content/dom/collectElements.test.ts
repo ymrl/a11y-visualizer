@@ -74,10 +74,11 @@ describe("collectElements()", () => {
     document.body.innerHTML = `
       <h1>h1</h1>
       <h2>h2</h2>
+      <div role="heading">hoge</div>
       <p>hoge</p>
     `;
     const result = collectElements(document.body, [], { heading: true });
-    expect(result.elements).toHaveLength(2);
+    expect(result.elements).toHaveLength(3);
   });
 
   test("ariaHidden", () => {

@@ -31,7 +31,7 @@ export const Selectors: Record<keyof CategorySettings, string[]> = {
     'input[type="reset"]',
     'input[type="image"]',
   ] as const,
-  heading: ["h1", "h2", "h3", "h4", "h5", "h6", '[role="heading"]'] as const,
+  heading: ["h1", "h2", "h3", "h4", "h5", "h6", '[role~="heading"]'] as const,
   ariaHidden: ["[aria-hidden~='true']"] as const,
   section: [
     "article",

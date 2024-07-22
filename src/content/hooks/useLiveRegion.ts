@@ -2,9 +2,10 @@ import React from "react";
 import { SettingsContext } from "../components/SettingsProvider";
 import { isInAriaHidden } from "../dom";
 import { isHidden } from "../../dom/isHidden";
+import { getKnownRole } from "../../dom/getKnownRole";
 
 const LIVEREGION_SELECTOR =
-  "output, [role='status'], [role='alert'], [role='log'], [aria-live]:not([aria-live='off'])";
+  "output, [role~='status'], [role~='alert'], [role~='log'], [aria-live]:not([aria-live='off'])";
 
 type LiveLevel = "polite" | "assertive";
 
@@ -134,8 +135,9 @@ export const useLiveRegion = () => {
             return null;
           }
           const isAssertive =
-            (node as Element).getAttribute?.("aria-live") === "assertive" ||
-            (node as Element).getAttribute?.("role") === "alert";
+            node.nodeType === Node.ELEMENT_NODE &&
+            ((node as Element).getAttribute("aria-live") === "assertive" ||
+              getKnownRole(node as Element) === "alert");
           const level = isAssertive ? "assertive" : "polite";
           const isAtomic =
             (node as Element).getAttribute?.("aria-atomic") === "true";

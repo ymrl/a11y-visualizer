@@ -13,7 +13,7 @@ export const getElementCategory = (
   if (isSection(el, role)) return "section";
   if (isTable(el, role)) return "table";
   if (isTableCell(el, role)) return "tableCell";
-  if (isFieldset(el)) return "fieldset";
+  if (isGroup(el)) return "group";
   if (isLang(el)) return "section";
   return "general";
 };
@@ -31,8 +31,8 @@ export const isHeading = (el: Element, role = getKnownRole(el)): boolean =>
   ["h1", "h2", "h3", "h4", "h5", "h6"].includes(el.tagName.toLowerCase()) ||
   role === "heading";
 
-export const isFieldset = (el: Element): boolean =>
-  el.tagName.toLowerCase() === "fieldset";
+export const isGroup = (el: Element, role = getKnownRole(el)): boolean =>
+  ["fieldset", "hgroup"].includes(el.tagName.toLowerCase()) || role === "group";
 
 export const isFormControl = (
   el: Element,

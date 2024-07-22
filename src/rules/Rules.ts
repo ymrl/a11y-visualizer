@@ -7,6 +7,7 @@ import { ControlName } from "./control-name";
 import { Fieldset } from "./fieldset";
 import { HeadingLevel } from "./heading-level";
 import { HeadingName } from "./heading-name";
+import { Hgroup } from "./hgroup";
 import { ImageName } from "./image-name";
 import { LabelAssociatedControl } from "./label-associated-control";
 import { Landmark } from "./landmark";
@@ -31,6 +32,7 @@ export const Rules = [
   ControlFocus,
   ControlName,
   Fieldset,
+  Hgroup,
   HeadingName,
   ImageName,
   LabelAssociatedControl,

@@ -22,6 +22,6 @@ export type Category =
   | "section"
   | "table"
   | "tableCell"
-  | "fieldset"
+  | "group"
   | "page"
   | "general";

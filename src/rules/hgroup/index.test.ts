@@ -1,41 +1,41 @@
 import { afterEach, describe, test, expect } from "vitest";
-import { Fieldset } from ".";
+import { Hgroup } from ".";
 
-describe("fieldset", () => {
+describe("hgroup", () => {
   afterEach(() => {
     document.body.innerHTML = "";
   });
   test("div", () => {
     const element = document.createElement("div");
     document.body.appendChild(element);
-    const result = Fieldset.evaluate(element, { enabled: true }, {});
+    const result = Hgroup.evaluate(element, { enabled: true }, {});
     expect(result).toBeUndefined();
   });
-  test("fieldset", () => {
-    const element = document.createElement("fieldset");
+  test("hgroup", () => {
+    const element = document.createElement("hgroup");
     document.body.appendChild(element);
-    const result = Fieldset.evaluate(element, { enabled: true }, {});
+    const result = Hgroup.evaluate(element, { enabled: true }, {});
     expect(result).toEqual([
       {
         type: "tagName",
-        content: "fieldset",
-        ruleName: "fieldset",
+        content: "hgroup",
+        ruleName: "hgroup",
       },
     ]);
   });
 
-  test("fieldset with role", () => {
-    const element = document.createElement("fieldset");
+  test("hgroup with role", () => {
+    const element = document.createElement("hgroup");
     element.setAttribute("role", "group");
     document.body.appendChild(element);
-    const result = Fieldset.evaluate(element, { enabled: true }, {});
+    const result = Hgroup.evaluate(element, { enabled: true }, {});
     expect(result).toBeUndefined();
   });
 
   test("disabled", () => {
-    const element = document.createElement("fieldset");
+    const element = document.createElement("hgroup");
     document.body.appendChild(element);
-    const result = Fieldset.evaluate(element, { enabled: false }, {});
+    const result = Hgroup.evaluate(element, { enabled: false }, {});
     expect(result).toBeUndefined();
   });
 });

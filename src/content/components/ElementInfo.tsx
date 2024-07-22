@@ -40,7 +40,7 @@ export const ElementInfo = ({
   const horizontalPosition =
     category === "page"
       ? "center"
-      : ((category === "section" || category === "fieldset") &&
+      : ((category === "section" || category === "group") &&
             width > tipFontSize * 16) ||
           (width < tipFontSize * 16 && x + width > rootWidth - tipFontSize * 16)
         ? "right"
@@ -53,7 +53,7 @@ export const ElementInfo = ({
           ? "inner-top"
           : "outer-top"
         : category === "image" ||
-            category === "fieldset" ||
+            category === "group" ||
             category === "tableCell"
           ? y > tipFontSize * 2.4 && height < tipFontSize * 3.2
             ? "outer-top"

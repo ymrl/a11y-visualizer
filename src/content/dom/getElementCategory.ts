@@ -96,6 +96,7 @@ export const isSection = (el: Element, role = getKnownRole(el)): boolean =>
     "main",
     "form",
     "search",
+    "dialog",
   ].includes(el.tagName.toLowerCase()) ||
   (!!role &&
     [
@@ -109,6 +110,8 @@ export const isSection = (el: Element, role = getKnownRole(el)): boolean =>
       "region",
       "search",
       "application",
+      "dialog",
+      "alertdialog",
     ].includes(role));
 
 export const isTable = (el: Element, role = getKnownRole(el)): boolean => {

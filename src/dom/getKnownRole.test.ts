@@ -33,4 +33,11 @@ describe("getKnownRole", () => {
     const role = getKnownRole(el);
     expect(role).toBe(null);
   });
+
+  test("input provisional role", () => {
+    const el = document.createElement("input");
+    el.setAttribute("type", "password");
+    const role = getKnownRole(el);
+    expect(role).toBe("textbox");
+  });
 });

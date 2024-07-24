@@ -419,7 +419,11 @@ export class Table {
     if (!headers) return [];
     const headerIds = headers.split(" ");
     return headerIds
-      .map((id) => this.element.querySelector(`th#${id}, td#${id}`))
+      .map((id) =>
+        this.element.querySelector(
+          `th#${CSS.escape(id)}, td#${CSS.escape(id)}`,
+        ),
+      )
       .filter(
         (el): el is Element =>
           !!el && el !== element && !isEmptyCellElement(el),

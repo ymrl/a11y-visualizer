@@ -147,6 +147,15 @@ export const SettingsEditor = ({
               >
                 <span className="text-sm">{t("settings.tables")}</span>
               </Checkbox>
+              <Checkbox
+                onChange={(e) => {
+                  handleChangeCheckbox("list", e);
+                }}
+                checked={settings.list}
+                disabled={disabled || !settings.accessibilityInfo}
+              >
+                <span className="text-sm">{t("settings.lists")}</span>
+              </Checkbox>
             </div>
           </fieldset>
         </div>

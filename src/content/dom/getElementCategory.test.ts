@@ -9,9 +9,11 @@ import {
   isButton,
   isLang,
   isLink,
+  isList,
   isSection,
   isTable,
   isTableCell,
+  isListItem,
 } from "./getElementCategory";
 
 describe("getElementCategory", () => {
@@ -47,6 +49,22 @@ describe("getElementCategory", () => {
       const el = document.createElement(tagName);
       el.setAttribute("lang", "en");
       expect(getElementCategory(el)).toBe("section");
+    });
+  });
+
+  ["ul", "ol", "dl", "menu"].forEach((tagName) => {
+    test(tagName, () => {
+      const el = document.createElement(tagName);
+      el.setAttribute("lang", "en");
+      expect(getElementCategory(el)).toBe("list");
+    });
+  });
+
+  ["li", "dd", "dt"].forEach((tagName) => {
+    test(tagName, () => {
+      const el = document.createElement(tagName);
+      el.setAttribute("lang", "en");
+      expect(getElementCategory(el)).toBe("listItem");
     });
   });
 
@@ -192,6 +210,18 @@ describe("isFormControl()", () => {
     const element = document.createElement("select");
     expect(isFormControl(element)).toBe(true);
   });
+
+  test("role=menuitemcheckbox", () => {
+    const element = document.createElement("div");
+    element.setAttribute("role", "menuitemcheckbox");
+    expect(isFormControl(element)).toBe(true);
+  });
+
+  test("role=menuitemradio", () => {
+    const element = document.createElement("div");
+    element.setAttribute("role", "menuitemradio");
+    expect(isFormControl(element)).toBe(true);
+  });
 });
 
 describe("isGroup", () => {
@@ -315,6 +345,71 @@ describe("isLink()", () => {
   });
 });
 
+describe("isList()", () => {
+  test("div", () => {
+    const element = document.createElement("div");
+    expect(isList(element)).toBe(false);
+  });
+
+  ["ul", "ol", "dl"].forEach((tagName) => {
+    test(tagName, () => {
+      const element = document.createElement(tagName);
+      expect(isList(element)).toBe(true);
+    });
+  });
+
+  test("role=list", () => {
+    const element = document.createElement("div");
+    element.setAttribute("role", "list");
+    expect(isList(element)).toBe(true);
+  });
+
+  test("role=directory", () => {
+    const element = document.createElement("div");
+    element.setAttribute("role", "directory");
+    expect(isList(element)).toBe(true);
+  });
+
+  test("role=menu", () => {
+    const element = document.createElement("div");
+    element.setAttribute("role", "menu");
+    expect(isList(element)).toBe(true);
+  });
+
+  test("role=menubar", () => {
+    const element = document.createElement("div");
+    element.setAttribute("role", "menubar");
+    expect(isList(element)).toBe(true);
+  });
+});
+
+describe("isListItem", () => {
+  test("div", () => {
+    const element = document.createElement("div");
+    expect(isListItem(element)).toBe(false);
+  });
+
+  ["li", "dd", "dt"].forEach((tagName) => {
+    test(tagName, () => {
+      const element = document.createElement(tagName);
+      expect(isListItem(element)).toBe(true);
+    });
+  });
+
+  test("role=listitem", () => {
+    const element = document.createElement("div");
+    element.setAttribute("role", "listitem");
+    expect(isListItem(element)).toBe(true);
+  });
+
+  ["menuitem", "menuitemcheckbox", "menuitemradio"].forEach((role) => {
+    test(`role=${role}`, () => {
+      const element = document.createElement("div");
+      element.setAttribute("role", role);
+      expect(isListItem(element)).toBe(true);
+    });
+  });
+});
 describe("isSection()", () => {
   test("div", () => {
     const element = document.createElement("div");

@@ -48,7 +48,7 @@ export const ElementInfo = ({
   const verticalPosition: VerticalPosition =
     category === "page"
       ? "inner-top"
-      : category === "section" || category === "heading" || category === "table"
+      : ["section", "heading", "table", "list"].includes(category)
         ? y < tipFontSize * 2.4
           ? "inner-top"
           : "outer-top"

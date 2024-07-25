@@ -33,7 +33,9 @@
   border-color: var(--accent-blue);
 }
 
-.ElementInfo__border--section {
+.ElementInfo__border--section,
+.ElementInfo__border--list,
+.ElementInfo__border--listItem {
   border-color: var(--accent-skyblue);
 }
 

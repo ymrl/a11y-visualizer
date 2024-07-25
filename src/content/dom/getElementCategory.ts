@@ -10,6 +10,8 @@ export const getElementCategory = (
   if (isHeading(el, role)) return "heading";
   if (isFormControl(el, role) || isLink(el, role) || isButton(el, role))
     return "control";
+  if (isList(el, role)) return "list";
+  if (isListItem(el, role)) return "listItem";
   if (isSection(el, role)) return "section";
   if (isTable(el, role)) return "table";
   if (isTableCell(el, role)) return "tableCell";
@@ -84,6 +86,17 @@ export const isLang = (el: Element): boolean => {
 
 export const isLink = (el: Element, role = getKnownRole(el)): boolean =>
   ["a", "area"].includes(el.tagName.toLowerCase()) || role === "link";
+
+export const isList = (el: Element, role = getKnownRole(el)): boolean =>
+  ["ul", "ol", "dl", "menu"].includes(el.tagName.toLowerCase()) ||
+  (!!role && ["list", "directory", "menu", "menubar"].includes(role));
+
+export const isListItem = (el: Element, role = getKnownRole(el)): boolean =>
+  ["li", "dt", "dd"].includes(el.tagName.toLowerCase()) ||
+  (!!role &&
+    ["listitem", "menuitem", "menuitemcheckbox", "menuitemradio"].includes(
+      role,
+    ));
 
 export const isSection = (el: Element, role = getKnownRole(el)): boolean =>
   [

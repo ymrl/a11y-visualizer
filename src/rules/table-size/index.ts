@@ -25,6 +25,7 @@ export const TableSize: RuleObject = {
       return [
         {
           type: "tableSize",
+          contentLabel: "Table size",
           content: `${table.colCount}x${table.rowCount}`,
           ruleName,
         },

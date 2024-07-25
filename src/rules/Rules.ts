@@ -14,6 +14,8 @@ import { Landmark } from "./landmark";
 import { Lang } from "./lang";
 import { LinkHref } from "./link-href";
 import { LinkTarget } from "./link-target";
+import { List } from "./list";
+import { ListItem } from "./list-item";
 import { NestedInteractive } from "./nested-interactive";
 import { PageLang } from "./page-lang";
 import { PageTitle } from "./page-title";
@@ -40,6 +42,7 @@ export const Rules = [
   Lang,
   LinkHref,
   LinkTarget,
+  List,
   NestedInteractive,
   PageTitle,
   PageLang,
@@ -50,6 +53,7 @@ export const Rules = [
   TableSize,
   TargetSize,
   Role,
+  ListItem,
   AriaState,
   AccessibleDescription,
 ] as const;

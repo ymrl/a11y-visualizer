@@ -33,6 +33,9 @@
 .Tip--tableSize {
   background-color: var(--base-beige);
 }
+.Tip--list {
+  background-color: var(--base-beige);
+}
 .Tip--tableCellPosition {
   background-color: var(--base-beige);
 }

@@ -25,7 +25,8 @@ export type RuleResultContent = {
     | "tagName"
     | "tableHeader"
     | "tableSize"
-    | "tableCellPosition";
+    | "tableCellPosition"
+    | "list";
   ruleName: string;
   content: string;
   contentLabel?: string;

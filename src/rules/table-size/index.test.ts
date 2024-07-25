@@ -45,6 +45,7 @@ describe("table-size", () => {
       {
         type: "tableSize",
         content: "7x3",
+        contentLabel: "Table size",
         ruleName: "table-size",
       },
     ]);
@@ -77,6 +78,7 @@ describe("table-size", () => {
         {
           type: "tableSize",
           content: "3x3",
+          contentLabel: "Table size",
           ruleName: "table-size",
         },
       ]);

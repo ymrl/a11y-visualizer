@@ -20,6 +20,8 @@ export type Category =
   | "heading"
   | "control"
   | "section"
+  | "list"
+  | "listItem"
   | "table"
   | "tableCell"
   | "group"

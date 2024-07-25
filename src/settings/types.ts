@@ -9,6 +9,7 @@ export type CategorySettings = {
   lang: boolean;
   page: boolean;
   table: boolean;
+  list: boolean;
 };
 
 export type Settings = {

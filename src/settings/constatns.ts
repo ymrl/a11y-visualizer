@@ -16,6 +16,7 @@ export const initialSettings: Settings = {
   lang: true,
   page: true,
   table: false,
+  list: true,
   interactiveMode: true,
   hideTips: true,
   showLiveRegions: true,

@@ -51,6 +51,23 @@ export const List: RuleObject = {
         });
       }
     }
+    const hasRole = element.hasAttribute("role");
+    if (
+      (!hasRole && tagName === "dl") ||
+      (role && ["menu", "menubar", "list", "directory"].includes(role))
+    ) {
+      result.push({
+        type: "listType",
+        ruleName,
+        content:
+          !hasRole && tagName === "dl"
+            ? "listType.definitionList"
+            : role === "menu" || role === "menubar"
+              ? `listType.${role}`
+              : "listType.list",
+      });
+    }
+
     if (role !== "presentation" && role !== "none") {
       result.push({
         type: "list",

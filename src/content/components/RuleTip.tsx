@@ -13,6 +13,7 @@ import {
   IoInformationCircle,
   IoLanguage,
   IoList,
+  IoListCircleOutline,
   IoOpenOutline,
   IoPin,
   IoPricetag,
@@ -147,6 +148,14 @@ const Icon = ({ type }: { type: RuleResult["type"] }) => {
     case "list":
       return (
         <IoList className="Tip__icon" role="img" aria-label={t("tip.list")} />
+      );
+    case "listType":
+      return (
+        <IoListCircleOutline
+          className="Tip__icon"
+          role="img"
+          aria-label={t("tip.listType")}
+        />
       );
   }
 };

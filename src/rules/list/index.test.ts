@@ -169,6 +169,59 @@ describe("List", () => {
     ]);
   });
 
+  test("dl has empty <div>", () => {
+    const element = document.createElement("dl");
+    element.innerHTML = `
+      <dt>0</dt>
+      <dd>1</dd>
+      <div></div>
+    `;
+    document.body.appendChild(element);
+    const result = List.evaluate(element, { enabled: true }, {});
+    expect(result).toEqual([
+      {
+        type: "listType",
+        ruleName: "list",
+        content: "listType.definitionList",
+      },
+      {
+        type: "list",
+        ruleName: "list",
+        content: "2",
+        contentLabel: "List items",
+      },
+    ]);
+  });
+
+  test("dl has <div> with text", () => {
+    const element = document.createElement("dl");
+    element.innerHTML = `
+      <dt>0</dt>
+      <dd>1</dd>
+      <div>2</div>
+    `;
+    document.body.appendChild(element);
+    const result = List.evaluate(element, { enabled: true }, {});
+    expect(result).toEqual([
+      {
+        type: "error",
+        ruleName: "list",
+        message: "Must only contain <dt>, <dd>, or them within a <div>",
+      },
+      {
+        type: "listType",
+        ruleName: "list",
+        content: "listType.definitionList",
+      },
+      {
+        type: "list",
+        ruleName: "list",
+        content: "2",
+        contentLabel: "List items",
+      },
+    ]);
+  });
+
   test("dl has invalid <div>", () => {
     const element = document.createElement("dl");
     element.innerHTML = `
@@ -179,7 +232,7 @@ describe("List", () => {
         <dd>3</dd>
         <div>4</div>
       </div>
-      <div></div>
+      <div>5</div>
     `;
     document.body.appendChild(element);
     const result = List.evaluate(element, { enabled: true }, {});

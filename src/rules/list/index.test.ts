@@ -18,6 +18,11 @@ describe("List", () => {
     const result = List.evaluate(element, { enabled: true }, {});
     expect(result).toEqual([
       {
+        type: "listType",
+        ruleName: "list",
+        content: "listType.list",
+      },
+      {
         type: "list",
         ruleName: "list",
         content: "2",
@@ -36,6 +41,11 @@ describe("List", () => {
     document.body.appendChild(element);
     const result = List.evaluate(element, { enabled: true }, {});
     expect(result).toEqual([
+      {
+        type: "listType",
+        ruleName: "list",
+        content: "listType.list",
+      },
       {
         type: "list",
         ruleName: "list",
@@ -59,6 +69,11 @@ describe("List", () => {
     const result = List.evaluate(element, { enabled: true }, {});
     expect(result).toEqual([
       {
+        type: "listType",
+        ruleName: "list",
+        content: "listType.definitionList",
+      },
+      {
         type: "list",
         ruleName: "list",
         content: "4",
@@ -81,6 +96,11 @@ describe("List", () => {
         type: "error",
         ruleName: "list",
         message: "Must only contain <li>",
+      },
+      {
+        type: "listType",
+        ruleName: "list",
+        content: "listType.list",
       },
       {
         type: "list",
@@ -107,6 +127,11 @@ describe("List", () => {
         message: "Must only contain <li>",
       },
       {
+        type: "listType",
+        ruleName: "list",
+        content: "listType.list",
+      },
+      {
         type: "list",
         ruleName: "list",
         content: "2",
@@ -129,6 +154,11 @@ describe("List", () => {
         type: "error",
         ruleName: "list",
         message: "Must only contain <li>",
+      },
+      {
+        type: "listType",
+        ruleName: "list",
+        content: "listType.list",
       },
       {
         type: "list",
@@ -160,9 +190,43 @@ describe("List", () => {
         message: "Must only contain <dt>, <dd>, or them within a <div>",
       },
       {
+        type: "listType",
+        ruleName: "list",
+        content: "listType.definitionList",
+      },
+      {
         type: "list",
         ruleName: "list",
         content: "4",
+        contentLabel: "List items",
+      },
+    ]);
+  });
+
+  test("role=menu", () => {
+    const element = document.createElement("div");
+    element.setAttribute("role", "menu");
+    element.innerHTML = `
+      <div role="menuitem">0</div>
+      <div role="group">
+        <div role="menuitemcheckbox">1</div>
+        <div role="menuitemradio">2</div>
+      </div>
+      <div role="listitem">3</div>
+      <div>4</div>
+    `;
+    document.body.appendChild(element);
+    const result = List.evaluate(element, { enabled: true }, {});
+    expect(result).toEqual([
+      {
+        type: "listType",
+        ruleName: "list",
+        content: "listType.menu",
+      },
+      {
+        type: "list",
+        ruleName: "list",
+        content: "3",
         contentLabel: "List items",
       },
     ]);

@@ -51,6 +51,7 @@
     "linkTarget": "リンクのターゲット",
     "lang": "言語",
     "list": "リスト",
+    "listType": "リスト種別",
     "warning": "警告",
     "error": "エラー"
   },
@@ -108,6 +109,12 @@
     "resetSettingsConfirmYes": "はい",
     "resetSettingsConfirmNo": "いいえ",
     "resetSettingsSuccess": "設定をリセットしました"
+  },
+  "listType": {
+    "menu": "メニュー",
+    "menubar": "メニューバー",
+    "list": "リスト",
+    "definitionList": "定義リスト"
   },
   "aria-hidden": "aria-hidden",
   "Invalid WAI-ARIA attribute value": "WAI-ARIA属性値が不正",

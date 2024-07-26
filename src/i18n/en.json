@@ -103,6 +103,12 @@
     "resetSettingsConfirmNo": "No",
     "resetSettingsSuccess": "Settings has been reset to defaults."
   },
+  "listType": {
+    "menu": "Menu",
+    "menubar": "Menubar",
+    "list": "List",
+    "definitionList": "Definition list"
+  },
   "aria-hidden": "aria-hidden",
   "Invalid WAI-ARIA attribute value": "Invalid WAI-ARIA attribute value",
   "Invalid role for WAI-ARIA attribute": "Invalid role for WAI-ARIA attribute",

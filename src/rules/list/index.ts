@@ -36,10 +36,17 @@ export const List: RuleObject = {
           return (
             ["dt", "dd", "script", "template"].includes(childTagName) ||
             (childTagName === "div" &&
+              // divの子要素はすべてdt, dd, script, templateである
               [...child.children].every((grandChild) =>
                 ["dt", "dd", "script", "template"].includes(
                   grandChild.tagName.toLowerCase(),
                 ),
+              ) &&
+              // divの子要素にテキストノードがある場合は、それが空である
+              [...child.childNodes].every(
+                (grandChild) =>
+                  grandChild.nodeType !== Node.TEXT_NODE ||
+                  !grandChild.nodeValue?.trim(),
               ))
           );
         })

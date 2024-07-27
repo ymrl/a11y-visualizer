@@ -192,6 +192,19 @@ describe("ListItem", () => {
       const result = ListItem.evaluate(element, { enabled: true }, {});
       expect(result).toBeUndefined();
     });
+
+    test(`role="${role}" in <div> without any role within role=menu`, () => {
+      const menu = document.createElement("div");
+      menu.setAttribute("role", "menu");
+      const div = document.createElement("div");
+      const element = document.createElement("div");
+      element.setAttribute("role", role);
+      div.appendChild(element);
+      menu.appendChild(div);
+      document.body.appendChild(menu);
+      const result = ListItem.evaluate(element, { enabled: true }, {});
+      expect(result).toBeUndefined();
+    });
   });
 
   test("role=listitem in role=list", () => {
@@ -217,5 +230,69 @@ describe("ListItem", () => {
         message: `Not inside "list" role`,
       },
     ]);
+  });
+
+  test("role=listitem in role=group within role=list", () => {
+    const list = document.createElement("div");
+    list.setAttribute("role", "list");
+    const group = document.createElement("div");
+    group.setAttribute("role", "group");
+    const element = document.createElement("div");
+    element.setAttribute("role", "listitem");
+    group.appendChild(element);
+    list.appendChild(group);
+    document.body.appendChild(list);
+    const result = ListItem.evaluate(element, { enabled: true }, {});
+    expect(result).toEqual([
+      {
+        type: "error",
+        ruleName: "list-item",
+        message: `Not inside "list" role`,
+      },
+    ]);
+  });
+
+  test("role=listitem in role=menu", () => {
+    const menu = document.createElement("div");
+    menu.setAttribute("role", "menu");
+    const element = document.createElement("div");
+    element.setAttribute("role", "listitem");
+    menu.appendChild(element);
+    document.body.appendChild(menu);
+    const result = ListItem.evaluate(element, { enabled: true }, {});
+    expect(result).toEqual([
+      {
+        type: "error",
+        ruleName: "list-item",
+        message: `Not inside "list" role`,
+      },
+    ]);
+  });
+
+  test("role=listitem in role=presentation within role=list", () => {
+    const list = document.createElement("div");
+    list.setAttribute("role", "list");
+    const presentation = document.createElement("div");
+    presentation.setAttribute("role", "presentation");
+    const element = document.createElement("div");
+    element.setAttribute("role", "listitem");
+    presentation.appendChild(element);
+    list.appendChild(presentation);
+    document.body.appendChild(list);
+    const result = ListItem.evaluate(element, { enabled: true }, {});
+    expect(result).toBeUndefined();
+  });
+
+  test("role=listitem in <div> without any role within role=list", () => {
+    const list = document.createElement("div");
+    list.setAttribute("role", "list");
+    const div = document.createElement("div");
+    const element = document.createElement("div");
+    element.setAttribute("role", "listitem");
+    div.appendChild(element);
+    list.appendChild(div);
+    document.body.appendChild(list);
+    const result = ListItem.evaluate(element, { enabled: true }, {});
+    expect(result).toBeUndefined();
   });
 });

@@ -65,6 +65,8 @@ export const ListItem: RuleObject = {
       const isMenuItem = menuItemRoles.includes(role);
       let parent: HTMLElement | null = element.parentElement;
       while (parent) {
+        const parentTagName = parent.tagName.toLowerCase();
+        const parentHasRole = parent.hasAttribute("role");
         const parentRole = getKnownRole(parent);
         if (
           (role === "listitem" && parentRole === "list") ||
@@ -75,7 +77,8 @@ export const ListItem: RuleObject = {
         if (
           parentRole === "presentation" ||
           parentRole === "none" ||
-          (isMenuItem && parentRole === "group")
+          (isMenuItem && parentRole === "group") ||
+          (["div", "span"].includes(parentTagName) && !parentHasRole)
         ) {
           parent = parent.parentElement;
         } else {

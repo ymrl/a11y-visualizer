@@ -70,6 +70,120 @@ describe(TargetSize.ruleName, () => {
     expect(TargetSize.evaluate(el, { enabled: true }, {})).toBeUndefined();
   });
 
+  test("small rect in image map", () => {
+    const map = document.createElement("map");
+    map.setAttribute("name", "map");
+    const img = document.createElement("img");
+    img.setAttribute("usemap", "#map");
+    img.style.width = "100px";
+    img.style.height = "100px";
+    document.body.appendChild(map);
+    document.body.appendChild(img);
+    const el = document.createElement("area");
+    el.setAttribute("shape", "rect");
+    el.setAttribute("coords", "10,10,33,33");
+    map.appendChild(el);
+    expect(TargetSize.evaluate(el, { enabled: true }, {})).toEqual([
+      {
+        type: "warning",
+        message: "Small target",
+        ruleName: "target-size",
+      },
+    ]);
+  });
+
+  test("big rect in image map", () => {
+    const map = document.createElement("map");
+    map.setAttribute("name", "map");
+    const img = document.createElement("img");
+    img.setAttribute("usemap", "#map");
+    img.style.width = "100px";
+    img.style.height = "100px";
+    document.body.appendChild(map);
+    document.body.appendChild(img);
+    const el = document.createElement("area");
+    el.setAttribute("shape", "rect");
+    el.setAttribute("coords", "10,10,34,34");
+    map.appendChild(el);
+    expect(TargetSize.evaluate(el, { enabled: true }, {})).toBeUndefined();
+  });
+
+  test("small circle in image map", () => {
+    const map = document.createElement("map");
+    map.setAttribute("name", "map");
+    const img = document.createElement("img");
+    img.setAttribute("usemap", "#map");
+    img.style.width = "100px";
+    img.style.height = "100px";
+    document.body.appendChild(map);
+    document.body.appendChild(img);
+    const el = document.createElement("area");
+    el.setAttribute("shape", "circle");
+    el.setAttribute("coords", "20,20,11");
+    map.appendChild(el);
+    expect(TargetSize.evaluate(el, { enabled: true }, {})).toEqual([
+      {
+        type: "warning",
+        message: "Small target",
+        ruleName: "target-size",
+      },
+    ]);
+  });
+
+  test("big circle in image map", () => {
+    const map = document.createElement("map");
+    map.setAttribute("name", "map");
+    const img = document.createElement("img");
+    img.setAttribute("usemap", "#map");
+    img.style.width = "100px";
+    img.style.height = "100px";
+    document.body.appendChild(map);
+    document.body.appendChild(img);
+    const el = document.createElement("area");
+    el.setAttribute("shape", "circle");
+    el.setAttribute("coords", "20,20,12");
+    map.appendChild(el);
+    expect(TargetSize.evaluate(el, { enabled: true }, {})).toBeUndefined();
+  });
+
+  test("small poly in image map", () => {
+    const map = document.createElement("map");
+    map.setAttribute("name", "map");
+    const img = document.createElement("img");
+    img.setAttribute("usemap", "#map");
+    img.style.width = "100px";
+    img.style.height = "100px";
+    document.body.appendChild(map);
+    document.body.appendChild(img);
+    const el = document.createElement("area");
+    el.setAttribute("shape", "poly");
+    el.setAttribute("coords", "10,10,10,33,33,33,33,10");
+    map.appendChild(el);
+    expect(TargetSize.evaluate(el, { enabled: true }, {})).toEqual([
+      {
+        type: "warning",
+        message: "Small target",
+        ruleName: "target-size",
+      },
+    ]);
+  });
+
+  test("big poly in image map", () => {
+    const map = document.createElement("map");
+    map.setAttribute("name", "map");
+    const img = document.createElement("img");
+    img.setAttribute("usemap", "#map");
+    img.style.width = "100px";
+    img.style.height = "100px";
+    document.body.appendChild(map);
+    document.body.appendChild(img);
+    const el = document.createElement("area");
+    el.setAttribute("shape", "poly");
+    el.setAttribute("coords", "10,10,10,34,34,34,34,10");
+    map.appendChild(el);
+    expect(TargetSize.evaluate(el, { enabled: true }, {})).toBeUndefined();
+  });
+
   test("disabled", () => {
     const el = document.createElement("button");
     el.textContent = "button";

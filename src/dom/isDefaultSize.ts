@@ -34,6 +34,12 @@ type SizeDeclaration = {
 const ElementTypes = [
   "button",
   "input-text",
+  "input-search",
+  "input-date",
+  "input-month",
+  "input-week",
+  "input-time",
+  "input-datetime-local",
   "input-range",
   "input-color",
   "input-checkbox",
@@ -55,18 +61,24 @@ const elementType = (el: Element): ElementTypeT | null => {
     }
     switch (type) {
       case "text":
-      case "search":
       case "tel":
       case "url":
       case "email":
       case "password":
-      case "date":
-      case "month":
-      case "week":
-      case "time":
-      case "datetime-local":
       case "number":
         return "input-text";
+      case "search":
+        return "input-search";
+      case "date":
+        return "input-date";
+      case "month":
+        return "input-month";
+      case "week":
+        return "input-week";
+      case "time":
+        return "input-time";
+      case "datetime-local":
+        return "input-datetime-local";
       case "range":
         return "input-range";
       case "color":
@@ -98,6 +110,36 @@ const getDefaultElement = (elementType: ElementTypeT, d: Document): Element => {
     case "input-text": {
       const el = d.createElement("input");
       el.setAttribute("type", "text");
+      return el;
+    }
+    case "input-search": {
+      const el = d.createElement("input");
+      el.setAttribute("type", "search");
+      return el;
+    }
+    case "input-date": {
+      const el = d.createElement("input");
+      el.setAttribute("type", "date");
+      return el;
+    }
+    case "input-month": {
+      const el = d.createElement("input");
+      el.setAttribute("type", "month");
+      return el;
+    }
+    case "input-week": {
+      const el = d.createElement("input");
+      el.setAttribute("type", "week");
+      return el;
+    }
+    case "input-time": {
+      const el = d.createElement("input");
+      el.setAttribute("type", "time");
+      return el;
+    }
+    case "input-datetime-local": {
+      const el = d.createElement("input");
+      el.setAttribute("type", "datetime-local");
       return el;
     }
     case "input-range": {

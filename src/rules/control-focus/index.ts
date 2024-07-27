@@ -37,6 +37,10 @@ export const ControlFocus: RuleObject = {
     if (!enabled) {
       return undefined;
     }
+    const ariaDisabled = element.getAttribute("aria-disabled");
+    if (ariaDisabled === "true") {
+      return undefined;
+    }
     if (!isFocusable(element)) {
       return [
         {

@@ -60,4 +60,13 @@ describe("control-focus", () => {
     const result = ControlFocus.evaluate(element, { enabled: false }, {});
     expect(result).toBeUndefined();
   });
+
+  test("aria-disabled", () => {
+    const element = document.createElement("div");
+    element.setAttribute("role", "button");
+    element.setAttribute("aria-disabled", "true");
+    document.body.appendChild(element);
+    const result = ControlFocus.evaluate(element, { enabled: true }, {});
+    expect(result).toBeUndefined();
+  });
 });

@@ -331,6 +331,7 @@ describe("getListItems", () => {
             <li role="listitem">5-1</li>
           </ul>
         </li>
+        <div role="listitem">6</div>
       `;
       expect(getListItems(element, tagName, getKnownRole(element))).toEqual([
         element.children[0],
@@ -362,12 +363,18 @@ describe("getListItems", () => {
             <div role="listitem">6-3-2</div>
           </div>
         </div>
+        <div>
+          <div role="listitem">7-0</div>
+          <div role="listitem">7-1</div>
+        </div>
       `;
       expect(getListItems(element, "div", getKnownRole(element))).toEqual([
         element.children[0],
         element.children[1],
         element.children[6].children[1],
         element.children[6].children[3].children[2],
+        element.children[7].children[0],
+        element.children[7].children[1],
       ]);
     });
   });

@@ -189,7 +189,8 @@ export const getListItems = (
         childRole === "presentation" ||
         childRole === "none" ||
         ((listRole === "menu" || listRole === "menubar") &&
-          childRole === "group")
+          childRole === "group") ||
+        (["div", "span"].includes(childTagName) && !childHasRole)
       ) {
         return getListItems(child, listTagName, listRole);
       }

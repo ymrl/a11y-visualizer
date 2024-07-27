@@ -1,6 +1,7 @@
 import { isInline } from "../../dom/isInline";
 import { isDefaultSize } from "../../dom/isDefaultSize";
 import { RuleObject } from "../type";
+import { getElementPosition } from "../../content/dom/getElementPosition";
 
 const ruleName = "target-size";
 const defaultOptions = { enabled: true };
@@ -64,11 +65,11 @@ const isSmallTarget = (
   elementDocument: Document,
   elementWindow: Window,
 ): boolean => {
-  const rect = element.getBoundingClientRect();
+  const elementPosition = getElementPosition(element, elementWindow);
   const style = elementWindow.getComputedStyle(element);
   const { display } = style;
 
-  if (rect.width >= 24 && rect.height >= 24) {
+  if (elementPosition.width >= 24 && elementPosition.height >= 24) {
     return false;
   }
 

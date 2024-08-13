@@ -99,12 +99,12 @@ export const Root = ({
         setMetaList(elements);
         setWidth(rootWidth);
         setHeight(rootHeight);
-        containerRef.current.style.display = "block";
       } else {
         setWidth(0);
         setHeight(0);
         setMetaList([]);
       }
+      containerRef.current.style.display = "block";
     },
     200,
     [injectToFrames, settings, observeLiveRegion, injectToDialogs],

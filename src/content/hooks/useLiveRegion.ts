@@ -23,15 +23,9 @@ const closestNodeOfSelector = (node: Node, selector: string): Node | null => {
 export const useLiveRegion = ({
   parentRef,
   announceMode,
-  onAnnouncement,
-  onPauseOrResumeAnnouncements,
-  onClearAnnouncements,
 }: {
   parentRef: React.RefObject<Element>;
   announceMode: "self" | "parent";
-  onAnnouncement?: (content: string, level: LiveLevel) => void;
-  onPauseOrResumeAnnouncements?: () => void;
-  onClearAnnouncements?: () => void;
 }) => {
   const {
     showLiveRegions,
@@ -226,7 +220,6 @@ export const useLiveRegion = ({
     announcementSecondsPerCharacter,
     connectLiveRegion,
     addAnnouncement,
-    onAnnouncement,
     clearAnnouncements,
     pausedAnnouncements,
   ]);
@@ -275,8 +268,6 @@ export const useLiveRegion = ({
     resumeAnnouncements,
     clearAnnouncements,
     announceMode,
-    onPauseOrResumeAnnouncements,
-    onClearAnnouncements,
     pauseOrResumeAnnouncements,
   ]);
 

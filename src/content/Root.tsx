@@ -5,15 +5,12 @@ import { ElementList } from "./components/ElementList";
 import { injectRoot } from "./injectRoot";
 import { Announcements } from "./components/Announcements";
 import { SettingsContext } from "./components/SettingsProvider";
-import { useLiveRegion, LiveLevel } from "./hooks/useLiveRegion";
+import { useLiveRegion } from "./hooks/useLiveRegion";
 import { useDebouncedCallback } from "./hooks/useDebouncedCallback";
 
 export type RootOptions = {
   srcdoc?: boolean;
   announceMode?: "self" | "parent";
-  onAnnouncement?: (content: string, level: LiveLevel) => void;
-  onPauseOrResumeAnnouncements?: () => void;
-  onClearAnnouncements?: () => void;
 };
 
 export const Root = ({
@@ -23,13 +20,7 @@ export const Root = ({
   parentRef: React.RefObject<Element>;
   options?: RootOptions;
 }) => {
-  const {
-    srcdoc,
-    announceMode = "self",
-    onAnnouncement,
-    onPauseOrResumeAnnouncements,
-    onClearAnnouncements,
-  } = options || {};
+  const { srcdoc, announceMode = "self" } = options || {};
   const [metaList, setMetaList] = React.useState<ElementMeta[]>([]);
   const [width, setWidth] = React.useState<number>(0);
   const [height, setHeight] = React.useState<number>(0);
@@ -40,9 +31,6 @@ export const Root = ({
   const { announcements, observeLiveRegion } = useLiveRegion({
     parentRef,
     announceMode,
-    onAnnouncement,
-    onPauseOrResumeAnnouncements,
-    onClearAnnouncements,
   });
 
   const [outdated, setOutDated] = React.useState(false);

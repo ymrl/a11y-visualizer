@@ -20,6 +20,32 @@ const closestNodeOfSelector = (node: Node, selector: string): Node | null => {
   return closestNodeOfSelector(node.parentNode, selector);
 };
 
+const getLiveRegions = (el: Element): Element[] => {
+  const liveRegions = [...el.querySelectorAll<Element>(LIVEREGION_SELECTOR)];
+  const liveRegionsInIframes: Element[] = [
+    ...el.querySelectorAll<HTMLIFrameElement>("iframe"),
+  ]
+    .map((iframe): Element[] | null => {
+      const iframeWindow = iframe.contentWindow;
+      if (!iframeWindow) return null;
+      try {
+        const d = iframeWindow.document;
+        const { readyState } = d;
+        if (readyState === "complete") {
+          return getLiveRegions(d.body);
+        }
+      } catch {
+        /* noop */
+      }
+      return null;
+    })
+    .filter((e): e is Element[] => e !== null)
+    .reduce((acc, cur) => {
+      return [...acc, ...cur];
+    }, []);
+  return [...liveRegions, ...liveRegionsInIframes];
+};
+
 export const useLiveRegion = ({
   parentRef,
   announceMode,
@@ -58,7 +84,7 @@ export const useLiveRegion = ({
       if (!liveRegionObserverRef.current) {
         return;
       }
-      const liveRegions = el.querySelectorAll(LIVEREGION_SELECTOR);
+      const liveRegions = getLiveRegions(el);
       [...liveRegions].forEach((el) => {
         if (
           liveRegionObserverRef.current &&
@@ -234,31 +260,40 @@ export const useLiveRegion = ({
       return;
     }
     const w = parentRef.current?.ownerDocument?.defaultView;
-    if (w) {
-      const clear = () => {
-        announceMode === "self" && clearAnnouncements();
-      };
-      const pauseOrResume = () => {
-        announceMode === "self" && pauseOrResumeAnnouncements();
-      };
-      const listener = (e: KeyboardEvent) => {
-        if (e.key === "Shift") {
-          pauseOrResume();
-        } else if (e.key === "Control") {
-          clear();
-        }
-      };
-      w.addEventListener("keydown", listener);
-      const clearEvents = ["focusin"];
-      clearEvents.forEach((eventType) => w.addEventListener(eventType, clear));
+    const iframes = parentRef.current?.querySelectorAll("iframe");
+    const windows = [
+      w,
+      ...(iframes ? [...iframes] : []).map(
+        (iframe) => (iframe as HTMLIFrameElement).contentWindow,
+      ),
+    ];
+    const clear = () => {
+      announceMode === "self" && clearAnnouncements();
+    };
+    const pauseOrResume = () => {
+      announceMode === "self" && pauseOrResumeAnnouncements();
+    };
+    const listener = (e: KeyboardEvent) => {
+      if (e.key === "Shift") {
+        pauseOrResume();
+      } else if (e.key === "Control") {
+        clear();
+      }
+    };
 
-      return () => {
+    windows.forEach((w) => {
+      if (!w) return;
+      w.addEventListener("keydown", listener);
+      w.addEventListener("focusin", clear);
+    });
+
+    return () => {
+      windows.forEach((w) => {
+        if (!w) return;
         w.removeEventListener("keydown", listener);
-        clearEvents.forEach((eventType) =>
-          w.removeEventListener(eventType, clear),
-        );
-      };
-    }
+        w.removeEventListener("focusin", clear);
+      });
+    };
   }, [
     parentRef,
     showAnnouncement,

@@ -22,7 +22,7 @@ const ClockExample = ({
   );
 };
 
-const AutoAnnounceExample = () => {
+export const AutoAnnounceExample = () => {
   const [time, setTime] = React.useState(new Date().toLocaleTimeString());
   const [playing, setPlaying] = React.useState(false);
   const intervalRef = React.useRef<number | null>(null);

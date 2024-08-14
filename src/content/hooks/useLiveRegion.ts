@@ -7,7 +7,7 @@ import { getKnownRole } from "../../dom/getKnownRole";
 const LIVEREGION_SELECTOR =
   "output, [role~='status'], [role~='alert'], [role~='log'], [aria-live]:not([aria-live='off'])";
 
-type LiveLevel = "polite" | "assertive";
+export type LiveLevel = "polite" | "assertive";
 
 const closestNodeOfSelector = (node: Node, selector: string): Node | null => {
   const parent = node.parentNode;
@@ -20,7 +20,13 @@ const closestNodeOfSelector = (node: Node, selector: string): Node | null => {
   return closestNodeOfSelector(node.parentNode, selector);
 };
 
-export const useLiveRegion = () => {
+export const useLiveRegion = ({
+  parentRef,
+  announceMode,
+}: {
+  parentRef: React.RefObject<Element>;
+  announceMode: "self" | "parent";
+}) => {
   const {
     showLiveRegions,
     announcementMaxSeconds,
@@ -66,7 +72,7 @@ export const useLiveRegion = () => {
     [connectLiveRegion],
   );
 
-  const addAnnouncement = React.useCallback(
+  const showAnnouncement = React.useCallback(
     (content: string, level: LiveLevel, msec: number) => {
       const until = new Date().getTime() + msec;
       const announcement = { content, level, until };
@@ -86,6 +92,18 @@ export const useLiveRegion = () => {
     },
     [],
   );
+
+  const addAnnouncement = React.useCallback(
+    (content: string, level: LiveLevel) => {
+      const msec = Math.min(
+        content.length * announcementSecondsPerCharacter * 1000,
+        announcementMaxSeconds * 1000,
+      );
+      showAnnouncement(content, level, msec);
+    },
+    [announcementMaxSeconds, announcementSecondsPerCharacter, showAnnouncement],
+  );
+
   const pauseAnnouncements = React.useCallback(() => {
     const stoppedAt = new Date().getTime();
     timeoutIdsRef.current.forEach((id) => window.clearTimeout(id));
@@ -104,10 +122,18 @@ export const useLiveRegion = () => {
 
   const resumeAnnouncements = React.useCallback(() => {
     pausedAnnouncements.forEach((a) =>
-      addAnnouncement(a.content, a.level, a.rest),
+      showAnnouncement(a.content, a.level, a.rest),
     );
     setPausedAnnouncements([]);
-  }, [addAnnouncement, pausedAnnouncements]);
+  }, [showAnnouncement, pausedAnnouncements]);
+
+  const pauseOrResumeAnnouncements = React.useCallback(() => {
+    if (announcements.length > 0) {
+      pauseAnnouncements();
+    } else {
+      resumeAnnouncements();
+    }
+  }, [announcements, pauseAnnouncements, resumeAnnouncements]);
 
   const clearAnnouncements = React.useCallback(() => {
     if (timeoutIdsRef.current.length > 0) {
@@ -119,7 +145,7 @@ export const useLiveRegion = () => {
   }, []);
 
   React.useEffect(() => {
-    if (!showLiveRegions) {
+    if (!showLiveRegions || announceMode === "parent") {
       if (liveRegionObserverRef.current) {
         liveRegionObserverRef.current.disconnect();
       }
@@ -178,11 +204,7 @@ export const useLiveRegion = () => {
         clearAnnouncements();
       }
       updates.forEach((c) => {
-        const msec = Math.min(
-          c.content.length * announcementSecondsPerCharacter * 1000,
-          announcementMaxSeconds * 1000,
-        );
-        addAnnouncement(c.content, c.level, msec);
+        announceMode === "self" && addAnnouncement(c.content, c.level);
       });
     });
     liveRegionsRef.current.forEach((el) => connectLiveRegion(observer, el));
@@ -192,6 +214,7 @@ export const useLiveRegion = () => {
       liveRegionObserverRef.current = null;
     };
   }, [
+    announceMode,
     showLiveRegions,
     announcementMaxSeconds,
     announcementSecondsPerCharacter,
@@ -202,44 +225,59 @@ export const useLiveRegion = () => {
   ]);
 
   React.useEffect(() => {
-    if (announcements.length === 0 && pausedAnnouncements.length === 0) {
+    if (
+      announceMode === "parent" ||
+      (announceMode === "self" &&
+        announcements.length === 0 &&
+        pausedAnnouncements.length === 0)
+    ) {
       return;
     }
-
-    const listener = (e: KeyboardEvent) => {
-      if (e.key === "Shift") {
-        if (announcements.length > 0) {
-          pauseAnnouncements();
-        } else if (pausedAnnouncements.length > 0) {
-          resumeAnnouncements();
+    const w = parentRef.current?.ownerDocument?.defaultView;
+    if (w) {
+      const clear = () => {
+        announceMode === "self" && clearAnnouncements();
+      };
+      const pauseOrResume = () => {
+        announceMode === "self" && pauseOrResumeAnnouncements();
+      };
+      const listener = (e: KeyboardEvent) => {
+        if (e.key === "Shift") {
+          pauseOrResume();
+        } else if (e.key === "Control") {
+          clear();
         }
-      } else if (e.key === "Control") {
-        clearAnnouncements();
-      }
-    };
-    window.addEventListener("keydown", listener);
-    const clearEvents = ["focusin"];
-    clearEvents.forEach((eventType) =>
-      window.addEventListener(eventType, clearAnnouncements),
-    );
+      };
+      w.addEventListener("keydown", listener);
+      const clearEvents = ["focusin"];
+      clearEvents.forEach((eventType) => w.addEventListener(eventType, clear));
 
-    return () => {
-      window.removeEventListener("keydown", listener);
-      clearEvents.forEach((eventType) =>
-        window.removeEventListener(eventType, clearAnnouncements),
-      );
-    };
+      return () => {
+        w.removeEventListener("keydown", listener);
+        clearEvents.forEach((eventType) =>
+          w.removeEventListener(eventType, clear),
+        );
+      };
+    }
   }, [
-    addAnnouncement,
+    parentRef,
+    showAnnouncement,
     announcements,
     pausedAnnouncements,
     pauseAnnouncements,
     resumeAnnouncements,
     clearAnnouncements,
+    announceMode,
+    pauseOrResumeAnnouncements,
   ]);
 
   return {
     observeLiveRegion,
     announcements,
+    addAnnouncement,
+    pauseAnnouncements,
+    resumeAnnouncements,
+    clearAnnouncements,
+    pauseOrResumeAnnouncements,
   };
 };

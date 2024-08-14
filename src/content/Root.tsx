@@ -5,29 +5,45 @@ import { ElementList } from "./components/ElementList";
 import { injectRoot } from "./injectRoot";
 import { Announcements } from "./components/Announcements";
 import { SettingsContext } from "./components/SettingsProvider";
-import { useLiveRegion } from "./hooks/useLiveRegion";
+import { useLiveRegion, LiveLevel } from "./hooks/useLiveRegion";
 import { useDebouncedCallback } from "./hooks/useDebouncedCallback";
 
 export type RootOptions = {
   srcdoc?: boolean;
+  announceMode?: "self" | "parent";
+  onAnnouncement?: (content: string, level: LiveLevel) => void;
+  onPauseOrResumeAnnouncements?: () => void;
+  onClearAnnouncements?: () => void;
 };
 
 export const Root = ({
   parentRef,
-  options = {},
+  options,
 }: {
   parentRef: React.RefObject<Element>;
   options?: RootOptions;
 }) => {
+  const {
+    srcdoc,
+    announceMode = "self",
+    onAnnouncement,
+    onPauseOrResumeAnnouncements,
+    onClearAnnouncements,
+  } = options || {};
   const [metaList, setMetaList] = React.useState<ElementMeta[]>([]);
   const [width, setWidth] = React.useState<number>(0);
   const [height, setHeight] = React.useState<number>(0);
   const settings = React.useContext(SettingsContext);
   const containerRef = React.useRef<HTMLDivElement>(null);
-  const announcementsRef = React.useRef<HTMLDivElement>(null);
   const framesRef = React.useRef<Element[]>([]);
   const excludedRef = React.useRef<Element[]>([]);
-  const { announcements, observeLiveRegion } = useLiveRegion();
+  const { announcements, observeLiveRegion } = useLiveRegion({
+    parentRef,
+    announceMode,
+    onAnnouncement,
+    onPauseOrResumeAnnouncements,
+    onClearAnnouncements,
+  });
 
   const [outdated, setOutDated] = React.useState(false);
 
@@ -68,8 +84,9 @@ export const Root = ({
   const injectToDialogs = React.useCallback((el: Element) => {
     const elements = [...el.querySelectorAll("dialog, [popover]")];
     elements.forEach((el: Element) => {
+      if (containerRef.current?.contains(el)) return;
       if (!excludedRef.current.includes(el)) {
-        injectRoot(window, el, { mountOnce: true });
+        injectRoot(window, el, { mountOnce: true, announceMode: "parent" });
       }
     });
     excludedRef.current = elements;
@@ -87,13 +104,11 @@ export const Root = ({
         injectToDialogs(parentRef.current);
         const { elements, rootHeight, rootWidth } = collectElements(
           parentRef.current,
-          [
-            containerRef.current,
-            announcementsRef.current,
-            ...excludedRef.current,
-          ].filter((el): el is Element => !!el),
+          [containerRef.current, ...excludedRef.current].filter(
+            (el): el is Element => !!el,
+          ),
           settings,
-          { srcdoc: options.srcdoc },
+          { srcdoc },
         );
 
         setMetaList(elements);
@@ -145,10 +160,9 @@ export const Root = ({
       ref={containerRef}
     >
       <ElementList list={metaList} width={width} height={height} />
-      <Announcements
-        contents={announcements.map((a) => a.content)}
-        ref={announcementsRef}
-      />
+      {settings.showLiveRegions && announceMode === "self" && (
+        <Announcements contents={announcements.map((a) => a.content)} />
+      )}
     </section>
   );
 };

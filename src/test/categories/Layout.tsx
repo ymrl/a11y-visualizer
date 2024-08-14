@@ -1,5 +1,6 @@
 import React from "react";
 import { CategorySectionTitle, CategoryTitle } from "../components";
+import { AutoAnnounceExample } from "./LiveRegion";
 
 export const Layout = () => {
   const dialogRef = React.useRef<HTMLDialogElement>(null);
@@ -19,6 +20,9 @@ export const Layout = () => {
         className=" bg-white p-3 w-80 rounded-xl shadow-lg"
       >
         <h1 className="text-2xl font-bold">Hello</h1>
+        <div className="mb-4">
+          <AutoAnnounceExample />
+        </div>
         <button
           className="bg-blue-600 text-white p-2 rounded-lg inline-block"
           onClick={() => dialogRef.current?.close()}

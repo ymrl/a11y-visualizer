@@ -20,38 +20,35 @@ const closestNodeOfSelector = (node: Node, selector: string): Node | null => {
   return closestNodeOfSelector(node.parentNode, selector);
 };
 
-const getLiveRegions = (el: Element): Element[] => {
-  const liveRegions = [...el.querySelectorAll<Element>(LIVEREGION_SELECTOR)];
-  const liveRegionsInIframes: Element[] = [
-    ...el.querySelectorAll<HTMLIFrameElement>("iframe"),
-  ]
-    .map((iframe): Element[] | null => {
-      const iframeWindow = iframe.contentWindow;
-      if (!iframeWindow) return null;
+const getLiveRegions = (
+  el: Element,
+  iframeElements: HTMLIFrameElement[],
+): Element[] => [
+  ...el.querySelectorAll<Element>(LIVEREGION_SELECTOR),
+  ...iframeElements
+    .map((iframe): Element[] => {
       try {
-        const d = iframeWindow.document;
-        const { readyState } = d;
-        if (readyState === "complete") {
-          return getLiveRegions(d.body);
+        if (iframe.contentWindow?.document?.readyState === "complete") {
+          return [
+            ...iframe.contentWindow.document.querySelectorAll<Element>(
+              LIVEREGION_SELECTOR,
+            ),
+          ];
         }
       } catch {
         /* noop */
       }
-      return null;
+      return [];
     })
-    .filter((e): e is Element[] => e !== null)
-    .reduce((acc, cur) => {
-      return [...acc, ...cur];
-    }, []);
-  return [...liveRegions, ...liveRegionsInIframes];
-};
+    .flat(),
+];
 
 export const useLiveRegion = ({
   parentRef,
-  announceMode,
+  iframeElements,
 }: {
   parentRef: React.RefObject<Element>;
-  announceMode: "self" | "parent";
+  iframeElements: HTMLIFrameElement[];
 }) => {
   const {
     showLiveRegions,
@@ -84,7 +81,7 @@ export const useLiveRegion = ({
       if (!liveRegionObserverRef.current) {
         return;
       }
-      const liveRegions = getLiveRegions(el);
+      const liveRegions = getLiveRegions(el, iframeElements);
       [...liveRegions].forEach((el) => {
         if (
           liveRegionObserverRef.current &&
@@ -95,7 +92,7 @@ export const useLiveRegion = ({
       });
       liveRegionsRef.current = Array.from(liveRegions);
     },
-    [connectLiveRegion],
+    [connectLiveRegion, iframeElements],
   );
 
   const showAnnouncement = React.useCallback(
@@ -171,7 +168,7 @@ export const useLiveRegion = ({
   }, []);
 
   React.useEffect(() => {
-    if (!showLiveRegions || announceMode === "parent") {
+    if (!showLiveRegions) {
       if (liveRegionObserverRef.current) {
         liveRegionObserverRef.current.disconnect();
       }
@@ -230,7 +227,7 @@ export const useLiveRegion = ({
         clearAnnouncements();
       }
       updates.forEach((c) => {
-        announceMode === "self" && addAnnouncement(c.content, c.level);
+        addAnnouncement(c.content, c.level);
       });
     });
     liveRegionsRef.current.forEach((el) => connectLiveRegion(observer, el));
@@ -240,7 +237,6 @@ export const useLiveRegion = ({
       liveRegionObserverRef.current = null;
     };
   }, [
-    announceMode,
     showLiveRegions,
     announcementMaxSeconds,
     announcementSecondsPerCharacter,
@@ -251,68 +247,54 @@ export const useLiveRegion = ({
   ]);
 
   React.useEffect(() => {
-    if (
-      announceMode === "parent" ||
-      (announceMode === "self" &&
-        announcements.length === 0 &&
-        pausedAnnouncements.length === 0)
-    ) {
+    if (announcements.length === 0 && pausedAnnouncements.length === 0) {
       return;
     }
     const w = parentRef.current?.ownerDocument?.defaultView;
-    const iframes = parentRef.current?.querySelectorAll("iframe");
     const windows = [
       w,
-      ...(iframes ? [...iframes] : []).map(
-        (iframe) => (iframe as HTMLIFrameElement).contentWindow,
-      ),
+      ...iframeElements.map((iframe) => iframe.contentWindow),
     ];
-    const clear = () => {
-      announceMode === "self" && clearAnnouncements();
-    };
-    const pauseOrResume = () => {
-      announceMode === "self" && pauseOrResumeAnnouncements();
-    };
     const listener = (e: KeyboardEvent) => {
       if (e.key === "Shift") {
-        pauseOrResume();
+        pauseOrResumeAnnouncements();
       } else if (e.key === "Control") {
-        clear();
+        clearAnnouncements();
       }
     };
 
     windows.forEach((w) => {
       if (!w) return;
-      w.addEventListener("keydown", listener);
-      w.addEventListener("focusin", clear);
+      try {
+        w.addEventListener("keydown", listener);
+        w.addEventListener("focusin", clearAnnouncements);
+      } catch {
+        /* noop */
+      }
     });
 
     return () => {
       windows.forEach((w) => {
         if (!w) return;
-        w.removeEventListener("keydown", listener);
-        w.removeEventListener("focusin", clear);
+        try {
+          w.removeEventListener("keydown", listener);
+          w.removeEventListener("focusin", clearAnnouncements);
+        } catch {
+          /* noop */
+        }
       });
     };
   }, [
-    parentRef,
-    showAnnouncement,
     announcements,
-    pausedAnnouncements,
-    pauseAnnouncements,
-    resumeAnnouncements,
     clearAnnouncements,
-    announceMode,
+    iframeElements,
+    parentRef,
     pauseOrResumeAnnouncements,
+    pausedAnnouncements,
   ]);
 
   return {
     observeLiveRegion,
     announcements,
-    addAnnouncement,
-    pauseAnnouncements,
-    resumeAnnouncements,
-    clearAnnouncements,
-    pauseOrResumeAnnouncements,
   };
 };

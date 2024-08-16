@@ -1,90 +1,35 @@
 import React from "react";
 import { createPortal } from "react-dom";
-import { collectElements } from "./dom";
-import { ElementMeta } from "./types";
 import { ElementList } from "./components/ElementList";
 import { injectRoot } from "./injectRoot";
 import { Announcements } from "./components/Announcements";
 import { SettingsContext } from "./components/SettingsProvider";
 import { useLiveRegion } from "./hooks/useLiveRegion";
 import { useDebouncedCallback } from "./hooks/useDebouncedCallback";
-import { Settings } from "../settings";
+import { useElementMeta } from "./hooks/useElementMeta";
 
 export type RootOptions = {
   srcdoc?: boolean;
   announceMode?: "self" | "parent";
 };
 
-type Layer = {
-  element: Element;
-  meta: ElementMeta[];
-  width: number;
-  height: number;
-};
-
-const collectTopLayers = (
-  el: Element,
-  container: Element | null,
-  settings: Settings,
-  srcdoc: boolean | undefined,
-) => {
-  const elements = [...el.querySelectorAll("dialog, [popover]")];
-  const layers: Layer[] = elements
-    .map((element: Element): Layer | null => {
-      if (container?.contains(element)) return null;
-      const { elements, rootHeight, rootWidth } = collectElements(
-        element,
-        [],
-        settings,
-        { srcdoc },
-      );
-      return {
-        element,
-        meta: elements,
-        width: rootWidth,
-        height: rootHeight,
-      };
-    })
-    .filter((el): el is Layer => !!el);
-  return layers;
-};
-
-const collectIFrames = (root: Element, settings: Settings): Layer[] => {
-  const iframes = [...root.querySelectorAll("iframe")];
-  return iframes
-    .map((iframe): Layer[] | null => {
-      const iframeWindow = (iframe as HTMLIFrameElement).contentWindow;
-      if (!iframeWindow) return null;
+const getIframeElements = (el: Element): HTMLIFrameElement[] =>
+  [...el.querySelectorAll<HTMLIFrameElement>("iframe")]
+    .map((iframe) => {
+      const iframeWindow = iframe.contentWindow;
+      if (!iframeWindow) return iframe;
       try {
         const d = iframeWindow.document;
         const { readyState } = d;
         if (readyState === "complete") {
-          const { elements, rootHeight, rootWidth } = collectElements(
-            d.body,
-            [],
-            settings,
-            { srcdoc: iframe.hasAttribute("srcdoc") },
-          );
-          return [
-            {
-              element: d.body,
-              meta: elements,
-              width: rootHeight,
-              height: rootWidth,
-            },
-            ...[...d.body.querySelectorAll("iframe")]
-              .map((el) => collectIFrames(el, settings))
-              .flat(),
-          ];
+          return [iframe, ...getIframeElements(d.body)];
         }
       } catch {
         /* noop */
       }
-      return null;
+      return iframe;
     })
-    .filter((el): el is Layer[] => !!el)
     .flat();
-};
 
 const injectToFrames = (
   el: Element,
@@ -129,18 +74,23 @@ export const Root = ({
   options?: RootOptions;
 }) => {
   const { srcdoc, announceMode = "self" } = options || {};
-  const [metaList, setMetaList] = React.useState<ElementMeta[]>([]);
-  const [width, setWidth] = React.useState<number>(0);
-  const [height, setHeight] = React.useState<number>(0);
   const settings = React.useContext(SettingsContext);
   const containerRef = React.useRef<HTMLDivElement>(null);
   const framesRef = React.useRef<Element[]>([]);
+  const [iframeElements, setIframeElements] = React.useState<
+    HTMLIFrameElement[]
+  >([]);
   const { announcements, observeLiveRegion } = useLiveRegion({
     parentRef,
-    announceMode,
+    iframeElements,
   });
-  const [topLayers, setTopLayers] = React.useState<Layer[]>([]);
-  const [iframes, setIframes] = React.useState<Layer[]>([]);
+  const { metaList, width, height, topLayers, iframeLayers, updateMetaList } =
+    useElementMeta({
+      parentRef,
+      containerRef,
+      srcdoc,
+    });
+
   const [outdated, setOutDated] = React.useState(false);
 
   const updateInfo = useDebouncedCallback(
@@ -148,7 +98,9 @@ export const Root = ({
       setOutDated(false);
       if (!containerRef.current) return;
       if (!parentRef.current) return;
-      containerRef.current.style.display = "none";
+      const iframeElements = getIframeElements(parentRef.current);
+      setIframeElements(iframeElements);
+
       framesRef.current = injectToFrames(
         parentRef.current,
         framesRef.current,
@@ -158,36 +110,7 @@ export const Root = ({
         },
       );
       observeLiveRegion(parentRef.current);
-
-      if (settings.accessibilityInfo) {
-        const topLayers = collectTopLayers(
-          parentRef.current,
-          containerRef.current,
-          settings,
-          srcdoc,
-        );
-        setTopLayers(topLayers);
-        const iframes = collectIFrames(parentRef.current, settings);
-        setIframes(iframes);
-
-        const { elements, rootHeight, rootWidth } = collectElements(
-          parentRef.current,
-          [containerRef.current, ...topLayers.map((e) => e.element)].filter(
-            (el): el is Element => !!el,
-          ),
-          settings,
-          { srcdoc },
-        );
-
-        setMetaList(elements);
-        setWidth(rootWidth);
-        setHeight(rootHeight);
-      } else {
-        setWidth(0);
-        setHeight(0);
-        setMetaList([]);
-      }
-      containerRef.current.style.display = "block";
+      updateMetaList(iframeElements);
     },
     200,
     [injectToFrames, settings, observeLiveRegion],
@@ -227,7 +150,13 @@ export const Root = ({
         });
       });
     }
+    return () => {
+      childrenObserver.disconnect();
+      observer.disconnect();
+    };
+  }, [parentRef, updateInfo]);
 
+  React.useEffect(() => {
     const events = [
       "resize",
       "scroll",
@@ -239,30 +168,34 @@ export const Root = ({
     ];
 
     const w = parentRef.current?.ownerDocument?.defaultView;
-    const iframes = parentRef.current?.querySelectorAll("iframe");
     const windows = [
       w,
-      ...(iframes ? [...iframes] : []).map(
-        (iframe) => (iframe as HTMLIFrameElement).contentWindow,
-      ),
+      ...iframeElements.map((iframe) => iframe.ownerDocument?.defaultView),
     ];
     windows.forEach((w) => {
       if (!w) return;
       events.forEach((event) => {
-        w.addEventListener(event, updateInfo);
+        try {
+          w.addEventListener(event, updateInfo);
+        } catch {
+          /* noop */
+        }
       });
     });
     return () => {
-      childrenObserver.disconnect();
-      observer.disconnect();
       windows.forEach((w) => {
         if (!w) return;
         events.forEach((event) => {
-          w.removeEventListener(event, updateInfo);
+          try {
+            w.removeEventListener(event, updateInfo);
+          } catch {
+            /* noop */
+          }
         });
       });
     };
-  }, [parentRef, updateInfo]);
+  }, [iframeElements, parentRef, updateInfo]);
+
   return (
     <section
       aria-label={`Accessibility Visualizer <${parentRef.current?.tagName?.toLowerCase()}>`}
@@ -270,16 +203,16 @@ export const Root = ({
       ref={containerRef}
     >
       <ElementList list={metaList} width={width} height={height} />
-      {topLayers.map(({ element, meta, width, height }, i) =>
+      {topLayers.map(({ element, metaList, width, height }, i) =>
         createPortal(
-          <ElementList list={meta} width={width} height={height} />,
+          <ElementList list={metaList} width={width} height={height} />,
           element,
           `layer-${i}-${element.tagName.toLowerCase()}`,
         ),
       )}
-      {iframes.map(({ element, meta, width, height }, i) =>
+      {iframeLayers.map(({ element, metaList, width, height }, i) =>
         createPortal(
-          <ElementList list={meta} width={width} height={height} />,
+          <ElementList list={metaList} width={width} height={height} />,
           element,
           `iframe-${i}`,
         ),

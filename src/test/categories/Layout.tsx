@@ -48,7 +48,7 @@ export const Layout = () => {
       <iframe
         src="/src/test/iframe.html"
         title="iframe"
-        className="mt-3 h-48 w-10/12 mx-auto border-gray-300 border-solid border-2"
+        className="mt-3 h-96 w-10/12 mx-auto border-gray-300 border-solid border-2"
         loading="lazy"
       ></iframe>
     </>

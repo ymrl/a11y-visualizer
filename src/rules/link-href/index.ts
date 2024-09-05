@@ -10,8 +10,10 @@ export const LinkHref: RuleObject = {
     if (!enabled) {
       return undefined;
     }
+    const isInSVG = element.namespaceURI === "http://www.w3.org/2000/svg";
     const href = element.getAttribute("href");
-    if (!href) {
+    const xlinkHref = element.getAttribute("xlink:href");
+    if (!href && !(isInSVG && xlinkHref)) {
       return [
         {
           type: "warning",

@@ -56,6 +56,27 @@ describe("link-href", () => {
     ]);
   });
 
+  test("svg a with xlink:href", () => {
+    const element = document.createElementNS("http://www.w3.org/2000/svg", "a");
+    element.setAttribute("xlink:href", "https://example.com");
+    document.body.appendChild(element);
+    const result = LinkHref.evaluate(element, { enabled: true }, {});
+    expect(result).toBeUndefined();
+  });
+
+  test("svg a without xlink:href", () => {
+    const element = document.createElementNS("http://www.w3.org/2000/svg", "a");
+    document.body.appendChild(element);
+    const result = LinkHref.evaluate(element, { enabled: true }, {});
+    expect(result).toEqual([
+      {
+        type: "warning",
+        ruleName: "link-href",
+        message: "No href attribute",
+      },
+    ]);
+  });
+
   test("disabled", () => {
     const element = document.createElement("a");
     document.body.appendChild(element);

@@ -138,7 +138,7 @@ Accessibility Visualizerをインストールすると、拡張機能メニュ�
 
 ### Sections
 
-「セクション」にチェクが入っているとき、 `<article>` 要素、`<section>` 要素、`<nav>` 要素、`<aside>` 要素、`<main>` 要素、`<form>` 要素、`<search>` 要素、role属性に`article`、 `banner`、 `complementary`、 `contentinfo`、 `main`、 `form`、 `navigation`、 `region`、 `search`、 `application` をもつ要素に対してチップを表示します。
+「セクション」にチェックが入っているとき、 `<article>` 要素、`<section>` 要素、`<nav>` 要素、`<aside>` 要素、`<main>` 要素、`<form>` 要素、`<search>` 要素、role属性に`article`、 `banner`、 `complementary`、 `contentinfo`、 `main`、 `form`、 `navigation`、 `region`、 `search`、 `application` をもつ要素に対してチップを表示します。
 
 これらの要素は、ページのコンテンツをセクションに分割するために使用され、支援技術のユーザーがページの構造を理解し、不要なコンテンツをスキップするのに役立ちます。
 

@@ -144,7 +144,6 @@ Accessibility Visualizerをインストールすると、拡張機能メニュ�
 
 - ランドマークのチップでは、`role` の属性値に相当するランドマークの名前が表示されます。表示されている場合には、その役割が適切かどうかを確認してください
 - 何らかの方法でアクセシブルネームが与えられている場合、名前のチップで、セクションの名前が表示されます。表示されている場合には、その名前が適切かどうかを確認してください。また、ページ内に同名で同じ役割をもつランドマークが存在しないことを確認してください。
-- The name tip displays the section label if accesible name has been given by some ways. If it is displayed, please check if the content is appropriate, if there are any omissions, and if there are any other landmarks that has same name and same role.
 
 ### aria-hidden
 

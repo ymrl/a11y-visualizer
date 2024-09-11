@@ -138,13 +138,12 @@ Accessibility Visualizerをインストールすると、拡張機能メニュ�
 
 ### Sections
 
-「セクション」にチェクが入っているとき、 `<article>` 要素、`<section>` 要素、`<nav>` 要素、`<aside>` 要素、`<main>` 要素、`<form>` 要素、`<search>` 要素、role属性に`article`、 `banner`、 `complementary`、 `contentinfo`、 `main`、 `form`、 `navigation`、 `region`、 `search`、 `application` をもつ要素に対してチップを表示します。
+「セクション」にチェックが入っているとき、 `<article>` 要素、`<section>` 要素、`<nav>` 要素、`<aside>` 要素、`<main>` 要素、`<form>` 要素、`<search>` 要素、role属性に`article`、 `banner`、 `complementary`、 `contentinfo`、 `main`、 `form`、 `navigation`、 `region`、 `search`、 `application` をもつ要素に対してチップを表示します。
 
 これらの要素は、ページのコンテンツをセクションに分割するために使用され、支援技術のユーザーがページの構造を理解し、不要なコンテンツをスキップするのに役立ちます。
 
 - ランドマークのチップでは、`role` の属性値に相当するランドマークの名前が表示されます。表示されている場合には、その役割が適切かどうかを確認してください
 - 何らかの方法でアクセシブルネームが与えられている場合、名前のチップで、セクションの名前が表示されます。表示されている場合には、その名前が適切かどうかを確認してください。また、ページ内に同名で同じ役割をもつランドマークが存在しないことを確認してください。
-- The name tip displays the section label if accesible name has been given by some ways. If it is displayed, please check if the content is appropriate, if there are any omissions, and if there are any other landmarks that has same name and same role.
 
 ### aria-hidden
 

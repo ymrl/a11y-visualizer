@@ -11,6 +11,10 @@ type InjectOptions = RootOptions & {
 
 const mount = (w: Window, parent: Element, options?: RootOptions) => {
   const rootElement = w.document.createElement("div");
+  rootElement.style.display = "block";
+  rootElement.style.position = "static";
+  rootElement.style.margin = "0";
+  rootElement.style.padding = "0";
   parent.append(rootElement);
   const root = ReactDOM.createRoot(rootElement);
   const parentRef = { current: parent };

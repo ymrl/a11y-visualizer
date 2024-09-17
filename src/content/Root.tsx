@@ -200,6 +200,11 @@ export const Root = ({
     <section
       aria-label={`Accessibility Visualizer <${parentRef.current?.tagName?.toLowerCase()}>`}
       aria-hidden="true"
+      style={{
+        position: "static",
+        margin: 0,
+        padding: 0,
+      }}
       ref={containerRef}
     >
       <ElementList list={metaList} width={width} height={height} />

@@ -19,7 +19,7 @@ The goal of Accessibility Visualizer is to visualize this information to elimina
 
 Note: Accessibility Visualizer does not completely eliminate the need for actual assistive technology verification, such as screen readers. The information Accessibility Visualizer displays is supplementary and may cause you to miss important issues. **We recommend using screen reader confirmation** to incorporate it into your web development workflow.
 
-## How to use Accessibilty Visualizer
+## How to use Accessibility Visualizer
 
 After installing Accessibility Visualizer, an Accessibility Visualizer item will appear in the extension menu.
 If you use it often, we recommend pinning it to your browser's toolbar. If you pin it to the toolbar, the Accessibility Visualizer icon will always be displayed.

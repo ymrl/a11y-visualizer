@@ -19,7 +19,7 @@ Accessibility Visualizer는 웹 페이지의 접근성을 향상시키기 위해
 
 주의: Accessibility Visualizer 는 스크린 리더 등의 ** 실제 보조기술을 통한 확인 작업을 완전히 불필요하게 만드는 것이 아닙니다**. Accessibility Visualizer가 표시하는 정보는 보조적인 것으로, 중대한 오류를 간과할 가능성이 있습니다. Web 개발의 작업 플로우에 도입할 경우, **스크린 리더에 의한 확인을 병용하실 것을 권장합니다**.
 
-## Accessibilty Visualizer 사용법
+## Accessibility Visualizer 사용법
 
 Accessibility Visualizer 를 설치하면 확장기능 메뉴 내에 Accessibility Visualizer 항목이 추가됩니다.
 자주 사용하실 경우 브라우저 툴바에 고정하시는 것이 좋습니다. 툴바에 고정 하시면 Accessibility Visualizer 아이콘이 항상 표시됩니다.

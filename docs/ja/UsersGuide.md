@@ -19,7 +19,7 @@ Accessibility Visualizerは、Webページのアクセシビリティを向上�
 
 注意: Accessibility Visualizerは、スクリーンリーダーなどの **実際の支援技術による確認作業を完全に不要にするものではありません** 。Accessibility Visualizerの表示する情報は補助的なものであり、重大な問題を見落としてしまう可能性があります。Web開発の作業フローへの導入には、 **スクリーンリーダーによる確認を併用することをお勧めします**。
 
-## Accessibilty Visualizerの使い方
+## Accessibility Visualizerの使い方
 
 Accessibility Visualizerをインストールすると、拡張機能メニュー内にAccessibility Visualizerの項目が出現します。
 よく使う場合は、ブラウザのツールバーへ固定表示することをお勧めします。ツールバーに固定表示すると、Accessibility Visualizerのアイコンが常時表示されます。

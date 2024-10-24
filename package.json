@@ -41,7 +41,7 @@
     "react-shadow": "^20.4.0"
   },
   "devDependencies": {
-    "@crxjs/vite-plugin": "^2.0.0-beta.23",
+    "@crxjs/vite-plugin": "^2.0.0-beta.26",
     "@markuplint/jsx-parser": "^4.7.2",
     "@markuplint/react-spec": "^4.5.2",
     "@types/chrome": "^0.0.265",

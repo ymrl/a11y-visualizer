@@ -108,9 +108,16 @@ export const collectElements = (
         }
         const role = getKnownRole(el);
         const name = computeAccessibleName(el);
+        const rects = Array.from(el.getClientRects()).map((rect) => ({
+          relativeX: rect.x - elementPosition.x + visibleX,
+          relativeY: rect.y - elementPosition.y + visibleY,
+          width: rect.width,
+          height: rect.height,
+        }));
 
         return {
           ...elementPosition,
+          rects,
           name: name || "",
           category: getElementCategory(el, role),
           ruleResults: Rules.reduce((prev, rule) => {

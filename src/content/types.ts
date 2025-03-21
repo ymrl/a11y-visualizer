@@ -4,6 +4,12 @@ export type ElementMeta = {
   name: string;
   category: Category;
   ruleResults: RuleResult[];
+  rects: {
+    relativeX: number;
+    relativeY: number;
+    width: number;
+    height: number;
+  }[];
 } & ElementPosition;
 
 export type ElementPosition = {

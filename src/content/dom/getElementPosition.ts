@@ -8,12 +8,15 @@ export const getElementPosition = (
   if (el.tagName.toLowerCase() === "area") {
     return getAreaElementPosition(el, w, offsetX, offsetY);
   }
+  const scrollX = w.scrollX;
+  const scrollY = w.scrollY;
+
   const rect = el.getBoundingClientRect();
   return {
-    x: rect.x + w.scrollX - offsetX,
-    y: rect.y + w.scrollY - offsetY,
-    absoluteX: rect.x + w.scrollX,
-    absoluteY: rect.y + w.scrollY,
+    x: rect.x + scrollX - offsetX,
+    y: rect.y + scrollY - offsetY,
+    absoluteX: rect.x + scrollX,
+    absoluteY: rect.y + scrollY,
     width: rect.width,
     height: rect.height,
   };
@@ -34,32 +37,34 @@ const getAreaElementPosition = (
   const rect = (img || el).getBoundingClientRect();
   const coords = el.getAttribute("coords")?.split(",").map(Number);
   const shape = el.getAttribute("shape");
+  const scrollX = w.scrollX;
+  const scrollY = w.scrollY;
 
   if (coords && (shape === "rect" || !shape) && coords.length >= 4) {
     return {
-      x: rect.x + coords[0] + w.scrollX - offsetX,
-      y: rect.y + coords[1] + w.scrollY - offsetY,
-      absoluteX: rect.x + coords[0] + w.scrollX,
-      absoluteY: rect.y + coords[1] + w.scrollY,
+      x: rect.x + coords[0] + scrollX - offsetX,
+      y: rect.y + coords[1] + scrollY - offsetY,
+      absoluteX: rect.x + coords[0] + scrollX,
+      absoluteY: rect.y + coords[1] + scrollY,
       width: coords[2] - coords[0],
       height: coords[3] - coords[1],
     };
   }
   if (coords && shape === "circle" && coords.length >= 3) {
     return {
-      x: rect.x + coords[0] - coords[2] + w.scrollX - offsetX,
-      y: rect.y + coords[1] - coords[2] + w.scrollY - offsetY,
-      absoluteX: rect.x + coords[0] - coords[2] + w.scrollX,
-      absoluteY: rect.y + coords[1] - coords[2] + w.scrollY,
+      x: rect.x + coords[0] - coords[2] + scrollX - offsetX,
+      y: rect.y + coords[1] - coords[2] + scrollY - offsetY,
+      absoluteX: rect.x + coords[0] - coords[2] + scrollX,
+      absoluteY: rect.y + coords[1] - coords[2] + scrollY,
       width: coords[2] * 2,
       height: coords[2] * 2,
     };
   }
   if (coords && shape === "poly" && coords.length >= 6) {
     const absoluteX =
-      rect.x + Math.min(...coords.filter((_, i) => i % 2 === 0)) + w.scrollX;
+      rect.x + Math.min(...coords.filter((_, i) => i % 2 === 0)) + scrollX;
     const absoluteY =
-      rect.y + Math.min(...coords.filter((_, i) => i % 2 === 1)) + w.scrollY;
+      rect.y + Math.min(...coords.filter((_, i) => i % 2 === 1)) + scrollY;
     return {
       x: absoluteX - offsetX,
       y: absoluteY - offsetY,
@@ -74,10 +79,10 @@ const getAreaElementPosition = (
     };
   }
   return {
-    x: rect.x + w.scrollX - offsetX,
-    y: rect.y + w.scrollY - offsetY,
-    absoluteX: rect.x + w.scrollX,
-    absoluteY: rect.y + w.scrollY,
+    x: rect.x + scrollX - offsetX,
+    y: rect.y + scrollY - offsetY,
+    absoluteX: rect.x + scrollX,
+    absoluteY: rect.y + scrollY,
     width: rect.width,
     height: rect.height,
   };

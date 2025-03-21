@@ -12,7 +12,17 @@ type VerticalPosition =
   | "outer-top"
   | "outer-bottom";
 export const ElementInfo = ({
-  meta: { x, y, absoluteX, absoluteY, width, height, ruleResults, category },
+  meta: {
+    x,
+    y,
+    absoluteX,
+    absoluteY,
+    width,
+    height,
+    ruleResults,
+    category,
+    rects,
+  },
   rootWidth,
   rootHeight,
 }: {
@@ -141,11 +151,27 @@ export const ElementInfo = ({
             interactiveMode && hovered ? 1 : settings.tipOpacityPercent / 100,
         }}
       >
-        {ruleResults.length > 0 && (
-          <div
-            className={`ElementInfo__border ElementInfo__border--${category}`}
-          />
-        )}
+        {ruleResults.length > 0 &&
+          (rects.length > 0 ? (
+            rects.map((rect, i) => (
+              <div
+                key={i}
+                className={`ElementInfo__border ElementInfo__border--${category}`}
+                style={{
+                  top: rect.relativeY,
+                  left: rect.relativeX,
+                  bottom: "auto",
+                  right: "auto",
+                  width: rect.width,
+                  height: rect.height,
+                }}
+              />
+            ))
+          ) : (
+            <div
+              className={`ElementInfo__border ElementInfo__border--${category}`}
+            />
+          ))}
         <div
           className={[
             "ElementInfo__tips",

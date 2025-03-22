@@ -55,53 +55,6 @@
     "warning": "警告",
     "error": "エラー"
   },
-  "ariaStatus": {
-    "aria-busy": {
-      "true": "更新中",
-      "false": "更新の予定なし"
-    },
-    "aria-checked": {
-      "true": "チェック中",
-      "false": "未チェック",
-      "mixed": "混在",
-      "undefined": "チェックできない"
-    },
-    "aria-current": {
-      "true": "現在の項目",
-      "page": "現在のページ",
-      "step": "現在のステップ",
-      "location": "現在の場所",
-      "date": "現在の日付",
-      "time": "現在の時刻",
-      "false": "現在の項目ではない"
-    },
-    "aria-disabled": {
-      "true": "無効",
-      "false": "有効"
-    },
-    "aria-expanded": {
-      "true": "展開されている",
-      "false": "折りたたまれている",
-      "undefined": "展開されない"
-    },
-    "aria-invalid": {
-      "grammer": "文法エラー",
-      "false": "エラーなし",
-      "spelling": "スペルエラー",
-      "true": "エラー"
-    },
-    "aria-pressed": {
-      "true": "押されている",
-      "false": "押されていない",
-      "mixed": "混在",
-      "undefined": "押されている状態にできない"
-    },
-    "aria-selected": {
-      "true": "選択中",
-      "false": "未選択",
-      "undefined": "選択できない"
-    }
-  },
   "optionsPage": {
     "description": "拡張機能のポップアップから設定を変更すると、閲覧中のWebページのホストごとに設定が保存され、同じホストのWebページに対して適用されます。この画面で設定を変更しても、それらの設定値は変更されません。",
     "resetSettings": "設定のリセット",
@@ -174,5 +127,9 @@
   "Pressed: undefined": "押されている状態にできない",
   "Selected: true": "選択中",
   "Selected: false": "未選択",
-  "Selected: undefined": "選択できない"
+  "Selected: undefined": "選択できない",
+  "Read Only: true": "読み取り専用",
+  "Read Only: false": "読み取り専用でない",
+  "Required: true": "必須",
+  "Required: false": "必須でない"
 }

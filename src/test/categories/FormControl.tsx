@@ -192,6 +192,39 @@ export const FormControl = () => (
           title: "Single Label",
           body: <label className="intentional-violation">Single Label</label>,
         },
+        {
+          title: "required input",
+          body: (
+            <>
+              <label htmlFor="requiredInput" className="block">
+                Input
+              </label>
+
+              <input
+                id="requiredInput"
+                type="text"
+                className={formClassNames}
+                required
+              />
+            </>
+          ),
+        },
+        {
+          title: "readonly input",
+          body: (
+            <>
+              <label htmlFor="readonlyInput" className="block">
+                Input
+              </label>
+              <input
+                id="readonlyInput"
+                type="text"
+                className={formClassNames}
+                readOnly
+              />
+            </>
+          ),
+        },
       ]}
     />
   </>

@@ -20,6 +20,8 @@ const ariaStateValues: { [ariaState: string]: (string | null)[] } = {
   "aria-invalid": ["true", "false", "grammar", "spelling"],
   "aria-pressed": ["true", "false", "mixed", "undefined"],
   "aria-selected": ["true", "false", "undefined"],
+  "aria-required": ["true", "false"],
+  "aria-readonly": ["true", "false"],
 };
 
 const ariaStateNames: { [ariaState: string]: string } = {
@@ -31,6 +33,8 @@ const ariaStateNames: { [ariaState: string]: string } = {
   "aria-invalid": "Invalid",
   "aria-pressed": "Pressed",
   "aria-selected": "Selected",
+  "aria-required": "Required", // property
+  "aria-readonly": "Read Only", // property
 } as const;
 
 const ariaStateRoles: { [ariaState: string]: KnownRole[] } = {
@@ -127,7 +131,129 @@ const ariaStateRoles: { [ariaState: string]: KnownRole[] } = {
     "rowheader",
     "treeitem",
   ],
+  "aria-required": [
+    "checkbox",
+    "combobox",
+    "gridcell",
+    "listbox",
+    "radiogroup",
+    "spinbutton",
+    "textbox",
+    "tree",
+    "columnheader",
+    "rowheader",
+    "searchbox",
+    "switch",
+    "treegrid",
+  ],
+  "aria-readonly": [
+    "checkbox",
+    "combobox",
+    "grid",
+    "gridcell",
+    "listbox",
+    "radiogroup",
+    "slider",
+    "spinbutton",
+    "textbox",
+    "columnheader",
+    "rowheader",
+    "searchbox",
+    "switch",
+    "treegrid",
+  ],
 } as const;
+
+const getNativeCheckedValue = (element: Element) => {
+  if (
+    element.tagName.toLowerCase() === "input" &&
+    ["checkbox", "radio"].includes(element.getAttribute("type") || "")
+  ) {
+    return (element as HTMLInputElement).checked ? "true" : "false";
+  }
+  return null;
+};
+
+const getNativeDisabledValue = (element: Element) => {
+  const tagName = element.tagName.toLowerCase();
+  if (
+    [
+      "button",
+      "fieldset",
+      "optgroup",
+      "option",
+      "select",
+      "textarea",
+      "input",
+    ].includes(tagName)
+  ) {
+    return (element as HTMLInputElement).disabled
+      ? "true"
+      : element.closest("fieldset[disabled]")
+        ? "true"
+        : null;
+  }
+  return null;
+};
+
+const getNativeExpandedValue = (element: Element) => {
+  const tagName = element.tagName.toLowerCase();
+  if (
+    tagName === "summary" &&
+    element.matches("details > summary:first-child")
+  ) {
+    return element.closest("details")?.open ? "true" : "false";
+  }
+  return null;
+};
+
+const getNativeInvalidValue = (element: Element) => {
+  const tagName = element.tagName.toLowerCase();
+  if (["input", "select", "textarea"].includes(tagName)) {
+    const validity = (element as HTMLInputElement).validity;
+    if (!validity) {
+      return null;
+    }
+    return validity.valid ? null : "true";
+  }
+  return null;
+};
+const getNativeRequiredValue = (element: Element) => {
+  const tagName = element.tagName.toLowerCase();
+  if (["input", "select", "textarea"].includes(tagName)) {
+    const required = (element as HTMLInputElement).required;
+    return required ? "true" : null;
+  }
+  return null;
+};
+
+const getNativeReadonlyValue = (element: Element) => {
+  const tagName = element.tagName.toLowerCase();
+  if (["input", "textarea"].includes(tagName)) {
+    const readOnly = (element as HTMLInputElement).readOnly;
+    return readOnly ? "true" : null;
+  }
+  return null;
+};
+
+const getNativeValue = (state: string, element: Element) => {
+  switch (state) {
+    case "aria-checked":
+      return getNativeCheckedValue(element);
+    case "aria-disabled":
+      return getNativeDisabledValue(element);
+    case "aria-expanded":
+      return getNativeExpandedValue(element);
+    case "aria-invalid":
+      return getNativeInvalidValue(element);
+    case "aria-required":
+      return getNativeRequiredValue(element);
+    case "aria-readonly":
+      return getNativeReadonlyValue(element);
+    default:
+      return null;
+  }
+};
 
 export const AriaState: RuleObject = {
   ruleName,
@@ -163,40 +289,10 @@ export const AriaState: RuleObject = {
       }
     }
 
-    const tagName = element.tagName.toLowerCase();
     for (const [state, roles] of Object.entries(ariaStateRoles)) {
       if (role && (roles as string[]).includes(role)) {
         const ariaStateValue = element.getAttribute(state);
-        const nativeValue =
-          state === "aria-checked" &&
-          tagName === "input" &&
-          ["checkbox", "radio"].includes(element.getAttribute("type") || "")
-            ? (element as HTMLInputElement).checked
-              ? "true"
-              : "false"
-            : state === "aria-disabled" &&
-                [
-                  "button",
-                  "fieldset",
-                  "optgroup",
-                  "option",
-                  "select",
-                  "textarea",
-                  "input",
-                ].includes(tagName) &&
-                (element.hasAttribute("disabled") ||
-                  element.closest("fieldset[disabled]"))
-              ? (element as HTMLInputElement).disabled ||
-                element.closest("fieldset[disabled]")
-                ? "true"
-                : "false"
-              : state === "aria-expanded" &&
-                  tagName === "summary" &&
-                  element.matches("details > summary:first-child")
-                ? element.closest("details")?.open
-                  ? "true"
-                  : "false"
-                : null;
+        const nativeValue = getNativeValue(state, element);
         const value = nativeValue || ariaStateValue;
         if (value) {
           if (ariaStateValues[state].includes(value)) {

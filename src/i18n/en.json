@@ -51,49 +51,9 @@
     "linkTarget": "Link Target",
     "lang": "Language",
     "list": "List",
+    "listType": "List Type",
     "warning": "Warning",
     "error": "Error"
-  },
-  "ariaStatus": {
-    "aria-busy": {
-      "true": "Refreshing",
-      "false": "No expected updates"
-    },
-    "aria-checked": {
-      "true": "Checked",
-      "false": "Not checked",
-      "mixed": "Mixed",
-      "undefined": "Cannot check"
-    },
-    "aria-current": {
-      "true": "Current item",
-      "page": "Current page",
-      "step": "Current step",
-      "location": "Current location",
-      "date": "Current date",
-      "time": "Current time",
-      "false": "Not current"
-    },
-    "aria-disabled": {
-      "true": "Disabled",
-      "false": "Enabled"
-    },
-    "aria-expanded": {
-      "true": "Expanded",
-      "false": "Collapsed",
-      "undefined": "Not expandable"
-    },
-    "aria-pressed": {
-      "true": "Pressed",
-      "false": "Not pressed",
-      "mixed": "Mixed",
-      "undefined": "Cannot be pressed"
-    },
-    "aria-selected": {
-      "true": "Selected",
-      "false": "Not selected",
-      "undefined": "Cannot be selected"
-    }
   },
   "optionsPage": {
     "description": "Settings changed from the popup are saved per host of the web page, and will be applied to other pages on the same host. Changing settings here does not affect those values.",
@@ -167,5 +127,9 @@
   "Pressed: undefined": "Cannot be pressed",
   "Selected: true": "Selected",
   "Selected: false": "Not selected",
-  "Selected: undefined": "Cannot be selected"
+  "Selected: undefined": "Cannot be selected",
+  "Read Only: true": "Read only",
+  "Read Only: false": "Not read only",
+  "Required: true": "Required",
+  "Required: false": "Not required"
 }

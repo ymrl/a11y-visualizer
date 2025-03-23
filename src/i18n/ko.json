@@ -2,7 +2,10 @@
   "popup": {
     "title": "Accessibility Visualizer",
     "enabled": "활성화됨",
+    "iconEyesOpen": "Icon: eyes open",
+    "iconEyesClosed": "Icon: eyes closed",
     "settingsForHost": "{{host}} 설정",
+    "settingsForFile": "Settings for local files",
     "rerun": "재실행",
     "reset": "설정 초기화",
     "hostDesc": "이 화면에서 설정한 내용은 웹페이지의 호스트마다 저장됩니다. 설정 기본값은 확장 프로그램 옵션 설정할 수 있습니다.",
@@ -17,6 +20,11 @@
     "links": "링크",
     "headings": "헤딩",
     "ariaHidden": "aria-hidden",
+    "sections": "Sections",
+    "lang": "Langage",
+    "page": "Page",
+    "tables": "Tables",
+    "lists": "Lists",
     "tipOpacityPercent": "팁의 불투명도(%)",
     "interactiveMode": "인터랙티브 모드",
     "hideLabels": "라벨 숨기기",
@@ -24,19 +32,42 @@
     "announcement": "안내",
     "announcementSecondsPerCharacter": "속도(초/문자)",
     "announcementMaxSeconds": "최장 길이(초)",
-    "liveRegionOpacityPercent": "라이브리전의 불투명도(%)"
+    "liveRegionOpacityPercent": "라이브리전의 불투명도(%)",
+    "tipFontSize": "Tip font size",
+    "liveRegionFontSize": "Live region font size"
   },
   "tip": {
     "name": "이름",
     "role": "롤(역할)",
     "element": "요소",
+    "landmark": "Landmark",
     "description": "설명",
     "heading": "헤딩",
+    "ariaStatus": "WAI-ARIA Status",
+    "pageTitle": "Page title",
+    "tableHeader": "Table header",
+    "tableSize": "Table size",
+    "tablePosition": "Position",
+    "linkTarget": "Link Target",
+    "lang": "Language",
+    "list": "List",
+    "listType": "List Type",
     "warning": "경고",
     "error": "오류"
   },
   "optionsPage": {
-    "description": "확장기능의 팝업에서 설정을 변경하면 현재 보고 있는 웹 페이지의 호스트별로 설정이 저장되며 동일한 호스트의 웹 페이지에 적용됩니다.이 화면에서 설정을 변경해도 그 설정값은 변경되지 않습니다."
+    "description": "확장기능의 팝업에서 설정을 변경하면 현재 보고 있는 웹 페이지의 호스트별로 설정이 저장되며 동일한 호스트의 웹 페이지에 적용됩니다.이 화면에서 설정을 변경해도 그 설정값은 변경되지 않습니다.",
+    "resetSettings": "Reset settings to defaults",
+    "resetSettingsConfirm": "Reset all settings to default values? (This action does not affect settings saved per host.)",
+    "resetSettingsConfirmYes": "Yes",
+    "resetSettingsConfirmNo": "No",
+    "resetSettingsSuccess": "Settings has been reset to defaults."
+  },
+  "listType": {
+    "menu": "Menu",
+    "menubar": "Menubar",
+    "list": "List",
+    "definitionList": "Definition list"
   },
   "aria-hidden": "aria-hidden",
   "Invalid WAI-ARIA attribute value": "Invalid WAI-ARIA attribute value",
@@ -60,6 +91,14 @@
   "Small target": "Small target",
   "Heading level": "헤딩 레벨",
   "Page language": "Page language",
+  "Table size": "Table size",
+  "List items": "List items",
+  "Must only contain <li>": "Must only contain <li>",
+  "Must only contain <dt>, <dd>, or them within a <div>": "Must only contain <dt>, <dd>, or them within a <div>",
+  "Not inside <ul>, <ol>, or <menu>": "Not inside <ul>, <ol>, or <menu>",
+  "Not inside <dl> or <div> within <dl>": "Not inside <dl> or <div> within <dl>",
+  "Not inside \"menu\" role": "Not inside \"menu\" role'",
+  "Not inside \"list\" role": "Not inside \"list\" role'",
   "Busy: true": "Refreshing",
   "Busy: false": "No expected updates",
   "Current: true": "Current item",
@@ -88,5 +127,9 @@
   "Pressed: undefined": "Cannot be pressed",
   "Selected: true": "Selected",
   "Selected: false": "Not selected",
-  "Selected: undefined": "Cannot be selected"
+  "Selected: undefined": "Cannot be selected",
+  "Read Only: true": "Read only",
+  "Read Only: false": "Not read only",
+  "Required: true": "Required",
+  "Required: false": "Not required"
 }

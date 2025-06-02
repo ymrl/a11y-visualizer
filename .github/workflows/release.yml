@@ -19,14 +19,19 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: "npm"
+          cache: "pnpm"
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install
 
       - name: Git config
         run: |
@@ -34,7 +39,7 @@ jobs:
           git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
 
       - name: Release
-        run: npm run release -- ${{ github.event.inputs.release_type }}
+        run: pnpm release ${{ github.event.inputs.release_type }}
 
       - name: Get version
         id: get_version
@@ -72,17 +77,22 @@ jobs:
           description: "Running lint"
           sha: ${{ steps.set_commit_sha.outputs.SHA }}
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: "npm"
+          cache: "pnpm"
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install
 
       - name: Run lint
-        run: npm run lint
+        run: pnpm lint
 
       - name: Set Commit Status
         uses: myrotvorets/set-commit-status-action@v2.0.1
@@ -116,18 +126,23 @@ jobs:
           description: "Running test"
           sha: ${{ steps.set_commit_sha.outputs.SHA }}
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: "npm"
+          cache: "pnpm"
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm ci
 
       - name: Get installed Playwright version
         id: playwright_version
-        run: echo VERSION="$(node -e "console.log(require('./package-lock.json').packages['node_modules/playwright'].version)")" >> $GITHUB_OUTPUT
+        run: echo VERSION="$(pnpm exec playwright --version | sed 's/Version //g')" >> $GITHUB_OUTPUT
 
       - name: Cache playwright binaries
         uses: actions/cache@v4
@@ -137,14 +152,14 @@ jobs:
             ~/.cache/ms-playwright
           key: ${{ runner.os }}-playwright-${{ steps.playwright_version.outputs.VERSION }}
 
-      - run: npx playwright install chromium
+      - run: pnpm exec playwright install chromium
         if: steps.playwright_cache.outputs.cache-hit != 'true'
 
-      - run: npx playwright install firefox
+      - run: pnpm exec playwright install firefox
         if: steps.playwright_cache.outputs.cache-hit != 'true'
 
       - name: Run test
-        run: npm run test
+        run: pnpm test
 
       - name: Set Commit Status
         uses: myrotvorets/set-commit-status-action@v2.0.1
@@ -167,11 +182,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: "npm"
+          cache: "pnpm"
 
       - name: Git config
         run: |
@@ -188,10 +208,10 @@ jobs:
           branch: ${{ github.ref }}
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install
 
       - name: Package
-        run: npm run package
+        run: pnpm package
 
       - name: Create Release
         uses: ncipollo/release-action@v1

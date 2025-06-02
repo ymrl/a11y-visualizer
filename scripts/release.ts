@@ -30,10 +30,10 @@ manifests.forEach((manifest) => {
   writeFileSync(manifest, JSON.stringify(manifestContent, null, 2));
 });
 
-execSync(`npx prettier --write ${manifests.join(" ")}`);
+execSync(`pnpm exec prettier --write ${manifests.join(" ")}`);
 execSync(`git add ${manifests.join(" ")}`);
 
 execSync(`git commit -m ":up: update manifest.json to v${nextVersion}"`);
 
 // Update package.json
-execSync(`npm version ${releaseLevel}`);
+execSync(`pnpm version ${releaseLevel}`);

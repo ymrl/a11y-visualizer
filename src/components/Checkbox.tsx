@@ -1,11 +1,12 @@
+import { ReactNode, ChangeEventHandler } from "react";
 export const Checkbox = ({
   children,
   onChange,
   checked,
   disabled,
 }: {
-  children: React.ReactNode;
-  onChange?: React.ChangeEventHandler<HTMLInputElement>;
+  children: ReactNode;
+  onChange?: ChangeEventHandler<HTMLInputElement>;
   checked?: boolean;
   disabled?: boolean;
 }) => {

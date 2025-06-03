@@ -52,9 +52,11 @@ describe("control-name", () => {
       element.setAttribute("type", type);
       document.body.appendChild(element);
       const result = ControlName.evaluate(element, { enabled: true }, {});
-      type === "button"
-        ? expect(result).toEqual(errorResult)
-        : expect(result).toBeUndefined();
+      if (type === "button") {
+        expect(result).toEqual(errorResult);
+      } else {
+        expect(result).toBeUndefined();
+      }
     });
   });
 

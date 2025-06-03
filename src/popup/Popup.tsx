@@ -157,13 +157,14 @@ export const Popup = () => {
               onClick={async () => {
                 await resetUrlSettings(url);
                 const defaultSettings = await loadSettings();
-                url &&
+                if (url) {
                   sendMessageToActiveTabs<SettingsMessage>({
                     type: "updateUrlSettings",
                     settings: defaultSettings,
                     enabled: enabled,
                     url: url,
                   });
+                }
               }}
               disabled={!enabled || !hostSetting}
               title={t("popup.reset")}

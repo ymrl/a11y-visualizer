@@ -73,8 +73,9 @@ export const injectRoot = async (
       }
     }
     if (message.enabled) {
-      !mountOnce &&
+      if (!mountOnce) {
         (mountReturn || (mountReturn = mount(w, parent))).render(settings);
+      }
     } else {
       mountReturn?.unmount();
       mountReturn = null;

@@ -40,6 +40,7 @@
   },
   "devDependencies": {
     "@crxjs/vite-plugin": "^2.0.0-beta.32",
+    "@eslint/js": "^9.28.0",
     "@markuplint/jsx-parser": "^4.7.2",
     "@markuplint/react-spec": "^4.5.2",
     "@types/chrome": "^0.0.265",

@@ -33,6 +33,9 @@ importers:
       '@crxjs/vite-plugin':
         specifier: ^2.0.0-beta.32
         version: 2.0.0-beta.33
+      '@eslint/js':
+        specifier: ^9.28.0
+        version: 9.28.0
       '@markuplint/jsx-parser':
         specifier: ^4.7.2
         version: 4.7.19(typescript@5.8.3)

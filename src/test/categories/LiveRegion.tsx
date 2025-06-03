@@ -32,7 +32,9 @@ export const AutoAnnounceExample = () => {
   };
   React.useEffect(() => {
     return () => {
-      intervalRef.current && clearInterval(intervalRef.current);
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
       intervalRef.current = null;
     };
   }, []);
@@ -42,7 +44,9 @@ export const AutoAnnounceExample = () => {
       <button
         onClick={() => {
           if (playing) {
-            intervalRef.current && clearInterval(intervalRef.current);
+            if (intervalRef.current) {
+              clearInterval(intervalRef.current);
+            }
             intervalRef.current = null;
           } else {
             intervalRef.current = window.setInterval(update, 1000);

@@ -1,3 +1,4 @@
+import { ChangeEvent } from "react";
 import { Settings } from "../settings/types";
 import { useLang } from "../useLang";
 import { Checkbox } from "./Checkbox";
@@ -14,7 +15,7 @@ export const SettingsEditor = ({
   const { t, lang } = useLang();
   const handleChangeCheckbox = (
     key: keyof Settings,
-    e: React.ChangeEvent<HTMLInputElement>,
+    e: ChangeEvent<HTMLInputElement>,
   ) => {
     const newSettings = {
       ...settings,
@@ -24,7 +25,7 @@ export const SettingsEditor = ({
   };
   const handleChangeNumber = (
     key: keyof Settings,
-    e: React.ChangeEvent<HTMLInputElement>,
+    e: ChangeEvent<HTMLInputElement>,
   ) => {
     const newSettings = {
       ...settings,

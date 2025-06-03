@@ -33,14 +33,14 @@ export const Layout = () => {
       <CategorySectionTitle>"popover" attribute</CategorySectionTitle>
       <button
         className="bg-blue-600 text-white p-2 rounded-lg inline-block"
-        popoverTarget="layout-popover"
+        {...{ popoverTarget: "layout-popover" }}
       >
         Click me
       </button>
       <div
         id="layout-popover"
         className="bg-white p-3 w-80 rounded-xl shadow-lg"
-        popover="auto"
+        {...{ popover: "auto" }}
       >
         <h1 className="text-2xl font-bold">Hello from popover</h1>
       </div>

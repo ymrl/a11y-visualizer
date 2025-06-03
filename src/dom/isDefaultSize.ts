@@ -31,25 +31,23 @@ type SizeDeclaration = {
   [key in (typeof SizeProperties)[number]]: string;
 };
 
-const ElementTypes = [
-  "button",
-  "input-text",
-  "input-search",
-  "input-date",
-  "input-month",
-  "input-week",
-  "input-time",
-  "input-datetime-local",
-  "input-range",
-  "input-color",
-  "input-checkbox",
-  "input-radio",
-  "input-file",
-] as const;
-type ElementTypeT = (typeof ElementTypes)[number];
-const DefaultStyles: Partial<{ [key in ElementTypeT]: SizeDeclaration }> = {};
+type ElementType =
+  | "button"
+  | "input-text"
+  | "input-search"
+  | "input-date"
+  | "input-month"
+  | "input-week"
+  | "input-time"
+  | "input-datetime-local"
+  | "input-range"
+  | "input-color"
+  | "input-checkbox"
+  | "input-radio"
+  | "input-file";
+const DefaultStyles: Partial<{ [key in ElementType]: SizeDeclaration }> = {};
 
-const elementType = (el: Element): ElementTypeT | null => {
+const elementType = (el: Element): ElementType | null => {
   const tagName = el.tagName.toLowerCase();
   if (tagName === "button") {
     return "button";
@@ -100,7 +98,7 @@ const elementType = (el: Element): ElementTypeT | null => {
   return null;
 };
 
-const getDefaultElement = (elementType: ElementTypeT, d: Document): Element => {
+const getDefaultElement = (elementType: ElementType, d: Document): Element => {
   switch (elementType) {
     case "button": {
       const el = d.createElement("button");

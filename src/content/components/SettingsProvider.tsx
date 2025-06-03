@@ -1,7 +1,6 @@
 import React from "react";
-import { Settings, initialSettings } from "../../settings";
-
-export const SettingsContext = React.createContext<Settings>(initialSettings);
+import { Settings } from "../../settings";
+import { SettingsContext } from "../contexts/SettingsContext";
 
 export const SettingsProvider = ({
   children,

@@ -22,11 +22,11 @@ To develop extension, lauch the dev server
 
 ```
 # Install dependencies
-$ npm install
+$ pnpm install
 
 # To testing, load the ./dist directory on your browser
 # Currently it doesn't work in Firefox
-$ npm run dev
+$ pnpm dev
 
 ```
 
@@ -38,13 +38,13 @@ There is a test page in `src/test/` directroy. You can use it to test the extens
 
 ```
 # Install dependencies
-$ npm install
+$ pnpm install
 
 # Build browser extensions to ./dist (for Chrome) and ./dist-firefox directory
 # To testing, load the directories on your browser
-$ npm run build
+$ pnpm build
 
 # Build zip files to upload to the stores
 # The zip files are created as ./a11y-visualizer-chrome.zip and ./a11y-visualizer-firefox.zip
-$ npm run package
+$ pnpm package
 ```

@@ -1,0 +1,78 @@
+.Tip {
+  padding: 0.2em 0.4em;
+  font: bold 1em/1 sans-serif;
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.4em;
+  color: #000;
+  background-color: #fff;
+  border-radius: 0.2em;
+}
+.Tip--name {
+  background-color: var(--base-green);
+}
+
+.Tip--pageTitle {
+  background-color: var(--base-green);
+}
+
+.Tip--role {
+  background-color: var(--base-pink);
+}
+
+.Tip--tagName {
+  background-color: var(--base-purple);
+}
+.Tip--landmark {
+  background-color: var(--base-yellowgreen);
+}
+.Tip--tableHeader {
+  background-color: var(--base-skyblue);
+}
+.Tip--tableSize {
+  background-color: var(--base-beige);
+}
+.Tip--list {
+  background-color: var(--base-beige);
+}
+.Tip--listType {
+  background-color: var(--base-yellowgreen);
+}
+.Tip--tableCellPosition {
+  background-color: var(--base-beige);
+}
+.Tip--linkTarget {
+  background-color: var(--base-beige);
+}
+
+.Tip--description {
+  background-color: var(--light-gray);
+}
+
+.Tip--heading {
+  background-color: var(--base-skyblue);
+}
+
+.Tip--warning {
+  background-color: var(--accent-yellow);
+}
+
+.Tip--error {
+  background-color: var(--accent-red-darken);
+  color: #fff;
+}
+
+.Tip--state {
+  background-color: var(--base-beige);
+}
+.Tip--lang {
+  background-color: var(--base-cream);
+}
+
+.Tip__icon {
+  width: 1.2em;
+  height: 1.2em;
+  flex-shrink: 0;
+  background-color: transparent;
+}

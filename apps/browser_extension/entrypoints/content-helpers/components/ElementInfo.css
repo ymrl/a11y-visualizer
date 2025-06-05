@@ -1,0 +1,91 @@
+.ElementInfo {
+  position: absolute;
+}
+.ElementInfo--hovered {
+  z-index: 2;
+}
+.ElementInfo__overlay {
+  position: absolute;
+  z-index: 3;
+}
+.ElementInfo__content {
+  position: absolute;
+  inset: 0;
+}
+
+.ElementInfo__border {
+  position: absolute;
+  inset: 0;
+  border: 3px dotted var(--light-gray);
+}
+.ElementInfo__border--page {
+  border: 0;
+}
+
+.ElementInfo__border--image {
+  border-color: var(--accent-green);
+}
+.ElementInfo__border--control {
+  border-color: var(--accent-orange);
+}
+
+.ElementInfo__border--heading {
+  border-color: var(--accent-blue);
+}
+
+.ElementInfo__border--section,
+.ElementInfo__border--list,
+.ElementInfo__border--listItem {
+  border-color: var(--accent-skyblue);
+}
+
+.ElementInfo__border--fieldset {
+  border-color: var(--accent-brown);
+  border-style: dotted;
+}
+.ElementInfo__border--table,
+.ElementInfo__border--tableCell {
+  border-color: var(--accent-skyblue);
+}
+
+.ElementInfo__tips {
+  position: absolute;
+  z-index: 1;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: row;
+  width: max-content;
+  flex-wrap: wrap;
+  gap: 0.2em;
+}
+
+.ElementInfo__tips--left {
+  left: 0;
+  justify-content: flex-start;
+}
+
+.ElementInfo__tips--right {
+  right: 0;
+  justify-content: flex-end;
+}
+.ElementInfo__tips--center {
+  left: 50%;
+  transform: translateX(-50%);
+  justify-content: center;
+}
+
+.ElementInfo__tips--inner-top {
+  top: 0;
+}
+
+.ElementInfo__tips--inner-bottom {
+  bottom: 0;
+}
+
+.ElementInfo__tips--outer-top {
+  bottom: 100%;
+}
+
+.ElementInfo__tips--outer-bottom {
+  top: 100%;
+}

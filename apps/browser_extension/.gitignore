@@ -8,10 +8,6 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
-dist
-dist-ssr
-dist-firefox
-*.local
 .output
 stats.html
 stats-*.json

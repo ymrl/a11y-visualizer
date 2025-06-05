@@ -1,0 +1,25 @@
+:host {
+  --accent-red: rgb(255, 75, 0);
+  --accent-red-darken: rgb(214, 64, 0);
+  --accent-yellow: rgb(255, 241, 0);
+  --accent-green: rgb(3, 175, 122);
+  --accent-blue: rgb(0, 90, 255);
+  --accent-skyblue: rgb(77, 196, 255);
+  --accent-pink: rgb(255, 128, 130);
+  --accent-orange: rgb(246, 170, 0);
+  --accent-purple: rgb(153, 0, 153);
+  --accent-brown: rgb(128, 64, 0);
+
+  --base-pink: rgb(255, 202, 191);
+  --base-cream: rgb(255, 255, 128);
+  --base-yellowgreen: rgb(216, 242, 85);
+  --base-skyblue: rgb(191, 228, 255);
+  --base-beige: rgb(255, 202, 128);
+  --base-green: rgb(119, 217, 168);
+  --base-purple: rgb(201, 172, 230);
+
+  --white: rgb(255, 255, 255);
+  --light-gray: rgb(200, 200, 203);
+  --gray: rgb(132, 145, 158);
+  --black: rgb(0, 0, 0);
+}

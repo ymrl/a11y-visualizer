@@ -8,6 +8,23 @@ export default defineConfig({
     css: {
       postcss: "./postcss.config.js",
     },
+    test: {
+      browser: {
+        enabled: true,
+        provider: "playwright",
+        headless: true,
+        instances: [
+          {
+            name: "chromium",
+            browser: "chromium",
+          },
+          {
+            name: "firefox",
+            browser: "firefox",
+          },
+        ],
+      },
+    },
   }),
   manifest: {
     name: "Accessibility Visualizer",

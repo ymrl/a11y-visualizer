@@ -1,13 +1,14 @@
 import React from "react";
+import "../popup/index.css";
 import {
   Settings,
   initialSettings,
   loadDefaultSettings,
   resetDefaultSettings,
   saveDefaultSettings,
-} from "../settings";
-import { SettingsEditor } from "../components/SettingsEditor";
-import { useLang } from "../useLang";
+} from "../../src/settings";
+import { SettingsEditor } from "../../src/components/SettingsEditor";
+import { useLang } from "../../src/useLang";
 
 export const OptionsPage = () => {
   const [settings, setSettings] = React.useState<Settings>(initialSettings);

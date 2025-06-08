@@ -1,3 +1,4 @@
+import { browser } from "#imports";
 import React from "react";
 import "./index.css";
 import {
@@ -12,7 +13,7 @@ import { useLang } from "../../src/useLang";
 import {
   sendMessageToActiveTab,
   sendMessageToActiveTabs,
-} from "../../src/chrome/tabs";
+} from "../../src/browser/tabs";
 import { SettingsEditor } from "../../src/components/SettingsEditor";
 import { loadEnabled, saveEnabled } from "../../src/enabled";
 import { Checkbox } from "../../src/components/Checkbox";
@@ -21,7 +22,7 @@ import iconDisabled from "../../src/assets/icon-disabled.svg";
 import { IoBackspaceOutline, IoReloadOutline } from "react-icons/io5";
 
 const getUrl = async () => {
-  const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
+  const tabs = await browser.tabs.query({ active: true, currentWindow: true });
   return tabs[0]?.url;
 };
 
@@ -120,7 +121,7 @@ export const Popup = () => {
           onChange={async (e) => {
             setEnabled(e.target.checked);
             saveEnabled(e.target.checked);
-            chrome.runtime.sendMessage({
+            browser.runtime.sendMessage({
               type: "updateEnabled",
               enabled: e.target.checked,
             });
@@ -185,7 +186,7 @@ export const Popup = () => {
             {t("popup.hostDesc")}
             <button
               className="link text-teal-700 underline hover:enabled:text-teal-900 transition-colors dark:text-teal-400 hover:enabled:dark:text-teal-200"
-              onClick={() => chrome.runtime.openOptionsPage()}
+              onClick={() => browser.runtime.openOptionsPage()}
             >
               {t("popup.openExtensionOptions")}
             </button>

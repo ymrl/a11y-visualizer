@@ -1,3 +1,4 @@
+import { browser } from "#imports";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { Root, RootOptions } from "./Root";
@@ -80,15 +81,15 @@ export const injectRoot = async (
       mountReturn?.unmount();
       mountReturn = null;
       if (mountOnce) {
-        chrome.runtime.onMessage.removeListener(listener);
+        browser.runtime.onMessage.removeListener(listener);
       }
     }
   };
-  chrome.runtime.onMessage.addListener(listener);
+  browser.runtime.onMessage.addListener(listener);
 
   w.document.addEventListener("visibilitychange", async () => {
     if (w.document.visibilityState === "visible") {
-      const { enabled } = await chrome.runtime.sendMessage({
+      const { enabled } = await browser.runtime.sendMessage({
         type: "isEnabled",
       });
       if (enabled) {

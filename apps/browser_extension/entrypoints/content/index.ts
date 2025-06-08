@@ -1,10 +1,10 @@
-import { defineContentScript } from "#imports";
-import type { SettingsMessage } from "../src/settings";
+import { defineContentScript, browser } from "#imports";
+import type { SettingsMessage } from "../../src/settings";
 export default defineContentScript({
   matches: ["<all_urls>"],
   main: async () => {
-    const { loadEnabled } = await import("../src/enabled");
-    const { injectRoot } = await import("./content-helpers/injectRoot");
+    const { loadEnabled } = await import("../../src/enabled");
+    const { injectRoot } = await import("./injectRoot");
 
     let injected = false;
     const enabled = await loadEnabled();
@@ -21,11 +21,11 @@ export default defineContentScript({
       }
     };
 
-    chrome.runtime.onMessage.addListener(listener);
+    browser.runtime.onMessage.addListener(listener);
 
     document.addEventListener("visibilitychange", async () => {
       if (document.visibilityState === "visible") {
-        const { enabled } = await chrome.runtime.sendMessage({
+        const { enabled } = await browser.runtime.sendMessage({
           type: "isEnabled",
         });
         if (enabled && !injected) {

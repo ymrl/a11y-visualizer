@@ -4,7 +4,7 @@ import {
   FILE_SETTING_KEY,
   initialSettings,
 } from "./constatns";
-import { getAsync, removeAsync, setAsync } from "../chrome/localStorage";
+import { getAsync, removeAsync, setAsync } from "../browser/localStorage";
 
 export const loadDefaultSettings = async (): Promise<[Settings, boolean]> => {
   return await getAsync(DEFAULT_SETTING_KEY, initialSettings);

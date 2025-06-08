@@ -1,4 +1,4 @@
-import { defineBackground } from "#imports";
+import { defineBackground, browser } from "#imports";
 export default defineBackground(() => {
   const ENABLED_KEY = "enabled";
 
@@ -17,32 +17,32 @@ export default defineBackground(() => {
   } as const;
 
   const loadEnabled = async (): Promise<boolean> => {
-    const result = await chrome.storage.local.get(ENABLED_KEY);
+    const result = await browser.storage.local.get(ENABLED_KEY);
     return result[ENABLED_KEY] ?? false;
   };
 
   const saveEnabled = async (enabled: boolean): Promise<void> => {
-    await chrome.storage.local.set({ [ENABLED_KEY]: enabled });
+    await browser.storage.local.set({ [ENABLED_KEY]: enabled });
   };
 
   const updateIcons = (enabled: boolean) => {
     if (enabled) {
-      chrome.action.setIcon({
+      browser.action.setIcon({
         path: enabledIcons,
       });
     } else {
-      chrome.action.setIcon({
+      browser.action.setIcon({
         path: disabledIcons,
       });
     }
   };
 
-  chrome.runtime.onInstalled.addListener(async (details) => {
+  browser.runtime.onInstalled.addListener(async (details) => {
     const { reason } = details;
-    if (reason === chrome.runtime.OnInstalledReason.INSTALL) {
+    if (reason === browser.runtime.OnInstalledReason.INSTALL) {
       saveEnabled(true);
-    } else if (details.reason === chrome.runtime.OnInstalledReason.UPDATE) {
-      const enabled = await chrome.storage.local.get(ENABLED_KEY);
+    } else if (details.reason === browser.runtime.OnInstalledReason.UPDATE) {
+      const enabled = await browser.storage.local.get(ENABLED_KEY);
       if (enabled[ENABLED_KEY] === undefined) {
         saveEnabled(true);
       }
@@ -51,12 +51,12 @@ export default defineBackground(() => {
     updateIcons(enabled);
   });
 
-  chrome.runtime.onStartup.addListener(async () => {
+  browser.runtime.onStartup.addListener(async () => {
     const enabled = await loadEnabled();
     updateIcons(enabled);
   });
 
-  chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
+  browser.runtime.onMessage.addListener((message, _sender, sendResponse) => {
     if (message.type === "updateEnabled") {
       updateIcons(message.enabled);
     }

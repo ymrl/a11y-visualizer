@@ -166,10 +166,7 @@ jobs:
             ~/.cache/ms-playwright
           key: ${{ runner.os }}-playwright-${{ steps.playwright_version.outputs.VERSION }}
 
-      - run: pnpm exec playwright install chromium
-        if: steps.playwright_cache.outputs.cache-hit != 'true'
-
-      - run: pnpm exec playwright install firefox
+      - run: pnpm install-playwright
         if: steps.playwright_cache.outputs.cache-hit != 'true'
 
       - name: Run test

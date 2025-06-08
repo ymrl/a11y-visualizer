@@ -10,7 +10,7 @@ export const Heading = () => (
       <h5 className="text-lg font-bold">Heading 5</h5>
       <h6 className="text-lg">Heading 6</h6>
       <div className="text-base font-bold" aria-level={7} role="heading">
-        role=&dquot;heading&dquot; aria-level=&dquot;7&dquot;
+        role="heading" aria-level="7"
       </div>
     </blockquote>
   </>

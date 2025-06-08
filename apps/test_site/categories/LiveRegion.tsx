@@ -80,7 +80,9 @@ export const LiveRegion = () => {
           </span>
         )}
       />
-      <CategorySectionTitle>aria-live="assertive"!</CategorySectionTitle>
+      <CategorySectionTitle>
+        aria-live=&dquot;assertive&dquot;!
+      </CategorySectionTitle>
       <ClockExample
         renderExample={(time) => (
           <span aria-live="assertive" aria-atomic="true">

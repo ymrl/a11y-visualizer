@@ -30,7 +30,9 @@ export const Layout = () => {
           Close Dialog
         </button>
       </dialog>
-      <CategorySectionTitle>"popover" attribute</CategorySectionTitle>
+      <CategorySectionTitle>
+        &dquot;popover&dquot; attribute
+      </CategorySectionTitle>
       <button
         className="bg-blue-600 text-white p-2 rounded-lg inline-block"
         {...{ popoverTarget: "layout-popover" }}

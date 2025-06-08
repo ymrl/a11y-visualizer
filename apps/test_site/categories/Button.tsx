@@ -134,7 +134,7 @@ export const Button = () => (
           title: "summary without name",
           body: (
             <details>
-              <summary />
+              <summary className="intentional-violation" />
               <p>Details</p>
             </details>
           ),

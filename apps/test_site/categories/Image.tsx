@@ -187,7 +187,7 @@ export const Image = () => (
         },
       ]}
     />
-    <CategorySectionTitle>role="img"</CategorySectionTitle>
+    <CategorySectionTitle>role=&dquot;img&dquot;</CategorySectionTitle>
     <ExampleList
       examples={[
         {

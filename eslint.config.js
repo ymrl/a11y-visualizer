@@ -39,6 +39,6 @@ export default [
   },
   prettier,
   {
-    ignores: ["dist/", "dist-firefox/", "node_modules/"],
+    ignores: ["dist/", "dist-firefox/", "node_modules/", "apps/"],
   },
 ];

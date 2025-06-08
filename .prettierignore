@@ -2,3 +2,5 @@ dist
 node_modules
 dist-firefox
 pnpm-lock.yaml
+.claude
+apps

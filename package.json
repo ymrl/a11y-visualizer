@@ -4,21 +4,19 @@
   "version": "5.5.0",
   "type": "module",
   "scripts": {
-    "dev:browser": "cd apps/browser_extension && pnpm run dev",
-    "dev:test": "cd apps/test_site && pnpm run dev",
+    "dev": "pnpm --filter @a11y-visualizer/browser-extension run dev",
+    "test": "pnpm --filter @a11y-visualizer/* test",
     "build": "cd apps/browser_extension && pnpm run build",
     "build:firefox": "cd apps/browser_extension && pnpm run build:firefox",
     "zip": "cd apps/browser_extension && pnpm run zip",
     "zip:firefox": "cd apps/browser_extension && pnpm run zip:firefox",
-    "lint": "cd apps/browser_extension && pnpm run lint && cd ../test_site && pnpm run lint",
-    "test": "cd apps/browser_extension && pnpm run test && cd ../test_site && pnpm run test",
-    "lint:browser": "cd apps/browser_extension && pnpm run lint",
-    "lint:test": "cd apps/test_site && pnpm run lint",
-    "test:browser": "cd apps/browser_extension && pnpm run test",
-    "test:test": "cd apps/test_site && pnpm run test",
-    "format": "prettier --write .",
-    "release": "tsx scripts/release.ts",
-    "prepare": "husky"
+    "lint": "run-p lint:*",
+    "lint:monorepo": "prettier . --check && eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "lint:packages": "pnpm --filter @a11y-visualizer/* lint",
+    "lint-fix": "run-p lint-fix:*",
+    "lint-fix:monorepo": "prettier . --write && eslint . --ext ts,tsx --fix",
+    "lint-fix:packages": "pnpm --filter @a11y-visualizer/* lint-fix",
+    "release": "tsx scripts/release.ts"
   },
   "devDependencies": {
     "@eslint/js": "^9.28.0",
@@ -31,20 +29,10 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.6",
     "globals": "^15.12.0",
-    "husky": "^9.0.11",
-    "lint-staged": "^15.2.2",
     "npm-run-all": "^4.1.5",
+    "playwright": "^1.52.0",
     "prettier": "3.2.5",
     "semver": "^7.6.0",
     "typescript": "^5.2.2"
-  },
-  "lint-staged": {
-    "*.{ts,tsx}": [
-      "prettier --write",
-      "eslint"
-    ],
-    "*.{md,json,yml,html,css}": [
-      "prettier --write"
-    ]
   }
 }

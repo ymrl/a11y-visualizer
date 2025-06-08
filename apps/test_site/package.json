@@ -2,7 +2,7 @@
   "name": "@a11y-visualizer/test-site",
   "description": "Test site for Accessibility Visualizer browser extension",
   "private": true,
-  "version": "1.0.0",
+  "version": "5.5.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -15,7 +15,8 @@
     "lint-fix:eslint": "prettier . --write && eslint . --ext ts,tsx --fix",
     "lint-fix:markuplint": "markuplint ./**/*.html ./**/*.tsx --fix",
     "test": "echo \"No tests configured\" && exit 0",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "bump_version": "pnpm version --no-git-tag-version"
   },
   "dependencies": {
     "react": "^18.2.0",

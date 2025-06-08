@@ -16,6 +16,8 @@
     "lint-fix": "run-p lint-fix:*",
     "lint-fix:monorepo": "prettier . --write && eslint . --ext ts,tsx --fix",
     "lint-fix:packages": "pnpm --filter @a11y-visualizer/* lint-fix",
+    "bump_version:packages": "pnpm --filter @a11y-visualizer/* --no-git-tag-version bump_version",
+    "bump_version": "pnpm version --no-git-tag-version",
     "release": "tsx scripts/release.ts"
   },
   "devDependencies": {

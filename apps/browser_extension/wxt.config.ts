@@ -57,4 +57,7 @@ export default defineConfig({
       },
     },
   },
+  zip: {
+    artifactTemplate: "a11y-visualizer-{{version}}-{{browser}}.zip",
+  },
 });

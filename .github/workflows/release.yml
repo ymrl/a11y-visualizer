@@ -14,6 +14,10 @@ jobs:
 
     outputs:
       VERSION: ${{ steps.get_version.outputs.VERSION }}
+      SHA: ${{ steps.get_commit_sha.outputs.SHA }}
+
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
       - name: Checkout code
@@ -38,12 +42,24 @@ jobs:
           git config --global user.name 'github-actions[bot]'
           git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
 
-      - name: Release
-        run: pnpm release ${{ github.event.inputs.release_type }}
+      - name: Bump version
+        run: |
+          pnpm bump_version:packages ${{ github.event.inputs.release_type }}
+          pnpm bump_version ${{ github.event.inputs.release_type }}
 
       - name: Get version
         id: get_version
         run: echo "VERSION=$(jq -r .version package.json)" >> $GITHUB_OUTPUT
+
+      - name: Commit changes
+        run: |
+          git add .
+          git commit -m "Bump version to ${{ steps.get_version.outputs.VERSION }}"
+          git tag v${{ steps.get_version.outputs.VERSION }}
+
+      - name: Get commit SHA
+        id: get_commit_sha
+        run: echo "SHA=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
 
       - name: Switch Branch
         run: git checkout -b release_${{ steps.get_version.outputs.VERSION }}
@@ -53,6 +69,15 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: release_${{ steps.get_version.outputs.VERSION }}
+          tags: true
+
+      - name: Create Pull Request
+        run: |
+          gh pr create \
+            --title "Release v${{ steps.get_version.outputs.VERSION }}" \
+            --body "This PR bumps the version to v${{ steps.get_version.outputs.VERSION }}." \
+            --base main \
+            --head release_${{ steps.get_version.outputs.VERSION }}
 
   lint:
     runs-on: ubuntu-latest
@@ -62,11 +87,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          ref: release_${{ needs.bump_version.outputs.VERSION }}
-
-      - name: Set commit SHA
-        id: set_commit_sha
-        run: echo "SHA=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
+          ref: ${{ needs.bump_version.outputs.SHA }}
 
       - name: Set Commit Status Pending
         uses: myrotvorets/set-commit-status-action@v2.0.1
@@ -75,7 +96,7 @@ jobs:
           status: pending
           context: lint
           description: "Running lint"
-          sha: ${{ steps.set_commit_sha.outputs.SHA }}
+          sha: ${{ needs.bump_version.outputs.SHA }}
 
       - name: Install pnpm
         uses: pnpm/action-setup@v4
@@ -101,7 +122,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           status: ${{ job.status }}
           context: lint
-          sha: ${{ steps.set_commit_sha.outputs.SHA }}
+          sha: ${{ needs.bump_version.outputs.SHA }}
 
   test:
     runs-on: ubuntu-latest
@@ -111,11 +132,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          ref: release_${{ needs.bump_version.outputs.VERSION }}
-
-      - name: Set commit SHA
-        id: set_commit_sha
-        run: echo "SHA=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
+          ref: ${{ needs.bump_version.outputs.SHA }}
 
       - name: Set Commit Status Pending
         uses: myrotvorets/set-commit-status-action@v2.0.1
@@ -124,7 +141,7 @@ jobs:
           status: pending
           context: test
           description: "Running test"
-          sha: ${{ steps.set_commit_sha.outputs.SHA }}
+          sha: ${{ needs.bump_version.outputs.SHA }}
 
       - name: Install pnpm
         uses: pnpm/action-setup@v4
@@ -138,7 +155,7 @@ jobs:
           cache: "pnpm"
 
       - name: Install dependencies
-        run: pnpm ci
+        run: pnpm install
 
       - name: Get installed Playwright version
         id: playwright_version
@@ -152,10 +169,7 @@ jobs:
             ~/.cache/ms-playwright
           key: ${{ runner.os }}-playwright-${{ steps.playwright_version.outputs.VERSION }}
 
-      - run: pnpm exec playwright install chromium
-        if: steps.playwright_cache.outputs.cache-hit != 'true'
-
-      - run: pnpm exec playwright install firefox
+      - run: pnpm install-playwright
         if: steps.playwright_cache.outputs.cache-hit != 'true'
 
       - name: Run test
@@ -168,19 +182,19 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           status: ${{ job.status }}
           context: test
-          sha: ${{ steps.set_commit_sha.outputs.SHA }}
+          sha: ${{ needs.bump_version.outputs.SHA }}
 
   release:
     runs-on: ubuntu-latest
 
     needs:
       - bump_version
-      - lint
-      - test
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.bump_version.outputs.SHA }}
 
       - name: Install pnpm
         uses: pnpm/action-setup@v4
@@ -193,29 +207,19 @@ jobs:
           node-version: 22
           cache: "pnpm"
 
-      - name: Git config
-        run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
-
-      - name: Git Pull
-        run: git pull --ff-only origin release_${{ needs.bump_version.outputs.VERSION }}
-
-      - name: Push Changes
-        uses: ad-m/github-push-action@v0.8.0
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.ref }}
-
       - name: Install dependencies
         run: pnpm install
 
       - name: Package
-        run: pnpm package
+        run: |
+          pnpm zip
+          pnpm zip:firefox
 
       - name: Create Release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "a11y-visualizer-chrome.zip, a11y-visualizer-firefox.zip"
+          artifacts: "apps/browser_extension/.output/a11y-visualizer-*.zip"
+          generateReleaseNotes: true
+          name: "Release v${{ needs.bump_version.outputs.VERSION }}"
           tag: v${{ needs.bump_version.outputs.VERSION }}
           draft: true

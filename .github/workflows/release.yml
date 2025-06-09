@@ -69,6 +69,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: release_${{ steps.get_version.outputs.VERSION }}
+          tags: true
 
       - name: Create Pull Request
         run: |

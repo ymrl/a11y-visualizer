@@ -48,33 +48,19 @@ jobs:
         id: get_version
         run: echo "VERSION=$(jq -r .version package.json)" >> $GITHUB_OUTPUT
 
-      - name: Commit changes
-        run: |
-          git add .
-          git commit -m "Bump version to ${{ steps.get_version.outputs.VERSION }}"
-          git tag v${{ steps.get_version.outputs.VERSION }}
-
-      - name: Get commit SHA
-        id: get_commit_sha
-        run: echo "SHA=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
-
-      - name: Switch Branch
-        run: git checkout -b release_${{ steps.get_version.outputs.VERSION }}
-
-      - name: Push changes
-        uses: ad-m/github-push-action@v0.8.0
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: release_${{ steps.get_version.outputs.VERSION }}
-
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v7
+        id: create_pr
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           title: "Release v${{ steps.get_version.outputs.VERSION }}"
           body: "This PR bumps the version to v${{ steps.get_version.outputs.VERSION }}."
           base: main
           branch: release_${{ steps.get_version.outputs.VERSION }}
+
+      - name: Get commit SHA
+        id: get_commit_sha
+        run: echo "SHA=${{ steps.create_pr.outputs.pull-request-head-sha }}" >> $GITHUB_OUTPUT
 
   lint:
     runs-on: ubuntu-latest
@@ -186,8 +172,6 @@ jobs:
 
     needs:
       - bump_version
-      - lint
-      - test
 
     steps:
       - name: Checkout code
@@ -218,5 +202,7 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           artifacts: "apps/browser_extension/.output/a11y-visualizer-*.zip"
+          generateReleaseNotes: true
+          name: "Release v${{ needs.bump_version.outputs.VERSION }}"
           tag: v${{ needs.bump_version.outputs.VERSION }}
           draft: true

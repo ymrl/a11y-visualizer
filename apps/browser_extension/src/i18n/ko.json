@@ -27,14 +27,19 @@
     "lists": "Lists",
     "tipOpacityPercent": "팁의 불투명도(%)",
     "interactiveMode": "인터랙티브 모드",
+    "interactive": "인터랙티브",
     "hideLabels": "라벨 숨기기",
+    "interactiveModeHideLabels": "인터랙티브 모드에서 라벨 숨기기",
     "announceLiveRegions": "라이브리전을 안내하기",
     "announcement": "안내",
+    "liveRegionDisplay": "라이브리전 표시",
     "announcementSecondsPerCharacter": "속도(초/문자)",
     "announcementMaxSeconds": "최장 길이(초)",
     "liveRegionOpacityPercent": "라이브리전의 불투명도(%)",
     "tipFontSize": "Tip font size",
-    "liveRegionFontSize": "Live region font size"
+    "liveRegionFontSize": "Live region font size",
+    "displaySettings": "표시 설정",
+    "displayCustomization": "표시 커스터마이징"
   },
   "tip": {
     "name": "이름",

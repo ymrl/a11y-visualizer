@@ -5,15 +5,19 @@ export default defineBackground(() => {
   const enabledIcons = {
     16: "/icon/16.png",
     48: "/icon/48.png",
+    32: "/icon/32.png",
+    96: "/icon/96.png",
     128: "/icon/128.png",
-    192: "/icon/96.png",
+    192: "/icon/192.png",
   } as const;
 
   const disabledIcons = {
     16: "/icon/disabled-16.png",
+    32: "/icon/disabled-32.png",
+    96: "/icon/disabled-96.png",
     48: "/icon/disabled-48.png",
     128: "/icon/disabled-128.png",
-    192: "/icon/disabled-96.png",
+    192: "/icon/disabled-192.png",
   } as const;
 
   const loadEnabled = async (): Promise<boolean> => {

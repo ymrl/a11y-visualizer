@@ -16,23 +16,31 @@
 
 ## How to develop
 
-It is built with [CRXJS Vite Plugin](https://crxjs.dev/vite-plugin/).
+It is built with [WXT](https://wxt.dev/).
 
-To develop extension, lauch the dev server
+To develop extension, launch the dev server
 
 ```
 # Install dependencies
 $ pnpm install
 
-# To testing, load the ./dist directory on your browser
-# Currently it doesn't work in Firefox
-$ pnpm dev
+# To develop for Chrome/Chromium browsers
+$ pnpm --filter=@a11y-visualizer/browser-extension dev
 
+# To develop for Firefox
+$ pnpm --filter=@a11y-visualizer/browser-extension dev:firefox
 ```
 
-And in your browser, turn on Developer mode, and load the `dist` directory with "Load unpacked" button.
+WXT will automatically open your browser and load the extension in development mode.
 
-There is a test page in `src/test/` directroy. You can use it to test the extension with http://localhost:5173/src/test/index.html .
+There is a test page in `apps/test_site/` directory. You can use it to test the extension:
+
+```
+# Start the test site server
+$ pnpm --filter=@a11y-visualizer/test-site dev
+```
+
+Then visit http://localhost:5173 to access various test pages for accessibility features.
 
 ## How to build
 
@@ -40,11 +48,15 @@ There is a test page in `src/test/` directroy. You can use it to test the extens
 # Install dependencies
 $ pnpm install
 
-# Build browser extensions to ./dist (for Chrome) and ./dist-firefox directory
-# To testing, load the directories on your browser
-$ pnpm build
+# Build browser extension for Chrome/Chromium
+$ pnpm --filter=@a11y-visualizer/browser-extension build
 
-# Build zip files to upload to the stores
-# The zip files are created as ./a11y-visualizer-chrome.zip and ./a11y-visualizer-firefox.zip
-$ pnpm package
+# Build browser extension for Firefox
+$ pnpm --filter=@a11y-visualizer/browser-extension build:firefox
+
+# Create zip files for store distribution
+$ pnpm --filter=@a11y-visualizer/browser-extension zip
+$ pnpm --filter=@a11y-visualizer/browser-extension zip:firefox
 ```
+
+The built extensions will be in `apps/browser_extension/.output/` directory, and zip files will be created in the same location.

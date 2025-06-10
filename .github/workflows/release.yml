@@ -218,7 +218,7 @@ jobs:
       - name: Create Release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "apps/browser_extension/.output/a11y-visualizer-*.zip"
+          artifacts: "apps/browser_extension/dist/a11y-visualizer-*.zip"
           generateReleaseNotes: true
           name: "Release v${{ needs.bump_version.outputs.VERSION }}"
           tag: v${{ needs.bump_version.outputs.VERSION }}

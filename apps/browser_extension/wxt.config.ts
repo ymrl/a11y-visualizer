@@ -4,6 +4,7 @@ import { defineConfig } from "wxt";
 export default defineConfig({
   imports: false,
   modules: ["@wxt-dev/module-react"],
+  outDir: "dist",
   vite: () => ({
     css: {
       postcss: "./postcss.config.js",

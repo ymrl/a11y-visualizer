@@ -27,14 +27,19 @@
     "lists": "リスト",
     "tipOpacityPercent": "チップの不透明度（%）",
     "interactiveMode": "インタラクティブモード",
+    "interactive": "インタラクティブ",
     "hideLabels": "ラベルを隠す",
+    "interactiveModeHideLabels": "インタラクティブモードでラベルを隠す",
     "announceLiveRegions": "ライブリージョンをアナウンス",
     "announcement": "アナウンス",
+    "liveRegionDisplay": "ライブリージョンの表示",
     "announcementSecondsPerCharacter": "スピード（秒/文字）",
     "announcementMaxSeconds": "最長の長さ（秒）",
     "liveRegionOpacityPercent": "ライブリージョンの不透明度（%）",
     "tipFontSize": "チップの文字サイズ",
-    "liveRegionFontSize": "ライブリージョンの文字サイズ"
+    "liveRegionFontSize": "ライブリージョンの文字サイズ",
+    "displaySettings": "表示設定",
+    "displayCustomization": "表示のカスタマイズ"
   },
   "tip": {
     "name": "名前",

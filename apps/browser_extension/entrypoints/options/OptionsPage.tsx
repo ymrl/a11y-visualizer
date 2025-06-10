@@ -37,7 +37,11 @@ export const OptionsPage = () => {
       px-5 pt-5 pb-5 flex flex-col gap-5"
       lang={lang}
     >
-      <SettingsEditor settings={settings} onChange={updateSettings} />
+      <SettingsEditor
+        settings={settings}
+        onChange={updateSettings}
+        showDisplaySettingsCollapsed={false}
+      />
       <p className="text-sm text-gray-500">{t("optionsPage.description")}</p>
       <details ref={resetRef}>
         <summary
@@ -75,7 +79,7 @@ export const OptionsPage = () => {
             </button>
           </div>
           <p
-            className="text-sm text-gray-500"
+            className="text-sm text-gray-500 px-2"
             aria-live="polite"
             aria-atomic="true"
           >

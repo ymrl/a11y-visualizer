@@ -27,14 +27,19 @@
     "lists": "Lists",
     "tipOpacityPercent": "Tips opacity (%)",
     "interactiveMode": "Interactive mode",
+    "interactive": "Interactive",
     "hideLabels": "Hide labels",
+    "interactiveModeHideLabels": "Hide labels in interactive mode",
     "announceLiveRegions": "Announce live regions",
     "announcement": "Announcement",
+    "liveRegionDisplay": "Live region display",
     "announcementSecondsPerCharacter": "speed (seconds/char)",
     "announcementMaxSeconds": "Max seconds",
     "liveRegionOpacityPercent": "Live region opacity (%)",
     "tipFontSize": "Tip font size",
-    "liveRegionFontSize": "Live region font size"
+    "liveRegionFontSize": "Live region font size",
+    "displaySettings": "Display Settings",
+    "displayCustomization": "Display Customization"
   },
   "tip": {
     "name": "Name",

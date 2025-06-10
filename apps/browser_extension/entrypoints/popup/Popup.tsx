@@ -142,8 +142,8 @@ export const Popup = () => {
         </Checkbox>
       </div>
       {(host || isFile) && (
-        <div className="p-2 flex flex-col gap-2 items-stretch">
-          <div className="flex flex-row gap-2 items-center">
+        <div className="p-2 flex flex-col gap-0 items-stretch">
+          <div className="flex flex-row gap-2 items-center mb-2 px-2">
             <h2 className="text-sm font-bold text-teal-800 dark:text-teal-200 shrink">
               {host && t("popup.settingsForHost", { host })}
               {isFile && t("popup.settingsForFile")}
@@ -181,8 +181,9 @@ export const Popup = () => {
             settings={settings}
             onChange={updateSettings}
             disabled={!enabled}
+            showDisplaySettingsCollapsed={true}
           />
-          <p className="text-xs text-zinc-500 dark:text-zinc-400">
+          <p className="text-xs text-zinc-500 dark:text-zinc-400 px-2">
             {t("popup.hostDesc")}
             <button
               className="link text-teal-700 underline hover:enabled:text-teal-900 transition-colors dark:text-teal-400 hover:enabled:dark:text-teal-200"

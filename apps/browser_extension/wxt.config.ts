@@ -5,6 +5,8 @@ export default defineConfig({
   imports: false,
   modules: ["@wxt-dev/module-react"],
   outDir: "dist",
+  // Firefox でも Manifest V3 を使用する場合
+  // manifestVersion: 3,
   vite: () => ({
     css: {
       postcss: "./postcss.config.js",
@@ -41,6 +43,18 @@ export default defineConfig({
         "128": "icon/128.png",
         "192": "icon/192.png",
       },
+    },
+    browser_action: {
+      default_icon: {
+        "16": "icon/16.png",
+        "32": "icon/32.png",
+        "48": "icon/48.png",
+        "96": "icon/96.png",
+        "128": "icon/128.png",
+        "192": "icon/192.png",
+      },
+      default_title: "Accessibility Visualizer",
+      default_popup: "popup.html",
     },
     icons: {
       "16": "icon/16.png",

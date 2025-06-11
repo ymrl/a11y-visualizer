@@ -3,17 +3,19 @@ export default defineBackground(() => {
   const ENABLED_KEY = "enabled";
 
   const enabledIcons = {
-    16: "/icon/16.png",
-    48: "/icon/48.png",
-    128: "/icon/128.png",
-    192: "/icon/96.png",
+    "16": "icon/16.png",
+    "32": "icon/32.png",
+    "48": "icon/48.png",
+    "96": "icon/96.png",
+    "128": "icon/128.png",
   } as const;
 
   const disabledIcons = {
-    16: "/icon/disabled-16.png",
-    48: "/icon/disabled-48.png",
-    128: "/icon/disabled-128.png",
-    192: "/icon/disabled-96.png",
+    "16": "icon/disabled-16.png",
+    "32": "icon/disabled-32.png",
+    "48": "icon/disabled-48.png",
+    "96": "icon/disabled-96.png",
+    "128": "icon/disabled-128.png",
   } as const;
 
   const loadEnabled = async (): Promise<boolean> => {
@@ -25,15 +27,20 @@ export default defineBackground(() => {
     await browser.storage.local.set({ [ENABLED_KEY]: enabled });
   };
 
-  const updateIcons = (enabled: boolean) => {
-    if (enabled) {
-      browser.action.setIcon({
-        path: enabledIcons,
-      });
-    } else {
-      browser.action.setIcon({
-        path: disabledIcons,
-      });
+  const updateIcons = async (enabled: boolean) => {
+    try {
+      const iconAPI = browser.action || browser.browserAction;
+      if (enabled) {
+        await iconAPI.setIcon({
+          path: enabledIcons,
+        });
+      } else {
+        await iconAPI.setIcon({
+          path: disabledIcons,
+        });
+      }
+    } catch (error) {
+      console.error("Failed to update icon:", error);
     }
   };
 
@@ -48,17 +55,17 @@ export default defineBackground(() => {
       }
     }
     const enabled = await loadEnabled();
-    updateIcons(enabled);
+    await updateIcons(enabled);
   });
 
   browser.runtime.onStartup.addListener(async () => {
     const enabled = await loadEnabled();
-    updateIcons(enabled);
+    await updateIcons(enabled);
   });
 
   browser.runtime.onMessage.addListener((message, _sender, sendResponse) => {
     if (message.type === "updateEnabled") {
-      updateIcons(message.enabled);
+      updateIcons(message.enabled).catch(console.error);
     }
     if (message.type === "isEnabled") {
       (async () => {

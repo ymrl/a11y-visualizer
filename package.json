@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "pnpm --filter @a11y-visualizer/browser-extension run dev",
+    "dev:firefox": "pnpm --filter @a11y-visualizer/browser-extension run dev:firefox",
     "test": "pnpm --filter @a11y-visualizer/* test",
     "build": "pnpm --filter @a11y-visualizer/browser-extension run build",
     "build:firefox": "pnpm --filter @a11y-visualizer/browser-extension run build:firefox",

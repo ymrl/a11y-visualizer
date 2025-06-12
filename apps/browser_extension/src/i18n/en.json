@@ -41,6 +41,13 @@
     "displaySettings": "Display Settings",
     "displayCustomization": "Display Customization"
   },
+  "presets": {
+    "basic": "Basic",
+    "structure": "Structure",
+    "content": "Content",
+    "custom": "Custom",
+    "selectedMessage": "Preset \"{{preset}}\" is selected"
+  },
   "tip": {
     "name": "Name",
     "role": "Role",

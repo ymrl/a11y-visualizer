@@ -41,6 +41,13 @@
     "displaySettings": "표시 설정",
     "displayCustomization": "표시 커스터마이징"
   },
+  "presets": {
+    "basic": "기본",
+    "structure": "구조",
+    "content": "콘텐츠",
+    "custom": "사용자 정의",
+    "selectedMessage": "프리셋 \"{{preset}}\"이 선택되었습니다"
+  },
   "tip": {
     "name": "이름",
     "role": "롤(역할)",

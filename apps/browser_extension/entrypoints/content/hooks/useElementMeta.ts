@@ -2,7 +2,9 @@ import React from "react";
 import { collectElements } from "../dom";
 import { ElementMeta } from "../types";
 import { SettingsContext } from "../contexts/SettingsContext";
-import { Settings } from "../../../src/settings";
+import { CategorySettings } from "../../../src/settings";
+import { getCategorySettingsFromMode } from "../../../src/settings/presets";
+import { defaultCustomCategorySettings } from "../../../src/settings/constatns";
 
 type Layer = {
   element: Element;
@@ -14,7 +16,7 @@ type Layer = {
 const collectTopLayers = (
   el: Element,
   container: Element | null,
-  settings: Settings,
+  categorySettings: CategorySettings,
   srcdoc: boolean | undefined,
 ) => {
   const elements = [...el.querySelectorAll("dialog, [popover]")];
@@ -24,7 +26,7 @@ const collectTopLayers = (
       const { elements, rootHeight, rootWidth } = collectElements(
         element,
         [],
-        settings,
+        categorySettings,
         { srcdoc },
       );
       return {
@@ -40,7 +42,7 @@ const collectTopLayers = (
 
 const collectIFrames = (
   iframeElements: HTMLIFrameElement[],
-  settings: Settings,
+  categorySettings: CategorySettings,
 ): Layer[] =>
   iframeElements
     .map((iframe): Layer | null => {
@@ -53,7 +55,7 @@ const collectIFrames = (
           const { elements, rootHeight, rootWidth } = collectElements(
             d.body,
             [],
-            settings,
+            categorySettings,
             { srcdoc: iframe.hasAttribute("srcdoc") },
           );
           return {
@@ -98,24 +100,30 @@ export const useElementMeta = ({
         setTopLayers([]);
         return;
       }
+
+      const categorySettings = getCategorySettingsFromMode(
+        settings.elementTypeMode,
+        defaultCustomCategorySettings,
+      );
+
       const display = containerRef.current.style.display;
       containerRef.current.style.display = "none";
 
       const topLayers = collectTopLayers(
         parentRef.current,
         containerRef.current,
-        settings,
+        categorySettings,
         srcdoc,
       );
       setTopLayers(topLayers);
-      setIframeLayers(collectIFrames(iframeElements, settings));
+      setIframeLayers(collectIFrames(iframeElements, categorySettings));
 
       const { elements, rootHeight, rootWidth } = collectElements(
         parentRef.current,
         [containerRef.current, ...topLayers.map((e) => e.element)].filter(
           (el): el is Element => !!el,
         ),
-        settings,
+        categorySettings,
         { srcdoc },
       );
       setMetaList(elements);

@@ -41,6 +41,13 @@
     "displaySettings": "表示設定",
     "displayCustomization": "表示のカスタマイズ"
   },
+  "presets": {
+    "basic": "基本",
+    "structure": "構造",
+    "content": "コンテンツ",
+    "custom": "カスタム",
+    "selectedMessage": "プリセット「{{preset}}」が選択されています"
+  },
   "tip": {
     "name": "名前",
     "role": "ロール",

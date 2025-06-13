@@ -1,4 +1,4 @@
-import React, { useRef, useId, useCallback, KeyboardEvent } from "react";
+import React, { useRef, useId, useCallback, KeyboardEvent, useState, useEffect } from "react";
 import { CategorySettings, ElementTypeMode, PresetId } from "../settings/types";
 import { presets, getCategorySettingsFromMode } from "../settings/presets";
 import { defaultCustomCategorySettings } from "../settings/constatns";
@@ -40,6 +40,20 @@ export const ElementTypeTabs: React.FC<ElementTypeTabsProps> = ({
   const tabPanelId = useId();
   const tabListId = useId();
 
+  // カスタム設定を独立して保持するstate
+  const [customSettings, setCustomSettings] = useState<CategorySettings>(() => {
+    return elementTypeMode.mode === "custom" 
+      ? elementTypeMode.settings 
+      : defaultCustomCategorySettings;
+  });
+
+  // elementTypeModeが変更されたときにcustomSettingsを更新
+  useEffect(() => {
+    if (elementTypeMode.mode === "custom") {
+      setCustomSettings(elementTypeMode.settings);
+    }
+  }, [elementTypeMode]);
+
   const currentCategorySettings = getCategorySettingsFromMode(
     elementTypeMode,
     defaultCustomCategorySettings,
@@ -50,10 +64,10 @@ export const ElementTypeTabs: React.FC<ElementTypeTabsProps> = ({
   const handlePresetChange = useCallback(
     (presetId: PresetId) => {
       if (presetId === "custom") {
-        // カスタムモードに切り替え（現在の設定を保持）
+        // カスタムモードに切り替え（保持しているカスタム設定を使用）
         onChange({
           mode: "custom",
-          settings: currentCategorySettings,
+          settings: customSettings,
         });
       } else {
         // プリセットモードに切り替え
@@ -63,15 +77,19 @@ export const ElementTypeTabs: React.FC<ElementTypeTabsProps> = ({
         });
       }
     },
-    [currentCategorySettings, onChange],
+    [customSettings, onChange],
   );
 
   const handleCheckboxChange = useCallback(
     (key: keyof CategorySettings, checked: boolean) => {
+      // 新しいカスタム設定を作成
       const newCustomSettings = {
-        ...currentCategorySettings,
+        ...customSettings,
         [key]: checked,
       };
+
+      // カスタム設定を更新
+      setCustomSettings(newCustomSettings);
 
       // チェックボックス変更は常にカスタムモード
       onChange({
@@ -79,7 +97,7 @@ export const ElementTypeTabs: React.FC<ElementTypeTabsProps> = ({
         settings: newCustomSettings,
       });
     },
-    [currentCategorySettings, onChange],
+    [customSettings, onChange],
   );
 
   const handleTabKeyDown = useCallback(
@@ -165,9 +183,9 @@ export const ElementTypeTabs: React.FC<ElementTypeTabsProps> = ({
               aria-selected={activeTab === preset.id}
               aria-controls={`${tabPanelId}-panel`}
               tabIndex={activeTab === preset.id ? 0 : -1}
-              className={`px-3 py-2 text-xs font-medium whitespace-nowrap transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-inset border-b-2 ${
+              className={`px-3 py-2 text-xs font-medium whitespace-nowrap transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-inset border-b-2 ${
                 activeTab === preset.id
-                  ? "border-teal-500 text-teal-700 bg-white dark:text-teal-400 dark:bg-zinc-800"
+                  ? "border-teal-500 text-teal-700 dark:text-teal-400"
                   : "border-transparent text-zinc-600 hover:enabled:text-zinc-800 hover:enabled:border-zinc-300 dark:text-zinc-400 dark:hover:enabled:text-zinc-200 dark:hover:enabled:border-zinc-500"
               } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
               onClick={() => handlePresetChange(preset.id)}
@@ -185,9 +203,9 @@ export const ElementTypeTabs: React.FC<ElementTypeTabsProps> = ({
             aria-selected={activeTab === "custom"}
             aria-controls={`${tabPanelId}-panel`}
             tabIndex={activeTab === "custom" ? 0 : -1}
-            className={`px-3 py-2 text-xs font-medium whitespace-nowrap transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-inset border-b-2 ${
+            className={`px-3 py-2 text-xs font-medium whitespace-nowrap transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-inset border-b-2 ${
               activeTab === "custom"
-                ? "border-teal-500 text-teal-700 bg-white dark:text-teal-400 dark:bg-zinc-800"
+                ? "border-teal-500 text-teal-700 dark:text-teal-400"
                 : "border-transparent text-zinc-600 hover:enabled:text-zinc-800 hover:enabled:border-zinc-300 dark:text-zinc-400 dark:hover:enabled:text-zinc-200 dark:hover:enabled:border-zinc-500"
             } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
             onClick={() => handlePresetChange("custom")}
@@ -307,7 +325,7 @@ export const ElementTypeTabs: React.FC<ElementTypeTabsProps> = ({
                   (label) => (
                     <span
                       key={label}
-                      className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-teal-100 text-teal-800 dark:bg-teal-900 dark:text-teal-200"
+                      className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-teal-200 text-teal-800 dark:bg-teal-900 dark:text-teal-200 border dark:border-0 border-teal-400"
                     >
                       {label}
                     </span>

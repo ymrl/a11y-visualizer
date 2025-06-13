@@ -359,7 +359,7 @@ export const ElementTypeTabs: React.FC<ElementTypeTabsProps> = ({
                   (label) => (
                     <span
                       key={label}
-                      className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-teal-200 text-teal-800 dark:bg-teal-900 dark:text-teal-200 border dark:border-0 border-teal-400"
+                      className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-teal-50 text-teal-800 dark:bg-teal-900 dark:text-teal-200 border dark:border-0 border-teal-400"
                     >
                       {label}
                     </span>

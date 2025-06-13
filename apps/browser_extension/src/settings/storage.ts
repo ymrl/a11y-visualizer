@@ -6,6 +6,7 @@ import {
   defaultCustomCategorySettings,
 } from "./constatns";
 import { getAsync, removeAsync, setAsync } from "../browser/localStorage";
+import { presets } from "./presets";
 
 // 古い形式の設定を新しい形式に変換
 function migrateLegacySettings(settings: unknown): Settings {
@@ -140,4 +141,57 @@ export const resetUrlSettings = async (url: string | undefined) => {
 };
 export const resetDefaultSettings = async () => {
   await removeAsync(DEFAULT_SETTING_KEY);
+};
+
+// カスタム設定の保存・読み込み用関数
+const getCustomSettingsKey = (url: string | undefined): string | null => {
+  if (!url) return null;
+  try {
+    const parsedURL = new URL(url);
+    if (["http:", "https:"].includes(parsedURL.protocol) && parsedURL.host) {
+      return `${parsedURL.host}:custom`;
+    }
+    if (parsedURL.protocol === "file:") {
+      return `${FILE_SETTING_KEY}:custom`;
+    }
+  } catch {
+    // URLのパースに失敗した場合
+  }
+  return null;
+};
+
+// ホスト用のカスタム設定を読み込み
+export const loadCustomSettings = async (
+  url: string | undefined,
+): Promise<CategorySettings | null> => {
+  const key = getCustomSettingsKey(url);
+  if (!key) return null;
+
+  const [settings, found] = await getAsync(key, null);
+  return found ? (settings as CategorySettings) : null;
+};
+
+// ホスト用のカスタム設定を保存
+export const saveCustomSettings = async (
+  url: string | undefined,
+  settings: CategorySettings,
+): Promise<void> => {
+  const key = getCustomSettingsKey(url);
+  if (key) {
+    await setAsync(key, settings);
+  }
+};
+
+// カスタム設定の初期値を取得（オプション画面 → 基本プリセットの順で検索）
+export const getInitialCustomSettings = async (): Promise<CategorySettings> => {
+  const [defaultSettings] = await loadDefaultSettings();
+
+  // オプション画面がカスタムモードの場合、その設定を使用
+  if (defaultSettings.elementTypeMode.mode === "custom") {
+    return defaultSettings.elementTypeMode.settings;
+  }
+
+  // それ以外の場合は基本プリセットを使用
+  const basicPreset = presets.find((p) => p.id === "basic");
+  return basicPreset ? basicPreset.settings : defaultCustomCategorySettings;
 };

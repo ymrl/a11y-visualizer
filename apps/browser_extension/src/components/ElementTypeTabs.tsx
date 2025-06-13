@@ -1,7 +1,19 @@
-import React, { useRef, useId, useCallback, KeyboardEvent, useState, useEffect } from "react";
+import React, {
+  useRef,
+  useId,
+  useCallback,
+  KeyboardEvent,
+  useState,
+  useEffect,
+} from "react";
 import { CategorySettings, ElementTypeMode, PresetId } from "../settings/types";
 import { presets, getCategorySettingsFromMode } from "../settings/presets";
 import { defaultCustomCategorySettings } from "../settings/constatns";
+import {
+  loadCustomSettings,
+  saveCustomSettings,
+  getInitialCustomSettings,
+} from "../settings/storage";
 import { useLang } from "../useLang";
 import { Checkbox } from "./Checkbox";
 
@@ -28,12 +40,14 @@ interface ElementTypeTabsProps {
   elementTypeMode: ElementTypeMode;
   onChange: (elementTypeMode: ElementTypeMode) => void;
   disabled?: boolean;
+  url?: string;
 }
 
 export const ElementTypeTabs: React.FC<ElementTypeTabsProps> = ({
   elementTypeMode,
   onChange,
   disabled = false,
+  url,
 }) => {
   const { t } = useLang();
   const tabListRef = useRef<HTMLDivElement>(null);
@@ -41,11 +55,28 @@ export const ElementTypeTabs: React.FC<ElementTypeTabsProps> = ({
   const tabListId = useId();
 
   // カスタム設定を独立して保持するstate
-  const [customSettings, setCustomSettings] = useState<CategorySettings>(() => {
-    return elementTypeMode.mode === "custom" 
-      ? elementTypeMode.settings 
-      : defaultCustomCategorySettings;
-  });
+  const [customSettings, setCustomSettings] = useState<CategorySettings>(
+    defaultCustomCategorySettings,
+  );
+
+  // カスタム設定の初期化
+  useEffect(() => {
+    const initializeCustomSettings = async () => {
+      // ホスト固有のカスタム設定を読み込み
+      const hostCustomSettings = await loadCustomSettings(url);
+
+      if (hostCustomSettings) {
+        // ホスト固有の設定が存在する場合
+        setCustomSettings(hostCustomSettings);
+      } else {
+        // ホスト固有の設定がない場合、初期値を取得
+        const initialSettings = await getInitialCustomSettings();
+        setCustomSettings(initialSettings);
+      }
+    };
+
+    initializeCustomSettings();
+  }, [url]);
 
   // elementTypeModeが変更されたときにcustomSettingsを更新
   useEffect(() => {
@@ -91,13 +122,16 @@ export const ElementTypeTabs: React.FC<ElementTypeTabsProps> = ({
       // カスタム設定を更新
       setCustomSettings(newCustomSettings);
 
+      // ホスト固有のカスタム設定を保存
+      saveCustomSettings(url, newCustomSettings);
+
       // チェックボックス変更は常にカスタムモード
       onChange({
         mode: "custom",
         settings: newCustomSettings,
       });
     },
-    [customSettings, onChange],
+    [customSettings, onChange, url],
   );
 
   const handleTabKeyDown = useCallback(

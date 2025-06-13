@@ -12,12 +12,14 @@ export const SettingsEditor = ({
   disabled,
   showDisplaySettingsCollapsed = false,
   useTabsForElementTypes = true,
+  url,
 }: {
   settings: Settings;
   onChange: (settings: Settings) => void;
   disabled?: boolean;
   showDisplaySettingsCollapsed?: boolean;
   useTabsForElementTypes?: boolean;
+  url?: string;
 }) => {
   const { t, lang } = useLang();
   const handleChangeCheckbox = (
@@ -109,6 +111,7 @@ export const SettingsEditor = ({
                 elementTypeMode={settings.elementTypeMode}
                 onChange={handleElementTypeModeChange}
                 disabled={disabled || !settings.accessibilityInfo}
+                url={url}
               />
             ) : (
               <div className="px-2 py-1 bg-zinc-100 dark:bg-zinc-800 rounded-md">

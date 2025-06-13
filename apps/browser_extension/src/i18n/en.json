@@ -45,8 +45,7 @@
     "basic": "Basic",
     "structure": "Structure",
     "content": "Content",
-    "custom": "Custom",
-    "selectedMessage": "Preset \"{{preset}}\" is selected"
+    "custom": "Custom"
   },
   "tip": {
     "name": "Name",

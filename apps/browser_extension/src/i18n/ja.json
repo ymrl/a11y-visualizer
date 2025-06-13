@@ -45,8 +45,7 @@
     "basic": "基本",
     "structure": "構造",
     "content": "コンテンツ",
-    "custom": "カスタム",
-    "selectedMessage": "プリセット「{{preset}}」が選択されています"
+    "custom": "カスタム"
   },
   "tip": {
     "name": "名前",

@@ -45,8 +45,7 @@
     "basic": "기본",
     "structure": "구조",
     "content": "콘텐츠",
-    "custom": "사용자 정의",
-    "selectedMessage": "프리셋 \"{{preset}}\"이 선택되었습니다"
+    "custom": "사용자 정의"
   },
   "tip": {
     "name": "이름",

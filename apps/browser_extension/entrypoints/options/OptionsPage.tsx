@@ -41,6 +41,7 @@ export const OptionsPage = () => {
         settings={settings}
         onChange={updateSettings}
         showDisplaySettingsCollapsed={false}
+        useTabsForElementTypes={false}
       />
       <p className="text-sm text-gray-500">{t("optionsPage.description")}</p>
       <details ref={resetRef}>

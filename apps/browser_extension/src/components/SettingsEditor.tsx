@@ -1,18 +1,25 @@
 import { ChangeEvent, useState } from "react";
-import { Settings } from "../settings/types";
+import { Settings, ElementTypeMode, CategorySettings } from "../settings/types";
 import { useLang } from "../useLang";
 import { Checkbox } from "./Checkbox";
+import { ElementTypeTabs } from "./ElementTypeTabs";
+import { getCategorySettingsFromMode } from "../settings/presets";
+import { defaultCustomCategorySettings } from "../settings/constatns";
 
 export const SettingsEditor = ({
   settings,
   onChange,
   disabled,
   showDisplaySettingsCollapsed = false,
+  useTabsForElementTypes = true,
+  url,
 }: {
   settings: Settings;
   onChange: (settings: Settings) => void;
   disabled?: boolean;
   showDisplaySettingsCollapsed?: boolean;
+  useTabsForElementTypes?: boolean;
+  url?: string;
 }) => {
   const { t, lang } = useLang();
   const handleChangeCheckbox = (
@@ -34,6 +41,40 @@ export const SettingsEditor = ({
       [key]: parseFloat(e.target.value),
     };
     onChange(newSettings);
+  };
+
+  const handleElementTypeModeChange = (elementTypeMode: ElementTypeMode) => {
+    const newSettings = {
+      ...settings,
+      elementTypeMode,
+    };
+    onChange(newSettings);
+  };
+
+  const handleCategorySettingsChange = (categorySettings: CategorySettings) => {
+    const newSettings = {
+      ...settings,
+      elementTypeMode: {
+        mode: "custom" as const,
+        settings: categorySettings,
+      },
+    };
+    onChange(newSettings);
+  };
+
+  const handleCategoryCheckboxChange = (
+    key: keyof CategorySettings,
+    checked: boolean,
+  ) => {
+    const currentCategorySettings = getCategorySettingsFromMode(
+      settings.elementTypeMode,
+      defaultCustomCategorySettings,
+    );
+    const newCategorySettings = {
+      ...currentCategorySettings,
+      [key]: checked,
+    };
+    handleCategorySettingsChange(newCategorySettings);
   };
 
   return (
@@ -65,118 +106,196 @@ export const SettingsEditor = ({
             </Checkbox>
           </div>
           <div className="flex flex-col gap-2">
-            <div className="px-2 py-1 bg-zinc-100 dark:bg-zinc-800 rounded-md">
-              <fieldset className="border-0 flex flex-col">
-                <legend
-                  className={`text-xs ${disabled || !settings.accessibilityInfo ? "text-zinc-700 dark:text-zinc-300" : "text-teal-800 dark:text-teal-200"} font-bold mb-1`}
-                >
-                  {t("settings.elementTypes")}
-                </legend>
-                <div className="flex flex-row flex-wrap gap-x-3 gap-y-1 items-center">
-                  <Checkbox
-                    onChange={(e) => {
-                      handleChangeCheckbox("heading", e);
-                    }}
-                    checked={settings.heading}
-                    disabled={disabled || !settings.accessibilityInfo}
+            {useTabsForElementTypes ? (
+              <ElementTypeTabs
+                elementTypeMode={settings.elementTypeMode}
+                onChange={handleElementTypeModeChange}
+                disabled={disabled || !settings.accessibilityInfo}
+                url={url}
+              />
+            ) : (
+              <div className="px-2 py-1 bg-zinc-100 dark:bg-zinc-800 rounded-md">
+                <fieldset className="border-0 flex flex-col">
+                  <legend
+                    className={`text-xs ${disabled || !settings.accessibilityInfo ? "text-zinc-700 dark:text-zinc-300" : "text-teal-800 dark:text-teal-200"} font-bold mb-1`}
                   >
-                    <span className="text-sm">{t("settings.headings")}</span>
-                  </Checkbox>
-                  <Checkbox
-                    onChange={(e) => {
-                      handleChangeCheckbox("image", e);
-                    }}
-                    checked={settings.image}
-                    disabled={disabled || !settings.accessibilityInfo}
-                  >
-                    <span className="text-sm">{t("settings.images")}</span>
-                  </Checkbox>
-                  <Checkbox
-                    onChange={(e) => {
-                      handleChangeCheckbox("ariaHidden", e);
-                    }}
-                    checked={settings.ariaHidden}
-                    disabled={disabled || !settings.accessibilityInfo}
-                  >
-                    <span className="text-sm">{t("settings.ariaHidden")}</span>
-                  </Checkbox>
-                  <Checkbox
-                    onChange={(e) => {
-                      handleChangeCheckbox("formControl", e);
-                    }}
-                    checked={settings.formControl}
-                    disabled={disabled || !settings.accessibilityInfo}
-                  >
-                    <span className="text-sm">
-                      {t("settings.formControls")}
-                    </span>
-                  </Checkbox>
-                  <Checkbox
-                    onChange={(e) => {
-                      handleChangeCheckbox("button", e);
-                    }}
-                    checked={settings.button}
-                    disabled={disabled || !settings.accessibilityInfo}
-                  >
-                    <span className="text-sm">{t("settings.buttons")}</span>
-                  </Checkbox>
-                  <Checkbox
-                    onChange={(e) => {
-                      handleChangeCheckbox("link", e);
-                    }}
-                    checked={settings.link}
-                    disabled={disabled || !settings.accessibilityInfo}
-                  >
-                    <span className="text-sm">{t("settings.links")}</span>
-                  </Checkbox>
-                  <Checkbox
-                    onChange={(e) => {
-                      handleChangeCheckbox("section", e);
-                    }}
-                    checked={settings.section}
-                    disabled={disabled || !settings.accessibilityInfo}
-                  >
-                    <span className="text-sm">{t("settings.sections")}</span>
-                  </Checkbox>
-                  <Checkbox
-                    onChange={(e) => {
-                      handleChangeCheckbox("page", e);
-                    }}
-                    checked={settings.page}
-                    disabled={disabled || !settings.accessibilityInfo}
-                  >
-                    <span className="text-sm">{t("settings.page")}</span>
-                  </Checkbox>
-                  <Checkbox
-                    onChange={(e) => {
-                      handleChangeCheckbox("lang", e);
-                    }}
-                    checked={settings.lang}
-                    disabled={disabled || !settings.accessibilityInfo}
-                  >
-                    <span className="text-sm">{t("settings.lang")}</span>
-                  </Checkbox>
-                  <Checkbox
-                    onChange={(e) => {
-                      handleChangeCheckbox("table", e);
-                    }}
-                    checked={settings.table}
-                    disabled={disabled || !settings.accessibilityInfo}
-                  >
-                    <span className="text-sm">{t("settings.tables")}</span>
-                  </Checkbox>
-                  <Checkbox
-                    onChange={(e) => {
-                      handleChangeCheckbox("list", e);
-                    }}
-                    checked={settings.list}
-                    disabled={disabled || !settings.accessibilityInfo}
-                  >
-                    <span className="text-sm">{t("settings.lists")}</span>
-                  </Checkbox>
-                </div>
-              </fieldset>
-            </div>
+                    {t("settings.elementTypes")}
+                  </legend>
+                  <div className="flex flex-row flex-wrap gap-x-3 gap-y-1 items-center">
+                    <Checkbox
+                      onChange={(e) =>
+                        handleCategoryCheckboxChange(
+                          "heading",
+                          e.target.checked,
+                        )
+                      }
+                      checked={
+                        getCategorySettingsFromMode(
+                          settings.elementTypeMode,
+                          defaultCustomCategorySettings,
+                        ).heading
+                      }
+                      disabled={disabled || !settings.accessibilityInfo}
+                    >
+                      <span className="text-sm">{t("settings.headings")}</span>
+                    </Checkbox>
+                    <Checkbox
+                      onChange={(e) =>
+                        handleCategoryCheckboxChange("image", e.target.checked)
+                      }
+                      checked={
+                        getCategorySettingsFromMode(
+                          settings.elementTypeMode,
+                          defaultCustomCategorySettings,
+                        ).image
+                      }
+                      disabled={disabled || !settings.accessibilityInfo}
+                    >
+                      <span className="text-sm">{t("settings.images")}</span>
+                    </Checkbox>
+                    <Checkbox
+                      onChange={(e) =>
+                        handleCategoryCheckboxChange(
+                          "ariaHidden",
+                          e.target.checked,
+                        )
+                      }
+                      checked={
+                        getCategorySettingsFromMode(
+                          settings.elementTypeMode,
+                          defaultCustomCategorySettings,
+                        ).ariaHidden
+                      }
+                      disabled={disabled || !settings.accessibilityInfo}
+                    >
+                      <span className="text-sm">
+                        {t("settings.ariaHidden")}
+                      </span>
+                    </Checkbox>
+                    <Checkbox
+                      onChange={(e) =>
+                        handleCategoryCheckboxChange(
+                          "formControl",
+                          e.target.checked,
+                        )
+                      }
+                      checked={
+                        getCategorySettingsFromMode(
+                          settings.elementTypeMode,
+                          defaultCustomCategorySettings,
+                        ).formControl
+                      }
+                      disabled={disabled || !settings.accessibilityInfo}
+                    >
+                      <span className="text-sm">
+                        {t("settings.formControls")}
+                      </span>
+                    </Checkbox>
+                    <Checkbox
+                      onChange={(e) =>
+                        handleCategoryCheckboxChange("button", e.target.checked)
+                      }
+                      checked={
+                        getCategorySettingsFromMode(
+                          settings.elementTypeMode,
+                          defaultCustomCategorySettings,
+                        ).button
+                      }
+                      disabled={disabled || !settings.accessibilityInfo}
+                    >
+                      <span className="text-sm">{t("settings.buttons")}</span>
+                    </Checkbox>
+                    <Checkbox
+                      onChange={(e) =>
+                        handleCategoryCheckboxChange("link", e.target.checked)
+                      }
+                      checked={
+                        getCategorySettingsFromMode(
+                          settings.elementTypeMode,
+                          defaultCustomCategorySettings,
+                        ).link
+                      }
+                      disabled={disabled || !settings.accessibilityInfo}
+                    >
+                      <span className="text-sm">{t("settings.links")}</span>
+                    </Checkbox>
+                    <Checkbox
+                      onChange={(e) =>
+                        handleCategoryCheckboxChange(
+                          "section",
+                          e.target.checked,
+                        )
+                      }
+                      checked={
+                        getCategorySettingsFromMode(
+                          settings.elementTypeMode,
+                          defaultCustomCategorySettings,
+                        ).section
+                      }
+                      disabled={disabled || !settings.accessibilityInfo}
+                    >
+                      <span className="text-sm">{t("settings.sections")}</span>
+                    </Checkbox>
+                    <Checkbox
+                      onChange={(e) =>
+                        handleCategoryCheckboxChange("page", e.target.checked)
+                      }
+                      checked={
+                        getCategorySettingsFromMode(
+                          settings.elementTypeMode,
+                          defaultCustomCategorySettings,
+                        ).page
+                      }
+                      disabled={disabled || !settings.accessibilityInfo}
+                    >
+                      <span className="text-sm">{t("settings.page")}</span>
+                    </Checkbox>
+                    <Checkbox
+                      onChange={(e) =>
+                        handleCategoryCheckboxChange("lang", e.target.checked)
+                      }
+                      checked={
+                        getCategorySettingsFromMode(
+                          settings.elementTypeMode,
+                          defaultCustomCategorySettings,
+                        ).lang
+                      }
+                      disabled={disabled || !settings.accessibilityInfo}
+                    >
+                      <span className="text-sm">{t("settings.lang")}</span>
+                    </Checkbox>
+                    <Checkbox
+                      onChange={(e) =>
+                        handleCategoryCheckboxChange("table", e.target.checked)
+                      }
+                      checked={
+                        getCategorySettingsFromMode(
+                          settings.elementTypeMode,
+                          defaultCustomCategorySettings,
+                        ).table
+                      }
+                      disabled={disabled || !settings.accessibilityInfo}
+                    >
+                      <span className="text-sm">{t("settings.tables")}</span>
+                    </Checkbox>
+                    <Checkbox
+                      onChange={(e) =>
+                        handleCategoryCheckboxChange("list", e.target.checked)
+                      }
+                      checked={
+                        getCategorySettingsFromMode(
+                          settings.elementTypeMode,
+                          defaultCustomCategorySettings,
+                        ).list
+                      }
+                      disabled={disabled || !settings.accessibilityInfo}
+                    >
+                      <span className="text-sm">{t("settings.lists")}</span>
+                    </Checkbox>
+                  </div>
+                </fieldset>
+              </div>
+            )}
           </div>
           <div className="flex flex-col gap-2 px-2">
             <Checkbox

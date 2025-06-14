@@ -41,6 +41,12 @@
     "displaySettings": "Display Settings",
     "displayCustomization": "Display Customization"
   },
+  "presets": {
+    "basic": "Basic",
+    "structure": "Structure",
+    "content": "Content",
+    "custom": "Custom"
+  },
   "tip": {
     "name": "Name",
     "role": "Role",

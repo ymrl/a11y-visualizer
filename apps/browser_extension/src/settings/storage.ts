@@ -25,9 +25,6 @@ function migrateLegacySettings(settings: unknown): Settings {
       heading:
         (settingsObj.heading as boolean) ??
         defaultCustomCategorySettings.heading,
-      ariaHidden:
-        (settingsObj.ariaHidden as boolean) ??
-        defaultCustomCategorySettings.ariaHidden,
       section:
         (settingsObj.section as boolean) ??
         defaultCustomCategorySettings.section,
@@ -36,6 +33,10 @@ function migrateLegacySettings(settings: unknown): Settings {
       table:
         (settingsObj.table as boolean) ?? defaultCustomCategorySettings.table,
       list: (settingsObj.list as boolean) ?? defaultCustomCategorySettings.list,
+      waiAria:
+        (settingsObj.waiAria as boolean) ??
+        (settingsObj.ariaHidden as boolean) ??
+        defaultCustomCategorySettings.waiAria,
     };
 
     return {
@@ -167,7 +168,7 @@ export const loadCustomSettings = async (
   const key = getCustomSettingsKey(url);
   if (!key) return null;
 
-  const [settings, found] = await getAsync(key, null);
+  const [settings, found] = await getAsync(key, {});
   return found ? (settings as CategorySettings) : null;
 };
 

@@ -10,12 +10,12 @@ export const defaultCustomCategorySettings: CategorySettings = {
   formControl: true,
   button: true,
   link: true,
-  ariaHidden: false,
   section: false,
   page: true,
   lang: true,
   table: false,
   list: false,
+  waiAria: false,
 } as const;
 
 export const initialSettings: Settings = {

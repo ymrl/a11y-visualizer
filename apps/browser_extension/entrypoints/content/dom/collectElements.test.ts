@@ -81,11 +81,11 @@ describe("collectElements()", () => {
     expect(result.elements).toHaveLength(3);
   });
 
-  test("ariaHidden", () => {
+  test("waiAria", () => {
     document.body.innerHTML = `
-      <h1>ariaHidden</h1>
+      <h1>waiAria</h1>
       <div aria-hidden="true">hidden</div>`;
-    const result = collectElements(document.body, [], { ariaHidden: true });
+    const result = collectElements(document.body, [], { waiAria: true });
     expect(result.elements).toHaveLength(1);
   });
 });

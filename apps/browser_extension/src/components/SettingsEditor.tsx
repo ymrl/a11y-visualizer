@@ -158,25 +158,6 @@ export const SettingsEditor = ({
                     <Checkbox
                       onChange={(e) =>
                         handleCategoryCheckboxChange(
-                          "ariaHidden",
-                          e.target.checked,
-                        )
-                      }
-                      checked={
-                        getCategorySettingsFromMode(
-                          settings.elementTypeMode,
-                          defaultCustomCategorySettings,
-                        ).ariaHidden
-                      }
-                      disabled={disabled || !settings.accessibilityInfo}
-                    >
-                      <span className="text-sm">
-                        {t("settings.ariaHidden")}
-                      </span>
-                    </Checkbox>
-                    <Checkbox
-                      onChange={(e) =>
-                        handleCategoryCheckboxChange(
                           "formControl",
                           e.target.checked,
                         )
@@ -293,6 +274,23 @@ export const SettingsEditor = ({
                       disabled={disabled || !settings.accessibilityInfo}
                     >
                       <span className="text-sm">{t("settings.lists")}</span>
+                    </Checkbox>
+                    <Checkbox
+                      onChange={(e) =>
+                        handleCategoryCheckboxChange(
+                          "waiAria",
+                          e.target.checked,
+                        )
+                      }
+                      checked={
+                        getCategorySettingsFromMode(
+                          settings.elementTypeMode,
+                          defaultCustomCategorySettings,
+                        ).waiAria
+                      }
+                      disabled={disabled || !settings.accessibilityInfo}
+                    >
+                      <span className="text-sm">{t("settings.waiAria")}</span>
                     </Checkbox>
                   </div>
                 </fieldset>

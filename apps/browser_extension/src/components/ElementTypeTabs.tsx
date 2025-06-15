@@ -29,7 +29,6 @@ const getEnabledSettingsLabels = (
   const labels: string[] = [];
   if (settings.heading) labels.push(t("settings.headings"));
   if (settings.image) labels.push(t("settings.images"));
-  if (settings.ariaHidden) labels.push(t("settings.ariaHidden"));
   if (settings.formControl) labels.push(t("settings.formControls"));
   if (settings.button) labels.push(t("settings.buttons"));
   if (settings.link) labels.push(t("settings.links"));
@@ -38,6 +37,7 @@ const getEnabledSettingsLabels = (
   if (settings.lang) labels.push(t("settings.lang"));
   if (settings.table) labels.push(t("settings.tables"));
   if (settings.list) labels.push(t("settings.lists"));
+  if (settings.waiAria) labels.push(t("settings.waiAria"));
   return labels;
 };
 
@@ -285,15 +285,6 @@ export const ElementTypeTabs: React.FC<ElementTypeTabsProps> = ({
               </Checkbox>
               <Checkbox
                 onChange={(e) =>
-                  handleCheckboxChange("ariaHidden", e.target.checked)
-                }
-                checked={currentCategorySettings.ariaHidden}
-                disabled={disabled}
-              >
-                <span className="text-sm">{t("settings.ariaHidden")}</span>
-              </Checkbox>
-              <Checkbox
-                onChange={(e) =>
                   handleCheckboxChange("formControl", e.target.checked)
                 }
                 checked={currentCategorySettings.formControl}
@@ -355,6 +346,15 @@ export const ElementTypeTabs: React.FC<ElementTypeTabsProps> = ({
                 disabled={disabled}
               >
                 <span className="text-sm">{t("settings.lists")}</span>
+              </Checkbox>
+              <Checkbox
+                onChange={(e) =>
+                  handleCheckboxChange("waiAria", e.target.checked)
+                }
+                checked={currentCategorySettings.waiAria}
+                disabled={disabled}
+              >
+                <span className="text-sm">{t("settings.waiAria")}</span>
               </Checkbox>
             </div>
           ) : (

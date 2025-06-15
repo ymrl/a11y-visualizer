@@ -1,5 +1,6 @@
 import { AccessibleDescription } from "./accessible-description";
 import { AccessibleName } from "./accessible-name";
+import { AriaAttributes } from "./aria-attributes";
 import { AriaHidden } from "./aria-hidden";
 import { AriaState } from "./aria-state";
 import { ControlFocus } from "./control-focus";
@@ -55,5 +56,6 @@ export const Rules = [
   Role,
   ListItem,
   AriaState,
+  AriaAttributes,
   AccessibleDescription,
 ] as const;

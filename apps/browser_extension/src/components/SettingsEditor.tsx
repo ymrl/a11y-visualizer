@@ -3,8 +3,10 @@ import { Settings, ElementTypeMode, CategorySettings } from "../settings/types";
 import { useLang } from "../useLang";
 import { Checkbox } from "./Checkbox";
 import { ElementTypeTabs } from "./ElementTypeTabs";
-import { getCategorySettingsFromMode } from "../settings/presets";
-import { defaultCustomCategorySettings } from "../settings/constatns";
+import {
+  getCategorySettingsFromMode,
+  defaultCustomCategorySettings,
+} from "../settings";
 
 export const SettingsEditor = ({
   settings,

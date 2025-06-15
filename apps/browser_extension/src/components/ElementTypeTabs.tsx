@@ -6,9 +6,14 @@ import React, {
   useState,
   useEffect,
 } from "react";
-import { CategorySettings, ElementTypeMode, PresetId } from "../settings/types";
-import { presets, getCategorySettingsFromMode } from "../settings/presets";
-import { defaultCustomCategorySettings } from "../settings/constatns";
+import {
+  CategorySettings,
+  ElementTypeMode,
+  PresetId,
+  presets,
+  getCategorySettingsFromMode,
+  defaultCustomCategorySettings,
+} from "../settings";
 import {
   loadCustomSettings,
   saveCustomSettings,

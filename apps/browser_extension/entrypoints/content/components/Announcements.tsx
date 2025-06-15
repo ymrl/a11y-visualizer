@@ -19,7 +19,7 @@ export const Announcements = ({ contents }: { contents: string[] }) => {
     <>
       {
         <div
-          popover="manual"
+          {...{ popover: "manual" }}
           style={{
             position: "fixed",
             inset: 0,

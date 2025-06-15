@@ -182,6 +182,7 @@ export const Popup = () => {
             onChange={updateSettings}
             disabled={!enabled}
             showDisplaySettingsCollapsed={true}
+            url={url}
           />
           <p className="text-xs text-zinc-500 dark:text-zinc-400 px-2">
             {t("popup.hostDesc")}

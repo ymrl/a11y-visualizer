@@ -12,6 +12,18 @@ export type CategorySettings = {
   list: boolean;
 };
 
+export type PresetId = "basic" | "structure" | "content" | "custom";
+
+export type ElementTypeMode =
+  | {
+      mode: "preset";
+      presetId: Exclude<PresetId, "custom">;
+    }
+  | {
+      mode: "custom";
+      settings: CategorySettings;
+    };
+
 export type Settings = {
   accessibilityInfo: boolean;
   interactiveMode: boolean;
@@ -23,7 +35,8 @@ export type Settings = {
   liveRegionOpacityPercent: number;
   tipFontSize: number;
   liveRegionFontSize: number;
-} & CategorySettings;
+  elementTypeMode: ElementTypeMode;
+};
 
 export type SettingsMessage =
   | {

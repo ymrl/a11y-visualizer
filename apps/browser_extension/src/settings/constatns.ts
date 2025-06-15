@@ -1,22 +1,25 @@
-import { Settings } from "./types";
+import { Settings, CategorySettings } from "./types";
 
 export const DEFAULT_SETTING_KEY = "__default__";
 export const OBSOLETE_SETTING_KEY = "settings";
 export const FILE_SETTING_KEY = "__file__";
 
-export const initialSettings: Settings = {
-  accessibilityInfo: true,
+export const defaultCustomCategorySettings: CategorySettings = {
+  heading: true,
   image: true,
   formControl: true,
-  link: false,
   button: true,
-  heading: true,
-  ariaHidden: true,
-  section: true,
-  lang: true,
+  link: true,
+  ariaHidden: false,
+  section: false,
   page: true,
+  lang: true,
   table: false,
-  list: true,
+  list: false,
+} as const;
+
+export const initialSettings: Settings = {
+  accessibilityInfo: true,
   interactiveMode: true,
   hideTips: true,
   showLiveRegions: true,
@@ -26,4 +29,8 @@ export const initialSettings: Settings = {
   liveRegionOpacityPercent: 50,
   tipFontSize: 10,
   liveRegionFontSize: 48,
+  elementTypeMode: {
+    mode: "preset",
+    presetId: "basic",
+  },
 } as const;

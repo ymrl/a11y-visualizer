@@ -1,7 +1,7 @@
 {
   "name": "a11y-visualizer",
   "private": true,
-  "version": "6.0.0-0",
+  "version": "6.0.0",
   "type": "module",
   "scripts": {
     "dev": "pnpm --filter @a11y-visualizer/browser-extension run dev",

@@ -4,7 +4,7 @@ import {
   FILE_SETTING_KEY,
   initialSettings,
   defaultCustomCategorySettings,
-} from "./constatns";
+} from "./constants";
 import { getAsync, removeAsync, setAsync } from "../browser/localStorage";
 import { presets } from "./presets";
 

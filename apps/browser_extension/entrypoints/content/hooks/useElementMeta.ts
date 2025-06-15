@@ -2,9 +2,11 @@ import React from "react";
 import { collectElements } from "../dom";
 import { ElementMeta } from "../types";
 import { SettingsContext } from "../contexts/SettingsContext";
-import { CategorySettings } from "../../../src/settings";
-import { getCategorySettingsFromMode } from "../../../src/settings/presets";
-import { defaultCustomCategorySettings } from "../../../src/settings/constatns";
+import {
+  CategorySettings,
+  getCategorySettingsFromMode,
+  defaultCustomCategorySettings,
+} from "../../../src/settings";
 
 type Layer = {
   element: Element;
@@ -61,8 +63,8 @@ const collectIFrames = (
           return {
             element: d.body,
             metaList: elements,
-            width: rootHeight,
-            height: rootWidth,
+            width: rootWidth,
+            height: rootHeight,
           };
         }
       } catch {

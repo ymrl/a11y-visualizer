@@ -1,4 +1,5 @@
 import { defineConfig } from "wxt";
+import pkg from "./package.json";
 
 // See https://wxt.dev/api/config.html
 export default defineConfig({
@@ -31,7 +32,7 @@ export default defineConfig({
   }),
   manifest: {
     name: "Accessibility Visualizer",
-    version: "5.5.0",
+    version: pkg.version,
     default_locale: "en",
     permissions: ["storage", "activeTab"],
     action: {

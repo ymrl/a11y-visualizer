@@ -1,4 +1,4 @@
-import { RuleResult } from "../rules";
+import { RuleResult } from "../../src/rules";
 
 export type ElementMeta = {
   name: string;
@@ -32,4 +32,5 @@ export type Category =
   | "tableCell"
   | "group"
   | "page"
+  | "wai-aria"
   | "general";

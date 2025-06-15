@@ -4,12 +4,12 @@ export type CategorySettings = {
   link: boolean;
   button: boolean;
   heading: boolean;
-  ariaHidden: boolean;
   section: boolean;
   lang: boolean;
   page: boolean;
   table: boolean;
   list: boolean;
+  waiAria: boolean;
 };
 
 export type PresetId = "basic" | "structure" | "content" | "custom";

@@ -25,6 +25,7 @@
     "page": "Page",
     "tables": "Tables",
     "lists": "Lists",
+    "waiAria": "WAI-ARIA",
     "tipOpacityPercent": "Tips opacity (%)",
     "interactiveMode": "Interactive mode",
     "interactive": "Interactive",

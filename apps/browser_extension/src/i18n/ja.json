@@ -25,6 +25,7 @@
     "page": "ページ",
     "tables": "テーブル",
     "lists": "リスト",
+    "waiAria": "WAI-ARIA",
     "tipOpacityPercent": "チップの不透明度（%）",
     "interactiveMode": "インタラクティブモード",
     "interactive": "インタラクティブ",

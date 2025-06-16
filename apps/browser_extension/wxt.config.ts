@@ -12,22 +12,6 @@ export default defineConfig({
     css: {
       postcss: "./postcss.config.js",
     },
-    test: {
-      browser: {
-        enabled: true,
-        provider: "playwright",
-        headless: true,
-        instances: [
-          {
-            name: "chromium",
-            browser: "chromium",
-          },
-        ],
-      },
-      globals: true,
-      include: ["wxt-tests/**/*.test.ts", "wxt-tests/**/*.test.tsx"],
-      // exclude: ["e2e/**/*", "node_modules/**/*"],
-    },
   }),
   manifest: {
     name: "Accessibility Visualizer",

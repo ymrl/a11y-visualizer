@@ -4,11 +4,13 @@ export const Checkbox = ({
   onChange,
   checked,
   disabled,
+  "data-testid": dataTestId,
 }: {
   children: ReactNode;
   onChange?: ChangeEventHandler<HTMLInputElement>;
   checked?: boolean;
   disabled?: boolean;
+  "data-testid"?: string;
 }) => {
   return (
     <label className="flex flex-row gap-1 items-center cursor-pointer">
@@ -18,6 +20,7 @@ export const Checkbox = ({
         onChange={onChange}
         checked={checked}
         disabled={disabled}
+        data-testid={dataTestId}
       />
       {children}
     </label>

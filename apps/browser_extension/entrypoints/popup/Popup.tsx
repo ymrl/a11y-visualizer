@@ -77,6 +77,7 @@ export const Popup = () => {
     <div
       className="w-80 font-sans text-zinc-800 bg-zinc-50 dark:bg-zinc-900 dark:text-zinc-300"
       lang={lang}
+      data-testid="popup-container"
     >
       <div
         className="p-2 relative flex flex-row items-center justify-between gap-3
@@ -109,6 +110,7 @@ export const Popup = () => {
             }}
             disabled={!enabled || !host}
             title={t("popup.rerun")}
+            data-testid="apply-button"
           >
             <IoReloadOutline
               role="img"
@@ -131,6 +133,7 @@ export const Popup = () => {
             });
           }}
           checked={enabled}
+          data-testid="enabled-checkbox"
         >
           <span
             className="text-xs font-bold text-teal-800
@@ -144,7 +147,7 @@ export const Popup = () => {
       {(host || isFile) && (
         <div className="p-2 flex flex-col gap-0 items-stretch">
           <div className="flex flex-row gap-2 items-center mb-2 px-2">
-            <h2 className="text-sm font-bold text-teal-800 dark:text-teal-200 shrink">
+            <h2 className="text-sm font-bold text-teal-800 dark:text-teal-200 shrink" data-testid="host-title">
               {host && t("popup.settingsForHost", { host })}
               {isFile && t("popup.settingsForFile")}
             </h2>
@@ -169,6 +172,7 @@ export const Popup = () => {
               }}
               disabled={!enabled || !hostSetting}
               title={t("popup.reset")}
+              data-testid="reset-button"
             >
               <IoBackspaceOutline
                 role="img"
@@ -183,6 +187,7 @@ export const Popup = () => {
             disabled={!enabled}
             showDisplaySettingsCollapsed={true}
             url={url}
+            data-testid="settings-editor"
           />
           <p className="text-xs text-zinc-500 dark:text-zinc-400 px-2">
             {t("popup.hostDesc")}

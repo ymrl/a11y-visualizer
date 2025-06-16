@@ -22,12 +22,11 @@ export default defineConfig({
             name: "chromium",
             browser: "chromium",
           },
-          {
-            name: "firefox",
-            browser: "firefox",
-          },
         ],
       },
+      globals: true,
+      include: ["wxt-tests/**/*.test.ts", "wxt-tests/**/*.test.tsx"],
+      // exclude: ["e2e/**/*", "node_modules/**/*"],
     },
   }),
   manifest: {

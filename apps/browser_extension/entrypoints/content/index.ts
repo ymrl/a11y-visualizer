@@ -18,6 +18,8 @@ export default defineContentScript({
       if (message.enabled && !injected) {
         injectRoot(window, window.document.body, { mountOnce: false });
         injected = true;
+      } else if (!message.enabled && injected) {
+        injected = false;
       }
     };
 
@@ -31,6 +33,8 @@ export default defineContentScript({
         if (enabled && !injected) {
           injectRoot(window, window.document.body, { mountOnce: false });
           injected = true;
+        } else if (!enabled && injected) {
+          injected = false;
         }
       }
     });

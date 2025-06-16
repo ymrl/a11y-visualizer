@@ -80,9 +80,6 @@ export const injectRoot = async (
     } else {
       mountReturn?.unmount();
       mountReturn = null;
-      if (mountOnce) {
-        browser.runtime.onMessage.removeListener(listener);
-      }
     }
   };
   browser.runtime.onMessage.addListener(listener);

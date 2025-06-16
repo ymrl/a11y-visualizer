@@ -1,6 +1,6 @@
 import { defineBackground, browser } from "#imports";
 export default defineBackground(() => {
-  const ENABLED_KEY = "enabled";
+  const ENABLED_KEY = "__enabled__";
 
   const enabledIcons = {
     "16": "icon/16.png",

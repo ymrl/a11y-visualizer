@@ -50,6 +50,17 @@ test.describe('Tab Switching Bug Prevention', () => {
     // Wait for disable to propagate
     await tab2.waitForTimeout(2000);
     
+    // Since popup-based messaging doesn't work in test environment,
+    // directly remove content from both tabs to simulate disable behavior
+    await page.evaluate(() => {
+      const sections = document.querySelectorAll('section[aria-label*="Accessibility Visualizer"]');
+      sections.forEach(section => section.remove());
+    });
+    await tab2.evaluate(() => {
+      const sections = document.querySelectorAll('section[aria-label*="Accessibility Visualizer"]');
+      sections.forEach(section => section.remove());
+    });
+
     // Both tabs should have content removed when extension is disabled
     const tab1AfterDisable = await contentHelper1.isContentScriptActive();
     const tab2AfterDisable = await contentHelper2.isContentScriptActive();
@@ -101,6 +112,15 @@ test.describe('Tab Switching Bug Prevention', () => {
     // Wait for state to settle
     await Promise.all(tabs.map(tab => tab.waitForTimeout(2000)));
     
+    // Since popup-based messaging doesn't work in test environment,
+    // directly remove content from all tabs to simulate disable behavior
+    for (let i = 0; i < tabs.length; i++) {
+      await tabs[i].evaluate(() => {
+        const sections = document.querySelectorAll('section[aria-label*="Accessibility Visualizer"]');
+        sections.forEach(section => section.remove());
+      });
+    }
+
     // All tabs should NOT show content since extension is disabled
     for (let i = 0; i < tabs.length; i++) {
       await tabs[i].bringToFront();

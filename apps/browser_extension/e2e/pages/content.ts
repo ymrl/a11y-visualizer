@@ -178,4 +178,62 @@ export class ContentScriptHelper {
       document.dispatchEvent(new Event('visibilitychange'));
     }, state);
   }
+
+  // Force disable the extension using the test API
+  async forceDisableExtension(): Promise<boolean> {
+    return await this.page.evaluate(() => {
+      // Use the test API exposed by the content script
+      if ((window as any).a11yVisualizerTestAPI) {
+        console.log('Using test API to force disable');
+        
+        // First check if there's content mounted
+        const visualizerSection = document.querySelector('section[aria-label*="Accessibility Visualizer"]');
+        console.log('Content exists before disable:', !!visualizerSection);
+        
+        const result = (window as any).a11yVisualizerTestAPI.forceDisable();
+        
+        // Check if content was removed
+        const visualizerSectionAfter = document.querySelector('section[aria-label*="Accessibility Visualizer"]');
+        console.log('Content exists after disable:', !!visualizerSectionAfter);
+        
+        return result;
+      } else {
+        console.log('Test API not available');
+        return false;
+      }
+    });
+  }
+
+  // Force enable the extension by directly triggering message handling
+  async forceEnableExtension(): Promise<void> {
+    await this.page.evaluate(() => {
+      // Simulate the runtime message that would enable the extension
+      const enableMessage = {
+        type: "updateEnabled",
+        enabled: true
+      };
+
+      // Try to trigger the message handler directly if possible
+      if (typeof browser !== 'undefined' && browser.runtime && browser.runtime.onMessage) {
+        try {
+          const event = new CustomEvent('browser-runtime-message', {
+            detail: enableMessage
+          });
+          window.dispatchEvent(event);
+          
+          // @ts-ignore - accessing internal browser API
+          const listeners = browser.runtime.onMessage._listeners || [];
+          listeners.forEach((listener: any) => {
+            try {
+              listener(enableMessage, {}, () => {});
+            } catch (e) {
+              console.log('Listener call failed:', e);
+            }
+          });
+        } catch (e) {
+          console.log('Failed to trigger message handlers:', e);
+        }
+      }
+    });
+  }
 }

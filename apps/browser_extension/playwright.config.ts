@@ -24,7 +24,7 @@ export default defineConfig({
   
   // Start test server before running tests
   webServer: {
-    command: 'pnpm --filter=@a11y-visualizer/test-site dev',
+    command: 'pnpm --filter=@a11y-visualizer/test-site dev --port 5173',
     port: 5173,
     reuseExistingServer: !process.env.CI,
   },

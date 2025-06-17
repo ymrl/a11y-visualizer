@@ -13,11 +13,20 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   
   // Reporter to use
-  reporter: 'html',
+  reporter: [['list'], ['html']],
   
   use: {
     // Collect trace when retrying the failed test.
     trace: 'on-first-retry',
+    // Use local test server
+    baseURL: 'http://localhost:5173',
+  },
+  
+  // Start test server before running tests
+  webServer: {
+    command: 'pnpm --filter=@a11y-visualizer/test-site dev',
+    port: 5173,
+    reuseExistingServer: !process.env.CI,
   },
   
   // Configure projects for major browsers.

@@ -141,7 +141,6 @@ export const Popup = () => {
           >
             {t("popup.enabled")}
           </span>
-          <span className="absolute inset-0" />
         </Checkbox>
       </div>
       {(host || isFile) && (

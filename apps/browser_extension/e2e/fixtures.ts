@@ -1,21 +1,21 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { test as base, chromium, type BrowserContext } from '@playwright/test';
 import path from 'path';
 
-const pathToExtension = path.resolve('.output/chrome-mv3');
+const pathToExtension = path.resolve('dist/chrome-mv3-test');
 
 export const test = base.extend<{
   context: BrowserContext;
   extensionId: string;
 }>({
+  // eslint-disable-next-line no-empty-pattern
   context: async ({}, use) => {
     const context = await chromium.launchPersistentContext('', {
+      // eslint-disable-next-line no-undef
       headless: process.env.CI ? true : false,
       args: [
         `--disable-extensions-except=${pathToExtension}`,
         `--load-extension=${pathToExtension}`,
-        '--disable-web-security',
-        '--disable-features=VizDisplayCompositor',
-        '--no-sandbox',
       ],
     });
     await use(context);

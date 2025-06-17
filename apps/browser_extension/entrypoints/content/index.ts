@@ -2,6 +2,9 @@ import { defineContentScript, browser } from "#imports";
 import type { SettingsMessage } from "../../src/settings";
 export default defineContentScript({
   matches: ["<all_urls>"],
+  matchAboutBlank: true,
+  matchOriginAsFallback: true,
+  allFrames: true,
   main: async () => {
     const { loadEnabled } = await import("../../src/enabled");
     const { injectRoot } = await import("./injectRoot");

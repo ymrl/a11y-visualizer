@@ -9,6 +9,7 @@ export default defineConfig({
     target: ["es2022", "chrome89", "edge89"],
   },
   test: {
+    include: ["src/**/*.test.ts", "src/**/*.test.tsx"],
     browser: {
       enabled: true,
       provider: "playwright",

@@ -71,6 +71,9 @@ function migrateLegacySettings(settings: unknown): Settings {
         mode: "custom",
         settings: categorySettings,
       },
+      language:
+        (settingsObj.language as Settings["language"]) ??
+        initialSettings.language,
     };
   }
 

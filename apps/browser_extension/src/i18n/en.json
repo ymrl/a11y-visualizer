@@ -73,7 +73,14 @@
     "resetSettingsConfirm": "Reset all settings to default values? (This action does not affect settings saved per host.)",
     "resetSettingsConfirmYes": "Yes",
     "resetSettingsConfirmNo": "No",
-    "resetSettingsSuccess": "Settings has been reset to defaults."
+    "resetSettingsSuccess": "Settings has been reset to defaults.",
+    "displayLanguage": "Display Language"
+  },
+  "languages": {
+    "auto": "Auto-detect",
+    "en": "English",
+    "ja": "日本語",
+    "ko": "한국어"
   },
   "listType": {
     "menu": "Menu",

@@ -69,11 +69,18 @@
   },
   "optionsPage": {
     "description": "확장기능의 팝업에서 설정을 변경하면 현재 보고 있는 웹 페이지의 호스트별로 설정이 저장되며 동일한 호스트의 웹 페이지에 적용됩니다.이 화면에서 설정을 변경해도 그 설정값은 변경되지 않습니다.",
-    "resetSettings": "Reset settings to defaults",
-    "resetSettingsConfirm": "Reset all settings to default values? (This action does not affect settings saved per host.)",
-    "resetSettingsConfirmYes": "Yes",
-    "resetSettingsConfirmNo": "No",
-    "resetSettingsSuccess": "Settings has been reset to defaults."
+    "resetSettings": "설정 초기화",
+    "resetSettingsConfirm": "모든 설정을 기본값으로 재설정하시겠습니까? (이 작업은 호스트별로 저장된 설정에는 영향을 주지 않습니다.)",
+    "resetSettingsConfirmYes": "예",
+    "resetSettingsConfirmNo": "아니오",
+    "resetSettingsSuccess": "설정이 기본값으로 재설정되었습니다.",
+    "displayLanguage": "표시 언어"
+  },
+  "languages": {
+    "auto": "자동 감지",
+    "en": "English",
+    "ja": "日本語",
+    "ko": "한국어"
   },
   "listType": {
     "menu": "Menu",

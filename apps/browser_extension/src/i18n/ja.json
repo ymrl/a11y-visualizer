@@ -73,7 +73,14 @@
     "resetSettingsConfirm": "設定をデフォルトの内容に戻しますか？（ホストごとに保存されている設定には影響しません）",
     "resetSettingsConfirmYes": "はい",
     "resetSettingsConfirmNo": "いいえ",
-    "resetSettingsSuccess": "設定をリセットしました"
+    "resetSettingsSuccess": "設定をリセットしました",
+    "displayLanguage": "表示言語"
+  },
+  "languages": {
+    "auto": "自動検出",
+    "en": "English",
+    "ja": "日本語",
+    "ko": "한국어"
   },
   "listType": {
     "menu": "メニュー",

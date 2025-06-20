@@ -33,4 +33,5 @@ export const initialSettings: Settings = {
     mode: "preset",
     presetId: "basic",
   },
+  language: "auto",
 } as const;

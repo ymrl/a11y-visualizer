@@ -24,6 +24,8 @@ export type ElementTypeMode =
       settings: CategorySettings;
     };
 
+export type SupportedLanguage = "en" | "ja" | "ko" | "auto";
+
 export type Settings = {
   accessibilityInfo: boolean;
   interactiveMode: boolean;
@@ -36,6 +38,7 @@ export type Settings = {
   tipFontSize: number;
   liveRegionFontSize: number;
   elementTypeMode: ElementTypeMode;
+  language: SupportedLanguage;
 };
 
 export type SettingsMessage =

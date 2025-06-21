@@ -53,7 +53,6 @@ You can easily switch the targets for which tips are displayed using the preset 
 - **Content preset**: Display images, links, tables, and lists
 - **Custom**: Freely select which information to display
 
-
 ### Live Region Announcements
 
 When "Announce live regions" is checked in the popup, changes to [ARIA live regions](https://developer.mozilla.org/en/docs/Web/Accessibility/ARIA/ARIA_Live_Regions) will be displayed near the center of the screen.

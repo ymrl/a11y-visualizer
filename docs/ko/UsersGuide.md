@@ -53,7 +53,6 @@ Accessibility Visualizer를 설치하면 확장 프로그램 메뉴에 Accessibi
 - **콘텐츠 프리셋**: 이미지, 링크, 테이블, 리스트를 표시
 - **커스텀**: 표시할 정보를 자유롭게 선택
 
-
 ### 라이브 리전 알림
 
 팝업 내의 "라이브 리전을 안내"에 체크가 되어 있으면 [ARIA 라이브 리전](https://developer.mozilla.org/ko/docs/Web/Accessibility/ARIA/ARIA_Live_Regions)에 변화가 있을 경우 그 내용이 화면 중앙 부근에 표시됩니다.

@@ -53,7 +53,6 @@ Accessibility Visualizerをインストールすると、拡張機能メニュ�
 - **コンテンツプリセット**: 画像、リンク、テーブル、リストを表示
 - **カスタム**: 表示する情報を自由に選択できます
 
-
 ### ライブリージョンのアナウンス
 
 ポップアップ内の「ライブリージョンをアナウンス」にチェックを入れていると、[ARIAライブリージョン](https://developer.mozilla.org/ja/docs/Web/Accessibility/ARIA/ARIA_Live_Regions)に変化があった場合に、その内容が画面中央付近に表示されるようになります。

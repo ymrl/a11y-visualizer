@@ -55,7 +55,7 @@
     "landmark": "Landmark",
     "description": "Description",
     "heading": "Heading",
-    "ariaStatus": "WAI-ARIA Status",
+    "ariaStatus": "Status",
     "pageTitle": "Page title",
     "tableHeader": "Table header",
     "tableSize": "Table size",

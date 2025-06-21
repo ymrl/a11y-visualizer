@@ -55,7 +55,7 @@
     "landmark": "ランドマーク",
     "description": "説明",
     "heading": "見出し",
-    "ariaStatus": "WAI-ARIAステータス",
+    "ariaStatus": "ステータス",
     "pageTitle": "ページタイトル",
     "tableHeader": "表見出し",
     "tableSize": "表の大きさ",

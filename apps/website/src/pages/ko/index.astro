@@ -1,0 +1,10 @@
+---
+import { getTranslation } from '../../lib/translations';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export const prerender = true;
+
+const t = getTranslation('ko');
+---
+
+<BaseLayout lang="ko" t={t} />

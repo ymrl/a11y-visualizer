@@ -1,0 +1,12 @@
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<circle cx="12" cy="12" r="10" fill="#FF9500"/>
+<path d="M12 2C17.523 2 22 6.477 22 12C22 17.523 17.523 22 12 22C6.477 22 2 17.523 2 12C2 6.477 6.477 2 12 2Z" fill="url(#firefox-gradient)"/>
+<defs>
+<linearGradient id="firefox-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+<stop offset="0%" style="stop-color:#FF9500;stop-opacity:1" />
+<stop offset="50%" style="stop-color:#FF6600;stop-opacity:1" />
+<stop offset="100%" style="stop-color:#FF3300;stop-opacity:1" />
+</linearGradient>
+</defs>
+<path d="M8 8C8 8 10 6 12 8C14 10 16 8 16 8C16 8 18 10 16 12C14 14 16 16 16 16C16 16 14 18 12 16C10 14 8 16 8 16C8 16 6 14 8 12C10 10 8 8 8 8Z" fill="white"/>
+</svg>

@@ -29,3 +29,4 @@ web-ext.config.ts
 *.sln
 *.sw?
 .claude/*
+.astro

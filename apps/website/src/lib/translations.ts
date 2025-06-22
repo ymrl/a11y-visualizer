@@ -6,6 +6,7 @@ export interface Translation {
     title: string;
     description: string;
     imageAlt: string;
+    screenshotSrc: string;
   };
   features: {
     title: string;
@@ -44,7 +45,8 @@ export const translations: Record<string, Translation> = {
       description:
         "A browser extension that makes it easy to check web accessibility issues that were previously only visible through assistive technologies like screen readers.",
       imageAlt:
-        "Accessibility Visualizer extension in action showing highlighted elements on a webpage",
+        "Displaying Wikipedia in Chrome with the Accessibility Visualizer popup open. Information from Accessibility Visualizer is overlaid on the page.",
+      screenshotSrc: "/a11y-visualizer/images/screenshot_en.png",
     },
     features: {
       title: "Features",
@@ -96,7 +98,8 @@ export const translations: Record<string, Translation> = {
       description:
         "これまではスクリーンリーダーなどの支援技術でしか確認できなかったWebアクセシビリティの問題を、簡単に確認できるブラウザ拡張機能です。",
       imageAlt:
-        "Webページ上の要素をハイライト表示するAccessibility Visualizer拡張機能",
+        "ChromeでWikipediaを表示し、Accessibility Visualizerのポップアップを開いている。ページ内にはAccessibility Visualizerによる情報がオーバーレイされている",
+      screenshotSrc: "/a11y-visualizer/images/screenshot_ja.png",
     },
     features: {
       title: "機能",
@@ -147,7 +150,8 @@ export const translations: Record<string, Translation> = {
       description:
         "지금까지 스크린 리더와 같은 보조 기술로만 확인할 수 있었던 웹 접근성 문제를 쉽게 확인할 수 있는 브라우저 확장 프로그램입니다.",
       imageAlt:
-        "웹페이지의 요소들을 강조 표시하는 Accessibility Visualizer 확장 프로그램",
+        "Chrome에서 Wikipedia를 표시하고 Accessibility Visualizer 팝업이 열려 있습니다. 페이지에는 Accessibility Visualizer의 정보가 오버레이되어 있습니다.",
+      screenshotSrc: "/a11y-visualizer/images/screenshot_ko.png",
     },
     features: {
       title: "기능",

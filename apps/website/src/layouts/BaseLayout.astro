@@ -60,9 +60,9 @@ const { lang, t } = Astro.props;
           </p>
           <div class="flex justify-center">
             <img 
-              src="/a11y-visualizer/images/screenshot.png" 
+              src={t.hero.screenshotSrc} 
               alt={t.hero.imageAlt}
-              class="rounded-lg shadow-xl max-w-full h-auto"
+              class="rounded-lg max-w-full h-auto"
             />
           </div>
         </div>

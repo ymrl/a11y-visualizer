@@ -170,7 +170,8 @@ export const translations: Record<string, Translation> = {
         },
         customizable: {
           title: "사용자 정의 가능",
-          description: "대상 웹사이트에 맞춰 요소 유형과 표시 방법을 사용자 정의",
+          description:
+            "대상 웹사이트에 맞춰 요소 유형과 표시 방법을 사용자 정의",
         },
       },
     },
@@ -181,8 +182,7 @@ export const translations: Record<string, Translation> = {
     },
     guide: {
       title: "사용자 가이드",
-      description:
-        "Accessibility Visualizer 사용 방법을 배워보세요",
+      description: "Accessibility Visualizer 사용 방법을 배워보세요",
       link: "GitHub에서 사용자 가이드 보기",
       url: "https://github.com/ymrl/a11y-visualizer/blob/main/docs/ko/UsersGuide.md",
     },

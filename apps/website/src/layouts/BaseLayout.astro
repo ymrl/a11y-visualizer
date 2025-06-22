@@ -14,7 +14,7 @@ const { lang, t } = Astro.props;
 <html lang={lang}>
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href="/a11y-visualizer/icon.svg" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <title>{t.title}</title>
@@ -29,9 +29,16 @@ const { lang, t } = Astro.props;
       <header class="bg-white shadow-sm border-b border-zinc-200">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div class="flex justify-between items-start">
-            <div>
-              <h1 class="text-3xl font-bold text-teal-700">{t.title}</h1>
-              <p class="mt-2 text-lg text-zinc-600">{t.subtitle}</p>
+            <div class="flex items-center">
+              <img 
+                src="/a11y-visualizer/icon.svg" 
+                alt=""
+                class="w-12 h-12 mr-4"
+              />
+              <div>
+                <h1 class="text-3xl font-bold text-teal-700">{t.title}</h1>
+                <p class="mt-2 text-lg text-zinc-600">{t.subtitle}</p>
+              </div>
             </div>
             <div class="flex-shrink-0 ml-4">
               <LanguageSelector currentLang={lang} client:load />

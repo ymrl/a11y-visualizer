@@ -36,13 +36,13 @@ export interface Translation {
 export const translations: Record<string, Translation> = {
   en: {
     title: "Accessibility Visualizer",
-    subtitle: "Visualize Web Accessibility",
+    subtitle: "Simple and Visible Web Accessibility",
     description:
-      "A browser extension that helps developers identify accessibility issues by highlighting and annotating elements on web pages.",
+      "A browser extension that displays accessibility-related annotations on web pages to assist developers.",
     hero: {
-      title: "Make Web Accessibility Visible",
+      title: "Visible Web Accessibility",
       description:
-        "A browser extension that helps developers identify accessibility issues by highlighting and annotating elements on web pages.",
+        "A browser extension that makes it easy to check web accessibility issues that were previously only visible through assistive technologies like screen readers.",
       imageAlt:
         "Accessibility Visualizer extension in action showing highlighted elements on a webpage",
     },
@@ -57,7 +57,7 @@ export const translations: Record<string, Translation> = {
         detection: {
           title: "Issue Detection",
           description:
-            "Highlight accessibility issues with warning and error indicators",
+            "Highlight markup issues with warning and error indicators",
         },
         liveRegions: {
           title: "Live Regions",
@@ -66,7 +66,7 @@ export const translations: Record<string, Translation> = {
         customizable: {
           title: "Customizable",
           description:
-            "Support for multiple element types and customizable presets",
+            "Customize element types and display methods to match your website",
         },
       },
     },
@@ -77,24 +77,24 @@ export const translations: Record<string, Translation> = {
     },
     guide: {
       title: "User Guide",
-      description: "Learn how to use Accessibility Visualizer effectively",
+      description: "Learn how to use Accessibility Visualizer",
       link: "View User Guide on GitHub",
       url: "https://github.com/ymrl/a11y-visualizer/blob/main/docs/en/UsersGuide.md",
     },
     footer: {
-      copyright: "© 2024 Accessibility Visualizer. Open source on",
+      copyright: "© 2024 ymrl (MIT License)",
       github: "GitHub",
     },
   },
   ja: {
     title: "Accessibility Visualizer",
-    subtitle: "Webアクセシビリティを可視化",
+    subtitle: "かんたんに「見える」Webアクセシビリティ",
     description:
-      "Webページのアクセシビリティ問題をハイライトし、注釈を付けることで開発者を支援するブラウザ拡張機能です。",
+      "Webページの上にアクセシビリティに関係する注釈を表示し、開発者を支援するブラウザ拡張機能です。",
     hero: {
-      title: "Webアクセシビリティを見える化",
+      title: "「見える」Webアクセシビリティ",
       description:
-        "Webページのアクセシビリティ問題をハイライトし、注釈を付けることで開発者を支援するブラウザ拡張機能です。",
+        "これまではスクリーンリーダーなどの支援技術でしか確認できなかったWebアクセシビリティの問題を、簡単に確認できるブラウザ拡張機能です。",
       imageAlt:
         "Webページ上の要素をハイライト表示するAccessibility Visualizer拡張機能",
     },
@@ -108,7 +108,7 @@ export const translations: Record<string, Translation> = {
         },
         detection: {
           title: "問題検出",
-          description: "警告やエラー表示でアクセシビリティ問題をハイライト",
+          description: "警告やエラー表示でマークアップの問題をハイライト",
         },
         liveRegions: {
           title: "ライブリージョン",
@@ -117,7 +117,7 @@ export const translations: Record<string, Translation> = {
         customizable: {
           title: "カスタマイズ可能",
           description:
-            "複数の要素タイプとカスタマイズ可能なプリセットをサポート",
+            "対象のWebサイトにあわせて、要素の種類や表示方法をカスカスタマイズ",
         },
       },
     },
@@ -128,24 +128,24 @@ export const translations: Record<string, Translation> = {
     },
     guide: {
       title: "ユーザーガイド",
-      description: "Accessibility Visualizerを効果的に使用する方法を学ぶ",
+      description: "Accessibility Visualizerの使用方法を学ぶ",
       link: "GitHub でユーザーガイドを見る",
       url: "https://github.com/ymrl/a11y-visualizer/blob/main/docs/ja/UsersGuide.md",
     },
     footer: {
-      copyright: "© 2024 Accessibility Visualizer.",
-      github: "GitHub でオープンソース公開中",
+      copyright: "© 2024 ymrl (MIT License)",
+      github: "GitHub",
     },
   },
   ko: {
     title: "Accessibility Visualizer",
-    subtitle: "웹 접근성 시각화",
+    subtitle: "간단하고 '보이는' 웹 접근성",
     description:
-      "웹 페이지의 접근성 문제를 강조하고 주석을 달아 개발자를 도와주는 브라우저 확장 프로그램입니다.",
+      "웹 페이지에 접근성 관련 주석을 표시하여 개발자를 지원하는 브라우저 확장 프로그램입니다.",
     hero: {
-      title: "웹 접근성을 시각화하세요",
+      title: "'보이는' 웹 접근성",
       description:
-        "웹 페이지의 접근성 문제를 강조하고 주석을 달아 개발자를 도와주는 브라우저 확장 프로그램입니다.",
+        "지금까지 스크린 리더와 같은 보조 기술로만 확인할 수 있었던 웹 접근성 문제를 쉽게 확인할 수 있는 브라우저 확장 프로그램입니다.",
       imageAlt:
         "웹페이지의 요소들을 강조 표시하는 Accessibility Visualizer 확장 프로그램",
     },
@@ -158,7 +158,7 @@ export const translations: Record<string, Translation> = {
         },
         detection: {
           title: "문제 감지",
-          description: "경고 및 오류 표시로 접근성 문제 강조",
+          description: "경고 및 오류 표시로 마크업 문제 강조",
         },
         liveRegions: {
           title: "라이브 영역",
@@ -166,7 +166,7 @@ export const translations: Record<string, Translation> = {
         },
         customizable: {
           title: "사용자 정의 가능",
-          description: "여러 요소 유형 및 사용자 정의 가능한 프리셋 지원",
+          description: "대상 웹사이트에 맞춰 요소 유형과 표시 방법을 사용자 정의",
         },
       },
     },
@@ -178,13 +178,13 @@ export const translations: Record<string, Translation> = {
     guide: {
       title: "사용자 가이드",
       description:
-        "Accessibility Visualizer를 효과적으로 사용하는 방법을 배워보세요",
+        "Accessibility Visualizer 사용 방법을 배워보세요",
       link: "GitHub에서 사용자 가이드 보기",
       url: "https://github.com/ymrl/a11y-visualizer/blob/main/docs/ko/UsersGuide.md",
     },
     footer: {
-      copyright: "© 2024 Accessibility Visualizer.",
-      github: "GitHub에서 오픈소스로 공개됩니다",
+      copyright: "© 2024 ymrl (MIT License)",
+      github: "GitHub",
     },
   },
 };

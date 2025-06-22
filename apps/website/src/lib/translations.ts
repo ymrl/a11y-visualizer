@@ -25,6 +25,7 @@ export interface Translation {
     title: string;
     description: string;
     link: string;
+    url: string;
   };
   footer: {
     copyright: string;
@@ -78,6 +79,7 @@ export const translations: Record<string, Translation> = {
       title: "User Guide",
       description: "Learn how to use Accessibility Visualizer effectively",
       link: "View User Guide on GitHub",
+      url: "https://github.com/ymrl/a11y-visualizer/blob/main/docs/en/UsersGuide.md",
     },
     footer: {
       copyright: "© 2024 Accessibility Visualizer. Open source on",
@@ -128,6 +130,7 @@ export const translations: Record<string, Translation> = {
       title: "ユーザーガイド",
       description: "Accessibility Visualizerを効果的に使用する方法を学ぶ",
       link: "GitHub でユーザーガイドを見る",
+      url: "https://github.com/ymrl/a11y-visualizer/blob/main/docs/ja/UsersGuide.md",
     },
     footer: {
       copyright: "© 2024 Accessibility Visualizer.",
@@ -177,6 +180,7 @@ export const translations: Record<string, Translation> = {
       description:
         "Accessibility Visualizer를 효과적으로 사용하는 방법을 배워보세요",
       link: "GitHub에서 사용자 가이드 보기",
+      url: "https://github.com/ymrl/a11y-visualizer/blob/main/docs/ko/UsersGuide.md",
     },
     footer: {
       copyright: "© 2024 Accessibility Visualizer.",

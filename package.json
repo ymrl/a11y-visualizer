@@ -6,9 +6,11 @@
   "scripts": {
     "dev": "pnpm --filter @a11y-visualizer/browser-extension run dev",
     "dev:firefox": "pnpm --filter @a11y-visualizer/browser-extension run dev:firefox",
+    "dev:website": "pnpm --filter @a11y-visualizer/website run dev",
     "test": "pnpm --filter @a11y-visualizer/* test",
     "build": "pnpm --filter @a11y-visualizer/browser-extension run build",
     "build:firefox": "pnpm --filter @a11y-visualizer/browser-extension run build:firefox",
+    "build:website": "pnpm --filter @a11y-visualizer/website run build",
     "zip": "pnpm --filter @a11y-visualizer/browser-extension run zip",
     "zip:firefox": "pnpm --filter @a11y-visualizer/browser-extension run zip:firefox",
     "lint": "run-p lint:*",

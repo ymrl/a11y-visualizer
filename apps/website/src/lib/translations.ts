@@ -58,11 +58,13 @@ export const translations: Record<string, Translation> = {
         },
         detection: {
           title: "Issue Detection",
-          description: "Highlight problematic markup and techniques that need attention",
+          description:
+            "Highlight problematic markup and techniques that need attention",
         },
         liveRegions: {
           title: "Live Regions",
-          description: "Visually display information dynamically conveyed to assistive technologies like screen readers",
+          description:
+            "Visually display information dynamically conveyed to assistive technologies like screen readers",
         },
         customizable: {
           title: "Customizable",
@@ -110,11 +112,13 @@ export const translations: Record<string, Translation> = {
         },
         detection: {
           title: "問題の検出",
-          description: "問題のあるマークアップや注意するべきテクニックをハイライト",
+          description:
+            "問題のあるマークアップや注意するべきテクニックをハイライト",
         },
         liveRegions: {
           title: "ライブリージョン",
-          description: "スクリーンリーダーなどの支援技術に動的に伝わる情報を視覚的に表示",
+          description:
+            "スクリーンリーダーなどの支援技術に動的に伝わる情報を視覚的に表示",
         },
         customizable: {
           title: "カスタマイズ可能",
@@ -166,7 +170,8 @@ export const translations: Record<string, Translation> = {
         },
         liveRegions: {
           title: "라이브 영역",
-          description: "스크린 리더 등 보조 기술에 동적으로 전달되는 정보를 시각적으로 표시",
+          description:
+            "스크린 리더 등 보조 기술에 동적으로 전달되는 정보를 시각적으로 표시",
         },
         customizable: {
           title: "사용자 정의 가능",

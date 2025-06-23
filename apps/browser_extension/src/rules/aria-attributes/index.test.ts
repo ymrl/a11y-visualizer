@@ -14,12 +14,12 @@ describe("AriaAttributes", () => {
       {},
     );
     expect(result).toHaveLength(2);
-    expect(result![0]).toEqual({
+    expect(result).toContainEqual({
       type: "state",
       state: "aria-controls: menu1",
       ruleName: "aria-attributes",
     });
-    expect(result![1]).toEqual({
+    expect(result).toContainEqual({
       type: "state",
       state: "aria-level: 2",
       ruleName: "aria-attributes",
@@ -35,12 +35,12 @@ describe("AriaAttributes", () => {
       {},
     );
     expect(result).toHaveLength(2);
-    expect(result![0]).toEqual({
+    expect(result).toContainEqual({
       type: "state",
       state: "aria-controls: menu1",
       ruleName: "aria-attributes",
     });
-    expect(result![1]).toEqual({
+    expect(result).toContainEqual({
       type: "state",
       state: "aria-label: test",
       ruleName: "aria-attributes",

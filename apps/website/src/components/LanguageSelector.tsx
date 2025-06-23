@@ -37,7 +37,7 @@ export default function LanguageSelector({
               e.preventDefault();
               handleLanguageChange(language.code);
             }}
-            className={`px-2 py-1 text-sm font-medium rounded transition-colors ${
+            className={`px-2 py-1 text-xs sm:text-sm font-medium rounded transition-colors ${
               language.code === currentLang
                 ? "text-teal-700 bg-teal-50"
                 : "text-zinc-600 hover:text-teal-600 hover:bg-zinc-50"

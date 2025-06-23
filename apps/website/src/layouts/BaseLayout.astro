@@ -27,8 +27,8 @@ const { lang, t } = Astro.props;
     <div class="min-h-screen">
       <!-- Header -->
       <header class="bg-white shadow-sm border-b border-zinc-200">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div class="flex justify-between items-start">
+        <div class="max-w-6xl mx-auto px-4 sm:px-2 lg:px-8 py-2">
+          <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-1 sm:gap-4">
             <div class="flex items-center">
               <img 
                 src="/a11y-visualizer/icon.svg" 
@@ -37,10 +37,10 @@ const { lang, t } = Astro.props;
               />
               <div>
                 <h1 class="text-3xl font-bold text-teal-700">{t.title}</h1>
-                <p class="mt-2 text-lg text-zinc-600">{t.subtitle}</p>
+                <p class="text-sm sm:text-base text-zinc-600">{t.subtitle}</p>
               </div>
             </div>
-            <div class="flex-shrink-0 ml-4">
+            <div class="flex-shrink-0 self-end sm:self-auto">
               <LanguageSelector currentLang={lang} client:load />
             </div>
           </div>

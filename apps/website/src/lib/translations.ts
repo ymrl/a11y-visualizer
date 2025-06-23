@@ -120,7 +120,7 @@ export const translations: Record<string, Translation> = {
         customizable: {
           title: "カスタマイズ可能",
           description:
-            "対象のWebサイトにあわせて、要素の種類や表示方法をカスカスタマイズ",
+            "対象のWebサイトにあわせて、要素の種類や表示方法をカスタマイズ",
         },
       },
     },

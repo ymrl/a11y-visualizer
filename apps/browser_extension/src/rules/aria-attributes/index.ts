@@ -37,8 +37,8 @@ const ariaAttributes = [
   // "aria-hidden", // handled by aria-hidden rule
   // "aria-invalid", // handled by aria-state rule
   "aria-keyshortcuts",
-  // "aria-label", // handled by accessible-name rule
-  // "aria-labelledby", // handled by accessible-name rule
+  "aria-label",
+  "aria-labelledby",
   "aria-level",
   "aria-live",
   "aria-modal",

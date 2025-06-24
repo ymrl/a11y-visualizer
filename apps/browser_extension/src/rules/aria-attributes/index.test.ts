@@ -14,12 +14,12 @@ describe("AriaAttributes", () => {
       {},
     );
     expect(result).toHaveLength(2);
-    expect(result![0]).toEqual({
+    expect(result).toContainEqual({
       type: "state",
       state: "aria-controls: menu1",
       ruleName: "aria-attributes",
     });
-    expect(result![1]).toEqual({
+    expect(result).toContainEqual({
       type: "state",
       state: "aria-level: 2",
       ruleName: "aria-attributes",
@@ -34,16 +34,21 @@ describe("AriaAttributes", () => {
       AriaAttributes.defaultOptions,
       {},
     );
-    expect(result).toHaveLength(1);
-    expect(result![0]).toEqual({
+    expect(result).toHaveLength(2);
+    expect(result).toContainEqual({
       type: "state",
       state: "aria-controls: menu1",
+      ruleName: "aria-attributes",
+    });
+    expect(result).toContainEqual({
+      type: "state",
+      state: "aria-label: test",
       ruleName: "aria-attributes",
     });
   });
 
   test("returns undefined when no relevant aria attributes", () => {
-    document.body.innerHTML = `<div aria-label="test">Content</div>`;
+    document.body.innerHTML = `<div aria-hidden="true">Content</div>`;
     const element = document.querySelector("div")!;
     const result = AriaAttributes.evaluate(
       element,

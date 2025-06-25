@@ -33,14 +33,23 @@ const { lang, t } = Astro.props;
     <meta property="twitter:description" content={t.description} />
     <meta property="twitter:image" content="/a11y-visualizer/images/ogp.png" />
     <meta property="twitter:image:alt" content={t.hero.imageAlt} />
+    <meta name="color-scheme" content="light dark" />
+    <script>
+      // Dark mode script
+      if (typeof window !== 'undefined') {
+        const theme = localStorage.getItem('theme') || 
+          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        document.documentElement.classList.toggle('dark', theme === 'dark');
+      }
+    </script>
     <script>
       import '../scripts/language-redirect';
     </script>
   </head>
-  <body class="bg-zinc-50 text-zinc-800">
+  <body class="bg-zinc-50 dark:bg-zinc-900 text-zinc-800 dark:text-zinc-300 transition-colors">
     <div class="min-h-screen">
       <!-- Header -->
-      <header class="bg-white shadow-sm border-b border-zinc-200">
+      <header class="bg-white dark:bg-zinc-900 shadow-sm border-b border-zinc-200 dark:border-zinc-700">
         <div class="max-w-6xl mx-auto px-4 sm:px-2 lg:px-8 py-2">
           <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-1 sm:gap-4">
             <div class="flex items-center">
@@ -50,8 +59,8 @@ const { lang, t } = Astro.props;
                 class="w-12 h-12 mr-4"
               />
               <div>
-                <h1 class="text-3xl font-bold text-teal-700">{t.title}</h1>
-                <p class="text-sm sm:text-base text-zinc-600">{t.subtitle}</p>
+                <h1 class="text-3xl font-bold text-teal-700 dark:text-teal-200">{t.title}</h1>
+                <p class="text-sm sm:text-base text-zinc-600 dark:text-zinc-400">{t.subtitle}</p>
               </div>
             </div>
             <div class="flex-shrink-0 self-end sm:self-auto">
@@ -64,12 +73,12 @@ const { lang, t } = Astro.props;
       <!-- Main Content -->
       <main>
         <!-- Hero Section -->
-        <section class="bg-gradient-to-br from-teal-50 to-zinc-50 py-16">
+        <section class="bg-gradient-to-br from-teal-50 to-zinc-50 dark:from-zinc-800 dark:to-zinc-900 py-16">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 class="text-4xl font-bold text-zinc-900 mb-4">
+          <h2 class="text-4xl font-bold text-zinc-900 dark:text-zinc-100 mb-4">
             {t.hero.title}
           </h2>
-          <p class="text-xl text-zinc-600 mb-8 max-w-3xl mx-auto">
+          <p class="text-xl text-zinc-600 dark:text-zinc-400 mb-8 max-w-3xl mx-auto">
             {t.hero.description}
           </p>
           <div class="flex justify-center">
@@ -83,44 +92,44 @@ const { lang, t } = Astro.props;
       </section>
 
       <!-- Features Section -->
-      <section class="py-16 bg-white">
+      <section class="py-16 bg-white dark:bg-zinc-900">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 class="text-3xl font-bold text-center text-zinc-900 mb-12">{t.features.title}</h2>
+          <h2 class="text-3xl font-bold text-center text-zinc-900 dark:text-zinc-100 mb-12">{t.features.title}</h2>
           <div class="grid md:grid-cols-2 gap-8">
             <div class="flex items-start space-x-4">
-              <div class="flex-shrink-0 w-8 h-8 bg-teal-100 rounded-full flex items-center justify-center">
-                <span class="text-teal-600 font-semibold">1</span>
+              <div class="flex-shrink-0 w-8 h-8 bg-teal-100 dark:bg-teal-800 rounded-full flex items-center justify-center">
+                <span class="text-teal-600 dark:text-teal-200 font-semibold">1</span>
               </div>
               <div>
-                <h3 class="text-lg font-semibold text-zinc-900 mb-2">{t.features.items.visual.title}</h3>
-                <p class="text-zinc-600">{t.features.items.visual.description}</p>
+                <h3 class="text-lg font-semibold text-zinc-900 dark:text-zinc-100 mb-2">{t.features.items.visual.title}</h3>
+                <p class="text-zinc-600 dark:text-zinc-400">{t.features.items.visual.description}</p>
               </div>
             </div>
             <div class="flex items-start space-x-4">
-              <div class="flex-shrink-0 w-8 h-8 bg-teal-100 rounded-full flex items-center justify-center">
-                <span class="text-teal-600 font-semibold">2</span>
+              <div class="flex-shrink-0 w-8 h-8 bg-teal-100 dark:bg-teal-800 rounded-full flex items-center justify-center">
+                <span class="text-teal-600 dark:text-teal-200 font-semibold">2</span>
               </div>
               <div>
-                <h3 class="text-lg font-semibold text-zinc-900 mb-2">{t.features.items.detection.title}</h3>
-                <p class="text-zinc-600">{t.features.items.detection.description}</p>
+                <h3 class="text-lg font-semibold text-zinc-900 dark:text-zinc-100 mb-2">{t.features.items.detection.title}</h3>
+                <p class="text-zinc-600 dark:text-zinc-400">{t.features.items.detection.description}</p>
               </div>
             </div>
             <div class="flex items-start space-x-4">
-              <div class="flex-shrink-0 w-8 h-8 bg-teal-100 rounded-full flex items-center justify-center">
-                <span class="text-teal-600 font-semibold">3</span>
+              <div class="flex-shrink-0 w-8 h-8 bg-teal-100 dark:bg-teal-800 rounded-full flex items-center justify-center">
+                <span class="text-teal-600 dark:text-teal-200 font-semibold">3</span>
               </div>
               <div>
-                <h3 class="text-lg font-semibold text-zinc-900 mb-2">{t.features.items.liveRegions.title}</h3>
-                <p class="text-zinc-600">{t.features.items.liveRegions.description}</p>
+                <h3 class="text-lg font-semibold text-zinc-900 dark:text-zinc-100 mb-2">{t.features.items.liveRegions.title}</h3>
+                <p class="text-zinc-600 dark:text-zinc-400">{t.features.items.liveRegions.description}</p>
               </div>
             </div>
             <div class="flex items-start space-x-4">
-              <div class="flex-shrink-0 w-8 h-8 bg-teal-100 rounded-full flex items-center justify-center">
-                <span class="text-teal-600 font-semibold">4</span>
+              <div class="flex-shrink-0 w-8 h-8 bg-teal-100 dark:bg-teal-800 rounded-full flex items-center justify-center">
+                <span class="text-teal-600 dark:text-teal-200 font-semibold">4</span>
               </div>
               <div>
-                <h3 class="text-lg font-semibold text-zinc-900 mb-2">{t.features.items.customizable.title}</h3>
-                <p class="text-zinc-600">{t.features.items.customizable.description}</p>
+                <h3 class="text-lg font-semibold text-zinc-900 dark:text-zinc-100 mb-2">{t.features.items.customizable.title}</h3>
+                <p class="text-zinc-600 dark:text-zinc-400">{t.features.items.customizable.description}</p>
               </div>
             </div>
           </div>
@@ -128,9 +137,9 @@ const { lang, t } = Astro.props;
       </section>
 
       <!-- Download Section -->
-      <section class="py-16 bg-zinc-50">
+      <section class="py-16 bg-zinc-50 dark:bg-zinc-800">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 class="text-3xl font-bold text-zinc-900 mb-8">{t.download.title}</h2>
+          <h2 class="text-3xl font-bold text-zinc-900 dark:text-zinc-100 mb-8">{t.download.title}</h2>
           <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
             <a 
               href="https://chromewebstore.google.com/detail/accessibility-visualizer/idcacekakoknnpbfjcdhnkffgfbddnhk" 
@@ -149,10 +158,10 @@ const { lang, t } = Astro.props;
       </section>
 
       <!-- Guide Section -->
-      <section class="py-16 bg-white">
+      <section class="py-16 bg-white dark:bg-zinc-900">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 class="text-3xl font-bold text-zinc-900 mb-4">{t.guide.title}</h2>
-          <p class="text-lg text-zinc-600 mb-8">
+          <h2 class="text-3xl font-bold text-zinc-900 dark:text-zinc-100 mb-4">{t.guide.title}</h2>
+          <p class="text-lg text-zinc-600 dark:text-zinc-400 mb-8">
             {t.guide.description}
           </p>
           <a 
@@ -166,11 +175,11 @@ const { lang, t } = Astro.props;
       </main>
 
       <!-- Footer -->
-      <footer class="bg-zinc-900 text-zinc-300 py-8">
+      <footer class="bg-zinc-900 dark:bg-zinc-950 text-zinc-300 dark:text-zinc-400 py-8">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <p>
             {t.footer.copyright} 
-            <a href="https://github.com/ymrl/a11y-visualizer" class="text-teal-400 hover:text-teal-300 underline">
+            <a href="https://github.com/ymrl/a11y-visualizer" class="text-teal-400 dark:text-teal-300 hover:text-teal-300 dark:hover:text-teal-200 underline">
               {t.footer.github}
             </a>.
           </p>

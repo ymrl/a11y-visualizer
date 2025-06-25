@@ -30,7 +30,9 @@ export default function LanguageSelector({
     <div className="flex items-center space-x-1">
       {languages.map((language, index) => (
         <span key={language.code} className="flex items-center">
-          {index > 0 && <span className="mx-2 text-zinc-400">|</span>}
+          {index > 0 && (
+            <span className="mx-2 text-zinc-400 dark:text-zinc-500">|</span>
+          )}
           <a
             href={getLanguageUrl(language.code)}
             onClick={(e) => {
@@ -39,8 +41,8 @@ export default function LanguageSelector({
             }}
             className={`px-2 py-1 text-xs sm:text-sm font-medium rounded transition-colors ${
               language.code === currentLang
-                ? "text-teal-700 bg-teal-50"
-                : "text-zinc-600 hover:text-teal-600 hover:bg-zinc-50"
+                ? "text-teal-700 dark:text-teal-200 bg-teal-50 dark:bg-teal-800"
+                : "text-zinc-600 dark:text-zinc-400 hover:text-teal-600 dark:hover:text-teal-200 hover:bg-zinc-50 dark:hover:bg-zinc-800"
             }`}
             {...(language.code === currentLang && { "aria-current": "page" })}
           >

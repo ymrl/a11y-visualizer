@@ -19,6 +19,20 @@ const { lang, t } = Astro.props;
     <meta name="generator" content={Astro.generator} />
     <title>{t.title}</title>
     <meta name="description" content={t.description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={Astro.url} />
+    <meta property="og:title" content={t.title} />
+    <meta property="og:description" content={t.description} />
+    <meta property="og:image" content="/a11y-visualizer/images/ogp.png" />
+    <meta property="og:image:alt" content={t.hero.imageAlt} />
+    <meta property="og:site_name" content="Accessibility Visualizer" />
+    <meta property="og:locale" content={lang === 'ja' ? 'ja_JP' : lang === 'ko' ? 'ko_KR' : 'en_US'} />
+    <meta property="twitter:card" content="summary" />
+    <meta property="twitter:url" content={Astro.url} />
+    <meta property="twitter:title" content={t.title} />
+    <meta property="twitter:description" content={t.description} />
+    <meta property="twitter:image" content="/a11y-visualizer/images/ogp.png" />
+    <meta property="twitter:image:alt" content={t.hero.imageAlt} />
     <script>
       import '../scripts/language-redirect';
     </script>

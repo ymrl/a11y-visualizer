@@ -56,6 +56,7 @@
     "description": "설명",
     "heading": "헤딩",
     "ariaStatus": "상태",
+    "ariaAttribute": "WAI-ARIA 속성",
     "pageTitle": "페이지 제목",
     "tableHeader": "테이블 헤더",
     "tableSize": "테이블 크기",

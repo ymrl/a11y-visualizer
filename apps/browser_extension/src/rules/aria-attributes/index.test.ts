@@ -15,18 +15,18 @@ describe("AriaAttributes", () => {
     );
     expect(result).toHaveLength(2);
     expect(result).toContainEqual({
-      type: "state",
-      state: "aria-controls: menu1",
+      type: "ariaAttribute",
+      content: "aria-controls: menu1",
       ruleName: "aria-attributes",
     });
     expect(result).toContainEqual({
-      type: "state",
-      state: "aria-level: 2",
+      type: "ariaAttribute",
+      content: "aria-level: 2",
       ruleName: "aria-attributes",
     });
   });
 
-  test("ignores attributes covered by other rules", () => {
+  test("returns warning when aria-hidden is true", () => {
     document.body.innerHTML = `<div aria-label="test" aria-hidden="true" aria-controls="menu1">Content</div>`;
     const element = document.querySelector("div")!;
     const result = AriaAttributes.evaluate(
@@ -34,28 +34,47 @@ describe("AriaAttributes", () => {
       AriaAttributes.defaultOptions,
       {},
     );
-    expect(result).toHaveLength(2);
+    expect(result).toHaveLength(3);
     expect(result).toContainEqual({
-      type: "state",
-      state: "aria-controls: menu1",
+      type: "ariaAttribute",
+      content: "aria-controls: menu1",
       ruleName: "aria-attributes",
     });
     expect(result).toContainEqual({
-      type: "state",
-      state: "aria-label: test",
+      type: "ariaAttribute",
+      content: "aria-label: test",
+      ruleName: "aria-attributes",
+    });
+    expect(result).toContainEqual({
+      type: "warning",
+      message: "aria-hidden: true",
       ruleName: "aria-attributes",
     });
   });
-
-  test("returns undefined when no relevant aria attributes", () => {
-    document.body.innerHTML = `<div aria-hidden="true">Content</div>`;
+  test("returns ariaAttribute when aria-hidden is false", () => {
+    document.body.innerHTML = `<div aria-label="test" aria-hidden="false" aria-controls="menu1">Content</div>`;
     const element = document.querySelector("div")!;
     const result = AriaAttributes.evaluate(
       element,
       AriaAttributes.defaultOptions,
       {},
     );
-    expect(result).toBeUndefined();
+    expect(result).toHaveLength(3);
+    expect(result).toContainEqual({
+      type: "ariaAttribute",
+      content: "aria-controls: menu1",
+      ruleName: "aria-attributes",
+    });
+    expect(result).toContainEqual({
+      type: "ariaAttribute",
+      content: "aria-label: test",
+      ruleName: "aria-attributes",
+    });
+    expect(result).toContainEqual({
+      type: "ariaAttribute",
+      content: "aria-hidden: false",
+      ruleName: "aria-attributes",
+    });
   });
 
   test("returns undefined when disabled", () => {
@@ -75,8 +94,8 @@ describe("AriaAttributes", () => {
     );
     expect(result).toHaveLength(1);
     expect(result![0]).toEqual({
-      type: "state",
-      state: "aria-controls: ",
+      type: "ariaAttribute",
+      content: "aria-controls: ",
       ruleName: "aria-attributes",
     });
   });

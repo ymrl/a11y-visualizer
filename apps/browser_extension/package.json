@@ -15,6 +15,7 @@
     "lint": "prettier . --check && eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "lint-fix": "prettier . --write && eslint . --ext ts,tsx --fix",
     "test": "vitest run --config vite.test.config.ts",
+    "test:watch": "vitest --config vite.test.config.ts",
     "postinstall": "wxt prepare",
     "bump_version": "pnpm version --no-git-tag-version"
   },

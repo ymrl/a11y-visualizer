@@ -1,4 +1,4 @@
-import { RuleObject } from "../type";
+import { RuleObject, RuleResult } from "../type";
 
 type Options = {
   enabled: boolean;
@@ -9,33 +9,32 @@ const defaultOptions = {
 };
 
 // WAI-ARIA 1.2 全属性リスト
-// コメントアウトされた属性は既存のルールでカバーされている
 const ariaAttributes = [
   "aria-activedescendant",
   "aria-atomic",
   "aria-autocomplete",
   "aria-braillelabel",
   "aria-brailleroledescription",
-  // "aria-busy", // handled by aria-state rule
-  // "aria-checked", // handled by aria-state rule
+  "aria-busy",
+  "aria-checked",
   "aria-colcount",
   "aria-colindex",
   "aria-colindextext",
   "aria-colspan",
   "aria-controls",
-  // "aria-current", // handled by aria-state rule
-  // "aria-describedby", // handled by accessible-description rule
+  "aria-current",
+  "aria-describedby",
   "aria-description",
   "aria-details",
-  // "aria-disabled", // handled by aria-state rule
+  "aria-disabled",
   "aria-dropeffect",
   "aria-errormessage",
-  // "aria-expanded", // handled by aria-state rule
+  "aria-expanded",
   "aria-flowto",
   "aria-grabbed",
   "aria-haspopup",
-  // "aria-hidden", // handled by aria-hidden rule
-  // "aria-invalid", // handled by aria-state rule
+  "aria-hidden",
+  "aria-invalid",
   "aria-keyshortcuts",
   "aria-label",
   "aria-labelledby",
@@ -48,16 +47,16 @@ const ariaAttributes = [
   "aria-owns",
   "aria-placeholder",
   "aria-posinset",
-  // "aria-pressed", // handled by aria-state rule
-  // "aria-readonly", // handled by aria-state rule
+  "aria-pressed",
+  "aria-readonly",
   "aria-relevant",
-  // "aria-required", // handled by aria-state rule
+  "aria-required",
   "aria-roledescription",
   "aria-rowcount",
   "aria-rowindex",
   "aria-rowindextext",
   "aria-rowspan",
-  // "aria-selected", // handled by aria-state rule
+  "aria-selected",
   "aria-setsize",
   "aria-sort",
   "aria-valuemax",
@@ -74,14 +73,23 @@ export const AriaAttributes: RuleObject = {
       return undefined;
     }
 
-    const results = [];
+    const results: RuleResult[] = [];
 
     for (const attribute of ariaAttributes) {
       const value = element.getAttribute(attribute);
-      if (value !== null) {
+      if (value === null) {
+        continue;
+      }
+      if (attribute === "aria-hidden" && value === "true") {
         results.push({
-          type: "state" as const,
-          state: `${attribute}: ${value}`,
+          type: "warning",
+          message: `${attribute}: ${value}`,
+          ruleName,
+        });
+      } else {
+        results.push({
+          type: "ariaAttribute",
+          content: `${attribute}: ${value}`,
           ruleName,
         });
       }

@@ -1,7 +1,6 @@
 import { AccessibleDescription } from "./accessible-description";
 import { AccessibleName } from "./accessible-name";
 import { AriaAttributes } from "./aria-attributes";
-import { AriaHidden } from "./aria-hidden";
 import { AriaState } from "./aria-state";
 import { ControlFocus } from "./control-focus";
 import { ControlName } from "./control-name";
@@ -31,7 +30,6 @@ import { TargetSize } from "./target-size";
 export const Rules = [
   HeadingLevel,
   AccessibleName,
-  AriaHidden,
   ControlFocus,
   ControlName,
   Fieldset,

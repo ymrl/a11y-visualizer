@@ -56,6 +56,7 @@
     "description": "説明",
     "heading": "見出し",
     "ariaStatus": "ステータス",
+    "ariaAttribute": "WAI-ARIA属性",
     "pageTitle": "ページタイトル",
     "tableHeader": "表見出し",
     "tableSize": "表の大きさ",

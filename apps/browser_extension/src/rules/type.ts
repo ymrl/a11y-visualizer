@@ -27,7 +27,8 @@ export type RuleResultContent = {
     | "tableSize"
     | "tableCellPosition"
     | "list"
-    | "listType";
+    | "listType"
+    | "ariaAttribute";
   ruleName: string;
   content: string;
   contentLabel?: string;

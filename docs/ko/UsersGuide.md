@@ -110,6 +110,7 @@ Accessibility Visualizer를 설치하면 확장 프로그램 메뉴에 Accessibi
 - 롤(역할): 분홍색으로 꼬리표 아이콘과 함께 표시됩니다
 - 요소: 보라색으로 HTML 태그를 모방한 `</>` 아이콘과 함께 표시됩니다
 - 상태: 오렌지색으로 정보 아이콘과 함께 표시됩니다
+- WAI-ARIA 속성: 오렌지색으로 톱니바퀴 아이콘과 함께 표시됩니다
 
 "이름"은 "[접근 가능한 이름 (Accessible Name)](https://developer.mozilla.org/ko/docs/Glossary/Accessible_name)", "설명"은 "[접근 가능한 설명 (Accessible Description)](https://developer.mozilla.org/ko/docs/Glossary/Accessible_description)"의 값이 표시됩니다. 이것들은 스크린 리더 등의 보조 기술 사용자가 그 요소를 인식하기 위해 사용되는 정보입니다.
 
@@ -210,6 +211,7 @@ Accessibility Visualizer를 설치하면 확장 프로그램 메뉴에 Accessibi
 
 "WAI-ARIA"가 체크되어 있을 때 ARIA 속성을 가진 요소에 대해 팁을 표시합니다.
 
+- WAI-ARIA 속성 팁에서 요소에 적용된 ARIA 속성의 이름과 값이 표시됩니다. 이를 통해 어떤 ARIA 속성이 적용되어 있는지 이해하고 그 값을 확인할 수 있습니다
 - `aria-hidden="true"` 속성을 가진 요소에는 경고 팁이 표시됩니다. 이 속성이 지정된 요소는 스크린 리더 등의 보조 기술 사용자에게는 인지되지 않습니다. 장식 목적의 요소 이외에서 시각적으로 보이는데 `aria-hidden`이 되어 있는 요소가 존재하는 경우는 **수정이 필요합니다**
 - 그 밖의 ARIA 속성(`aria-expanded`, `aria-selected` 등)의 상태가 표시됩니다
 - 역할 팁에서 커스텀 역할이 표시됩니다

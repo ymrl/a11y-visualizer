@@ -110,6 +110,7 @@ Tips come in the following types:
 - Role: Displayed in pink with a tag icon
 - Element: Displayed in purple with HTML tag-like `</>` icon
 - Status: Displayed in orange with an info icon
+- WAI-ARIA attribute: Displayed in orange with a gear icon
 
 "Name" displays the value of "[Accessible Name](https://developer.mozilla.org/en/docs/Glossary/Accessible_name)" and "Description" displays the value of "[Accessible Description](https://developer.mozilla.org/en/docs/Glossary/Accessible_description)". These are information used by users of assistive technologies such as screen readers to recognize elements.
 
@@ -210,6 +211,7 @@ When "Lists" is checked, tips are displayed for `<ul>`, `<ol>`, `<dl>` elements 
 
 When "WAI-ARIA" is checked, tips are displayed for elements with ARIA attributes.
 
+- WAI-ARIA attribute tips display the names and values of ARIA attributes on elements. These help you understand which ARIA attributes are applied and verify their values
 - Warning tips are displayed for elements with `aria-hidden="true"` attribute. Elements with this attribute are not perceived by users of assistive technologies such as screen readers. If elements other than decorative ones are visually visible but have `aria-hidden`, **correction is required**
 - States of other ARIA attributes (`aria-expanded`, `aria-selected`, etc.) are displayed
 - Role tips display custom roles

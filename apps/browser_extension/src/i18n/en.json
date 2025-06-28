@@ -56,6 +56,7 @@
     "description": "Description",
     "heading": "Heading",
     "ariaStatus": "Status",
+    "ariaAttribute": "WAI-ARIA attribute",
     "pageTitle": "Page title",
     "tableHeader": "Table header",
     "tableSize": "Table size",

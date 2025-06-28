@@ -69,6 +69,9 @@
 .Tip--lang {
   background-color: var(--base-cream);
 }
+.Tip--ariaAttribute {
+  background-color: var(--base-beige);
+}
 
 .Tip__icon {
   width: 1.2em;

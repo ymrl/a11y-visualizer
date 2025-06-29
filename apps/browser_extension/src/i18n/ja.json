@@ -92,6 +92,8 @@
   "aria-hidden": "aria-hidden",
   "Invalid WAI-ARIA attribute value": "WAI-ARIA属性値が不正",
   "Invalid role for WAI-ARIA attribute": "WAI-ARIA属性を使用できないロール",
+  "Invalid WAI-ARIA attribute value: {{attribute}}": "WAI-ARIA属性値が不正: {{attribute}}",
+  "Invalid role for WAI-ARIA attribute: {{attribute}}": "WAI-ARIA属性を使用できないロール: {{attribute}}",
   "Not focusable": "フォーカスできない",
   "No accessible name": "名前（ラベル）なし",
   "No heading level": "見出しレベルなし",

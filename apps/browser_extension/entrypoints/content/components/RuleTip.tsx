@@ -186,13 +186,11 @@ export const RuleTip = ({
     >
       <Icon type={result.type} />
       {!hideLabel &&
-        (result.type === "error"
-          ? t(result.message)
-          : result.type === "warning"
-            ? t(result.message)
-            : result.type === "state"
-              ? t(result.state)
-              : `${result.contentLabel ? t(result.contentLabel) : ""} ${t(result.content)}`)}
+        (result.type === "error" || result.type === "warning"
+          ? t(result.message, result.messageParams)
+          : result.type === "state"
+            ? t(result.state)
+            : `${result.contentLabel ? t(result.contentLabel) : ""} ${t(result.content)}`)}
     </div>
   );
 };

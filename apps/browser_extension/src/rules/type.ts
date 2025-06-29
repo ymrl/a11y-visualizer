@@ -4,11 +4,13 @@ export type RuleResultError = {
   type: "error";
   ruleName: string;
   message: string;
+  messageParams?: Record<string, string>;
 };
 export type RuleResultWarning = {
   type: "warning";
   ruleName: string;
   message: string;
+  messageParams?: Record<string, string>;
 };
 export type RuleResultMessage = RuleResultError | RuleResultWarning;
 

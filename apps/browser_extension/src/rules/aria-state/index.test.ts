@@ -1,17 +1,5 @@
 import { describe, test, expect, afterEach } from "vitest";
 import { AriaState } from ".";
-
-const invalidValueError = {
-  type: "error",
-  ruleName: "aria-state",
-  message: "Invalid WAI-ARIA attribute value",
-};
-
-const invalidRoleError = {
-  type: "error",
-  ruleName: "aria-state",
-  message: "Invalid role for WAI-ARIA attribute",
-};
 describe("aria-state", () => {
   afterEach(() => {
     document.body.innerHTML = "";
@@ -52,12 +40,12 @@ describe("aria-state", () => {
     ]);
   });
 
-  test('aria-busy="invalid"', () => {
+  test('aria-busy="invalid" - no validation (handled by AriaValidation)', () => {
     const element = document.createElement("div");
     element.setAttribute("aria-busy", "invalid");
     document.body.appendChild(element);
     const result = AriaState.evaluate(element, { enabled: true }, {});
-    expect(result).toEqual([invalidValueError]);
+    expect(result).toBeUndefined();
   });
 
   test('aria-current="page"', () => {
@@ -74,12 +62,12 @@ describe("aria-state", () => {
     ]);
   });
 
-  test('aria-current="invalid"', () => {
+  test('aria-current="invalid" - no validation (handled by AriaValidation)', () => {
     const element = document.createElement("div");
     element.setAttribute("aria-current", "invalid");
     document.body.appendChild(element);
     const result = AriaState.evaluate(element, { enabled: true }, {});
-    expect(result).toEqual([invalidValueError]);
+    expect(result).toBeUndefined();
   });
 
   test('aria-checked="true"', () => {
@@ -97,13 +85,13 @@ describe("aria-state", () => {
     ]);
   });
 
-  test('aria-checked="true" (role is invalid)', () => {
+  test('aria-checked="true" (role is invalid) - no validation (handled by AriaValidation)', () => {
     const element = document.createElement("div");
     element.setAttribute("role", "button");
     element.setAttribute("aria-checked", "true");
     document.body.appendChild(element);
     const result = AriaState.evaluate(element, { enabled: true }, {});
-    expect(result).toEqual([invalidRoleError]);
+    expect(result).toBeUndefined();
   });
 
   test("checkbox", () => {
@@ -391,26 +379,24 @@ describe("aria-state", () => {
     });
   });
 
-  test("multiple errors", () => {
+  test("multiple valid states (no validation errors)", () => {
     const element = document.createElement("div");
     element.setAttribute("role", "button");
-    element.setAttribute("aria-busy", "invalid");
-    element.setAttribute("aria-current", "invalid");
-    element.setAttribute("aria-checked", "true");
-    element.setAttribute("aria-selected", "true");
+    element.setAttribute("aria-busy", "true");
+    element.setAttribute("aria-current", "page");
     element.setAttribute("aria-disabled", "true");
     document.body.appendChild(element);
     const result = AriaState.evaluate(element, { enabled: true }, {});
     expect(result).toHaveLength(3);
     expect(result).toContainEqual({
-      type: "error",
+      type: "state",
       ruleName: "aria-state",
-      message: "Invalid WAI-ARIA attribute value",
+      state: "Busy: true",
     });
     expect(result).toContainEqual({
-      type: "error",
+      type: "state",
       ruleName: "aria-state",
-      message: "Invalid WAI-ARIA attribute value",
+      state: "Current: page",
     });
     expect(result).toContainEqual({
       type: "state",

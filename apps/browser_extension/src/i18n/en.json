@@ -92,6 +92,8 @@
   "aria-hidden": "aria-hidden",
   "Invalid WAI-ARIA attribute value": "Invalid WAI-ARIA attribute value",
   "Invalid role for WAI-ARIA attribute": "Invalid role for WAI-ARIA attribute",
+  "Invalid WAI-ARIA attribute value: {{attribute}}": "Invalid WAI-ARIA attribute value: {{attribute}}",
+  "Invalid role for WAI-ARIA attribute: {{attribute}}": "Invalid role for WAI-ARIA attribute: {{attribute}}",
   "Not focusable": "Not focusable",
   "No accessible name": "No accessible name",
   "No heading level": "No heading level",

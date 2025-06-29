@@ -1,30 +1,41 @@
 import { getKnownRole, KnownRole } from "../../dom/getKnownRole";
 import { RuleObject, RuleResultMessage, RuleResultState } from "../type";
+import {
+  ARIA_ATTRIBUTE_VALUES,
+  ARIA_ATTRIBUTE_ROLES,
+  AriaAttribute,
+} from "../aria-validation/ariaSpec";
 
 const ruleName = "aria-state";
 const defaultOptions = { enabled: true };
 
-const globalAriaStates = [
+/**
+ * ARIA attributes that AriaState rule handles for display.
+ * These attributes have corresponding native HTML functionality.
+ */
+const ARIA_STATE_RULE_ATTRIBUTES = [
   "aria-busy",
   "aria-current",
-  // "aria-grabbed", // deprecated on WAI-ARIA 1.1
-  // "aria-hidden", // handled by aria-hidden rule (for warning)
+  "aria-checked",
+  "aria-disabled",
+  "aria-expanded",
+  "aria-invalid",
+  "aria-pressed",
+  "aria-selected",
+  "aria-required",
+  "aria-readonly",
 ] as const;
 
-const ariaStateValues: { [ariaState: string]: (string | null)[] } = {
-  "aria-busy": ["true", "false"],
-  "aria-current": ["true", "false", "page", "step", "location", "date", "time"],
-  "aria-checked": ["true", "false", "mixed", "undefined"],
-  "aria-disabled": ["true", "false"],
-  "aria-expanded": ["true", "false", "undefined"],
-  "aria-invalid": ["true", "false", "grammar", "spelling"],
-  "aria-pressed": ["true", "false", "mixed", "undefined"],
-  "aria-selected": ["true", "false", "undefined"],
-  "aria-required": ["true", "false"],
-  "aria-readonly": ["true", "false"],
-};
+/**
+ * Global ARIA attributes that AriaState rule should check on any element.
+ * These are global attributes that this rule specifically handles.
+ */
+const GLOBAL_ARIA_STATE_ATTRIBUTES = ["aria-busy", "aria-current"] as const;
 
-const ariaStateNames: { [ariaState: string]: string } = {
+/**
+ * Human-readable names for ARIA attributes handled by AriaState rule.
+ */
+const ARIA_STATE_RULE_NAMES: Record<string, string> = {
   "aria-busy": "Busy",
   "aria-current": "Current",
   "aria-checked": "Checked",
@@ -33,136 +44,11 @@ const ariaStateNames: { [ariaState: string]: string } = {
   "aria-invalid": "Invalid",
   "aria-pressed": "Pressed",
   "aria-selected": "Selected",
-  "aria-required": "Required", // property
-  "aria-readonly": "Read Only", // property
+  "aria-required": "Required",
+  "aria-readonly": "Read Only",
 } as const;
 
-const ariaStateRoles: { [ariaState: string]: KnownRole[] } = {
-  "aria-checked": [
-    "checkbox",
-    "menuitemcheckbox",
-    "option",
-    "radio",
-    "switch",
-    "menuitemradio",
-    "treeitem",
-  ],
-  "aria-disabled": [
-    "application",
-    "button",
-    "composite",
-    "gridcell",
-    "group",
-    "input",
-    "link",
-    "menuitem",
-    "scrollbar",
-    "separator",
-    "tab",
-    "checkbox",
-    "columnheader",
-    "combobox",
-    "grid",
-    "listbox",
-    "menu",
-    "menubar",
-    "menuitemcheckbox",
-    "menuitemradio",
-    "option",
-    "radio",
-    "radiogroup",
-    "row",
-    "rowheader",
-    "searchbox",
-    "select",
-    "slider",
-    "spinbutton",
-    "switch",
-    "tablist",
-    "textbox",
-    "toolbar",
-    "tree",
-    "treegrid",
-    "treeitem",
-  ],
-  "aria-expanded": [
-    "application",
-    "button",
-    "checkbox",
-    "combobox",
-    "gridcell",
-    "link",
-    "listbox",
-    "menuitem",
-    "row",
-    "rowheader",
-    "tab",
-    "treeitem",
-    "columnheader",
-    "menuitemcheckbox",
-    "menuitemradio",
-    "rowheader",
-    "switch",
-  ],
-  "aria-invalid": [
-    "application",
-    "checkbox",
-    "combobox",
-    "gridcell",
-    "listbox",
-    "radiogroup",
-    "slider",
-    "spinbutton",
-    "textbox",
-    "tree",
-    "columnheader",
-    "rowheader",
-    "searchbox",
-    "switch",
-    "treegrid",
-  ],
-  "aria-pressed": ["button"],
-  "aria-selected": [
-    "gridcell",
-    "option",
-    "row",
-    "tab",
-    "columnheader",
-    "rowheader",
-    "treeitem",
-  ],
-  "aria-required": [
-    "checkbox",
-    "combobox",
-    "gridcell",
-    "listbox",
-    "radiogroup",
-    "spinbutton",
-    "textbox",
-    "tree",
-    "columnheader",
-    "rowheader",
-    "searchbox",
-    "switch",
-    "treegrid",
-  ],
-  "aria-readonly": [
-    "checkbox",
-    "combobox",
-    "grid",
-    "gridcell",
-    "listbox",
-    "radiogroup",
-    "slider",
-    "spinbutton",
-    "textbox",
-    "columnheader",
-    "rowheader",
-    "searchbox",
-    "switch",
-    "treegrid",
-  ],
-} as const;
+type AriaStateRuleAttribute = (typeof ARIA_STATE_RULE_ATTRIBUTES)[number];
 
 const getNativeCheckedValue = (element: Element) => {
   if (
@@ -236,7 +122,7 @@ const getNativeReadonlyValue = (element: Element) => {
   return null;
 };
 
-const getNativeValue = (state: string, element: Element) => {
+const getNativeValue = (state: AriaStateRuleAttribute, element: Element) => {
   switch (state) {
     case "aria-checked":
       return getNativeCheckedValue(element);
@@ -255,6 +141,10 @@ const getNativeValue = (state: string, element: Element) => {
   }
 };
 
+/**
+ * ネイティブでもARIAでも状態を持つARIA属性を中心に、その状態を表示する
+ * WAI-ARIAの仕様に従い、ネイティブの値が存在する場合はそれを優先する
+ */
 export const AriaState: RuleObject = {
   ruleName,
   defaultOptions,
@@ -264,70 +154,44 @@ export const AriaState: RuleObject = {
     }
     const result: (RuleResultState | RuleResultMessage)[] = [];
 
-    for (const state of globalAriaStates) {
+    for (const state of GLOBAL_ARIA_STATE_ATTRIBUTES) {
       const value = element.getAttribute(state);
-      if (value) {
-        if (ariaStateValues[state].includes(value)) {
-          result.push({
-            type: "state",
-            state: `${ariaStateNames[state]}: ${value}`,
-            ruleName,
-          });
-        } else if (
-          !result.find(
-            (r) =>
-              r.type === "error" &&
-              r.message === "Invalid WAI-ARIA attribute value",
-          )
-        ) {
-          result.push({
-            type: "error",
-            message: "Invalid WAI-ARIA attribute value",
-            ruleName,
-          });
-        }
+      const validValues = ARIA_ATTRIBUTE_VALUES[state];
+      if (value && Array.isArray(validValues) && validValues.includes(value)) {
+        result.push({
+          type: "state",
+          state: `${ARIA_STATE_RULE_NAMES[state]}: ${value}`,
+          ruleName,
+        });
       }
     }
 
-    for (const [state, roles] of Object.entries(ariaStateRoles)) {
-      if (role && (roles as string[]).includes(role)) {
+    for (const state of ARIA_STATE_RULE_ATTRIBUTES) {
+      if ((GLOBAL_ARIA_STATE_ATTRIBUTES as readonly string[]).includes(state)) {
+        continue; // Already handled above
+      }
+
+      const validRoles = ARIA_ATTRIBUTE_ROLES[state as AriaAttribute];
+      if (
+        role &&
+        validRoles !== "all" &&
+        validRoles.includes(role as KnownRole)
+      ) {
         const ariaStateValue = element.getAttribute(state);
         const nativeValue = getNativeValue(state, element);
         const value = nativeValue || ariaStateValue;
-        if (value) {
-          if (ariaStateValues[state].includes(value)) {
-            result.push({
-              type: "state",
-              state: `${ariaStateNames[state]}: ${value}`,
-              ruleName,
-            });
-          } else if (
-            !result.find(
-              (r) =>
-                r.type === "error" &&
-                r.message === "Invalid WAI-ARIA attribute value",
-            )
-          ) {
-            result.push({
-              type: "error",
-              message: "Invalid WAI-ARIA attribute value",
-              ruleName,
-            });
-          }
+        const validValues = ARIA_ATTRIBUTE_VALUES[state as AriaAttribute];
+        if (
+          value &&
+          Array.isArray(validValues) &&
+          validValues.includes(value)
+        ) {
+          result.push({
+            type: "state",
+            state: `${ARIA_STATE_RULE_NAMES[state]}: ${value}`,
+            ruleName,
+          });
         }
-      } else if (
-        element.hasAttribute(state) &&
-        !result.find(
-          (r) =>
-            r.type === "error" &&
-            r.message === "Invalid role for WAI-ARIA attribute",
-        )
-      ) {
-        result.push({
-          type: "error",
-          message: "Invalid role for WAI-ARIA attribute",
-          ruleName,
-        });
       }
     }
     if (result.length > 0) {

@@ -90,8 +90,10 @@
     "definitionList": "Definition list"
   },
   "aria-hidden": "aria-hidden",
-  "Invalid WAI-ARIA attribute value": "Invalid WAI-ARIA attribute value",
-  "Invalid role for WAI-ARIA attribute": "Invalid role for WAI-ARIA attribute",
+  "Invalid WAI-ARIA attribute value": "WAI-ARIA 속성 값 오류",
+  "Invalid role for WAI-ARIA attribute": "WAI-ARIA 속성을 사용할 수 없는 역할",
+  "Invalid WAI-ARIA attribute value: {{attribute}}": "WAI-ARIA 속성 값 오류: {{attribute}}",
+  "Invalid role for WAI-ARIA attribute: {{attribute}}": "WAI-ARIA 속성을 사용할 수 없는 역할: {{attribute}}",
   "Not focusable": "포커싱 불가",
   "No accessible name": "이름(레이블) 없음",
   "No heading level": "헤딩 레벨 없음",

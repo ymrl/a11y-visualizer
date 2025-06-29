@@ -65,6 +65,9 @@ const ariaAttributes = [
   "aria-valuetext",
 ] as const;
 
+/**
+ * WAI-ARIA属性の値をすべて表示する
+ */
 export const AriaAttributes: RuleObject = {
   ruleName,
   defaultOptions,

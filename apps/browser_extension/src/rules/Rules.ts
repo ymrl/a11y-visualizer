@@ -9,6 +9,7 @@ import { Fieldset } from "./fieldset";
 import { HeadingLevel } from "./heading-level";
 import { HeadingName } from "./heading-name";
 import { Hgroup } from "./hgroup";
+import { IdReference } from "./id-reference";
 import { ImageName } from "./image-name";
 import { LabelAssociatedControl } from "./label-associated-control";
 import { Landmark } from "./landmark";
@@ -36,6 +37,7 @@ export const Rules = [
   Fieldset,
   Hgroup,
   HeadingName,
+  IdReference,
   ImageName,
   LabelAssociatedControl,
   Landmark,

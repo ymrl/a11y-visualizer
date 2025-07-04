@@ -94,6 +94,7 @@
   "Invalid role for WAI-ARIA attribute": "WAI-ARIA属性を使用できないロール",
   "Invalid WAI-ARIA attribute value: {{attribute}}": "WAI-ARIA属性値が不正: {{attribute}}",
   "Invalid role for WAI-ARIA attribute: {{attribute}}": "WAI-ARIA属性を使用できないロール: {{attribute}}",
+  "Referenced IDs do not exist: {{ids}}": "参照されているIDが存在しません: {{ids}}",
   "Not focusable": "フォーカスできない",
   "No accessible name": "名前（ラベル）なし",
   "No heading level": "見出しレベルなし",

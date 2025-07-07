@@ -2,7 +2,7 @@
   "name": "@a11y-visualizer/browser-extension",
   "description": "Web accessibility visualizer browser extension",
   "private": true,
-  "version": "6.0.2",
+  "version": "6.1.0",
   "type": "module",
   "scripts": {
     "dev": "wxt",

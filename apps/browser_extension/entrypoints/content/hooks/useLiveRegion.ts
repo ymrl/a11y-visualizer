@@ -3,6 +3,7 @@ import { SettingsContext } from "../contexts/SettingsContext";
 import { isInAriaHidden } from "../dom";
 import { isHidden } from "../../../src/dom/isHidden";
 import { getKnownRole } from "../../../src/dom/getKnownRole";
+import { detectModals } from "../dom/detectModals";
 
 const LIVEREGION_SELECTOR =
   "output, [role~='status'], [role~='alert'], [role~='log'], [aria-live]:not([aria-live='off'])";
@@ -183,6 +184,19 @@ export const useLiveRegion = ({
           if (isHidden(node as Element) || isInAriaHidden(node as Element)) {
             return null;
           }
+
+          // モーダルが表示されている場合、モーダル外の要素は通知しない
+          if (parentRef.current) {
+            const modals = detectModals(parentRef.current);
+            if (modals.length > 0) {
+              const isInsideModal = modals.some(
+                (modal) => modal.contains(node as Element) || modal === node,
+              );
+              if (!isInsideModal) {
+                return null;
+              }
+            }
+          }
           const isAssertive =
             node.nodeType === Node.ELEMENT_NODE &&
             ((node as Element).getAttribute("aria-live") === "assertive" ||
@@ -244,6 +258,7 @@ export const useLiveRegion = ({
     addAnnouncement,
     clearAnnouncements,
     pausedAnnouncements,
+    parentRef,
   ]);
 
   React.useEffect(() => {

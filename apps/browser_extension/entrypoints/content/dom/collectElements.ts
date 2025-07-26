@@ -10,6 +10,7 @@ import { isRuleTargetElement, RuleResult, Rules } from "../../../src/rules";
 import { getKnownRole } from "../../../src/dom/getKnownRole";
 import { Selectors } from "./Selectors";
 import { getElementCategory } from "./getElementCategory";
+import { detectModals } from "./detectModals";
 
 const getSelector = (settings: Partial<CategorySettings>) => {
   const s = Object.keys(settings).reduce(
@@ -69,6 +70,11 @@ export const collectElements = (
 
   const selector = getSelector(settings);
   const internalTables: Table[] = [];
+
+  // モーダル要素を検出
+  const modals = detectModals(root);
+  const hasActiveModals = modals.length > 0;
+
   return {
     rootHeight,
     rootWidth,
@@ -79,6 +85,13 @@ export const collectElements = (
     ]
       .filter((el) => !isHidden(el))
       .filter((el) => !excludes.some((exclude) => exclude.contains(el)))
+      .filter((el) => {
+        // モーダルが表示されている場合、モーダル外の要素を非表示にする
+        if (hasActiveModals) {
+          return modals.some((modal) => modal.contains(el) || modal === el);
+        }
+        return true;
+      })
       .map((el: Element) => {
         const scrollBaseElement = getScrollBaseElement(el, d, w);
         const scrollBasePosition = scrollBaseElement

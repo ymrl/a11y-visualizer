@@ -1,0 +1,19 @@
+export const detectModals = (root: Element): Element[] => {
+  // aria-modal="true"な要素を検出
+  const ariaModalElements = Array.from(
+    root.querySelectorAll('[aria-modal="true"]'),
+  );
+
+  // showModal()で開かれたdialog要素を検出
+  const openDialogElements = Array.from(root.querySelectorAll("dialog")).filter(
+    (dialog) => (dialog as HTMLDialogElement).open,
+  );
+
+  // 重複を除去して結合
+  return Array.from(new Set([...ariaModalElements, ...openDialogElements]));
+};
+
+export const shouldHideBackgroundElements = (root: Element): boolean => {
+  const modals = detectModals(root);
+  return modals.length > 0;
+};

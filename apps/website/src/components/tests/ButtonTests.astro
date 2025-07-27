@@ -1,0 +1,148 @@
+---
+import CategoryTitle from './CategoryTitle.astro';
+import ExampleCard from './ExampleCard.astro';
+
+const buttonClasses = "bg-teal-700 text-white p-2 rounded-lg inline-block cursor-pointer hover:bg-teal-800 transition-colors";
+---
+
+<CategoryTitle id="buttons">Buttons</CategoryTitle>
+<p class="text-zinc-700 dark:text-zinc-300 mb-6">
+  Buttons are interactive elements that users activate to perform actions. They must be accessible to keyboard users and screen readers. 
+  The following examples show various button implementations and common accessibility issues.
+</p>
+
+<ExampleCard 
+  title="Standard button element" 
+  description="✅ The most accessible way to create a button. Semantic HTML buttons are keyboard accessible by default and announced correctly by screen readers."
+>
+  <button class={buttonClasses}>Click Me</button>
+</ExampleCard>
+
+<ExampleCard 
+  title="Button with aria-hidden" 
+  description="❌ Button hidden from assistive technologies. This makes the button inaccessible to screen reader users while remaining visible to sighted users."
+>
+  <button class={buttonClasses} aria-hidden="true">Click Me</button>
+</ExampleCard>
+
+<ExampleCard 
+  title="Div with button role and tabindex" 
+  description="✅ Properly implemented custom button using a div. Includes role='button' and tabindex='0' to make it accessible. However, semantic HTML buttons are preferred."
+>
+  <div class={buttonClasses} role="button" tabindex="0">Click Me</div>
+</ExampleCard>
+
+<ExampleCard 
+  title="Div as button without role" 
+  description="❌ Custom button missing role='button'. Screen readers won't identify this as an interactive element, making it inaccessible."
+>
+  <div class={buttonClasses} tabindex="0">Click Me</div>
+</ExampleCard>
+
+<ExampleCard 
+  title="Div as button without tabindex" 
+  description="❌ Custom button that can't receive keyboard focus. Keyboard users won't be able to activate this button."
+>
+  <div class={buttonClasses} role="button">Click Me</div>
+</ExampleCard>
+
+<ExampleCard 
+  title="Button containing image with alt text" 
+  description="✅ Button with an image that has proper alt text. The alt text becomes the accessible name of the button."
+>
+  <button class="p-0 bg-transparent border-0 cursor-pointer">
+    <img src="/a11y-visualizer/images/button.png" alt="Click Me" width="75" height="40" />
+  </button>
+</ExampleCard>
+
+<ExampleCard 
+  title="Button containing image without alt text" 
+  description="❌ Button with an image missing alt text. Screen readers cannot determine what this button does, making it inaccessible."
+>
+  <button class="p-0 bg-transparent border-0 cursor-pointer">
+    <img src="/a11y-visualizer/images/button.png" width="75" height="40" class="border border-red-300" />
+  </button>
+</ExampleCard>
+
+<ExampleCard 
+  title='Input type="button"' 
+  description="✅ Input element with type='button'. Uses the value attribute to provide the button's accessible name."
+>
+  <input type="button" value="Click Me" class={buttonClasses} />
+</ExampleCard>
+
+<ExampleCard 
+  title='Input type="button" without value' 
+  description="❌ Input button without a value attribute has no accessible name. Screen readers cannot identify what this button does."
+>
+  <input type="button" class={buttonClasses} />
+</ExampleCard>
+
+<ExampleCard 
+  title='Input type="submit"' 
+  description="✅ Submit button with proper value. Used within forms to submit data. Has default value of 'Submit' if none provided."
+>
+  <input type="submit" value="Submit" class={buttonClasses} />
+</ExampleCard>
+
+<ExampleCard 
+  title='Input type="submit" without value' 
+  description="Submit button without explicit value. Browsers provide a default accessible name ('Submit'), but it's better to be explicit."
+>
+  <input type="submit" class={buttonClasses} />
+</ExampleCard>
+
+<ExampleCard 
+  title='Input type="reset"' 
+  description="✅ Reset button that clears form data. Has proper value attribute for accessibility."
+>
+  <input type="reset" value="Reset" class={buttonClasses} />
+</ExampleCard>
+
+<ExampleCard 
+  title='Input type="reset" without value' 
+  description="Reset button without explicit value. Browsers provide a default accessible name ('Reset'), but explicit values are clearer."
+>
+  <input type="reset" class={buttonClasses} />
+</ExampleCard>
+
+<ExampleCard 
+  title='Input type="image"' 
+  description="❌ Image input without alt text. This creates an inaccessible submit button since screen readers can't determine its purpose."
+>
+  <input type="image" src="/a11y-visualizer/images/button.png" />
+</ExampleCard>
+
+<ExampleCard 
+  title='Input type="image" with alt text' 
+  description="✅ Image input with proper alt text. The alt attribute provides the accessible name for this submit button type."
+>
+  <input type="image" src="/a11y-visualizer/images/button.png" alt="Click Me" />
+</ExampleCard>
+
+<ExampleCard 
+  title="Summary element" 
+  description="✅ Summary element within details for creating disclosure widgets. Semantically correct and accessible by default."
+>
+  <details class="border border-zinc-300 dark:border-zinc-600 rounded p-2 bg-white dark:bg-zinc-800">
+    <summary class="cursor-pointer text-zinc-900 dark:text-zinc-100 hover:text-blue-600 dark:hover:text-blue-400 list-item">Click Me</summary>
+    <p class="mt-2 text-zinc-700 dark:text-zinc-300">Details content revealed when summary is clicked.</p>
+  </details>
+</ExampleCard>
+
+<ExampleCard 
+  title="Summary element without details" 
+  description="❌ Summary element used outside of details. This is invalid HTML and may not work as expected across all browsers."
+>
+  <summary class="cursor-pointer text-zinc-900 dark:text-zinc-100 hover:text-blue-600 dark:hover:text-blue-400 border border-red-300 dark:border-red-600 p-1 list-item">Click Me</summary>
+</ExampleCard>
+
+<ExampleCard 
+  title="Summary without accessible name" 
+  description="❌ Summary element with no text content or accessible name. Users won't know what this control does."
+>
+  <details class="border border-zinc-300 dark:border-zinc-600 rounded p-2 bg-white dark:bg-zinc-800">
+    <summary class="w-6 h-6 cursor-pointer border-red-300 dark:border-red-600 border-2 rounded inline-block"></summary>
+    <p class="mt-2 text-zinc-700 dark:text-zinc-300">Details content that can't be properly accessed.</p>
+  </details>
+</ExampleCard>

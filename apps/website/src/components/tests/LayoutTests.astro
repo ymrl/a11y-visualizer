@@ -1,0 +1,232 @@
+---
+import CategoryTitle from './CategoryTitle.astro';
+import CategorySectionTitle from './CategorySectionTitle.astro';
+import ExampleCard from './ExampleCard.astro';
+---
+
+<CategoryTitle id="layout">Layout & Landmarks</CategoryTitle>
+<p class="text-zinc-700 dark:text-zinc-300 mb-6">
+  Semantic HTML elements and ARIA landmarks help users understand page structure and navigate efficiently. 
+  These elements provide important context about different sections of content.
+</p>
+
+<CategorySectionTitle id="semantic-sections">Semantic Sections</CategorySectionTitle>
+
+<ExampleCard 
+  title="Semantic HTML5 sections" 
+  description="✅ Proper use of HTML5 semantic elements that provide clear structure and meaning to page content."
+>
+  <div class="space-y-4 text-zinc-900 dark:text-zinc-100">
+    <header class="bg-teal-100 dark:bg-teal-900 p-3 rounded">
+      <strong>&lt;header&gt;</strong> - Page or section header
+    </header>
+    <nav class="bg-blue-100 dark:bg-blue-900 p-3 rounded">
+      <strong>&lt;nav&gt;</strong> - Navigation links
+    </nav>
+    <main class="bg-green-100 dark:bg-green-900 p-3 rounded">
+      <strong>&lt;main&gt;</strong> - Main content area
+    </main>
+    <aside class="bg-purple-100 dark:bg-purple-900 p-3 rounded">
+      <strong>&lt;aside&gt;</strong> - Sidebar or supplementary content
+    </aside>
+    <footer class="bg-gray-100 dark:bg-gray-900 p-3 rounded">
+      <strong>&lt;footer&gt;</strong> - Page or section footer
+    </footer>
+  </div>
+</ExampleCard>
+
+<CategorySectionTitle id="aria-landmarks">ARIA Landmarks</CategorySectionTitle>
+
+<ExampleCard 
+  title="ARIA landmark roles" 
+  description="✅ ARIA landmark roles that provide the same navigation benefits as semantic HTML elements. Use when semantic HTML isn't available."
+>
+  <div class="space-y-4 text-zinc-900 dark:text-zinc-100">
+    <div role="banner" class="bg-teal-100 dark:bg-teal-900 p-3 rounded">
+      <strong>role="banner"</strong> - Equivalent to &lt;header&gt;
+    </div>
+    <div role="navigation" class="bg-blue-100 dark:bg-blue-900 p-3 rounded">
+      <strong>role="navigation"</strong> - Equivalent to &lt;nav&gt;
+    </div>
+    <div role="main" class="bg-green-100 dark:bg-green-900 p-3 rounded">
+      <strong>role="main"</strong> - Equivalent to &lt;main&gt;
+    </div>
+    <div role="complementary" class="bg-purple-100 dark:bg-purple-900 p-3 rounded">
+      <strong>role="complementary"</strong> - Equivalent to &lt;aside&gt;
+    </div>
+    <div role="contentinfo" class="bg-gray-100 dark:bg-gray-900 p-3 rounded">
+      <strong>role="contentinfo"</strong> - Equivalent to &lt;footer&gt;
+    </div>
+  </div>
+</ExampleCard>
+
+<CategorySectionTitle id="generic-containers">Generic Containers</CategorySectionTitle>
+
+<ExampleCard 
+  title="Generic div containers without semantic meaning" 
+  description="❌ Using generic div elements for major page sections provides no semantic information to assistive technologies."
+>
+  <div class="space-y-4 text-zinc-900 dark:text-zinc-100">
+    <div class="bg-red-50 dark:bg-red-900/20 border border-red-300 dark:border-red-600 p-3 rounded">
+      <strong>&lt;div&gt;</strong> - Generic container (no semantic meaning)
+    </div>
+    <div class="bg-red-50 dark:bg-red-900/20 border border-red-300 dark:border-red-600 p-3 rounded">
+      <strong>&lt;div&gt;</strong> - Another generic container
+    </div>
+    <p class="text-sm text-zinc-700 dark:text-zinc-300">
+      These divs provide no information about content purpose or page structure.
+    </p>
+  </div>
+</ExampleCard>
+
+<CategorySectionTitle id="section-elements">Section Elements</CategorySectionTitle>
+
+<ExampleCard 
+  title="Section with heading" 
+  description="✅ Proper use of section element with heading. Sections should have headings to provide context about their content."
+>
+  <section class="bg-zinc-50 dark:bg-zinc-800 p-4 rounded border border-zinc-200 dark:border-zinc-700">
+    <h4 class="text-lg font-bold text-zinc-900 dark:text-zinc-100 mb-2">About Our Services</h4>
+    <p class="text-zinc-700 dark:text-zinc-300">
+      This section element has a clear heading that describes its content.
+    </p>
+  </section>
+</ExampleCard>
+
+<ExampleCard 
+  title="Section without heading" 
+  description="❌ Section element without a heading. Sections should have headings to be meaningful landmarks for screen reader users."
+>
+  <section class="bg-red-50 dark:bg-red-900/20 p-4 rounded border border-red-300 dark:border-red-600">
+    <p class="text-zinc-700 dark:text-zinc-300">
+      This section lacks a heading, making it unclear what this content is about.
+    </p>
+  </section>
+</ExampleCard>
+
+<CategorySectionTitle id="skip-links">Skip Links</CategorySectionTitle>
+
+<ExampleCard 
+  title="Skip to main content link" 
+  description="✅ Skip link that allows keyboard users to bypass navigation and jump directly to main content. Essential for accessibility."
+>
+  <div class="relative">
+    <a 
+      href="#main-content" 
+      class="absolute -top-8 left-0 bg-teal-700 text-white px-4 py-2 rounded focus:top-0 transition-all duration-200 z-10"
+    >
+      Skip to main content
+    </a>
+    <nav class="bg-zinc-100 dark:bg-zinc-800 p-4 rounded">
+      <p class="text-zinc-700 dark:text-zinc-300">Navigation menu would be here...</p>
+    </nav>
+    <main id="main-content" class="bg-zinc-50 dark:bg-zinc-900 p-4 rounded mt-4">
+      <p class="text-zinc-700 dark:text-zinc-300">Main content starts here</p>
+    </main>
+  </div>
+</ExampleCard>
+
+<CategorySectionTitle id="iframe-elements">iFrame Elements</CategorySectionTitle>
+
+<ExampleCard 
+  title="iFrame with title attribute" 
+  description="✅ iFrame with proper title attribute that describes the content. Essential for screen readers to understand what the frame contains."
+>
+  <iframe 
+    src="data:text/html,<html><body style='font-family: sans-serif; padding: 20px; background: %23f0f9ff;'><h1 style='color: %23059669;'>Hello from iFrame!</h1><p>This is content inside an iframe element.</p><button style='background: %2306b6d4; color: white; padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer;'>Click Me</button></body></html>"
+    title="Sample content iframe"
+    class="w-full h-32 border border-zinc-300 dark:border-zinc-600 rounded"
+  >
+  </iframe>
+</ExampleCard>
+
+<ExampleCard 
+  title="iFrame without title attribute" 
+  description="❌ iFrame missing title attribute. Screen readers cannot determine what content the frame contains, making it inaccessible."
+>
+  <iframe 
+    src="data:text/html,<html><body style='font-family: sans-serif; padding: 20px; background: %23fef2f2; border: 2px solid %23dc2626;'><h1 style='color: %23dc2626;'>Untitled iFrame Content</h1><p>This iframe has no title attribute.</p></body></html>"
+    class="w-full h-32 border border-red-300 dark:border-red-600 rounded border-2"
+  >
+  </iframe>
+</ExampleCard>
+
+<ExampleCard 
+  title="iFrame with loading='lazy'" 
+  description="iFrame with lazy loading for performance. Still needs proper title attribute for accessibility."
+>
+  <iframe 
+    src="data:text/html,<html><body style='font-family: sans-serif; padding: 20px; background: %23f3f4f6;'><h1 style='color: %236366f1;'>Lazy Loaded Content</h1><p>This iframe loads lazily for better performance.</p><ul><li>Item 1</li><li>Item 2</li><li>Item 3</li></ul></body></html>"
+    title="Lazy loaded iframe content"
+    loading="lazy"
+    class="w-full h-32 border border-zinc-300 dark:border-zinc-600 rounded"
+  >
+  </iframe>
+</ExampleCard>
+
+<CategorySectionTitle id="dialog-modal">Dialog and Modal</CategorySectionTitle>
+
+<ExampleCard 
+  title="Dialog element" 
+  description="Example of HTML5 dialog element. When opened with showModal(), it becomes a modal that traps focus and blocks interaction with background content."
+>
+  <div class="space-y-4">
+    <button 
+      id="open-dialog-btn"
+      class="bg-teal-700 text-white px-4 py-2 rounded hover:bg-teal-800 transition-colors"
+      onclick="document.getElementById('example-dialog').showModal()"
+    >
+      Open Dialog
+    </button>
+    
+    <dialog id="example-dialog" class="p-6 rounded-lg shadow-lg backdrop:bg-black backdrop:bg-opacity-50">
+      <div class="space-y-4">
+        <h3 class="text-lg font-bold text-zinc-900">Example Dialog</h3>
+        <p class="text-zinc-700">This is a modal dialog opened with showModal().</p>
+        <div class="flex gap-2">
+          <button 
+            class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition-colors"
+            onclick="document.getElementById('example-dialog').close()"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </dialog>
+  </div>
+</ExampleCard>
+
+<ExampleCard 
+  title="Element with aria-modal='true'" 
+  description="Custom modal implementation using aria-modal attribute. Should also include proper focus management and background interaction blocking."
+>
+  <div 
+    role="dialog" 
+    aria-modal="true" 
+    aria-labelledby="modal-title"
+    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden"
+    id="custom-modal"
+  >
+    <div class="bg-white dark:bg-zinc-800 p-6 rounded-lg shadow-lg max-w-md w-full mx-4">
+      <h3 id="modal-title" class="text-lg font-bold text-zinc-900 dark:text-zinc-100 mb-4">
+        Custom Modal
+      </h3>
+      <p class="text-zinc-700 dark:text-zinc-300 mb-4">
+        This modal uses aria-modal="true" for accessibility.
+      </p>
+      <button 
+        class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition-colors"
+        onclick="document.getElementById('custom-modal').classList.add('hidden')"
+      >
+        Close
+      </button>
+    </div>
+  </div>
+  
+  <button 
+    class="bg-teal-700 text-white px-4 py-2 rounded hover:bg-teal-800 transition-colors"
+    onclick="document.getElementById('custom-modal').classList.remove('hidden')"
+  >
+    Open Custom Modal
+  </button>
+</ExampleCard>

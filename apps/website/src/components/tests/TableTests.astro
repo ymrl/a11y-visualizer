@@ -1,0 +1,131 @@
+---
+import CategoryTitle from './CategoryTitle.astro';
+import ExampleCard from './ExampleCard.astro';
+
+const tableClasses = "border-collapse border border-zinc-300 dark:border-zinc-600";
+const cellClasses = "border border-zinc-300 dark:border-zinc-600 p-2 text-zinc-900 dark:text-zinc-100";
+---
+
+<CategoryTitle id="tables">Tables</CategoryTitle>
+<p class="text-zinc-700 dark:text-zinc-300 mb-6">
+  Tables organize data in rows and columns and must be properly structured for screen readers to understand relationships between data. 
+  Proper table headers and semantic markup are essential for accessibility.
+</p>
+
+<ExampleCard 
+  title="Table with proper headers" 
+  description="✅ Well-structured table with th elements for headers and proper scope attributes. Screen readers can announce column/row relationships."
+>
+  <table class={tableClasses}>
+    <thead>
+      <tr>
+        <th scope="col" class={`${cellClasses} bg-zinc-100 dark:bg-zinc-700 font-bold`}>Name</th>
+        <th scope="col" class={`${cellClasses} bg-zinc-100 dark:bg-zinc-700 font-bold`}>Age</th>
+        <th scope="col" class={`${cellClasses} bg-zinc-100 dark:bg-zinc-700 font-bold`}>City</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class={cellClasses}>John</td>
+        <td class={cellClasses}>25</td>
+        <td class={cellClasses}>New York</td>
+      </tr>
+      <tr>
+        <td class={cellClasses}>Jane</td>
+        <td class={cellClasses}>30</td>
+        <td class={cellClasses}>London</td>
+      </tr>
+    </tbody>
+  </table>
+</ExampleCard>
+
+<ExampleCard 
+  title="Table without headers" 
+  description="❌ Table using only td elements without proper th headers. Screen readers cannot establish relationships between data."
+>
+  <table class={`${tableClasses} border-red-300 dark:border-red-600`}>
+    <tr>
+      <td class={`${cellClasses} bg-zinc-100 dark:bg-zinc-700 font-bold border-red-300 dark:border-red-600`}>Name</td>
+      <td class={`${cellClasses} bg-zinc-100 dark:bg-zinc-700 font-bold border-red-300 dark:border-red-600`}>Age</td>
+      <td class={`${cellClasses} bg-zinc-100 dark:bg-zinc-700 font-bold border-red-300 dark:border-red-600`}>City</td>
+    </tr>
+    <tr>
+      <td class={`${cellClasses} border-red-300 dark:border-red-600`}>John</td>
+      <td class={`${cellClasses} border-red-300 dark:border-red-600`}>25</td>
+      <td class={`${cellClasses} border-red-300 dark:border-red-600`}>New York</td>
+    </tr>
+  </table>
+</ExampleCard>
+
+<ExampleCard 
+  title="Table with row headers" 
+  description="✅ Table with both column headers and row headers using appropriate scope attributes for complex data relationships."
+>
+  <table class={tableClasses}>
+    <thead>
+      <tr>
+        <th scope="col" class={`${cellClasses} bg-zinc-100 dark:bg-zinc-700 font-bold`}>Quarter</th>
+        <th scope="col" class={`${cellClasses} bg-zinc-100 dark:bg-zinc-700 font-bold`}>Sales</th>
+        <th scope="col" class={`${cellClasses} bg-zinc-100 dark:bg-zinc-700 font-bold`}>Profit</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row" class={`${cellClasses} bg-zinc-50 dark:bg-zinc-800 font-bold`}>Q1</th>
+        <td class={cellClasses}>$100K</td>
+        <td class={cellClasses}>$20K</td>
+      </tr>
+      <tr>
+        <th scope="row" class={`${cellClasses} bg-zinc-50 dark:bg-zinc-800 font-bold`}>Q2</th>
+        <td class={cellClasses}>$150K</td>
+        <td class={cellClasses}>$30K</td>
+      </tr>
+    </tbody>
+  </table>
+</ExampleCard>
+
+<ExampleCard 
+  title="Table with caption" 
+  description="✅ Table with caption element providing context about the table's purpose. Helps users understand what data the table contains."
+>
+  <table class={tableClasses}>
+    <caption class="text-lg font-semibold mb-2 text-zinc-900 dark:text-zinc-100">
+      Employee Information
+    </caption>
+    <thead>
+      <tr>
+        <th scope="col" class={`${cellClasses} bg-zinc-100 dark:bg-zinc-700 font-bold`}>Name</th>
+        <th scope="col" class={`${cellClasses} bg-zinc-100 dark:bg-zinc-700 font-bold`}>Department</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class={cellClasses}>Alice</td>
+        <td class={cellClasses}>Engineering</td>
+      </tr>
+      <tr>
+        <td class={cellClasses}>Bob</td>
+        <td class={cellClasses}>Marketing</td>
+      </tr>
+    </tbody>
+  </table>
+</ExampleCard>
+
+<ExampleCard 
+  title="Layout table (problematic)" 
+  description="❌ Table used for layout purposes rather than tabular data. Modern CSS should be used for layout instead of tables."
+>
+  <table class="w-full border-red-300 dark:border-red-600 border-2">
+    <tr>
+      <td class="w-1/4 p-4 bg-zinc-100 dark:bg-zinc-800 border-red-300 dark:border-red-600 border">
+        Sidebar content
+      </td>
+      <td class="w-3/4 p-4 border-red-300 dark:border-red-600 border">
+        Main content area
+      </td>
+    </tr>
+  </table>
+  <p class="text-sm text-zinc-700 dark:text-zinc-300 mt-2">
+    Use CSS Grid or Flexbox for layout instead of tables.
+  </p>
+</ExampleCard>

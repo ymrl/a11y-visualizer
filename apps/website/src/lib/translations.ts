@@ -28,6 +28,12 @@ export interface Translation {
     link: string;
     url: string;
   };
+  tests: {
+    title: string;
+    description: string;
+    link: string;
+    url: string;
+  };
   footer: {
     copyright: string;
     github: string;
@@ -84,6 +90,12 @@ export const translations: Record<string, Translation> = {
       link: "View User Guide on GitHub",
       url: "https://github.com/ymrl/a11y-visualizer/blob/main/docs/en/UsersGuide.md",
     },
+    tests: {
+      title: "Test Examples",
+      description: "Try the extension with various accessibility examples and problematic patterns",
+      link: "View Test Examples",
+      url: "/a11y-visualizer/tests",
+    },
     footer: {
       copyright: "© 2024 ymrl (MIT License)",
       github: "GitHub",
@@ -138,6 +150,12 @@ export const translations: Record<string, Translation> = {
       link: "GitHub でユーザーガイドを見る",
       url: "https://github.com/ymrl/a11y-visualizer/blob/main/docs/ja/UsersGuide.md",
     },
+    tests: {
+      title: "テスト例",
+      description: "様々なアクセシビリティ例や問題のあるパターンで拡張機能を試す",
+      link: "テスト例を見る",
+      url: "/a11y-visualizer/tests",
+    },
     footer: {
       copyright: "© 2024 ymrl (MIT License)",
       github: "GitHub",
@@ -190,6 +208,12 @@ export const translations: Record<string, Translation> = {
       description: "Accessibility Visualizer 사용 방법을 배워보세요",
       link: "GitHub에서 사용자 가이드 보기",
       url: "https://github.com/ymrl/a11y-visualizer/blob/main/docs/ko/UsersGuide.md",
+    },
+    tests: {
+      title: "테스트 예제",
+      description: "다양한 접근성 예제와 문제가 있는 패턴으로 확장 프로그램을 시험해보세요",
+      link: "테스트 예제 보기",
+      url: "/a11y-visualizer/tests",
     },
     footer: {
       copyright: "© 2024 ymrl (MIT License)",

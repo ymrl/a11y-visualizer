@@ -1,0 +1,357 @@
+---
+import CategoryTitle from './CategoryTitle.astro';
+import CategorySectionTitle from './CategorySectionTitle.astro';
+import ExampleCard from './ExampleCard.astro';
+---
+
+<CategoryTitle id="live-regions">Live Regions</CategoryTitle>
+<p class="text-zinc-700 dark:text-zinc-300 mb-6">
+  Live regions announce dynamic content changes to screen readers. They're essential for providing feedback about 
+  status updates, errors, and other dynamic content that users need to be aware of immediately.
+</p>
+
+<CategorySectionTitle id="aria-live">aria-live Attribute</CategorySectionTitle>
+
+<ExampleCard 
+  title="aria-live='polite'" 
+  description="✅ Polite live region that announces changes when the user is idle. Good for status updates that aren't urgent."
+>
+  <div class="space-y-4">
+    <div id="polite-region" aria-live="polite" class="bg-blue-50 dark:bg-blue-900/20 p-3 rounded border border-blue-200 dark:border-blue-700">
+      Status: Ready
+    </div>
+    <button 
+      class="bg-teal-700 text-white px-4 py-2 rounded hover:bg-teal-800 transition-colors"
+      onclick="document.getElementById('polite-region').textContent = 'Status: Updated at ' + new Date().toLocaleTimeString()"
+    >
+      Update Status (Polite)
+    </button>
+  </div>
+</ExampleCard>
+
+<ExampleCard 
+  title="aria-live='assertive'" 
+  description="✅ Assertive live region that immediately interrupts screen readers to announce changes. Use for critical alerts and errors."
+>
+  <div class="space-y-4">
+    <div id="assertive-region" aria-live="assertive" class="bg-red-50 dark:bg-red-900/20 p-3 rounded border border-red-200 dark:border-red-700 min-h-12">
+      <!-- Error messages will appear here -->
+    </div>
+    <button 
+      class="bg-zinc-600 text-white px-4 py-2 rounded hover:bg-zinc-700 transition-colors"
+      onclick="document.getElementById('assertive-region').textContent = 'Error: Something went wrong! ' + new Date().toLocaleTimeString()"
+    >
+      Trigger Error (Assertive)
+    </button>
+    <button 
+      class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition-colors"
+      onclick="document.getElementById('assertive-region').textContent = ''"
+    >
+      Clear Error
+    </button>
+  </div>
+</ExampleCard>
+
+<CategorySectionTitle id="live-region-roles">Live Region Roles</CategorySectionTitle>
+
+<ExampleCard 
+  title="role='status'" 
+  description="✅ Status role provides advisory information that isn't critical. Equivalent to aria-live='polite'."
+>
+  <div class="space-y-4">
+    <div id="status-region" role="status" class="bg-green-50 dark:bg-green-900/20 p-3 rounded border border-green-200 dark:border-green-700">
+      Form saved successfully
+    </div>
+    <button 
+      class="bg-teal-700 text-white px-4 py-2 rounded hover:bg-teal-800 transition-colors"
+      onclick="document.getElementById('status-region').textContent = 'Form saved at ' + new Date().toLocaleTimeString()"
+    >
+      Save Form
+    </button>
+  </div>
+</ExampleCard>
+
+<ExampleCard 
+  title="role='alert'" 
+  description="✅ Alert role for important, time-sensitive information. Equivalent to aria-live='assertive'."
+>
+  <div class="space-y-4">
+    <div id="alert-region" role="alert" class="bg-orange-50 dark:bg-orange-900/20 p-3 rounded border border-orange-200 dark:border-orange-700 min-h-12">
+      <!-- Alerts will appear here -->
+    </div>
+    <button 
+      class="bg-zinc-600 text-white px-4 py-2 rounded hover:bg-zinc-700 transition-colors"
+      onclick="document.getElementById('alert-region').textContent = 'Warning: Session expires in 5 minutes!'"
+    >
+      Show Warning
+    </button>
+  </div>
+</ExampleCard>
+
+<CategorySectionTitle id="output-element">Output Element</CategorySectionTitle>
+
+<ExampleCard 
+  title="&lt;output&gt; element" 
+  description="✅ Output element for displaying calculation results or form output. Automatically has live region behavior."
+>
+  <div class="space-y-4">
+    <div class="flex items-center gap-3">
+      <input 
+        type="number" 
+        id="num1" 
+        value="5" 
+        class="border border-zinc-300 dark:border-zinc-600 rounded p-2 w-20 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100"
+      />
+      <span class="text-zinc-700 dark:text-zinc-300">+</span>
+      <input 
+        type="number" 
+        id="num2" 
+        value="3" 
+        class="border border-zinc-300 dark:border-zinc-600 rounded p-2 w-20 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100"
+      />
+      <span class="text-zinc-700 dark:text-zinc-300">=</span>
+      <output id="calc-output" class="bg-zinc-100 dark:bg-zinc-700 p-2 rounded text-zinc-900 dark:text-zinc-100 min-w-16 text-center">
+        8
+      </output>
+    </div>
+    <button 
+      class="bg-teal-700 text-white px-4 py-2 rounded hover:bg-teal-800 transition-colors"
+      onclick="
+        const num1 = parseInt(document.getElementById('num1').value) || 0;
+        const num2 = parseInt(document.getElementById('num2').value) || 0;
+        document.getElementById('calc-output').textContent = num1 + num2;
+      "
+    >
+      Calculate
+    </button>
+  </div>
+</ExampleCard>
+
+<CategorySectionTitle id="aria-atomic">aria-atomic Attribute</CategorySectionTitle>
+
+<ExampleCard 
+  title="Live region with aria-atomic='true'" 
+  description="Live region where the entire content is announced when any part changes, rather than just the changed portion."
+>
+  <div class="space-y-4">
+    <div 
+      id="atomic-region" 
+      aria-live="polite" 
+      aria-atomic="true"
+      class="bg-indigo-50 dark:bg-indigo-900/20 p-3 rounded border border-indigo-200 dark:border-indigo-700"
+    >
+      <span>Items in cart: </span>
+      <strong id="cart-count">0</strong>
+      <span> | Total: $</span>
+      <strong id="cart-total">0.00</strong>
+    </div>
+    <button 
+      class="bg-teal-700 text-white px-4 py-2 rounded hover:bg-teal-800 transition-colors"
+      onclick="
+        const count = document.getElementById('cart-count');
+        const total = document.getElementById('cart-total');
+        const newCount = parseInt(count.textContent) + 1;
+        count.textContent = newCount;
+        total.textContent = (newCount * 10).toFixed(2);
+      "
+    >
+      Add Item to Cart
+    </button>
+  </div>
+</ExampleCard>
+
+<CategorySectionTitle id="problematic-live-regions">Problematic Live Regions</CategorySectionTitle>
+
+<ExampleCard 
+  title="Dynamic content without live region" 
+  description="❌ Content that changes dynamically but isn't marked as a live region. Screen readers won't announce these changes."
+>
+  <div class="space-y-4">
+    <div id="no-live-region" class="bg-red-50 dark:bg-red-900/20 p-3 rounded border border-red-300 dark:border-red-600">
+      Current time: <span id="current-time">Click button to see time</span>
+    </div>
+    <button 
+      class="bg-zinc-600 text-white px-4 py-2 rounded hover:bg-zinc-700 transition-colors"
+      onclick="document.getElementById('current-time').textContent = new Date().toLocaleTimeString()"
+    >
+      Update Time (Silent)
+    </button>
+    <p class="text-sm text-zinc-700 dark:text-zinc-300">
+      Screen readers won't announce the time update because this isn't a live region.
+    </p>
+  </div>
+</ExampleCard>
+
+<CategorySectionTitle id="continuous-live-regions">Continuously Updating Live Regions</CategorySectionTitle>
+
+<ExampleCard 
+  title="Timer with polite announcements" 
+  description="Timer that updates every second with polite live region. Good for testing extension behavior with frequent updates."
+>
+  <div class="space-y-4">
+    <div id="timer-region" aria-live="polite" class="bg-blue-50 dark:bg-blue-900/20 p-3 rounded border border-blue-200 dark:border-blue-700">
+      Timer: <span id="timer-display">00:00</span>
+    </div>
+    <div class="flex gap-2">
+      <button 
+        id="start-timer"
+        class="bg-teal-700 text-white px-4 py-2 rounded hover:bg-teal-800 transition-colors"
+      >
+        Start Timer
+      </button>
+      <button 
+        id="stop-timer"
+        class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition-colors"
+      >
+        Stop Timer
+      </button>
+    </div>
+  </div>
+</ExampleCard>
+
+<ExampleCard 
+  title="Live counter with assertive announcements" 
+  description="Counter that auto-increments every 2 seconds with assertive live region. Useful for testing frequent interruptions."
+>
+  <div class="space-y-4">
+    <div id="counter-region" aria-live="assertive" class="bg-orange-50 dark:bg-orange-900/20 p-3 rounded border border-orange-200 dark:border-orange-700">
+      Counter: <span id="counter-display">0</span>
+    </div>
+    <div class="flex gap-2">
+      <button 
+        id="start-counter"
+        class="bg-zinc-600 text-white px-4 py-2 rounded hover:bg-zinc-700 transition-colors"
+      >
+        Start Counter
+      </button>
+      <button 
+        id="stop-counter"
+        class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition-colors"
+      >
+        Stop Counter
+      </button>
+    </div>
+  </div>
+</ExampleCard>
+
+<ExampleCard 
+  title="Status updates with role='status'" 
+  description="Status messages that update every 3 seconds. Tests extension handling of role-based live regions with continuous updates."
+>
+  <div class="space-y-4">
+    <div id="status-updates" role="status" class="bg-green-50 dark:bg-green-900/20 p-3 rounded border border-green-200 dark:border-green-700">
+      System Status: <span id="status-display">Initializing...</span>
+    </div>
+    <div class="flex gap-2">
+      <button 
+        id="start-status"
+        class="bg-teal-700 text-white px-4 py-2 rounded hover:bg-teal-800 transition-colors"
+      >
+        Start Status Updates
+      </button>
+      <button 
+        id="stop-status"
+        class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition-colors"
+      >
+        Stop Updates
+      </button>
+    </div>
+  </div>
+</ExampleCard>
+
+<script>
+  // Timer functionality
+  let timerInterval = null;
+  let timerSeconds = 0;
+  
+  function updateTimer() {
+    const minutes = Math.floor(timerSeconds / 60);
+    const seconds = timerSeconds % 60;
+    const display = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    document.getElementById('timer-display').textContent = display;
+    timerSeconds++;
+  }
+  
+  document.getElementById('start-timer').addEventListener('click', () => {
+    if (!timerInterval) {
+      timerInterval = setInterval(updateTimer, 1000);
+    }
+  });
+  
+  document.getElementById('stop-timer').addEventListener('click', () => {
+    if (timerInterval) {
+      clearInterval(timerInterval);
+      timerInterval = null;
+      timerSeconds = 0;
+      document.getElementById('timer-display').textContent = '00:00';
+    }
+  });
+  
+  // Counter functionality
+  let counterInterval = null;
+  let counterValue = 0;
+  
+  function updateCounter() {
+    counterValue++;
+    document.getElementById('counter-display').textContent = counterValue;
+  }
+  
+  document.getElementById('start-counter').addEventListener('click', () => {
+    if (!counterInterval) {
+      counterInterval = setInterval(updateCounter, 2000);
+    }
+  });
+  
+  document.getElementById('stop-counter').addEventListener('click', () => {
+    if (counterInterval) {
+      clearInterval(counterInterval);
+      counterInterval = null;
+      counterValue = 0;
+      document.getElementById('counter-display').textContent = '0';
+    }
+  });
+  
+  // Status updates functionality
+  let statusInterval = null;
+  const statusMessages = [
+    'System Status: Running',
+    'System Status: Processing data',
+    'System Status: Updating records',
+    'System Status: Syncing files',
+    'System Status: Backing up data',
+    'System Status: Optimizing performance',
+    'System Status: Ready'
+  ];
+  let statusIndex = 0;
+  
+  function updateStatus() {
+    document.getElementById('status-display').textContent = statusMessages[statusIndex];
+    statusIndex = (statusIndex + 1) % statusMessages.length;
+  }
+  
+  document.getElementById('start-status').addEventListener('click', () => {
+    if (!statusInterval) {
+      statusInterval = setInterval(updateStatus, 3000);
+    }
+  });
+  
+  document.getElementById('stop-status').addEventListener('click', () => {
+    if (statusInterval) {
+      clearInterval(statusInterval);
+      statusInterval = null;
+      statusIndex = 0;
+      document.getElementById('status-display').textContent = 'Initializing...';
+    }
+  });
+  
+  // Initialize clock for demonstration
+  function updateTime() {
+    const timeElement = document.getElementById('current-time');
+    if (timeElement && timeElement.textContent === 'Click button to see time') {
+      timeElement.textContent = new Date().toLocaleTimeString();
+    }
+  }
+  
+  // Update time every second for demo
+  setInterval(updateTime, 1000);
+</script>

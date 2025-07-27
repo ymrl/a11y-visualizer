@@ -1,0 +1,285 @@
+---
+import CategoryTitle from './CategoryTitle.astro';
+import CategorySectionTitle from './CategorySectionTitle.astro';
+import ExampleCard from './ExampleCard.astro';
+
+const formClasses = "border border-zinc-300 dark:border-zinc-600 rounded p-2 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100";
+---
+
+<CategoryTitle id="form-controls">Form Controls</CategoryTitle>
+<p class="text-zinc-700 dark:text-zinc-300 mb-6">
+  Form controls are interactive elements that allow users to input data. They must have proper labels and be accessible to screen readers and keyboard users. 
+  The following examples demonstrate both accessible implementations and common accessibility issues.
+</p>
+
+<CategorySectionTitle id="text-inputs">Text Inputs</CategorySectionTitle>
+
+<ExampleCard 
+  title="Input without label" 
+  description="❌ Text input without any label. Screen readers cannot determine what this field is for, making it inaccessible."
+>
+  <input type="text" class={formClasses} />
+</ExampleCard>
+
+<ExampleCard 
+  title="Input with proper label" 
+  description="✅ Text input with associated label using 'for' and 'id' attributes. This creates a programmatic relationship between label and input."
+>
+  <label for="inputWithLabel" class="block mb-1 text-zinc-700 dark:text-zinc-300">
+    Input Label
+  </label>
+  <input
+    type="text"
+    id="inputWithLabel"
+    class={formClasses}
+  />
+</ExampleCard>
+
+<CategorySectionTitle id="select-elements">Select Elements</CategorySectionTitle>
+
+<ExampleCard 
+  title="Select without label" 
+  description="❌ Select element without label. Users cannot determine what this dropdown is for."
+>
+  <select class={formClasses}>
+    <option value="1">Option 1</option>
+    <option value="2">Option 2</option>
+    <option value="3">Option 3</option>
+  </select>
+</ExampleCard>
+
+<ExampleCard 
+  title="Select with proper label" 
+  description="✅ Select element with associated label. Screen readers can announce both the label and the current selection."
+>
+  <label for="selectWithLabel" class="block mb-1 text-zinc-700 dark:text-zinc-300">
+    Select an Option
+  </label>
+  <select id="selectWithLabel" class={formClasses}>
+    <option value="1">Option 1</option>
+    <option value="2">Option 2</option>
+    <option value="3">Option 3</option>
+  </select>
+</ExampleCard>
+
+<CategorySectionTitle id="textarea-elements">Textarea Elements</CategorySectionTitle>
+
+<ExampleCard 
+  title="Textarea without label" 
+  description="❌ Textarea without label. Users cannot understand what content should be entered here."
+>
+  <textarea class={`${formClasses} border-red-300 dark:border-red-600`}></textarea>
+</ExampleCard>
+
+<ExampleCard 
+  title="Textarea with proper label" 
+  description="✅ Textarea with associated label. Clearly communicates the purpose of the text area to all users."
+>
+  <label for="textareaWithLabel" class="block mb-1 text-zinc-700 dark:text-zinc-300">
+    Comments
+  </label>
+  <textarea id="textareaWithLabel" class={formClasses}></textarea>
+</ExampleCard>
+
+<CategorySectionTitle id="radio-buttons">Radio Buttons</CategorySectionTitle>
+
+<ExampleCard 
+  title="Radio buttons with labels" 
+  description="✅ Properly labeled radio buttons with shared name attribute. Forms a logical group that screen readers can navigate."
+>
+  <div class="flex flex-wrap gap-3">
+    <span class="flex items-center gap-1">
+      <input type="radio" id="radio1" name="radio" />
+      <label for="radio1" class="text-zinc-700 dark:text-zinc-300">Radio 1</label>
+    </span>
+    <span class="flex items-center gap-1">
+      <input type="radio" id="radio2" name="radio" />
+      <label for="radio2" class="text-zinc-700 dark:text-zinc-300">Radio 2</label>
+    </span>
+  </div>
+</ExampleCard>
+
+<ExampleCard 
+  title="Radio buttons without labels" 
+  description="❌ Radio buttons without proper labels. Text appears next to radios but isn't programmatically associated, making it inaccessible."
+>
+  <div class="flex flex-wrap gap-3">
+    <span class="flex items-center gap-1">
+      <input
+        type="radio"
+        id="radioWithoutLabel1"
+        name="radioWithoutLabel"
+        class="border-red-300"
+      />
+      <span class="text-zinc-700 dark:text-zinc-300">Radio 1</span>
+    </span>
+    <span class="flex items-center gap-1">
+      <input
+        type="radio"
+        id="radioWithoutLabel2"
+        name="radioWithoutLabel"
+        class="border-red-300"
+      />
+      <span class="text-zinc-700 dark:text-zinc-300">Radio 2</span>
+    </span>
+  </div>
+</ExampleCard>
+
+<ExampleCard 
+  title="Radio buttons without name attribute" 
+  description="❌ Radio buttons without shared name attribute. These don't form a proper group, so both can be selected simultaneously."
+>
+  <div class="flex flex-wrap gap-3">
+    <span class="flex items-center gap-1">
+      <input type="radio" id="radioWithoutName1" />
+      <label for="radioWithoutName1" class="text-zinc-700 dark:text-zinc-300">Radio 1</label>
+    </span>
+    <span class="flex items-center gap-1">
+      <input type="radio" id="radioWithoutName2" />
+      <label for="radioWithoutName2" class="text-zinc-700 dark:text-zinc-300">Radio 2</label>
+    </span>
+  </div>
+</ExampleCard>
+
+<ExampleCard 
+  title="Radio buttons with different name attributes" 
+  description="❌ Radio buttons with different name attributes don't form a logical group. Each acts as an independent radio button."
+>
+  <div class="flex flex-wrap gap-3">
+    <span class="flex items-center gap-1">
+      <input type="radio" id="radioFailedGrouping1" name="radioFailedGrouping1" />
+      <label for="radioFailedGrouping1" class="text-zinc-700 dark:text-zinc-300">Radio 1</label>
+    </span>
+    <span class="flex items-center gap-1">
+      <input type="radio" id="radioFailedGrouping2" name="radioFailedGrouping2" />
+      <label for="radioFailedGrouping2" class="text-zinc-700 dark:text-zinc-300">Radio 2</label>
+    </span>
+  </div>
+</ExampleCard>
+
+<CategorySectionTitle id="checkboxes">Checkboxes</CategorySectionTitle>
+
+<ExampleCard 
+  title="Checkboxes with labels" 
+  description="✅ Properly labeled checkboxes. Each checkbox has a clear, accessible name that screen readers can announce."
+>
+  <div class="flex flex-wrap gap-3">
+    <span class="flex items-center gap-1">
+      <input type="checkbox" id="checkbox1" />
+      <label for="checkbox1" class="text-zinc-700 dark:text-zinc-300">Checkbox 1</label>
+    </span>
+    <span class="flex items-center gap-1">
+      <input type="checkbox" id="checkbox2" />
+      <label for="checkbox2" class="text-zinc-700 dark:text-zinc-300">Checkbox 2</label>
+    </span>
+  </div>
+</ExampleCard>
+
+<ExampleCard 
+  title="Checkboxes without labels" 
+  description="❌ Checkboxes without proper labels. Text appears nearby but isn't programmatically associated with the checkboxes."
+>
+  <div class="flex flex-wrap gap-3">
+    <span class="flex items-center gap-1">
+      <input
+        type="checkbox"
+        id="checkboxWithoutLabel1"
+        class="border-red-300"
+      />
+      <span class="text-zinc-700 dark:text-zinc-300">Checkbox 1</span>
+    </span>
+    <span class="flex items-center gap-1">
+      <input
+        type="checkbox"
+        id="checkboxWithoutLabel2"
+        class="border-red-300"
+      />
+      <span class="text-zinc-700 dark:text-zinc-300">Checkbox 2</span>
+    </span>
+  </div>
+</ExampleCard>
+
+<ExampleCard 
+  title="Custom styled checkbox with display: none" 
+  description="❌ Custom checkbox using 'display: none' which can remove the element from keyboard navigation and screen readers in some cases."
+>
+  <div class="cool-checkbox">
+    <input type="checkbox" id="cool-checkbox" style="display: none;" />
+    <label for="cool-checkbox" class="pl-7 relative text-zinc-700 dark:text-zinc-300 cursor-pointer">
+      Cool Checkbox
+    </label>
+  </div>
+  
+  <style>
+    .cool-checkbox label::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      margin: auto;
+      display: inline-block;
+      width: 1.5rem;
+      height: 1.5rem;
+      border: 0.125rem solid #666;
+      border-radius: 0.25rem;
+    }
+    .cool-checkbox input:checked + label::before {
+      background-color: #44f;
+      border-color: #44f;
+    }
+    .cool-checkbox input:checked + label::after {
+      content: "";
+      position: absolute;
+      left: 0.25rem;
+      top: 0.4rem;
+      width: 1rem;
+      height: 0.5rem;
+      border-left: 0.175rem solid #fff;
+      border-bottom: 0.175rem solid #fff;
+      rotate: -45deg;
+    }
+  </style>
+</ExampleCard>
+
+<CategorySectionTitle id="label-issues">Label Issues</CategorySectionTitle>
+
+<ExampleCard 
+  title="Orphaned label" 
+  description="❌ Label element not associated with any form control. This can confuse screen readers and doesn't provide any functional benefit."
+>
+  <label class="text-zinc-700 dark:text-zinc-300 border-red-300 border p-1">Orphaned Label</label>
+</ExampleCard>
+
+<CategorySectionTitle id="input-states">Input States</CategorySectionTitle>
+
+<ExampleCard 
+  title="Required input" 
+  description="✅ Input with required attribute. Screen readers can announce that this field is required. Consider adding visual indicators and clear error messaging."
+>
+  <label for="requiredInput" class="block mb-1 text-zinc-700 dark:text-zinc-300">
+    Required Input *
+  </label>
+  <input
+    id="requiredInput"
+    type="text"
+    class={formClasses}
+    required
+  />
+</ExampleCard>
+
+<ExampleCard 
+  title="Read-only input" 
+  description="Read-only input that users cannot modify. Screen readers will announce this state. Useful for displaying non-editable information in form context."
+>
+  <label for="readonlyInput" class="block mb-1 text-zinc-700 dark:text-zinc-300">
+    Read-only Input
+  </label>
+  <input
+    id="readonlyInput"
+    type="text"
+    value="Cannot be edited"
+    class={`${formClasses} bg-zinc-100 dark:bg-zinc-700`}
+    readonly
+  />
+</ExampleCard>

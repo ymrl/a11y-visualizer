@@ -1,8 +1,10 @@
+import { isHidden } from "../../../src/dom/isHidden";
+
 export const detectModals = (root: Element): Element[] => {
-  // aria-modal="true"な要素を検出
+  // aria-modal="true"な要素を検出（ただし、アクセシビリティツリーにあるもののみ）
   const ariaModalElements = Array.from(
     root.querySelectorAll('[aria-modal="true"]'),
-  );
+  ).filter((element) => !isHidden(element));
 
   // showModal()で開かれたdialog要素を検出
   const openDialogElements = Array.from(root.querySelectorAll("dialog")).filter(

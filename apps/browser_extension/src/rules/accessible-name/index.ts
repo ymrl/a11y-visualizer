@@ -14,6 +14,21 @@ export const AccessibleName: RuleObject = {
     if (!enabled) {
       return undefined;
     }
+    // For SVG elements without computed accessible name, check for title element
+    const tagName = element.tagName.toLowerCase();
+    if (!name && tagName === "svg") {
+      const titleElement = element.querySelector("title");
+      if (titleElement && titleElement.textContent) {
+        return [
+          {
+            type: "name",
+            content: titleElement.textContent,
+            ruleName,
+          },
+        ];
+      }
+    }
+    
     if (name) {
       return [
         {
@@ -23,7 +38,7 @@ export const AccessibleName: RuleObject = {
         },
       ];
     }
-    const tagName = element.tagName.toLowerCase();
+    
     if (!name && tagName === "area") {
       // area elements are display:hidden by default in Firefox,
       // name may be empty even if alt is present

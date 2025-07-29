@@ -12,7 +12,7 @@ const defaultOptions = {
 export const ImageName: RuleObject = {
   ruleName,
   defaultOptions,
-  tagNames: ["img"],
+  tagNames: ["img", "svg"],
   roles: ["img"],
   evaluate: (
     element,
@@ -28,12 +28,26 @@ export const ImageName: RuleObject = {
     // <img alt=""> has implicit role of "presentation", using role attribute.
     const hasPresentationRole =
       roleAttr === "presentation" || roleAttr === "none";
-    if (
-      !name &&
-      !isAriaHidden &&
-      !hasPresentationRole &&
-      !isPresentationalChildren(element)
-    ) {
+      
+    // Skip if aria-hidden, presentation role, or presentational children
+    if (isAriaHidden || hasPresentationRole || isPresentationalChildren(element)) {
+      return undefined;
+    }
+    
+    // For SVG elements, if they have title but no computed accessible name, use title text
+    let effectiveName = name;
+    if (tagName === "svg" && !name) {
+      const titleElement = element.querySelector("title");
+      if (titleElement && titleElement.textContent) {
+        effectiveName = titleElement.textContent;
+      }
+    }
+    
+    // For SVG elements, we don't need to return the name here - accessible-name rule handles that
+    // image-name rule is only for errors and warnings
+    
+    // Handle cases where there's no accessible name
+    if (!effectiveName) {
       if (tagName === "img") {
         const hasAlt = element.hasAttribute("alt");
         if (hasAlt) {
@@ -53,6 +67,17 @@ export const ImageName: RuleObject = {
             },
           ];
         }
+      } else if (tagName === "svg") {
+        const titleElement = element.querySelector("title");
+        if (!titleElement || !titleElement.textContent) {
+          return [
+            {
+              type: "warning",
+              message: "No <title> element",
+              ruleName,
+            },
+          ];
+        }
       } else if (role === "img") {
         return [
           {
@@ -63,6 +88,7 @@ export const ImageName: RuleObject = {
         ];
       }
     }
+    
     return undefined;
   },
 };

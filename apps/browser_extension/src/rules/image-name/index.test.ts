@@ -89,6 +89,67 @@ describe("image-name", () => {
     expect(result).toBeUndefined();
   });
 
+  test("svg with title", () => {
+    const element = document.createElement("svg");
+    const title = document.createElement("title");
+    title.textContent = "Chart showing sales data";
+    element.appendChild(title);
+    document.body.appendChild(element);
+    const result = ImageName.evaluate(element, { enabled: true }, {});
+    expect(result).toBeUndefined();
+  });
+
+  test("svg without title", () => {
+    const element = document.createElement("svg");
+    document.body.appendChild(element);
+    const result = ImageName.evaluate(element, { enabled: true }, {});
+    expect(result).toEqual([
+      {
+        type: "warning",
+        message: "No <title> element",
+        ruleName: "image-name",
+      },
+    ]);
+  });
+
+  test("svg with empty title", () => {
+    const element = document.createElement("svg");
+    const title = document.createElement("title");
+    title.textContent = "";
+    element.appendChild(title);
+    document.body.appendChild(element);
+    const result = ImageName.evaluate(element, { enabled: true }, {});
+    expect(result).toEqual([
+      {
+        type: "warning",
+        message: "No <title> element",
+        ruleName: "image-name",
+      },
+    ]);
+  });
+
+  test("svg with aria-hidden", () => {
+    const element = document.createElement("svg");
+    element.setAttribute("aria-hidden", "true");
+    const title = document.createElement("title");
+    title.textContent = "Chart showing sales data";
+    element.appendChild(title);
+    document.body.appendChild(element);
+    const result = ImageName.evaluate(element, { enabled: true }, {});
+    expect(result).toBeUndefined();
+  });
+
+  test("svg with role img and title", () => {
+    const element = document.createElement("svg");
+    element.setAttribute("role", "img");
+    const title = document.createElement("title");
+    title.textContent = "Chart showing sales data";
+    element.appendChild(title);
+    document.body.appendChild(element);
+    const result = ImageName.evaluate(element, { enabled: true }, {});
+    expect(result).toBeUndefined();
+  });
+
   test("disabled", () => {
     const element = document.createElement("img");
     element.setAttribute("alt", "image");

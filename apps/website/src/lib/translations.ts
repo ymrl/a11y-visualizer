@@ -92,7 +92,8 @@ export const translations: Record<string, Translation> = {
     },
     tests: {
       title: "Test Examples",
-      description: "Try the extension with various accessibility examples and problematic patterns",
+      description:
+        "Try the extension with various accessibility examples and problematic patterns",
       link: "View Test Examples",
       url: "/a11y-visualizer/tests",
     },
@@ -152,7 +153,8 @@ export const translations: Record<string, Translation> = {
     },
     tests: {
       title: "テスト例",
-      description: "様々なアクセシビリティ例や問題のあるパターンで拡張機能を試す",
+      description:
+        "様々なアクセシビリティ例や問題のあるパターンで拡張機能を試す",
       link: "テスト例を見る",
       url: "/a11y-visualizer/tests",
     },
@@ -211,7 +213,8 @@ export const translations: Record<string, Translation> = {
     },
     tests: {
       title: "테스트 예제",
-      description: "다양한 접근성 예제와 문제가 있는 패턴으로 확장 프로그램을 시험해보세요",
+      description:
+        "다양한 접근성 예제와 문제가 있는 패턴으로 확장 프로그램을 시험해보세요",
       link: "테스트 예제 보기",
       url: "/a11y-visualizer/tests",
     },

@@ -28,7 +28,7 @@ export const AccessibleName: RuleObject = {
         ];
       }
     }
-    
+
     if (name) {
       return [
         {
@@ -38,7 +38,7 @@ export const AccessibleName: RuleObject = {
         },
       ];
     }
-    
+
     if (!name && tagName === "area") {
       // area elements are display:hidden by default in Firefox,
       // name may be empty even if alt is present

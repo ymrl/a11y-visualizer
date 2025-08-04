@@ -119,7 +119,6 @@ describe("accessible-name", () => {
     ]);
   });
 
-
   test("img element with name", () => {
     const element = document.createElement("img");
     element.setAttribute("alt", "Hello, Image!");
@@ -167,7 +166,7 @@ describe("accessible-name", () => {
     element.appendChild(title);
     document.body.appendChild(element);
     const result = AccessibleName.evaluate(element, { enabled: true }, {});
-    
+
     // Check if computeAccessibleName recognizes SVG title
     // If it doesn't, we may need additional handling
     if (result) {

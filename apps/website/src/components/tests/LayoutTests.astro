@@ -16,7 +16,7 @@ import ExampleCard from './ExampleCard.astro';
   title="Semantic HTML5 sections" 
   description="✅ Proper use of HTML5 semantic elements that provide clear structure and meaning to page content."
 >
-  <div class="space-y-4 text-zinc-900 dark:text-zinc-100">
+  <blockquote class="space-y-4 text-zinc-900 dark:text-zinc-100">
     <header class="bg-teal-100 dark:bg-teal-900 p-3 rounded">
       <strong>&lt;header&gt;</strong> - Page or section header
     </header>
@@ -32,7 +32,7 @@ import ExampleCard from './ExampleCard.astro';
     <footer class="bg-gray-100 dark:bg-gray-900 p-3 rounded">
       <strong>&lt;footer&gt;</strong> - Page or section footer
     </footer>
-  </div>
+  </blockquote>
 </ExampleCard>
 
 <CategorySectionTitle id="aria-landmarks">ARIA Landmarks</CategorySectionTitle>
@@ -41,7 +41,7 @@ import ExampleCard from './ExampleCard.astro';
   title="ARIA landmark roles" 
   description="✅ ARIA landmark roles that provide the same navigation benefits as semantic HTML elements. Use when semantic HTML isn't available."
 >
-  <div class="space-y-4 text-zinc-900 dark:text-zinc-100">
+  <blockquote class="space-y-4 text-zinc-900 dark:text-zinc-100">
     <div role="banner" class="bg-teal-100 dark:bg-teal-900 p-3 rounded">
       <strong>role="banner"</strong> - Equivalent to &lt;header&gt;
     </div>
@@ -57,7 +57,7 @@ import ExampleCard from './ExampleCard.astro';
     <div role="contentinfo" class="bg-gray-100 dark:bg-gray-900 p-3 rounded">
       <strong>role="contentinfo"</strong> - Equivalent to &lt;footer&gt;
     </div>
-  </div>
+  </blockquote>
 </ExampleCard>
 
 <CategorySectionTitle id="generic-containers">Generic Containers</CategorySectionTitle>
@@ -104,27 +104,6 @@ import ExampleCard from './ExampleCard.astro';
   </section>
 </ExampleCard>
 
-<CategorySectionTitle id="skip-links">Skip Links</CategorySectionTitle>
-
-<ExampleCard 
-  title="Skip to main content link" 
-  description="✅ Skip link that allows keyboard users to bypass navigation and jump directly to main content. Essential for accessibility."
->
-  <div class="relative">
-    <a 
-      href="#main-content" 
-      class="absolute -top-8 left-0 bg-teal-700 text-white px-4 py-2 rounded focus:top-0 transition-all duration-200 z-10"
-    >
-      Skip to main content
-    </a>
-    <nav class="bg-zinc-100 dark:bg-zinc-800 p-4 rounded">
-      <p class="text-zinc-700 dark:text-zinc-300">Navigation menu would be here...</p>
-    </nav>
-    <main id="main-content" class="bg-zinc-50 dark:bg-zinc-900 p-4 rounded mt-4">
-      <p class="text-zinc-700 dark:text-zinc-300">Main content starts here</p>
-    </main>
-  </div>
-</ExampleCard>
 
 <CategorySectionTitle id="iframe-elements">iFrame Elements</CategorySectionTitle>
 
@@ -133,7 +112,7 @@ import ExampleCard from './ExampleCard.astro';
   description="✅ iFrame with proper title attribute that describes the content. Essential for screen readers to understand what the frame contains."
 >
   <iframe 
-    src="data:text/html,<html><body style='font-family: sans-serif; padding: 20px; background: %23f0f9ff;'><h1 style='color: %23059669;'>Hello from iFrame!</h1><p>This is content inside an iframe element.</p><button style='background: %2306b6d4; color: white; padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer;'>Click Me</button></body></html>"
+    src="/a11y-visualizer/iframe-sample/"
     title="Sample content iframe"
     class="w-full h-32 border border-zinc-300 dark:border-zinc-600 rounded"
   >
@@ -145,7 +124,7 @@ import ExampleCard from './ExampleCard.astro';
   description="❌ iFrame missing title attribute. Screen readers cannot determine what content the frame contains, making it inaccessible."
 >
   <iframe 
-    src="data:text/html,<html><body style='font-family: sans-serif; padding: 20px; background: %23fef2f2; border: 2px solid %23dc2626;'><h1 style='color: %23dc2626;'>Untitled iFrame Content</h1><p>This iframe has no title attribute.</p></body></html>"
+    src="/a11y-visualizer/iframe-no-title/"
     class="w-full h-32 border border-red-300 dark:border-red-600 rounded border-2"
   >
   </iframe>
@@ -156,7 +135,7 @@ import ExampleCard from './ExampleCard.astro';
   description="iFrame with lazy loading for performance. Still needs proper title attribute for accessibility."
 >
   <iframe 
-    src="data:text/html,<html><body style='font-family: sans-serif; padding: 20px; background: %23f3f4f6;'><h1 style='color: %236366f1;'>Lazy Loaded Content</h1><p>This iframe loads lazily for better performance.</p><ul><li>Item 1</li><li>Item 2</li><li>Item 3</li></ul></body></html>"
+    src="/a11y-visualizer/iframe-lazy/"
     title="Lazy loaded iframe content"
     loading="lazy"
     class="w-full h-32 border border-zinc-300 dark:border-zinc-600 rounded"
@@ -198,7 +177,7 @@ import ExampleCard from './ExampleCard.astro';
 
 <ExampleCard 
   title="Element with aria-modal='true'" 
-  description="Custom modal implementation using aria-modal attribute. Should also include proper focus management and background interaction blocking."
+  description="✅ Custom modal implementation with proper focus management - traps focus inside the modal and returns focus to the opening button when closed."
 >
   <div 
     role="dialog" 
@@ -212,21 +191,102 @@ import ExampleCard from './ExampleCard.astro';
         Custom Modal
       </h3>
       <p class="text-zinc-700 dark:text-zinc-300 mb-4">
-        This modal uses aria-modal="true" for accessibility.
+        This modal uses aria-modal="true" with proper focus management.
       </p>
-      <button 
-        class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition-colors"
-        onclick="document.getElementById('custom-modal').classList.add('hidden')"
-      >
-        Close
-      </button>
+      <div class="flex gap-2">
+        <button 
+          id="modal-action-btn"
+          class="bg-teal-700 text-white px-4 py-2 rounded hover:bg-teal-800 transition-colors"
+        >
+          Action
+        </button>
+        <button 
+          id="modal-close-btn"
+          class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition-colors"
+        >
+          Close
+        </button>
+      </div>
     </div>
   </div>
   
   <button 
+    id="open-custom-modal-btn"
     class="bg-teal-700 text-white px-4 py-2 rounded hover:bg-teal-800 transition-colors"
-    onclick="document.getElementById('custom-modal').classList.remove('hidden')"
   >
     Open Custom Modal
   </button>
+
+  <script>
+    (function() {
+      const modal = document.getElementById('custom-modal');
+      const openBtn = document.getElementById('open-custom-modal-btn');
+      const closeBtn = document.getElementById('modal-close-btn');
+      let previousFocusElement = null;
+
+      // モーダルを開く
+      function openModal() {
+        previousFocusElement = document.activeElement;
+        modal?.classList.remove('hidden');
+        
+        // 最初のフォーカス可能な要素にフォーカス
+        const firstFocusableElement = modal?.querySelector('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+        if (firstFocusableElement) {
+          firstFocusableElement.focus();
+        }
+      }
+
+      // モーダルを閉じる
+      function closeModal() {
+        modal?.classList.add('hidden');
+        
+        // フォーカスを開いたボタンに戻す
+        if (previousFocusElement && previousFocusElement.focus) {
+          previousFocusElement.focus();
+        }
+      }
+
+      // フォーカストラップ
+      function trapFocus(e) {
+        if (!modal?.classList.contains('hidden')) {
+          const focusableElements = modal?.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+          const firstElement = focusableElements?.[0];
+          const lastElement = focusableElements?.[focusableElements.length - 1];
+
+          if (e.key === 'Tab') {
+            if (e.shiftKey) {
+              // Shift + Tab
+              if (document.activeElement === firstElement) {
+                e.preventDefault();
+                lastElement?.focus();
+              }
+            } else {
+              // Tab
+              if (document.activeElement === lastElement) {
+                e.preventDefault();
+                firstElement?.focus();
+              }
+            }
+          }
+
+          // Escapeキーでモーダルを閉じる
+          if (e.key === 'Escape') {
+            closeModal();
+          }
+        }
+      }
+
+      // イベントリスナー
+      openBtn?.addEventListener('click', openModal);
+      closeBtn?.addEventListener('click', closeModal);
+      document.addEventListener('keydown', trapFocus);
+
+      // モーダル外クリックで閉じる
+      modal?.addEventListener('click', function(e) {
+        if (e.target === modal) {
+          closeModal();
+        }
+      });
+    })();
+  </script>
 </ExampleCard>

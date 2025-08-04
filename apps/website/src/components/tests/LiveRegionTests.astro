@@ -95,25 +95,30 @@ import ExampleCard from './ExampleCard.astro';
   description="✅ Output element for displaying calculation results or form output. Automatically has live region behavior."
 >
   <div class="space-y-4">
-    <div class="flex items-center gap-3">
-      <input 
-        type="number" 
-        id="num1" 
-        value="5" 
-        class="border border-zinc-300 dark:border-zinc-600 rounded p-2 w-20 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100"
-      />
-      <span class="text-zinc-700 dark:text-zinc-300">+</span>
-      <input 
-        type="number" 
-        id="num2" 
-        value="3" 
-        class="border border-zinc-300 dark:border-zinc-600 rounded p-2 w-20 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100"
-      />
-      <span class="text-zinc-700 dark:text-zinc-300">=</span>
-      <output id="calc-output" class="bg-zinc-100 dark:bg-zinc-700 p-2 rounded text-zinc-900 dark:text-zinc-100 min-w-16 text-center">
-        8
-      </output>
-    </div>
+    <fieldset class="border border-zinc-300 dark:border-zinc-600 rounded p-4">
+      <legend class="text-zinc-900 dark:text-zinc-100 font-medium px-2">Addition Calculator</legend>
+      <div class="flex items-center gap-3 mt-2">
+        <label for="num1" class="sr-only">First number</label>
+        <input 
+          type="number" 
+          id="num1" 
+          value="5" 
+          class="border border-zinc-300 dark:border-zinc-600 rounded p-2 w-20 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100"
+        />
+        <span class="text-zinc-700 dark:text-zinc-300">+</span>
+        <label for="num2" class="sr-only">Second number</label>
+        <input 
+          type="number" 
+          id="num2" 
+          value="3" 
+          class="border border-zinc-300 dark:border-zinc-600 rounded p-2 w-20 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100"
+        />
+        <span class="text-zinc-700 dark:text-zinc-300">=</span>
+        <output id="calc-output" class="bg-zinc-100 dark:bg-zinc-700 p-2 rounded text-zinc-900 dark:text-zinc-100 min-w-16 text-center">
+          8
+        </output>
+      </div>
+    </fieldset>
     <button 
       class="bg-teal-700 text-white px-4 py-2 rounded hover:bg-teal-800 transition-colors"
       onclick="

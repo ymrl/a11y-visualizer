@@ -28,12 +28,16 @@ export const ImageName: RuleObject = {
     // <img alt=""> has implicit role of "presentation", using role attribute.
     const hasPresentationRole =
       roleAttr === "presentation" || roleAttr === "none";
-      
+
     // Skip if aria-hidden, presentation role, or presentational children
-    if (isAriaHidden || hasPresentationRole || isPresentationalChildren(element)) {
+    if (
+      isAriaHidden ||
+      hasPresentationRole ||
+      isPresentationalChildren(element)
+    ) {
       return undefined;
     }
-    
+
     // For SVG elements, if they have title but no computed accessible name, use title text
     let effectiveName = name;
     if (tagName === "svg" && !name) {
@@ -42,10 +46,10 @@ export const ImageName: RuleObject = {
         effectiveName = titleElement.textContent;
       }
     }
-    
+
     // For SVG elements, we don't need to return the name here - accessible-name rule handles that
     // image-name rule is only for errors and warnings
-    
+
     // Handle cases where there's no accessible name
     if (!effectiveName) {
       if (tagName === "img") {
@@ -88,7 +92,7 @@ export const ImageName: RuleObject = {
         ];
       }
     }
-    
+
     return undefined;
   },
 };

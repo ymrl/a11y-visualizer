@@ -1,5 +1,6 @@
 ---
 import CategoryTitle from './CategoryTitle.astro';
+import CategorySectionTitle from './CategorySectionTitle.astro';
 import ExampleCard from './ExampleCard.astro';
 
 const buttonClasses = "bg-teal-700 text-white p-2 rounded-lg inline-block cursor-pointer hover:bg-teal-800 transition-colors";
@@ -10,6 +11,8 @@ const buttonClasses = "bg-teal-700 text-white p-2 rounded-lg inline-block cursor
   Buttons are interactive elements that users activate to perform actions. They must be accessible to keyboard users and screen readers. 
   The following examples show various button implementations and common accessibility issues.
 </p>
+
+<CategorySectionTitle id="button-element">&lt;button&gt; Element</CategorySectionTitle>
 
 <ExampleCard 
   title="Standard button element" 
@@ -24,6 +27,26 @@ const buttonClasses = "bg-teal-700 text-white p-2 rounded-lg inline-block cursor
 >
   <button class={buttonClasses} aria-hidden="true">Click Me</button>
 </ExampleCard>
+
+<ExampleCard 
+  title="Button containing image with alt text" 
+  description="✅ Button with an image that has proper alt text. The alt text becomes the accessible name of the button."
+>
+  <button class="p-0 bg-transparent border-0 cursor-pointer">
+    <img src="/a11y-visualizer/images/button.png" alt="Click Me" width="75" height="40" />
+  </button>
+</ExampleCard>
+
+<ExampleCard 
+  title="Button containing image without alt text" 
+  description="❌ Button with an image missing alt text. Screen readers cannot determine what this button does, making it inaccessible."
+>
+  <button class="p-0 bg-transparent border-0 cursor-pointer">
+    <img src="/a11y-visualizer/images/button.png" width="75" height="40" class="border border-red-300" />
+  </button>
+</ExampleCard>
+
+<CategorySectionTitle id="button-role">Button Role</CategorySectionTitle>
 
 <ExampleCard 
   title="Div with button role and tabindex" 
@@ -46,23 +69,7 @@ const buttonClasses = "bg-teal-700 text-white p-2 rounded-lg inline-block cursor
   <div class={buttonClasses} role="button">Click Me</div>
 </ExampleCard>
 
-<ExampleCard 
-  title="Button containing image with alt text" 
-  description="✅ Button with an image that has proper alt text. The alt text becomes the accessible name of the button."
->
-  <button class="p-0 bg-transparent border-0 cursor-pointer">
-    <img src="/a11y-visualizer/images/button.png" alt="Click Me" width="75" height="40" />
-  </button>
-</ExampleCard>
-
-<ExampleCard 
-  title="Button containing image without alt text" 
-  description="❌ Button with an image missing alt text. Screen readers cannot determine what this button does, making it inaccessible."
->
-  <button class="p-0 bg-transparent border-0 cursor-pointer">
-    <img src="/a11y-visualizer/images/button.png" width="75" height="40" class="border border-red-300" />
-  </button>
-</ExampleCard>
+<CategorySectionTitle id="input-buttons">Input Elements</CategorySectionTitle>
 
 <ExampleCard 
   title='Input type="button"' 
@@ -119,6 +126,8 @@ const buttonClasses = "bg-teal-700 text-white p-2 rounded-lg inline-block cursor
 >
   <input type="image" src="/a11y-visualizer/images/button.png" alt="Click Me" />
 </ExampleCard>
+
+<CategorySectionTitle id="summary-element">Summary Element</CategorySectionTitle>
 
 <ExampleCard 
   title="Summary element" 

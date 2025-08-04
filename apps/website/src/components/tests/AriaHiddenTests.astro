@@ -1,5 +1,6 @@
 ---
 import CategoryTitle from './CategoryTitle.astro';
+import CategorySectionTitle from './CategorySectionTitle.astro';
 import ExampleCard from './ExampleCard.astro';
 ---
 
@@ -8,6 +9,8 @@ import ExampleCard from './ExampleCard.astro';
   The aria-hidden attribute controls whether elements are exposed to assistive technologies. 
   When properly used, it can hide decorative content, but when misused, it can make important content inaccessible.
 </p>
+
+<CategorySectionTitle id="visible-content">Visible Content</CategorySectionTitle>
 
 <ExampleCard 
   title="Visible text with aria-hidden='false'" 
@@ -26,6 +29,8 @@ import ExampleCard from './ExampleCard.astro';
     This text is visible but hidden from screen readers - problematic!
   </p>
 </ExampleCard>
+
+<CategorySectionTitle id="hidden-content">Hidden Content</CategorySectionTitle>
 
 <ExampleCard 
   title="Hidden text with aria-hidden='true'" 
@@ -50,6 +55,8 @@ import ExampleCard from './ExampleCard.astro';
     </p>
   </div>
 </ExampleCard>
+
+<CategorySectionTitle id="icons">Icons</CategorySectionTitle>
 
 <ExampleCard 
   title="Decorative icon with aria-hidden='true'" 

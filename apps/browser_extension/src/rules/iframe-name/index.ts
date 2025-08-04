@@ -20,21 +20,25 @@ export const IframeName: RuleObject = {
     if (!enabled) {
       return undefined;
     }
-    
+
     const tagName = element.tagName.toLowerCase();
     const isAriaHidden = element.getAttribute("aria-hidden") === "true";
     const roleAttr = element.getAttribute("role") || "";
     const hasPresentationRole =
       roleAttr === "presentation" || roleAttr === "none";
-    
+
     // Skip if aria-hidden, presentation role, or presentational children
-    if (isAriaHidden || hasPresentationRole || isPresentationalChildren(element)) {
+    if (
+      isAriaHidden ||
+      hasPresentationRole ||
+      isPresentationalChildren(element)
+    ) {
       return undefined;
     }
-    
+
     // iframe-name rule only handles errors and warnings
     // accessible name display is handled by accessible-name rule
-    
+
     // Handle cases where there's no accessible name
     if (!name && tagName === "iframe") {
       const hasTitle = element.hasAttribute("title");
@@ -56,7 +60,7 @@ export const IframeName: RuleObject = {
         ];
       }
     }
-    
+
     return undefined;
   },
 };

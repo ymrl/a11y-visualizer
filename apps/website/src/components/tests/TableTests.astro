@@ -1,5 +1,6 @@
 ---
 import CategoryTitle from './CategoryTitle.astro';
+import CategorySectionTitle from './CategorySectionTitle.astro';
 import ExampleCard from './ExampleCard.astro';
 
 const tableClasses = "border-collapse border border-zinc-300 dark:border-zinc-600";
@@ -11,6 +12,8 @@ const cellClasses = "border border-zinc-300 dark:border-zinc-600 p-2 text-zinc-9
   Tables organize data in rows and columns and must be properly structured for screen readers to understand relationships between data. 
   Proper table headers and semantic markup are essential for accessibility.
 </p>
+
+<CategorySectionTitle id="table-structure">Table Structure</CategorySectionTitle>
 
 <ExampleCard 
   title="Table with proper headers" 
@@ -56,6 +59,8 @@ const cellClasses = "border border-zinc-300 dark:border-zinc-600 p-2 text-zinc-9
     </tr>
   </table>
 </ExampleCard>
+
+<CategorySectionTitle id="table-headers">Table Headers</CategorySectionTitle>
 
 <ExampleCard 
   title="Table with row headers" 
@@ -110,6 +115,8 @@ const cellClasses = "border border-zinc-300 dark:border-zinc-600 p-2 text-zinc-9
     </tbody>
   </table>
 </ExampleCard>
+
+<CategorySectionTitle id="table-misuse">Table Misuse</CategorySectionTitle>
 
 <ExampleCard 
   title="Layout table (problematic)" 

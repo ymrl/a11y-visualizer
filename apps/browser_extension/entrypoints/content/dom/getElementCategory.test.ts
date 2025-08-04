@@ -416,12 +416,14 @@ describe("isSection()", () => {
     expect(isSection(element)).toBe(false);
   });
 
-  ["article", "section", "nav", "aside", "dialog", "iframe"].forEach((tagName) => {
-    test(tagName, () => {
-      const element = document.createElement(tagName);
-      expect(isSection(element)).toBe(true);
-    });
-  });
+  ["article", "section", "nav", "aside", "dialog", "iframe"].forEach(
+    (tagName) => {
+      test(tagName, () => {
+        const element = document.createElement(tagName);
+        expect(isSection(element)).toBe(true);
+      });
+    },
+  );
 
   test("role=article", () => {
     const element = document.createElement("div");

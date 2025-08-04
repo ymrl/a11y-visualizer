@@ -1,5 +1,6 @@
 ---
 import CategoryTitle from './CategoryTitle.astro';
+import CategorySectionTitle from './CategorySectionTitle.astro';
 import ExampleCard from './ExampleCard.astro';
 
 const linkClasses = "text-teal-700 dark:text-teal-400 underline cursor-pointer hover:text-teal-800 dark:hover:text-teal-300";
@@ -10,6 +11,8 @@ const linkClasses = "text-teal-700 dark:text-teal-400 underline cursor-pointer h
   Links are essential navigation elements that allow users to move between pages or sections. 
   They must be properly implemented to ensure keyboard accessibility and clear communication to screen reader users.
 </p>
+
+<CategorySectionTitle id="a-element">&lt;a&gt; Element</CategorySectionTitle>
 
 <ExampleCard 
   title="Standard link with href" 
@@ -26,6 +29,8 @@ const linkClasses = "text-teal-700 dark:text-teal-400 underline cursor-pointer h
 >
   <a class={linkClasses}>Click Me</a>
 </ExampleCard>
+
+<CategorySectionTitle id="link-role">Link Role</CategorySectionTitle>
 
 <ExampleCard 
   title='Element with role="link"' 
@@ -45,6 +50,8 @@ const linkClasses = "text-teal-700 dark:text-teal-400 underline cursor-pointer h
   </span>
 </ExampleCard>
 
+<CategorySectionTitle id="link-variations">Link Variations</CategorySectionTitle>
+
 <ExampleCard 
   title="Link with target='_blank'" 
   description="Link that opens in a new window/tab. Consider adding rel='noopener noreferrer' for security and informing users about the new window behavior."
@@ -53,6 +60,8 @@ const linkClasses = "text-teal-700 dark:text-teal-400 underline cursor-pointer h
     Opens in new tab
   </a>
 </ExampleCard>
+
+<CategorySectionTitle id="icon-links">Icon Links</CategorySectionTitle>
 
 <ExampleCard 
   title="Link with only an icon" 

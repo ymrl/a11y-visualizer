@@ -101,6 +101,8 @@
   "Empty heading": "Empty heading",
   "No alt attribute": "No alt attribute",
   "Empty alt attribute": "Empty alt attribute",
+  "No title attribute": "No title attribute",
+  "Empty title attribute": "Empty title attribute",
   "Not associated with any control": "Not associated with any control",
   "lang and xml:lang attributes must have the same value": "lang and xml:lang attributes must have the same value",
   "No href attribute": "No href attribute",

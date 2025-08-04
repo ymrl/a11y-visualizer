@@ -101,6 +101,8 @@
   "Empty heading": "空の見出し",
   "No alt attribute": "alt属性なし",
   "Empty alt attribute": "alt属性が空（alt=\"\"）",
+  "No title attribute": "title属性なし",
+  "Empty title attribute": "title属性が空",
   "Not associated with any control": "入力欄等と紐付けされていない",
   "lang and xml:lang attributes must have the same value": "lang属性とxml:lang属性の値が異なる",
   "No href attribute": "href属性なし",

@@ -10,6 +10,7 @@ import { HeadingLevel } from "./heading-level";
 import { HeadingName } from "./heading-name";
 import { Hgroup } from "./hgroup";
 import { IdReference } from "./id-reference";
+import { IframeName } from "./iframe-name";
 import { ImageName } from "./image-name";
 import { LabelAssociatedControl } from "./label-associated-control";
 import { Landmark } from "./landmark";
@@ -38,6 +39,7 @@ export const Rules = [
   Hgroup,
   HeadingName,
   IdReference,
+  IframeName,
   ImageName,
   LabelAssociatedControl,
   Landmark,

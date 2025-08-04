@@ -52,6 +52,7 @@ export const Selectors: Record<keyof CategorySettings, string[]> = {
     "form",
     "search",
     "dialog",
+    "iframe",
     '[role~="article"]',
     '[role~="banner"]',
     '[role~="complementary"]',

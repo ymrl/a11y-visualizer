@@ -35,6 +35,47 @@ const formClasses = "border border-zinc-300 dark:border-zinc-600 rounded p-2 bg-
   />
 </ExampleCard>
 
+<ExampleCard 
+  title="Input with aria-describedby referencing missing IDs" 
+  description="❌ Input using aria-describedby to reference description elements that don't exist in the document."
+>
+  <label for="input-missing-descriptions" class="block mb-1 text-zinc-700 dark:text-zinc-300">
+    Input with Missing Descriptions
+  </label>
+  <input
+    id="input-missing-descriptions"
+    type="text"
+    class={`${formClasses} border-red-300 dark:border-red-600`}
+    aria-describedby="missing-help missing-error"
+  />
+  <p class="text-sm text-zinc-600 dark:text-zinc-400 mt-1">
+    This input references help text (id="missing-help") and error message (id="missing-error") that don't exist.
+  </p>
+</ExampleCard>
+
+<ExampleCard 
+  title="Input with mixed existing and missing ID references" 
+  description="⚠️ Input where some referenced IDs exist and others don't. This creates partial accessibility relationships."
+>
+  <label for="input-partial-references" class="block mb-1 text-zinc-700 dark:text-zinc-300">
+    Input with Partial References
+  </label>
+  <input
+    id="input-partial-references"
+    type="text"
+    class={`${formClasses} border-yellow-300 dark:border-yellow-600`}
+    aria-describedby="existing-help missing-help missing-error"
+    aria-labelledby="existing-label missing-label"
+  />
+  <div id="existing-help" class="text-sm text-zinc-600 dark:text-zinc-400 mt-1">
+    This help text exists and will be announced.
+  </div>
+  <div id="existing-label" class="sr-only">Additional label text</div>
+  <p class="text-sm text-zinc-600 dark:text-zinc-400 mt-1">
+    References: existing-help ✓, missing-help ❌, missing-error ❌, existing-label ✓, missing-label ❌
+  </p>
+</ExampleCard>
+
 <CategorySectionTitle id="select-elements">Select Elements</CategorySectionTitle>
 
 <ExampleCard 
@@ -250,6 +291,17 @@ const formClasses = "border border-zinc-300 dark:border-zinc-600 rounded p-2 bg-
 >
   <label class="text-zinc-700 dark:text-zinc-300 border-red-300 border p-1">Orphaned Label</label>
 </ExampleCard>
+
+<ExampleCard 
+  title="Label with non-existent ID reference" 
+  description="❌ Label element referencing an ID that doesn't exist. Screen readers cannot establish the relationship between label and control."
+>
+  <label for="non-existent-input" class="text-zinc-700 dark:text-zinc-300 border-red-300 border p-1 block mb-2">
+    Label for missing input
+  </label>
+  <p class="text-sm text-zinc-600 dark:text-zinc-400">The input with id="non-existent-input" doesn't exist in the document.</p>
+</ExampleCard>
+
 
 <CategorySectionTitle id="input-states">Input States</CategorySectionTitle>
 

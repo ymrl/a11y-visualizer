@@ -91,10 +91,10 @@ export const translations: Record<string, Translation> = {
       url: "https://github.com/ymrl/a11y-visualizer/blob/main/docs/en/UsersGuide.md",
     },
     tests: {
-      title: "Test Examples",
+      title: "Test Pages",
       description:
-        "Try the extension with various accessibility examples and problematic patterns",
-      link: "View Test Examples",
+        "We've prepared various implementation examples for you to verify Accessibility Visualizer's functionality",
+      link: "Go to Test Pages",
       url: "/a11y-visualizer/tests",
     },
     footer: {
@@ -152,10 +152,10 @@ export const translations: Record<string, Translation> = {
       url: "https://github.com/ymrl/a11y-visualizer/blob/main/docs/ja/UsersGuide.md",
     },
     tests: {
-      title: "テスト例",
+      title: "テスト用ページ",
       description:
-        "様々なアクセシビリティ例や問題のあるパターンで拡張機能を試す",
-      link: "テスト例を見る",
+        "Accessibility Visualizerの動作を確認するために、様々な実装例を用意しています",
+      link: "テスト用ページへ",
       url: "/a11y-visualizer/tests",
     },
     footer: {
@@ -212,10 +212,10 @@ export const translations: Record<string, Translation> = {
       url: "https://github.com/ymrl/a11y-visualizer/blob/main/docs/ko/UsersGuide.md",
     },
     tests: {
-      title: "테스트 예제",
+      title: "테스트 페이지",
       description:
-        "다양한 접근성 예제와 문제가 있는 패턴으로 확장 프로그램을 시험해보세요",
-      link: "테스트 예제 보기",
+        "Accessibility Visualizer의 동작을 확인하기 위해 다양한 구현 예제를 준비했습니다",
+      link: "테스트 페이지로 이동",
       url: "/a11y-visualizer/tests",
     },
     footer: {

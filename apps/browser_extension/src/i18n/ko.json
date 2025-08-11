@@ -94,7 +94,7 @@
   "Invalid role for WAI-ARIA attribute": "WAI-ARIA 속성을 사용할 수 없는 역할",
   "Invalid WAI-ARIA attribute value: {{attribute}}": "WAI-ARIA 속성 값 오류: {{attribute}}",
   "Invalid role for WAI-ARIA attribute: {{attribute}}": "WAI-ARIA 속성을 사용할 수 없는 역할: {{attribute}}",
-  "Referenced IDs do not exist: {{ids}}": "참조하는 ID가 존재하지 않습니다: {{ids}}",
+  "Referenced IDs do not exist: {{idsWithAttributes}}": "참조하는 ID가 존재하지 않습니다: {{idsWithAttributes}}",
   "Not focusable": "포커싱 불가",
   "No accessible name": "이름(레이블) 없음",
   "No heading level": "헤딩 레벨 없음",

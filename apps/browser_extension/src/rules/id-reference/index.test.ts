@@ -16,17 +16,16 @@ describe("IdReference", () => {
     expect(result).toBeUndefined();
   });
 
-  test("reports error for for attribute with non-existing ID", () => {
+  test("reports warning for for attribute with non-existing ID", () => {
     document.body.innerHTML = `<label for="non-existent">Label</label>`;
     const label = document.querySelector("label")!;
     const result = IdReference.evaluate(label, IdReference.defaultOptions, {});
     expect(result).toHaveLength(1);
     expect(result![0]).toEqual({
-      type: "error",
-      message: "Referenced IDs do not exist: {{ids}}",
+      type: "warning",
+      message: "Referenced IDs do not exist: {{idsWithAttributes}}",
       messageParams: {
-        ids: "non-existent",
-        attributes: "for",
+        idsWithAttributes: "non-existent (for)",
       },
       ruleName: "id-reference",
     });
@@ -46,7 +45,7 @@ describe("IdReference", () => {
     expect(result).toBeUndefined();
   });
 
-  test("reports error for aria-labelledby with non-existing ID", () => {
+  test("reports warning for aria-labelledby with non-existing ID", () => {
     document.body.innerHTML = `<div aria-labelledby="missing-id">Content</div>`;
     const element = document.querySelector("div")!;
     const result = IdReference.evaluate(
@@ -56,11 +55,10 @@ describe("IdReference", () => {
     );
     expect(result).toHaveLength(1);
     expect(result![0]).toEqual({
-      type: "error",
-      message: "Referenced IDs do not exist: {{ids}}",
+      type: "warning",
+      message: "Referenced IDs do not exist: {{idsWithAttributes}}",
       messageParams: {
-        ids: "missing-id",
-        attributes: "aria-labelledby",
+        idsWithAttributes: "missing-id (aria-labelledby)",
       },
       ruleName: "id-reference",
     });
@@ -81,7 +79,7 @@ describe("IdReference", () => {
     expect(result).toBeUndefined();
   });
 
-  test("reports error for aria-labelledby with one non-existing ID in list", () => {
+  test("reports warning for aria-labelledby with one non-existing ID in list", () => {
     document.body.innerHTML = `
       <div id="title1">Title 1</div>
       <div aria-labelledby="title1 missing-id">Content</div>
@@ -94,11 +92,10 @@ describe("IdReference", () => {
     );
     expect(result).toHaveLength(1);
     expect(result![0]).toEqual({
-      type: "error",
-      message: "Referenced IDs do not exist: {{ids}}",
+      type: "warning",
+      message: "Referenced IDs do not exist: {{idsWithAttributes}}",
       messageParams: {
-        ids: "missing-id",
-        attributes: "aria-labelledby",
+        idsWithAttributes: "missing-id (aria-labelledby)",
       },
       ruleName: "id-reference",
     });
@@ -119,7 +116,7 @@ describe("IdReference", () => {
     expect(result).toBeUndefined();
   });
 
-  test("reports error for aria-activedescendant with non-existing ID", () => {
+  test("reports warning for aria-activedescendant with non-existing ID", () => {
     document.body.innerHTML = `
       <div role="listbox" aria-activedescendant="missing-option">
         <div id="option1" role="option">Option 1</div>
@@ -133,11 +130,10 @@ describe("IdReference", () => {
     );
     expect(result).toHaveLength(1);
     expect(result![0]).toEqual({
-      type: "error",
-      message: "Referenced IDs do not exist: {{ids}}",
+      type: "warning",
+      message: "Referenced IDs do not exist: {{idsWithAttributes}}",
       messageParams: {
-        ids: "missing-option",
-        attributes: "aria-activedescendant",
+        idsWithAttributes: "missing-option (aria-activedescendant)",
       },
       ruleName: "id-reference",
     });
@@ -154,7 +150,7 @@ describe("IdReference", () => {
     expect(result).toBeUndefined();
   });
 
-  test("reports consolidated error for multiple non-existing IDs", () => {
+  test("reports consolidated warning for multiple non-existing IDs", () => {
     document.body.innerHTML = `
       <div aria-labelledby="missing1 missing2">Content</div>
     `;
@@ -166,17 +162,16 @@ describe("IdReference", () => {
     );
     expect(result).toHaveLength(1);
     expect(result![0]).toEqual({
-      type: "error",
-      message: "Referenced IDs do not exist: {{ids}}",
+      type: "warning",
+      message: "Referenced IDs do not exist: {{idsWithAttributes}}",
       messageParams: {
-        ids: "missing1, missing2",
-        attributes: "aria-labelledby",
+        idsWithAttributes: "missing1, missing2 (aria-labelledby)",
       },
       ruleName: "id-reference",
     });
   });
 
-  test("reports consolidated error for mixed attributes with missing IDs", () => {
+  test("reports consolidated warning for mixed attributes with missing IDs", () => {
     document.body.innerHTML = `
       <label for="missing-input" aria-describedby="missing-desc1 missing-desc2">Label</label>
     `;
@@ -184,11 +179,102 @@ describe("IdReference", () => {
     const result = IdReference.evaluate(label, IdReference.defaultOptions, {});
     expect(result).toHaveLength(1);
     expect(result![0]).toEqual({
-      type: "error",
-      message: "Referenced IDs do not exist: {{ids}}",
+      type: "warning",
+      message: "Referenced IDs do not exist: {{idsWithAttributes}}",
       messageParams: {
-        ids: "missing-input, missing-desc1, missing-desc2",
-        attributes: "for, aria-describedby",
+        idsWithAttributes:
+          "missing-input (for); missing-desc1, missing-desc2 (aria-describedby)",
+      },
+      ruleName: "id-reference",
+    });
+  });
+
+  test("reports warning for multiple single ID attributes with missing IDs", () => {
+    document.body.innerHTML = `
+      <input form="missing-form" list="missing-datalist" aria-activedescendant="missing-active" />
+    `;
+    const input = document.querySelector("input")!;
+    const result = IdReference.evaluate(input, IdReference.defaultOptions, {});
+    expect(result).toHaveLength(1);
+    expect(result![0]).toEqual({
+      type: "warning",
+      message: "Referenced IDs do not exist: {{idsWithAttributes}}",
+      messageParams: {
+        idsWithAttributes:
+          "missing-active (aria-activedescendant); missing-datalist (list); missing-form (form)",
+      },
+      ruleName: "id-reference",
+    });
+  });
+
+  test("reports warning for multiple list attributes with missing IDs", () => {
+    document.body.innerHTML = `
+      <div aria-labelledby="missing-label1 missing-label2" aria-describedby="missing-desc1 missing-desc2" aria-controls="missing-control1 missing-control2">
+        Content
+      </div>
+    `;
+    const div = document.querySelector("div")!;
+    const result = IdReference.evaluate(div, IdReference.defaultOptions, {});
+    expect(result).toHaveLength(1);
+    expect(result![0]).toEqual({
+      type: "warning",
+      message: "Referenced IDs do not exist: {{idsWithAttributes}}",
+      messageParams: {
+        idsWithAttributes:
+          "missing-desc1, missing-desc2 (aria-describedby); missing-label1, missing-label2 (aria-labelledby); missing-control1, missing-control2 (aria-controls)",
+      },
+      ruleName: "id-reference",
+    });
+  });
+
+  test("reports warning for mixed single and list attributes with partial missing IDs", () => {
+    document.body.innerHTML = `
+      <div id="existing-label">Label</div>
+      <div id="existing-desc">Description</div>
+      <button 
+        aria-labelledby="existing-label missing-label2" 
+        aria-describedby="existing-desc missing-desc2 missing-desc3" 
+        aria-activedescendant="missing-active"
+      >
+        Button
+      </button>
+    `;
+    const button = document.querySelector("button")!;
+    const result = IdReference.evaluate(button, IdReference.defaultOptions, {});
+    expect(result).toHaveLength(1);
+    expect(result![0]).toEqual({
+      type: "warning",
+      message: "Referenced IDs do not exist: {{idsWithAttributes}}",
+      messageParams: {
+        idsWithAttributes:
+          "missing-active (aria-activedescendant); missing-desc2, missing-desc3 (aria-describedby); missing-label2 (aria-labelledby)",
+      },
+      ruleName: "id-reference",
+    });
+  });
+
+  test("reports warning for table cell with multiple missing headers", () => {
+    document.body.innerHTML = `
+      <table>
+        <tr>
+          <th id="existing-header1">Header 1</th>
+        </tr>
+        <tr>
+          <td headers="existing-header1 missing-header2 missing-header3" aria-describedby="missing-desc1">
+            Cell content
+          </td>
+        </tr>
+      </table>
+    `;
+    const td = document.querySelector("td")!;
+    const result = IdReference.evaluate(td, IdReference.defaultOptions, {});
+    expect(result).toHaveLength(1);
+    expect(result![0]).toEqual({
+      type: "warning",
+      message: "Referenced IDs do not exist: {{idsWithAttributes}}",
+      messageParams: {
+        idsWithAttributes:
+          "missing-desc1 (aria-describedby); missing-header2, missing-header3 (headers)",
       },
       ruleName: "id-reference",
     });
@@ -281,17 +367,16 @@ describe("IdReference", () => {
     expect(result).toBeUndefined();
   });
 
-  test("reports error for list attribute with non-existing ID", () => {
+  test("reports warning for list attribute with non-existing ID", () => {
     document.body.innerHTML = `<input list="missing-datalist" />`;
     const input = document.querySelector("input")!;
     const result = IdReference.evaluate(input, IdReference.defaultOptions, {});
     expect(result).toHaveLength(1);
     expect(result![0]).toEqual({
-      type: "error",
-      message: "Referenced IDs do not exist: {{ids}}",
+      type: "warning",
+      message: "Referenced IDs do not exist: {{idsWithAttributes}}",
       messageParams: {
-        ids: "missing-datalist",
-        attributes: "list",
+        idsWithAttributes: "missing-datalist (list)",
       },
       ruleName: "id-reference",
     });
@@ -307,17 +392,16 @@ describe("IdReference", () => {
     expect(result).toBeUndefined();
   });
 
-  test("reports error for form attribute with non-existing ID", () => {
+  test("reports warning for form attribute with non-existing ID", () => {
     document.body.innerHTML = `<input form="missing-form" />`;
     const input = document.querySelector("input")!;
     const result = IdReference.evaluate(input, IdReference.defaultOptions, {});
     expect(result).toHaveLength(1);
     expect(result![0]).toEqual({
-      type: "error",
-      message: "Referenced IDs do not exist: {{ids}}",
+      type: "warning",
+      message: "Referenced IDs do not exist: {{idsWithAttributes}}",
       messageParams: {
-        ids: "missing-form",
-        attributes: "form",
+        idsWithAttributes: "missing-form (form)",
       },
       ruleName: "id-reference",
     });
@@ -340,7 +424,7 @@ describe("IdReference", () => {
     expect(result).toBeUndefined();
   });
 
-  test("reports error for headers attribute with non-existing ID", () => {
+  test("reports warning for headers attribute with non-existing ID", () => {
     document.body.innerHTML = `
       <table>
         <tr>
@@ -355,11 +439,10 @@ describe("IdReference", () => {
     const result = IdReference.evaluate(td, IdReference.defaultOptions, {});
     expect(result).toHaveLength(1);
     expect(result![0]).toEqual({
-      type: "error",
-      message: "Referenced IDs do not exist: {{ids}}",
+      type: "warning",
+      message: "Referenced IDs do not exist: {{idsWithAttributes}}",
       messageParams: {
-        ids: "missing-header",
-        attributes: "headers",
+        idsWithAttributes: "missing-header (headers)",
       },
       ruleName: "id-reference",
     });
@@ -396,17 +479,16 @@ describe("IdReference", () => {
     expect(result).toBeUndefined();
   });
 
-  test("reports error for contextmenu attribute with non-existing ID", () => {
+  test("reports warning for contextmenu attribute with non-existing ID", () => {
     document.body.innerHTML = `<div contextmenu="missing-menu">Right-click me</div>`;
     const div = document.querySelector("div")!;
     const result = IdReference.evaluate(div, IdReference.defaultOptions, {});
     expect(result).toHaveLength(1);
     expect(result![0]).toEqual({
-      type: "error",
-      message: "Referenced IDs do not exist: {{ids}}",
+      type: "warning",
+      message: "Referenced IDs do not exist: {{idsWithAttributes}}",
       messageParams: {
-        ids: "missing-menu",
-        attributes: "contextmenu",
+        idsWithAttributes: "missing-menu (contextmenu)",
       },
       ruleName: "id-reference",
     });

@@ -122,8 +122,8 @@ export const collectElements = (
         const role = getKnownRole(el);
         const name = computeAccessibleName(el);
         const rects = Array.from(el.getClientRects()).map((rect) => ({
-          relativeX: rect.x - elementPosition.x + visibleX,
-          relativeY: rect.y - elementPosition.y + visibleY,
+          relativeX: rect.x - elementPosition.x + visibleX - offsetX,
+          relativeY: rect.y - elementPosition.y + visibleY - offsetY,
           width: rect.width,
           height: rect.height,
         }));

@@ -24,10 +24,15 @@ export const SvgSkip: RuleObject<Options, Condition> = {
       return undefined;
     }
     const tagName = element.tagName.toLowerCase();
+
+    // Check if SVG has title element for accessible name
+    const hasTitle = element.querySelector("title");
+
     if (
       tagName === "svg" &&
       element.getAttribute("aria-hidden") !== "true" &&
       !role &&
+      !hasTitle &&
       !isPresentationalChildren(element)
     ) {
       return [

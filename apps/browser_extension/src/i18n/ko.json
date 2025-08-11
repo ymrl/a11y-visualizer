@@ -101,6 +101,8 @@
   "Empty heading": "빈 헤딩",
   "No alt attribute": "alt속성이 없는 이미지",
   "Empty alt attribute": "alt=\"\"의 이미지",
+  "No title attribute": "title 속성이 없습니다",
+  "Empty title attribute": "빈 title 속성",
   "Not associated with any control": "폼 컨트롤 등과 연결되지 없음",
   "lang and xml:lang attributes must have the same value": "lang and xml:lang attributes must have the same value",
   "No href attribute": "href속성 없음",

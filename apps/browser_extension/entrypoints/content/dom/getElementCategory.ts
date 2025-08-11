@@ -111,6 +111,7 @@ export const isSection = (el: Element, role = getKnownRole(el)): boolean =>
     "form",
     "search",
     "dialog",
+    "iframe",
   ].includes(el.tagName.toLowerCase()) ||
   (!!role &&
     [

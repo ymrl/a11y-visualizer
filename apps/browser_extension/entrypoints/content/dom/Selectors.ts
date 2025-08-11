@@ -1,7 +1,7 @@
 import { CategorySettings } from "../../../src/settings";
 
 export const Selectors: Record<keyof CategorySettings, string[]> = {
-  image: ["img", "[role~='img']"] as const,
+  image: ["img", "svg", "[role~='img']"] as const,
   formControl: [
     "input:not([type='hidden']):not([type='button']):not([type='submit']):not([type='reset']):not([type='image'])",
     "textarea",
@@ -52,6 +52,7 @@ export const Selectors: Record<keyof CategorySettings, string[]> = {
     "form",
     "search",
     "dialog",
+    "iframe",
     '[role~="article"]',
     '[role~="banner"]',
     '[role~="complementary"]',

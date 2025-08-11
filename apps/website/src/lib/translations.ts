@@ -28,6 +28,12 @@ export interface Translation {
     link: string;
     url: string;
   };
+  tests: {
+    title: string;
+    description: string;
+    link: string;
+    url: string;
+  };
   footer: {
     copyright: string;
     github: string;
@@ -84,6 +90,13 @@ export const translations: Record<string, Translation> = {
       link: "View User Guide on GitHub",
       url: "https://github.com/ymrl/a11y-visualizer/blob/main/docs/en/UsersGuide.md",
     },
+    tests: {
+      title: "Test Pages",
+      description:
+        "We've prepared various implementation examples for you to verify Accessibility Visualizer's functionality",
+      link: "Go to Test Pages",
+      url: "/a11y-visualizer/tests",
+    },
     footer: {
       copyright: "© 2024 ymrl (MIT License)",
       github: "GitHub",
@@ -138,6 +151,13 @@ export const translations: Record<string, Translation> = {
       link: "GitHub でユーザーガイドを見る",
       url: "https://github.com/ymrl/a11y-visualizer/blob/main/docs/ja/UsersGuide.md",
     },
+    tests: {
+      title: "テスト用ページ",
+      description:
+        "Accessibility Visualizerの動作を確認するために、様々な実装例を用意しています",
+      link: "テスト用ページへ",
+      url: "/a11y-visualizer/tests",
+    },
     footer: {
       copyright: "© 2024 ymrl (MIT License)",
       github: "GitHub",
@@ -190,6 +210,13 @@ export const translations: Record<string, Translation> = {
       description: "Accessibility Visualizer 사용 방법을 배워보세요",
       link: "GitHub에서 사용자 가이드 보기",
       url: "https://github.com/ymrl/a11y-visualizer/blob/main/docs/ko/UsersGuide.md",
+    },
+    tests: {
+      title: "테스트 페이지",
+      description:
+        "Accessibility Visualizer의 동작을 확인하기 위해 다양한 구현 예제를 준비했습니다",
+      link: "테스트 페이지로 이동",
+      url: "/a11y-visualizer/tests",
     },
     footer: {
       copyright: "© 2024 ymrl (MIT License)",

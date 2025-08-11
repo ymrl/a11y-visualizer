@@ -14,9 +14,16 @@ describe("svg-skip", () => {
     expect(result).toBeUndefined();
   });
 
-  test("svg without role", () => {
+  test("svg without role but with title", () => {
     const element = document.createElement("svg");
     element.innerHTML = "<title>title</title>";
+    document.body.appendChild(element);
+    const result = SvgSkip.evaluate(element, { enabled: true }, {});
+    expect(result).toBeUndefined();
+  });
+
+  test("svg without role and without title", () => {
+    const element = document.createElement("svg");
     document.body.appendChild(element);
     const result = SvgSkip.evaluate(element, { enabled: true }, {});
     expect(result).toEqual([

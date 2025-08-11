@@ -47,25 +47,31 @@ export const ElementInfo = ({
     };
   }, []);
 
+  const scrollX = selfRef.current?.ownerDocument?.defaultView?.scrollX || 0;
+  const scrollY = selfRef.current?.ownerDocument?.defaultView?.scrollY || 0;
+  const scrollOffsetX = absoluteX - scrollX;
+  const scrollOffsetY = absoluteY - scrollY;
+
   const horizontalPosition =
     category === "page"
       ? "center"
       : ((category === "section" || category === "group") &&
             width > tipFontSize * 16) ||
-          (width < tipFontSize * 16 && x + width > rootWidth - tipFontSize * 16)
+          (width < tipFontSize * 16 &&
+            scrollOffsetX + width > rootWidth - tipFontSize * 16)
         ? "right"
         : "left";
   const verticalPosition: VerticalPosition =
     category === "page"
       ? "inner-top"
       : ["section", "heading", "table", "list"].includes(category)
-        ? y < tipFontSize * 2.4
+        ? scrollOffsetY < tipFontSize * 2.4
           ? "inner-top"
           : "outer-top"
         : category === "image" ||
             category === "group" ||
             category === "tableCell"
-          ? y > tipFontSize * 2.4 && height < tipFontSize * 3.2
+          ? scrollOffsetY > tipFontSize * 2.4 && height < tipFontSize * 3.2
             ? "outer-top"
             : "inner-top"
           : y + height > rootHeight - tipFontSize * 2.4

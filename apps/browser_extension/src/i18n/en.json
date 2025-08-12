@@ -94,7 +94,7 @@
   "Invalid role for WAI-ARIA attribute": "Invalid role for WAI-ARIA attribute",
   "Invalid WAI-ARIA attribute value: {{attribute}}": "Invalid WAI-ARIA attribute value: {{attribute}}",
   "Invalid role for WAI-ARIA attribute: {{attribute}}": "Invalid role for WAI-ARIA attribute: {{attribute}}",
-  "Referenced IDs do not exist: {{ids}}": "Referenced IDs do not exist: {{ids}}",
+  "Referenced IDs do not exist: {{idsWithAttributes}}": "Referenced IDs do not exist: {{idsWithAttributes}}",
   "Not focusable": "Not focusable",
   "No accessible name": "No accessible name",
   "No heading level": "No heading level",

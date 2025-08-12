@@ -43,8 +43,7 @@ export const IdReference: RuleObject = {
       return undefined;
     }
 
-    const missingIds: string[] = [];
-    const attributesWithMissingIds: string[] = [];
+    const missingIdsByAttribute: Record<string, string[]> = {};
 
     // Check single ID reference attributes
     for (const attribute of ID_REFERENCE_ATTRIBUTES) {
@@ -52,8 +51,7 @@ export const IdReference: RuleObject = {
       if (value) {
         const id = value.trim();
         if (id && !document.getElementById(id)) {
-          missingIds.push(id);
-          attributesWithMissingIds.push(attribute);
+          missingIdsByAttribute[attribute] = [id];
         }
       }
     }
@@ -66,27 +64,33 @@ export const IdReference: RuleObject = {
           .trim()
           .split(/\s+/)
           .filter((id) => id.length > 0);
-        let hasAnyMissingIds = false;
-        for (const id of ids) {
-          if (!document.getElementById(id)) {
-            missingIds.push(id);
-            hasAnyMissingIds = true;
-          }
-        }
-        if (hasAnyMissingIds) {
-          attributesWithMissingIds.push(attribute);
+        const missingIds = ids.filter((id) => !document.getElementById(id));
+        if (missingIds.length > 0) {
+          missingIdsByAttribute[attribute] = missingIds;
         }
       }
     }
 
-    if (missingIds.length > 0) {
+    if (Object.keys(missingIdsByAttribute).length > 0) {
+      // Create ordered list of attributes with missing IDs
+      const allAttributes = [
+        ...ID_REFERENCE_ATTRIBUTES,
+        ...ID_REFERENCE_LIST_ATTRIBUTES,
+      ];
+      const orderedEntries = allAttributes
+        .filter((attribute) => missingIdsByAttribute[attribute])
+        .map(
+          (attribute) => [attribute, missingIdsByAttribute[attribute]] as const,
+        );
+
       return [
         {
-          type: "error",
-          message: "Referenced IDs do not exist: {{ids}}",
+          type: "warning",
+          message: "Referenced IDs do not exist: {{idsWithAttributes}}",
           messageParams: {
-            ids: missingIds.join(", "),
-            attributes: attributesWithMissingIds.join(", "),
+            idsWithAttributes: orderedEntries
+              .map(([attribute, ids]) => `${ids.join(", ")} (${attribute})`)
+              .join("; "),
           },
           ruleName,
         },

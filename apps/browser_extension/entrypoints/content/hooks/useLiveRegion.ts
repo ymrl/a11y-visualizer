@@ -11,7 +11,6 @@ const LIVEREGION_SELECTOR =
 
 export type LiveLevel = "polite" | "assertive";
 
-
 const getClosestElement = (node: Node): Element | null => {
   if (node.nodeType === Node.ELEMENT_NODE) {
     return node as Element;
@@ -22,7 +21,10 @@ const getClosestElement = (node: Node): Element | null => {
   return null;
 };
 
-const closestNodeOfSelector = (node: Node, selector: string): Element | null => {
+const closestNodeOfSelector = (
+  node: Node,
+  selector: string,
+): Element | null => {
   const element = getClosestElement(node);
   if (!element) {
     return null;
@@ -195,7 +197,9 @@ export const useLiveRegion = ({
 
           if (
             !targetElement ||
-            isHidden(targetElement) || isInAriaHidden(targetElement)) {
+            isHidden(targetElement) ||
+            isInAriaHidden(targetElement)
+          ) {
             return null;
           }
 
@@ -204,7 +208,8 @@ export const useLiveRegion = ({
             const modals = detectModals(parentRef.current);
             if (modals.length > 0) {
               const isInsideModal = modals.some(
-                (modal) => modal.contains(targetElement) || modal === targetElement,
+                (modal) =>
+                  modal.contains(targetElement) || modal === targetElement,
               );
               if (!isInsideModal) {
                 return null;
@@ -212,8 +217,10 @@ export const useLiveRegion = ({
             }
           }
 
-          const liveRegionNode =
-            closestNodeOfSelector(r.target, LIVEREGION_SELECTOR);
+          const liveRegionNode = closestNodeOfSelector(
+            r.target,
+            LIVEREGION_SELECTOR,
+          );
           const ariaLiveAttribute = liveRegionNode?.getAttribute("aria-live");
           if (ariaLiveAttribute === "off") {
             return null;
@@ -225,19 +232,21 @@ export const useLiveRegion = ({
               getKnownRole(liveRegionNode) === "alert");
           const level = isAssertive ? "assertive" : "polite";
           const atomicNode = closestNodeOfSelector(targetNode, "[aria-atomic]");
-          const isAtomic =
-            atomicNode?.getAttribute?.("aria-atomic") === "true";
+          const isAtomic = atomicNode?.getAttribute?.("aria-atomic") === "true";
           const relevant = (
-            liveRegionNode?.getAttribute?.("aria-relevant") ||
-            "additions text"
+            liveRegionNode?.getAttribute?.("aria-relevant") || "additions text"
           ).split(/\s/);
           const removals =
             relevant.includes("removals") || relevant.includes("all");
           const additions =
             relevant.includes("additions") || relevant.includes("all");
           if (isAtomic) {
-            const name = liveRegionNode && computeAccessibleName(liveRegionNode);
-            return { content: [ name, atomicNode.textContent ].filter(Boolean) .join(" ") , level };
+            const name =
+              liveRegionNode && computeAccessibleName(liveRegionNode);
+            return {
+              content: [name, atomicNode.textContent].filter(Boolean).join(" "),
+              level,
+            };
           }
 
           const content = [

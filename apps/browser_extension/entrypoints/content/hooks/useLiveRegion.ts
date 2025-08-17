@@ -4,21 +4,33 @@ import { isInAriaHidden } from "../dom";
 import { isHidden } from "../../../src/dom/isHidden";
 import { getKnownRole } from "../../../src/dom/getKnownRole";
 import { detectModals } from "../dom/detectModals";
+import { computeAccessibleName } from "dom-accessibility-api";
 
 const LIVEREGION_SELECTOR =
   "output, [role~='status'], [role~='alert'], [role~='log'], [aria-live]:not([aria-live='off'])";
 
 export type LiveLevel = "polite" | "assertive";
 
-const closestNodeOfSelector = (node: Node, selector: string): Node | null => {
-  const parent = node.parentNode;
-  if (!parent) {
+
+const getClosestElement = (node: Node): Element | null => {
+  if (node.nodeType === Node.ELEMENT_NODE) {
+    return node as Element;
+  }
+  if (node.parentNode) {
+    return getClosestElement(node.parentNode);
+  }
+  return null;
+};
+
+const closestNodeOfSelector = (node: Node, selector: string): Element | null => {
+  const element = getClosestElement(node);
+  if (!element) {
     return null;
   }
-  if (parent.nodeType === 1 && (parent as Element).matches(selector)) {
-    return parent;
+  if (element.matches(selector)) {
+    return element;
   }
-  return closestNodeOfSelector(node.parentNode, selector);
+  return element.closest(selector) || null;
 };
 
 const getLiveRegions = (
@@ -178,10 +190,12 @@ export const useLiveRegion = ({
     const observer = new MutationObserver((records) => {
       const updates: { content: string; level: LiveLevel }[] = records
         .map((r) => {
-          const node =
-            closestNodeOfSelector(r.target, LIVEREGION_SELECTOR) || r.target;
+          const targetNode = r.target;
+          const targetElement = getClosestElement(targetNode);
 
-          if (isHidden(node as Element) || isInAriaHidden(node as Element)) {
+          if (
+            !targetElement ||
+            isHidden(targetElement) || isInAriaHidden(targetElement)) {
             return null;
           }
 
@@ -190,22 +204,31 @@ export const useLiveRegion = ({
             const modals = detectModals(parentRef.current);
             if (modals.length > 0) {
               const isInsideModal = modals.some(
-                (modal) => modal.contains(node as Element) || modal === node,
+                (modal) => modal.contains(targetElement) || modal === targetElement,
               );
               if (!isInsideModal) {
                 return null;
               }
             }
           }
+
+          const liveRegionNode =
+            closestNodeOfSelector(r.target, LIVEREGION_SELECTOR);
+          const ariaLiveAttribute = liveRegionNode?.getAttribute("aria-live");
+          if (ariaLiveAttribute === "off") {
+            return null;
+          }
+
           const isAssertive =
-            node.nodeType === Node.ELEMENT_NODE &&
-            ((node as Element).getAttribute("aria-live") === "assertive" ||
-              getKnownRole(node as Element) === "alert");
+            liveRegionNode &&
+            (ariaLiveAttribute === "assertive" ||
+              getKnownRole(liveRegionNode) === "alert");
           const level = isAssertive ? "assertive" : "polite";
+          const atomicNode = closestNodeOfSelector(targetNode, "[aria-atomic]");
           const isAtomic =
-            (node as Element).getAttribute?.("aria-atomic") === "true";
+            atomicNode?.getAttribute?.("aria-atomic") === "true";
           const relevant = (
-            (node as Element).getAttribute?.("aria-relevant") ||
+            liveRegionNode?.getAttribute?.("aria-relevant") ||
             "additions text"
           ).split(/\s/);
           const removals =
@@ -213,13 +236,14 @@ export const useLiveRegion = ({
           const additions =
             relevant.includes("additions") || relevant.includes("all");
           if (isAtomic) {
-            return { content: node.textContent || "", level };
+            const name = liveRegionNode && computeAccessibleName(liveRegionNode);
+            return { content: [ name, atomicNode.textContent ].filter(Boolean) .join(" ") , level };
           }
 
           const content = [
             (r.removedNodes.length === 0 &&
               r.addedNodes.length === 0 &&
-              node.textContent) ||
+              targetNode?.textContent) ||
               "",
             ...[...(removals ? r.removedNodes : [])].map(
               (n) => n.textContent || "",

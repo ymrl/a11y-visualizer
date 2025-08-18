@@ -83,45 +83,6 @@ export const useLiveRegion = ({
   >([]);
   const currentTimeoutRef = React.useRef<number | null>(null);
 
-  const connectLiveRegion = React.useCallback(
-    (observer: MutationObserver, el: Element) => {
-      if (el.matches(ALERT_SELECTOR)) {
-        handleAlertAppearance(el);
-      }
-      // 子要素にalert要素があるかチェック
-      const alertChildren = el.querySelectorAll(ALERT_SELECTOR);
-      alertChildren.forEach((alertChild) => {
-        handleAlertAppearance(alertChild);
-      });
-
-      observer.observe(el, {
-        subtree: true,
-        childList: true,
-        characterData: true,
-      });
-    },
-    [],
-  );
-
-  const observeLiveRegion = React.useCallback(
-    (el: Element) => {
-      if (!liveRegionObserverRef.current) {
-        return;
-      }
-      const liveRegions = getLiveRegions(el, iframeElements);
-      [...liveRegions].forEach((el) => {
-        if (
-          liveRegionObserverRef.current &&
-          !liveRegionsRef.current.includes(el)
-        ) {
-          connectLiveRegion(liveRegionObserverRef.current, el);
-        }
-      });
-      liveRegionsRef.current = Array.from(liveRegions);
-    },
-    [connectLiveRegion, iframeElements],
-  );
-
   const removeFirstAnnouncement = React.useCallback(() => {
     setAnnouncements((prev) => prev.slice(1));
     currentTimeoutRef.current = null;
@@ -242,6 +203,44 @@ export const useLiveRegion = ({
     }, firstAnnouncement.duration);
   }, [announcements, removeFirstAnnouncement]);
 
+  const connectLiveRegion = React.useCallback(
+    (observer: MutationObserver, el: Element) => {
+      if (el.matches(ALERT_SELECTOR)) {
+        handleAlertAppearance(el);
+      }
+      // 子要素にalert要素があるかチェック
+      const alertChildren = el.querySelectorAll(ALERT_SELECTOR);
+      alertChildren.forEach((alertChild) => {
+        handleAlertAppearance(alertChild);
+      });
+
+      observer.observe(el, {
+        subtree: true,
+        childList: true,
+        characterData: true,
+      });
+    },
+    [handleAlertAppearance],
+  );
+
+  const observeLiveRegion = React.useCallback(
+    (el: Element) => {
+      if (!liveRegionObserverRef.current) {
+        return;
+      }
+      const liveRegions = getLiveRegions(el, iframeElements);
+      [...liveRegions].forEach((el) => {
+        if (
+          liveRegionObserverRef.current &&
+          !liveRegionsRef.current.includes(el)
+        ) {
+          connectLiveRegion(liveRegionObserverRef.current, el);
+        }
+      });
+      liveRegionsRef.current = Array.from(liveRegions);
+    },
+    [connectLiveRegion, iframeElements],
+  );
   React.useEffect(() => {
     if (!showLiveRegions) {
       if (liveRegionObserverRef.current) {
@@ -250,6 +249,7 @@ export const useLiveRegion = ({
       return;
     }
     const observer = new MutationObserver((records) => {
+      const atomicNodes: Element[] = [];
       const updates: { content: string; level: LiveLevel }[] = records
         .map((r) => {
           const targetNode = r.target;
@@ -285,25 +285,6 @@ export const useLiveRegion = ({
           if (ariaLiveAttribute === "off") {
             return null;
           }
-
-          // alert要素の場合、出現時通知がされていない場合のみ処理する
-          // （出現時通知済みの場合は内容変化による通知は行わない）
-          const isAlertElement =
-            liveRegionNode && getKnownRole(liveRegionNode) === "alert";
-          if (
-            isAlertElement &&
-            processedAlertsRef.current.has(liveRegionNode)
-          ) {
-            // この変更が単純なテキスト変更（内容の変更）かどうかをチェック
-            const hasContentChange =
-              r.addedNodes.length > 0 ||
-              r.removedNodes.length > 0 ||
-              r.type === "characterData";
-            if (!hasContentChange) {
-              return null; // 出現後の最初の変化以外は無視
-            }
-          }
-
           const isAssertive =
             liveRegionNode &&
             (ariaLiveAttribute === "assertive" ||
@@ -311,14 +292,11 @@ export const useLiveRegion = ({
           const level = isAssertive ? "assertive" : "polite";
           const atomicNode = closestNodeOfSelector(targetNode, "[aria-atomic]");
           const isAtomic = atomicNode?.getAttribute?.("aria-atomic") === "true";
-          const relevant = (
-            liveRegionNode?.getAttribute?.("aria-relevant") || "additions text"
-          ).split(/\s/);
-          const removals =
-            relevant.includes("removals") || relevant.includes("all");
-          const additions =
-            relevant.includes("additions") || relevant.includes("all");
           if (isAtomic) {
+            if (atomicNodes.includes(atomicNode)) {
+              return null; // 重複したアナウンスは無視
+            }
+            atomicNodes.push(atomicNode);
             const name =
               liveRegionNode && computeAccessibleName(liveRegionNode);
             return {
@@ -326,6 +304,13 @@ export const useLiveRegion = ({
               level,
             };
           }
+          const relevant = (
+            liveRegionNode?.getAttribute?.("aria-relevant") || "additions text"
+          ).split(/\s/);
+          const removals =
+            relevant.includes("removals") || relevant.includes("all");
+          const additions =
+            relevant.includes("additions") || relevant.includes("all");
 
           const content = [
             (r.removedNodes.length === 0 &&

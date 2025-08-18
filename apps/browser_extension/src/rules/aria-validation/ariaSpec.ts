@@ -84,7 +84,13 @@ export type AriaAttribute = (typeof ALL_ARIA_ATTRIBUTES)[number];
  */
 export const ARIA_ATTRIBUTE_VALUES: Record<
   AriaAttribute,
-  string[] | "any" | "id-reference" | "id-reference-list" | "integer" | "number" | { multipleValues: string[] }
+  | string[]
+  | "any"
+  | "id-reference"
+  | "id-reference-list"
+  | "integer"
+  | "number"
+  | { multipleValues: string[] }
 > = {
   "aria-activedescendant": "id-reference",
   "aria-atomic": ["true", "false"],
@@ -460,10 +466,13 @@ export const validateAriaAttributeValue = (
   }
 
   // Handle multiple values (space-separated)
-  if (typeof validValues === 'object' && validValues.multipleValues) {
+  if (typeof validValues === "object" && validValues.multipleValues) {
     const tokens = value.trim().split(/\s+/);
     // All tokens must be valid values
-    return tokens.length > 0 && tokens.every((token) => validValues.multipleValues.includes(token));
+    return (
+      tokens.length > 0 &&
+      tokens.every((token) => validValues.multipleValues.includes(token))
+    );
   }
 
   return false;

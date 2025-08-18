@@ -299,6 +299,10 @@ export const useLiveRegion = ({
             atomicNodes.push(atomicNode);
             const name =
               liveRegionNode && computeAccessibleName(liveRegionNode);
+            const content = atomicNode.textContent;
+            if (!content) {
+              return null; // 空のアナウンスは無視
+            }
             return {
               content: [name, atomicNode.textContent].filter(Boolean).join(" "),
               level,

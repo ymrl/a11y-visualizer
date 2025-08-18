@@ -312,7 +312,7 @@ export const useLiveRegion = ({
           const additions =
             relevant.includes("additions") || relevant.includes("all");
 
-          const content = [
+          const contents = [
             (r.removedNodes.length === 0 &&
               r.addedNodes.length === 0 &&
               targetNode?.textContent) ||
@@ -323,10 +323,10 @@ export const useLiveRegion = ({
             ...[...(additions ? r.addedNodes : [])].map(
               (n) => n.textContent || "",
             ),
-          ]
-            .filter(Boolean)
-            .join(" ");
-          return { content, level };
+          ].filter(Boolean);
+          return contents.length > 0
+            ? { content: contents.join(" "), level }
+            : null;
         })
         .filter((e): e is { content: string; level: LiveLevel } => e !== null);
 

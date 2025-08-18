@@ -1,24 +1,35 @@
 import React from "react";
 import { SettingsContext } from "../contexts/SettingsContext";
+import { LiveLevel } from "../hooks/useLiveRegion";
+import { IoAlertCircleOutline } from "react-icons/io5";
 
-export const Announcements = ({ contents }: { contents: string[] }) => {
+export type AnnouncementItem = {
+  content: string;
+  level: LiveLevel;
+};
+
+export const Announcements = ({
+  announcements,
+}: {
+  announcements: AnnouncementItem[];
+}) => {
   const { liveRegionOpacityPercent, liveRegionFontSize } =
     React.useContext(SettingsContext);
-  const ref = React.useRef<HTMLDivElement>(null);
+  const ref = React.useRef<HTMLUListElement>(null);
   const shown = React.useRef(false);
   React.useEffect(() => {
-    if (contents.length > 0 && !shown.current) {
+    if (announcements.length > 0 && !shown.current) {
       ref.current?.showPopover();
       shown.current = true;
-    } else if (contents.length === 0 && shown.current) {
+    } else if (announcements.length === 0 && shown.current) {
       ref.current?.hidePopover();
       shown.current = false;
     }
-  }, [contents.length]);
+  }, [announcements.length]);
   return (
     <>
       {
-        <div
+        <ul
           {...{ popover: "manual" }}
           style={{
             position: "fixed",
@@ -33,21 +44,40 @@ export const Announcements = ({ contents }: { contents: string[] }) => {
             fontFamily: "sans-serif",
             fontWeight: "normal",
             padding: "0.5em",
-            opacity: contents.length > 0 ? liveRegionOpacityPercent / 100 : 0,
+            opacity:
+              announcements.length > 0 ? liveRegionOpacityPercent / 100 : 0,
             width: "fit-content",
             maxWidth: "90vw",
             height: "fit-content",
             maxHeight: "90vh",
             overflow: "auto",
+            listStyle: "none",
           }}
           ref={ref}
         >
-          {contents.map((content, i) => (
-            <p style={{ margin: 0 }} key={i}>
-              {content}
-            </p>
+          {announcements.map((announcement, i) => (
+            <li
+              style={{
+                margin: 0,
+                display: "flex",
+                alignItems: "center",
+                gap: "0.25em",
+              }}
+              key={i}
+            >
+              {announcement.level === "assertive" && (
+                <IoAlertCircleOutline
+                  style={{
+                    color: "rgb(255, 75, 0)",
+                    flexShrink: 0,
+                  }}
+                  aria-hidden="true"
+                />
+              )}
+              <p>{announcement.content}</p>
+            </li>
           ))}
-        </div>
+        </ul>
       }
     </>
   );

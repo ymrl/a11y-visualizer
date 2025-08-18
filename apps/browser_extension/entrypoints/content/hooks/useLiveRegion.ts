@@ -73,12 +73,12 @@ export const useLiveRegion = ({
   const liveRegionsRef = React.useRef<Element[]>([]);
   const liveRegionObserverRef = React.useRef<MutationObserver | null>(null);
   const [announcements, setAnnouncements] = React.useState<
-    { content: string; level: LiveLevel; until: number }[]
+    { content: string; level: LiveLevel; duration: number }[]
   >([]);
   const [pausedAnnouncements, setPausedAnnouncements] = React.useState<
-    { content: string; level: LiveLevel; rest: number }[]
+    { content: string; level: LiveLevel; duration: number }[]
   >([]);
-  const timeoutIdsRef = React.useRef<number[]>([]);
+  const currentTimeoutRef = React.useRef<number | null>(null);
 
   const connectLiveRegion = React.useCallback(
     (observer: MutationObserver, el: Element) => {
@@ -110,60 +110,38 @@ export const useLiveRegion = ({
     [connectLiveRegion, iframeElements],
   );
 
-  const showAnnouncement = React.useCallback(
-    (content: string, level: LiveLevel, msec: number) => {
-      const until = new Date().getTime() + msec;
-      const announcement = { content, level, until };
-      const timeoutId = window.setTimeout(() => {
-        setAnnouncements((prev) => {
-          const idx = prev.indexOf(announcement);
-          return idx === -1
-            ? prev
-            : [...prev.slice(0, idx), ...prev.slice(idx + 1)];
-        });
-        timeoutIdsRef.current = timeoutIdsRef.current.filter(
-          (id) => id !== timeoutId,
-        );
-      }, msec);
-      timeoutIdsRef.current.push(timeoutId);
-      setAnnouncements((prev) => [...prev, announcement]);
-    },
-    [],
-  );
+  const removeFirstAnnouncement = React.useCallback(() => {
+    setAnnouncements((prev) => prev.slice(1));
+    currentTimeoutRef.current = null;
+  }, []);
 
   const addAnnouncement = React.useCallback(
     (content: string, level: LiveLevel) => {
-      const msec = Math.min(
+      const duration = Math.min(
         content.length * announcementSecondsPerCharacter * 1000,
         announcementMaxSeconds * 1000,
       );
-      showAnnouncement(content, level, msec);
+      const announcement = { content, level, duration };
+
+      setAnnouncements((prev) => [...prev, announcement]);
     },
-    [announcementMaxSeconds, announcementSecondsPerCharacter, showAnnouncement],
+    [announcementMaxSeconds, announcementSecondsPerCharacter],
   );
 
   const pauseAnnouncements = React.useCallback(() => {
-    const stoppedAt = new Date().getTime();
-    timeoutIdsRef.current.forEach((id) => window.clearTimeout(id));
-    timeoutIdsRef.current = [];
-    setPausedAnnouncements(
-      announcements
-        .map((a) => ({
-          content: a.content,
-          level: a.level,
-          rest: a.until - stoppedAt,
-        }))
-        .filter((a) => a.rest > 0),
-    );
+    if (currentTimeoutRef.current) {
+      window.clearTimeout(currentTimeoutRef.current);
+      currentTimeoutRef.current = null;
+    }
+
+    setPausedAnnouncements(announcements);
     setAnnouncements([]);
   }, [announcements]);
 
   const resumeAnnouncements = React.useCallback(() => {
-    pausedAnnouncements.forEach((a) =>
-      showAnnouncement(a.content, a.level, a.rest),
-    );
+    setAnnouncements((prev) => [...prev, ...pausedAnnouncements]);
     setPausedAnnouncements([]);
-  }, [showAnnouncement, pausedAnnouncements]);
+  }, [pausedAnnouncements]);
 
   const pauseOrResumeAnnouncements = React.useCallback(() => {
     if (announcements.length > 0) {
@@ -174,13 +152,36 @@ export const useLiveRegion = ({
   }, [announcements, pauseAnnouncements, resumeAnnouncements]);
 
   const clearAnnouncements = React.useCallback(() => {
-    if (timeoutIdsRef.current.length > 0) {
-      timeoutIdsRef.current.forEach((id) => window.clearTimeout(id));
-      timeoutIdsRef.current = [];
+    if (currentTimeoutRef.current) {
+      window.clearTimeout(currentTimeoutRef.current);
+      currentTimeoutRef.current = null;
     }
     setAnnouncements((prev) => (prev.length > 0 ? [] : prev));
     setPausedAnnouncements((prev) => (prev.length > 0 ? [] : prev));
   }, []);
+
+  // announcements の変化に応じてタイマーを管理
+  React.useEffect(() => {
+    if (announcements.length === 0) {
+      // アナウンスがない場合はタイマーをクリア
+      if (currentTimeoutRef.current) {
+        window.clearTimeout(currentTimeoutRef.current);
+        currentTimeoutRef.current = null;
+      }
+      return;
+    }
+
+    // 既にタイマーが動いている場合は何もしない
+    if (currentTimeoutRef.current) {
+      return;
+    }
+
+    // 最初のアナウンスのタイマーを開始
+    const firstAnnouncement = announcements[0];
+    currentTimeoutRef.current = window.setTimeout(() => {
+      removeFirstAnnouncement();
+    }, firstAnnouncement.duration);
+  }, [announcements, removeFirstAnnouncement]);
 
   React.useEffect(() => {
     if (!showLiveRegions) {

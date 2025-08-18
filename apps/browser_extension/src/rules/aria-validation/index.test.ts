@@ -219,4 +219,54 @@ describe("AriaValidation", () => {
     );
     expect(result).toBeUndefined();
   });
+
+  test("validates aria-relevant with single value", () => {
+    document.body.innerHTML = `<div aria-live="polite" aria-relevant="additions">Content</div>`;
+    const element = document.querySelector("div")!;
+    const result = AriaValidation.evaluate(
+      element,
+      AriaValidation.defaultOptions,
+      {},
+    );
+    expect(result).toBeUndefined();
+  });
+
+  test("validates aria-relevant with multiple values", () => {
+    document.body.innerHTML = `<div aria-live="polite" aria-relevant="additions text">Content</div>`;
+    const element = document.querySelector("div")!;
+    const result = AriaValidation.evaluate(
+      element,
+      AriaValidation.defaultOptions,
+      {},
+    );
+    expect(result).toBeUndefined();
+  });
+
+  test("validates aria-relevant with all valid values", () => {
+    document.body.innerHTML = `<div aria-live="polite" aria-relevant="additions removals text all">Content</div>`;
+    const element = document.querySelector("div")!;
+    const result = AriaValidation.evaluate(
+      element,
+      AriaValidation.defaultOptions,
+      {},
+    );
+    expect(result).toBeUndefined();
+  });
+
+  test("rejects aria-relevant with invalid values", () => {
+    document.body.innerHTML = `<div aria-live="polite" aria-relevant="additions invalid">Content</div>`;
+    const element = document.querySelector("div")!;
+    const result = AriaValidation.evaluate(
+      element,
+      AriaValidation.defaultOptions,
+      {},
+    );
+    expect(result).toHaveLength(1);
+    expect(result![0]).toEqual({
+      type: "error",
+      message: "Invalid WAI-ARIA attribute value: {{attribute}}",
+      messageParams: { attribute: "aria-relevant" },
+      ruleName: "aria-validation",
+    });
+  });
 });

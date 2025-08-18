@@ -84,7 +84,13 @@ export type AriaAttribute = (typeof ALL_ARIA_ATTRIBUTES)[number];
  */
 export const ARIA_ATTRIBUTE_VALUES: Record<
   AriaAttribute,
-  string[] | "any" | "id-reference" | "id-reference-list" | "integer" | "number"
+  | string[]
+  | "any"
+  | "id-reference"
+  | "id-reference-list"
+  | "integer"
+  | "number"
+  | { multipleValues: string[] }
 > = {
   "aria-activedescendant": "id-reference",
   "aria-atomic": ["true", "false"],
@@ -133,7 +139,7 @@ export const ARIA_ATTRIBUTE_VALUES: Record<
   "aria-posinset": "integer",
   "aria-pressed": ["true", "false", "mixed", "undefined"],
   "aria-readonly": ["true", "false"],
-  "aria-relevant": ["additions", "removals", "text", "all"],
+  "aria-relevant": { multipleValues: ["additions", "removals", "text", "all"] },
   "aria-required": ["true", "false"],
   "aria-roledescription": "any",
   "aria-rowcount": "integer",
@@ -457,6 +463,16 @@ export const validateAriaAttributeValue = (
 
   if (Array.isArray(validValues)) {
     return validValues.includes(value.trim());
+  }
+
+  // Handle multiple values (space-separated)
+  if (typeof validValues === "object" && validValues.multipleValues) {
+    const tokens = value.trim().split(/\s+/);
+    // All tokens must be valid values
+    return (
+      tokens.length > 0 &&
+      tokens.every((token) => validValues.multipleValues.includes(token))
+    );
   }
 
   return false;

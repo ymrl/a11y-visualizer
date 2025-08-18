@@ -11,6 +11,8 @@ const LIVEREGION_SELECTOR =
 
 const ALERT_SELECTOR = "[role~='alert']";
 
+const BUSY_SELECTOR = "[aria-busy='true']";
+
 export type LiveLevel = "polite" | "assertive";
 
 const getClosestElement = (node: Node): Element | null => {
@@ -60,6 +62,10 @@ const getLiveRegions = (
     .flat(),
 ];
 
+const isBusy = (el: Element): boolean => {
+  return el.matches(BUSY_SELECTOR) || el.closest(BUSY_SELECTOR) !== null;
+};
+
 export const useLiveRegion = ({
   parentRef,
   iframeElements,
@@ -107,8 +113,12 @@ export const useLiveRegion = ({
         return; // 既に処理済み
       }
 
-      if (isHidden(alertElement) || isInAriaHidden(alertElement)) {
-        return; // 隠されている要素は処理しない
+      if (
+        isHidden(alertElement) ||
+        isInAriaHidden(alertElement) ||
+        isBusy(alertElement)
+      ) {
+        return; // 隠されている要素とビジーな要素は処理しない
       }
 
       // モーダルチェック
@@ -256,7 +266,8 @@ export const useLiveRegion = ({
           if (
             !targetElement ||
             isHidden(targetElement) ||
-            isInAriaHidden(targetElement)
+            isInAriaHidden(targetElement) ||
+            isBusy(targetElement)
           ) {
             return null;
           }

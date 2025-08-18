@@ -127,13 +127,12 @@ export const useLiveRegion = ({
       processedAlertsRef.current.add(alertElement);
 
       // alert要素の内容を取得
-      const atomicNode = closestNodeOfSelector(alertElement, "[aria-atomic]");
-      const isAtomic = atomicNode?.getAttribute?.("aria-atomic") === "true";
+      const isAtomic = alertElement.getAttribute("aria-atomic") !== "false";
 
       let content: string;
       if (isAtomic) {
         const name = computeAccessibleName(alertElement);
-        content = [name, atomicNode.textContent].filter(Boolean).join(" ");
+        content = [name, alertElement.textContent].filter(Boolean).join(" ");
       } else {
         content = alertElement.textContent || "";
       }
@@ -254,7 +253,6 @@ export const useLiveRegion = ({
         .map((r) => {
           const targetNode = r.target;
           const targetElement = getClosestElement(targetNode);
-
           if (
             !targetElement ||
             isHidden(targetElement) ||
@@ -281,18 +279,27 @@ export const useLiveRegion = ({
             r.target,
             LIVEREGION_SELECTOR,
           );
+          if (!liveRegionNode) {
+            return null;
+          }
           const ariaLiveAttribute = liveRegionNode?.getAttribute("aria-live");
           if (ariaLiveAttribute === "off") {
             return null;
           }
+          const role = liveRegionNode && getKnownRole(liveRegionNode);
           const isAssertive =
             liveRegionNode &&
-            (ariaLiveAttribute === "assertive" ||
-              getKnownRole(liveRegionNode) === "alert");
+            (ariaLiveAttribute === "assertive" || role === "alert");
           const level = isAssertive ? "assertive" : "polite";
-          const atomicNode = closestNodeOfSelector(targetNode, "[aria-atomic]");
-          const isAtomic = atomicNode?.getAttribute?.("aria-atomic") === "true";
-          if (isAtomic) {
+          const atomicNode =
+            role === "alert" || role === "status"
+              ? liveRegionNode
+              : closestNodeOfSelector(targetNode, "[aria-atomic]");
+          const isAtomic =
+            role === "alert" ||
+            role === "status" ||
+            atomicNode?.getAttribute?.("aria-atomic") === "true";
+          if (isAtomic && atomicNode) {
             if (atomicNodes.includes(atomicNode)) {
               return null; // 重複したアナウンスは無視
             }

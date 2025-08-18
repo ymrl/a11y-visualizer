@@ -9,6 +9,8 @@ import { computeAccessibleName } from "dom-accessibility-api";
 const LIVEREGION_SELECTOR =
   "output, [role~='status'], [role~='alert'], [role~='log'], [aria-live]:not([aria-live='off'])";
 
+const ALERT_SELECTOR = "[role~='alert']";
+
 export type LiveLevel = "polite" | "assertive";
 
 const getClosestElement = (node: Node): Element | null => {
@@ -72,6 +74,7 @@ export const useLiveRegion = ({
   } = React.useContext(SettingsContext);
   const liveRegionsRef = React.useRef<Element[]>([]);
   const liveRegionObserverRef = React.useRef<MutationObserver | null>(null);
+  const processedAlertsRef = React.useRef<WeakSet<Element>>(new WeakSet());
   const [announcements, setAnnouncements] = React.useState<
     { content: string; level: LiveLevel; duration: number }[]
   >([]);
@@ -82,6 +85,15 @@ export const useLiveRegion = ({
 
   const connectLiveRegion = React.useCallback(
     (observer: MutationObserver, el: Element) => {
+      if (el.matches(ALERT_SELECTOR)) {
+        handleAlertAppearance(el);
+      }
+      // 子要素にalert要素があるかチェック
+      const alertChildren = el.querySelectorAll(ALERT_SELECTOR);
+      alertChildren.forEach((alertChild) => {
+        handleAlertAppearance(alertChild);
+      });
+
       observer.observe(el, {
         subtree: true,
         childList: true,
@@ -118,7 +130,7 @@ export const useLiveRegion = ({
   const addAnnouncement = React.useCallback(
     (content: string, level: LiveLevel) => {
       const duration = Math.min(
-        content.length * announcementSecondsPerCharacter * 1000,
+        Math.max(1, content.length) * announcementSecondsPerCharacter * 1000,
         announcementMaxSeconds * 1000,
       );
       const announcement = { content, level, duration };
@@ -126,6 +138,53 @@ export const useLiveRegion = ({
       setAnnouncements((prev) => [...prev, announcement]);
     },
     [announcementMaxSeconds, announcementSecondsPerCharacter],
+  );
+
+  const handleAlertAppearance = React.useCallback(
+    (alertElement: Element) => {
+      if (processedAlertsRef.current.has(alertElement)) {
+        return; // 既に処理済み
+      }
+
+      if (isHidden(alertElement) || isInAriaHidden(alertElement)) {
+        return; // 隠されている要素は処理しない
+      }
+
+      // モーダルチェック
+      if (parentRef.current) {
+        const modals = detectModals(parentRef.current);
+        if (modals.length > 0) {
+          const isInsideModal = modals.some(
+            (modal) => modal.contains(alertElement) || modal === alertElement,
+          );
+          if (!isInsideModal) {
+            return;
+          }
+        }
+      }
+
+      processedAlertsRef.current.add(alertElement);
+
+      // alert要素の内容を取得
+      const atomicNode = closestNodeOfSelector(alertElement, "[aria-atomic]");
+      const isAtomic = atomicNode?.getAttribute?.("aria-atomic") === "true";
+
+      let content: string;
+      if (isAtomic) {
+        const name = computeAccessibleName(alertElement);
+        content = [name, atomicNode.textContent].filter(Boolean).join(" ");
+      } else {
+        content = alertElement.textContent || "";
+      }
+
+      // 内容が空でも通知する（スクリーンリーダーの一部実装に合わせる）
+      if (content.trim() === "") {
+        content = computeAccessibleName(alertElement) || "";
+      }
+
+      addAnnouncement(content, "assertive");
+    },
+    [addAnnouncement, parentRef],
   );
 
   const pauseAnnouncements = React.useCallback(() => {
@@ -227,6 +286,24 @@ export const useLiveRegion = ({
             return null;
           }
 
+          // alert要素の場合、出現時通知がされていない場合のみ処理する
+          // （出現時通知済みの場合は内容変化による通知は行わない）
+          const isAlertElement =
+            liveRegionNode && getKnownRole(liveRegionNode) === "alert";
+          if (
+            isAlertElement &&
+            processedAlertsRef.current.has(liveRegionNode)
+          ) {
+            // この変更が単純なテキスト変更（内容の変更）かどうかをチェック
+            const hasContentChange =
+              r.addedNodes.length > 0 ||
+              r.removedNodes.length > 0 ||
+              r.type === "characterData";
+            if (!hasContentChange) {
+              return null; // 出現後の最初の変化以外は無視
+            }
+          }
+
           const isAssertive =
             liveRegionNode &&
             (ariaLiveAttribute === "assertive" ||
@@ -280,6 +357,17 @@ export const useLiveRegion = ({
     });
     liveRegionsRef.current.forEach((el) => connectLiveRegion(observer, el));
     liveRegionObserverRef.current = observer;
+
+    // 既存のalert要素も処理
+    if (parentRef.current) {
+      const existingAlerts = parentRef.current.querySelectorAll(ALERT_SELECTOR);
+      existingAlerts.forEach((alert) => {
+        if (!processedAlertsRef.current.has(alert)) {
+          handleAlertAppearance(alert);
+        }
+      });
+    }
+
     return () => {
       observer.disconnect();
       liveRegionObserverRef.current = null;
@@ -293,6 +381,7 @@ export const useLiveRegion = ({
     clearAnnouncements,
     pausedAnnouncements,
     parentRef,
+    handleAlertAppearance,
   ]);
 
   React.useEffect(() => {

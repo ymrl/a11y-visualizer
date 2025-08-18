@@ -223,7 +223,12 @@ export const Root = ({
         ),
       )}
       {settings.showLiveRegions && announceMode === "self" && (
-        <Announcements contents={announcements.map((a) => a.content)} />
+        <Announcements
+          announcements={announcements.map((a) => ({
+            content: a.content,
+            level: a.level,
+          }))}
+        />
       )}
     </section>
   );

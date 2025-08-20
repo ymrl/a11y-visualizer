@@ -355,10 +355,14 @@ export const useLiveRegion = ({
       if (updates.length > 0 && pausedAnnouncements.length > 0) {
         setPausedAnnouncements([]);
       }
-      if (updates.some((u) => u.level === "assertive")) {
+      const hasAssertive = updates.some((u) => u.level === "assertive");
+      if (hasAssertive) {
         clearAnnouncements();
       }
       updates.forEach((c) => {
+        if (hasAssertive && c.level === "polite") {
+          return; // assertiveがある場合はpoliteを無視
+        }
         addAnnouncement(c.content, c.level);
       });
     });

@@ -69,9 +69,11 @@ const isBusy = (el: Element): boolean => {
 export const useLiveRegion = ({
   parentRef,
   iframeElements,
+  renderType,
 }: {
   parentRef: React.RefObject<Element>;
   iframeElements: HTMLIFrameElement[];
+  renderType?: "initial" | "enabled" | "visibilitychange";
 }) => {
   const {
     showLiveRegions,
@@ -213,15 +215,24 @@ export const useLiveRegion = ({
   }, [announcements, removeFirstAnnouncement]);
 
   const connectLiveRegion = React.useCallback(
-    (observer: MutationObserver, el: Element) => {
-      if (el.matches(ALERT_SELECTOR)) {
-        handleAlertAppearance(el);
+    (
+      observer: MutationObserver,
+      el: Element,
+      { firstTime }: { firstTime?: boolean },
+    ) => {
+      if (!(firstTime && renderType === "enabled")) {
+        if (
+          el.matches(ALERT_SELECTOR) &&
+          !(firstTime && renderType === "enabled")
+        ) {
+          handleAlertAppearance(el);
+        }
+        // 子要素にalert要素があるかチェック
+        const alertChildren = el.querySelectorAll(ALERT_SELECTOR);
+        alertChildren.forEach((alertChild) => {
+          handleAlertAppearance(alertChild);
+        });
       }
-      // 子要素にalert要素があるかチェック
-      const alertChildren = el.querySelectorAll(ALERT_SELECTOR);
-      alertChildren.forEach((alertChild) => {
-        handleAlertAppearance(alertChild);
-      });
 
       observer.observe(el, {
         subtree: true,
@@ -229,11 +240,11 @@ export const useLiveRegion = ({
         characterData: true,
       });
     },
-    [handleAlertAppearance],
+    [handleAlertAppearance, renderType],
   );
 
   const observeLiveRegion = React.useCallback(
-    (el: Element) => {
+    (el: Element, { firstTime }: { firstTime?: boolean }) => {
       if (!liveRegionObserverRef.current) {
         return;
       }
@@ -243,7 +254,7 @@ export const useLiveRegion = ({
           liveRegionObserverRef.current &&
           !liveRegionsRef.current.includes(el)
         ) {
-          connectLiveRegion(liveRegionObserverRef.current, el);
+          connectLiveRegion(liveRegionObserverRef.current, el, { firstTime });
         }
       });
       liveRegionsRef.current = Array.from(liveRegions);
@@ -366,18 +377,8 @@ export const useLiveRegion = ({
         addAnnouncement(c.content, c.level);
       });
     });
-    liveRegionsRef.current.forEach((el) => connectLiveRegion(observer, el));
+    liveRegionsRef.current.forEach((el) => connectLiveRegion(observer, el, {}));
     liveRegionObserverRef.current = observer;
-
-    // 既存のalert要素も処理
-    if (parentRef.current) {
-      const existingAlerts = parentRef.current.querySelectorAll(ALERT_SELECTOR);
-      existingAlerts.forEach((alert) => {
-        if (!processedAlertsRef.current.has(alert)) {
-          handleAlertAppearance(alert);
-        }
-      });
-    }
 
     return () => {
       observer.disconnect();

@@ -271,7 +271,7 @@ import ExampleCard from './ExampleCard.astro';
         id="start-polite-sequence"
         class="bg-teal-700 text-white px-4 py-2 rounded hover:bg-teal-800 transition-colors"
       >
-        Start Polite Sequence (3 messages)
+        Start Polite Sequence (8 messages)
       </button>
       <button 
         id="interrupt-with-assertive"
@@ -289,8 +289,9 @@ import ExampleCard from './ExampleCard.astro';
     
     <div class="bg-blue-50 dark:bg-blue-900/20 p-3 rounded border border-blue-200 dark:border-blue-700">
       <p class="text-sm text-blue-800 dark:text-blue-200">
-        <strong>Test behavior:</strong> Start the polite sequence to see multiple polite messages queued. 
-        Then click "Interrupt with Assertive" to see how assertive announcements clear the polite message queue.
+        <strong>Test behavior:</strong> Start the polite sequence to see 8 polite messages being displayed sequentially. 
+        Then click "Interrupt with Assertive" - the assertive message will be triggered after 3 seconds to avoid focusin clearing the live region display. 
+        Observe how the assertive announcement interrupts and clears the remaining polite messages.
       </p>
     </div>
   </div>
@@ -483,21 +484,27 @@ import ExampleCard from './ExampleCard.astro';
 
   // Priority interaction functionality - Sequential updates
   let politeSequenceTimeout = null;
+  let interruptTimeout = null;
   let sequenceStep = 0;
 
   function startPoliteSequence() {
     sequenceStep = 0;
     const politeMessages = [
-      'Polite message 1: Processing data...',
-      'Polite message 2: Analyzing results...',
-      'Polite message 3: Finalizing report...'
+      'Polite message 1: Initializing process...',
+      'Polite message 2: Loading configuration...',
+      'Polite message 3: Connecting to database...',
+      'Polite message 4: Validating credentials...',
+      'Polite message 5: Processing data...',
+      'Polite message 6: Analyzing results...',
+      'Polite message 7: Generating report...',
+      'Polite message 8: Finalizing output...'
     ];
     
     function showNextMessage() {
       if (sequenceStep < politeMessages.length) {
         document.getElementById('polite-sequence').textContent = politeMessages[sequenceStep];
         sequenceStep++;
-        politeSequenceTimeout = setTimeout(showNextMessage, 2000);
+        politeSequenceTimeout = setTimeout(showNextMessage, 1500);
       } else {
         document.getElementById('polite-sequence').textContent = 'Polite sequence: Complete';
       }
@@ -510,26 +517,45 @@ import ExampleCard from './ExampleCard.astro';
     if (politeSequenceTimeout) {
       clearTimeout(politeSequenceTimeout);
     }
+    if (interruptTimeout) {
+      clearTimeout(interruptTimeout);
+      interruptTimeout = null;
+    }
     startPoliteSequence();
   });
 
   document.getElementById('interrupt-with-assertive').addEventListener('click', () => {
-    // Clear any ongoing polite sequence
-    if (politeSequenceTimeout) {
-      clearTimeout(politeSequenceTimeout);
-      politeSequenceTimeout = null;
+    // Schedule assertive interruption after 3 seconds
+    if (interruptTimeout) {
+      clearTimeout(interruptTimeout);
     }
     
-    // Send assertive interruption
-    const timestamp = new Date().toLocaleTimeString();
-    document.getElementById('assertive-sequence').textContent = `URGENT: Interruption at ${timestamp}`;
-    document.getElementById('polite-sequence').textContent = 'Polite sequence: Interrupted';
+    document.getElementById('assertive-sequence').textContent = 'Assertive interruption scheduled in 3 seconds...';
+    
+    interruptTimeout = setTimeout(() => {
+      // Send assertive interruption
+      const timestamp = new Date().toLocaleTimeString();
+      document.getElementById('assertive-sequence').textContent = `URGENT: Critical error occurred at ${timestamp}`;
+      
+      // Clear ongoing polite sequence
+      if (politeSequenceTimeout) {
+        clearTimeout(politeSequenceTimeout);
+        politeSequenceTimeout = null;
+      }
+      document.getElementById('polite-sequence').textContent = 'Polite sequence: Interrupted by assertive message';
+      
+      interruptTimeout = null;
+    }, 3000);
   });
 
   document.getElementById('reset-sequence').addEventListener('click', () => {
     if (politeSequenceTimeout) {
       clearTimeout(politeSequenceTimeout);
       politeSequenceTimeout = null;
+    }
+    if (interruptTimeout) {
+      clearTimeout(interruptTimeout);
+      interruptTimeout = null;
     }
     sequenceStep = 0;
     document.getElementById('polite-sequence').textContent = 'Polite sequence: Ready';

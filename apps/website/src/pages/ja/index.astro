@@ -1,10 +1,10 @@
 ---
-import { getTranslation } from '../../lib/translations';
-import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getTranslation } from "../../lib/translations";
+import BaseLayout from "../../layouts/BaseLayout.astro";
 
 export const prerender = true;
 
-const t = getTranslation('ja');
+const t = getTranslation("ja");
 ---
 
 <BaseLayout lang="ja" t={t} />

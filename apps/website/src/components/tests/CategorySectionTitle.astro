@@ -6,6 +6,9 @@ interface Props {
 const { id } = Astro.props;
 ---
 
-<h4 id={id} class="text-lg font-semibold text-zinc-900 dark:text-zinc-100 mb-4 mt-8">
+<h4
+  id={id}
+  class="text-lg font-semibold text-zinc-900 dark:text-zinc-100 mb-4 mt-8"
+>
   <slot />
 </h4>

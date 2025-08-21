@@ -1,33 +1,55 @@
 ---
-import CategoryTitle from './CategoryTitle.astro';
-import CategorySectionTitle from './CategorySectionTitle.astro';
-import ExampleCard from './ExampleCard.astro';
+import CategoryTitle from "./CategoryTitle.astro";
+import CategorySectionTitle from "./CategorySectionTitle.astro";
+import ExampleCard from "./ExampleCard.astro";
 ---
 
 <CategoryTitle id="headings">Headings</CategoryTitle>
 <p class="text-zinc-700 dark:text-zinc-300 mb-6">
-  Headings provide a hierarchical structure to web content, helping users understand page organization and navigate efficiently. 
-  Screen readers use headings as navigation landmarks, so proper heading structure is crucial for accessibility.
+  Headings provide a hierarchical structure to web content, helping users
+  understand page organization and navigate efficiently. Screen readers use
+  headings as navigation landmarks, so proper heading structure is crucial for
+  accessibility.
 </p>
 
-<CategorySectionTitle id="heading-hierarchy">Heading Hierarchy</CategorySectionTitle>
+<CategorySectionTitle id="heading-hierarchy"
+  >Heading Hierarchy</CategorySectionTitle
+>
 
-<ExampleCard 
-  title="Heading hierarchy demonstration" 
+<ExampleCard
+  title="Heading hierarchy demonstration"
   description="This example shows the standard HTML heading hierarchy from h1 to h6, plus a custom heading using ARIA attributes. Notice how heading levels should follow a logical order."
 >
-  <div class="flex flex-col gap-4 p-4 border border-zinc-300 dark:border-zinc-600 rounded bg-zinc-50 dark:bg-zinc-800">
-    <h1 class="text-5xl font-bold text-zinc-900 dark:text-zinc-100">Heading 1</h1>
-    <h2 class="text-3xl font-bold text-zinc-800 dark:text-zinc-200">Heading 2</h2>
-    <h3 class="text-2xl font-bold text-zinc-700 dark:text-zinc-300">Heading 3</h3>
-    <h4 class="text-xl font-bold text-zinc-700 dark:text-zinc-300">Heading 4</h4>
-    <h5 class="text-lg font-bold text-zinc-700 dark:text-zinc-300">Heading 5</h5>
-    <h6 class="text-base font-bold text-zinc-700 dark:text-zinc-300">Heading 6</h6>
-    <div class="text-sm font-bold text-zinc-700 dark:text-zinc-400" aria-level="7" role="heading">
+  <div
+    class="flex flex-col gap-4 p-4 border border-zinc-300 dark:border-zinc-600 rounded bg-zinc-50 dark:bg-zinc-800"
+  >
+    <h1 class="text-5xl font-bold text-zinc-900 dark:text-zinc-100">
+      Heading 1
+    </h1>
+    <h2 class="text-3xl font-bold text-zinc-800 dark:text-zinc-200">
+      Heading 2
+    </h2>
+    <h3 class="text-2xl font-bold text-zinc-700 dark:text-zinc-300">
+      Heading 3
+    </h3>
+    <h4 class="text-xl font-bold text-zinc-700 dark:text-zinc-300">
+      Heading 4
+    </h4>
+    <h5 class="text-lg font-bold text-zinc-700 dark:text-zinc-300">
+      Heading 5
+    </h5>
+    <h6 class="text-base font-bold text-zinc-700 dark:text-zinc-300">
+      Heading 6
+    </h6>
+    <div
+      class="text-sm font-bold text-zinc-700 dark:text-zinc-400"
+      aria-level="7"
+      role="heading"
+    >
       Custom Heading (role="heading" aria-level="7")
     </div>
   </div>
-  
+
   <div class="mt-4 text-sm text-zinc-700 dark:text-zinc-300">
     <p class="mb-2"><strong>Best practices:</strong></p>
     <ul class="list-disc list-inside space-y-1">
@@ -40,30 +62,39 @@ import ExampleCard from './ExampleCard.astro';
   </div>
 </ExampleCard>
 
-<CategorySectionTitle id="problematic-headings">Problematic Headings</CategorySectionTitle>
+<CategorySectionTitle id="problematic-headings"
+  >Problematic Headings</CategorySectionTitle
+>
 
-<ExampleCard 
-  title="Problematic heading: Skipped level" 
+<ExampleCard
+  title="Problematic heading: Skipped level"
   description="❌ This example shows incorrect heading hierarchy where h4 appears without h2 or h3. This breaks the logical document structure."
 >
-  <div class="p-4 border border-red-300 dark:border-red-600 rounded bg-red-50 dark:bg-red-900/20">
-    <h1 class="text-2xl font-bold text-zinc-900 dark:text-zinc-100 mb-2">Main Title (h1)</h1>
-    <h4 class="text-lg font-bold text-red-700 dark:text-red-400">Skipped to h4 - This is problematic!</h4>
+  <div
+    class="p-4 border border-red-300 dark:border-red-600 rounded bg-red-50 dark:bg-red-900/20"
+  >
+    <h1 class="text-2xl font-bold text-zinc-900 dark:text-zinc-100 mb-2">
+      Main Title (h1)
+    </h1>
+    <h4 class="text-lg font-bold text-red-700 dark:text-red-400">
+      Skipped to h4 - This is problematic!
+    </h4>
     <p class="text-sm text-zinc-700 dark:text-zinc-300 mt-2">
       This h4 should be h2 to maintain proper hierarchy.
     </p>
   </div>
 </ExampleCard>
 
-<ExampleCard 
-  title="Empty heading" 
+<ExampleCard
+  title="Empty heading"
   description="❌ Heading element with no text content. Screen readers cannot announce meaningful information about this heading."
 >
-  <h6 class="border border-red-300 dark:border-red-600 p-2 bg-red-50 dark:bg-red-900/20">
+  <h6
+    class="border border-red-300 dark:border-red-600 p-2 bg-red-50 dark:bg-red-900/20"
+  >
     <!-- Empty heading -->
   </h6>
   <p class="text-sm text-zinc-700 dark:text-zinc-300 mt-2">
     This h6 element contains no text and provides no value to users.
   </p>
 </ExampleCard>
-

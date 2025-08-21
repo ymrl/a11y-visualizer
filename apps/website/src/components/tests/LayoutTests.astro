@@ -1,19 +1,22 @@
 ---
-import CategoryTitle from './CategoryTitle.astro';
-import CategorySectionTitle from './CategorySectionTitle.astro';
-import ExampleCard from './ExampleCard.astro';
+import CategoryTitle from "./CategoryTitle.astro";
+import CategorySectionTitle from "./CategorySectionTitle.astro";
+import ExampleCard from "./ExampleCard.astro";
 ---
 
 <CategoryTitle id="layout">Layout & Landmarks</CategoryTitle>
 <p class="text-zinc-700 dark:text-zinc-300 mb-6">
-  Semantic HTML elements and ARIA landmarks help users understand page structure and navigate efficiently. 
-  These elements provide important context about different sections of content.
+  Semantic HTML elements and ARIA landmarks help users understand page structure
+  and navigate efficiently. These elements provide important context about
+  different sections of content.
 </p>
 
-<CategorySectionTitle id="semantic-sections">Semantic Sections</CategorySectionTitle>
+<CategorySectionTitle id="semantic-sections"
+  >Semantic Sections</CategorySectionTitle
+>
 
-<ExampleCard 
-  title="Semantic HTML5 sections" 
+<ExampleCard
+  title="Semantic HTML5 sections"
   description="✅ Proper use of HTML5 semantic elements that provide clear structure and meaning to page content."
 >
   <blockquote class="space-y-4 text-zinc-900 dark:text-zinc-100">
@@ -37,8 +40,8 @@ import ExampleCard from './ExampleCard.astro';
 
 <CategorySectionTitle id="aria-landmarks">ARIA Landmarks</CategorySectionTitle>
 
-<ExampleCard 
-  title="ARIA landmark roles" 
+<ExampleCard
+  title="ARIA landmark roles"
   description="✅ ARIA landmark roles that provide the same navigation benefits as semantic HTML elements. Use when semantic HTML isn't available."
 >
   <blockquote class="space-y-4 text-zinc-900 dark:text-zinc-100">
@@ -51,7 +54,10 @@ import ExampleCard from './ExampleCard.astro';
     <div role="main" class="bg-green-100 dark:bg-green-900 p-3 rounded">
       <strong>role="main"</strong> - Equivalent to &lt;main&gt;
     </div>
-    <div role="complementary" class="bg-purple-100 dark:bg-purple-900 p-3 rounded">
+    <div
+      role="complementary"
+      class="bg-purple-100 dark:bg-purple-900 p-3 rounded"
+    >
       <strong>role="complementary"</strong> - Equivalent to &lt;aside&gt;
     </div>
     <div role="contentinfo" class="bg-gray-100 dark:bg-gray-900 p-3 rounded">
@@ -60,17 +66,23 @@ import ExampleCard from './ExampleCard.astro';
   </blockquote>
 </ExampleCard>
 
-<CategorySectionTitle id="generic-containers">Generic Containers</CategorySectionTitle>
+<CategorySectionTitle id="generic-containers"
+  >Generic Containers</CategorySectionTitle
+>
 
-<ExampleCard 
-  title="Generic div containers without semantic meaning" 
+<ExampleCard
+  title="Generic div containers without semantic meaning"
   description="❌ Using generic div elements for major page sections provides no semantic information to assistive technologies."
 >
   <div class="space-y-4 text-zinc-900 dark:text-zinc-100">
-    <div class="bg-red-50 dark:bg-red-900/20 border border-red-300 dark:border-red-600 p-3 rounded">
+    <div
+      class="bg-red-50 dark:bg-red-900/20 border border-red-300 dark:border-red-600 p-3 rounded"
+    >
       <strong>&lt;div&gt;</strong> - Generic container (no semantic meaning)
     </div>
-    <div class="bg-red-50 dark:bg-red-900/20 border border-red-300 dark:border-red-600 p-3 rounded">
+    <div
+      class="bg-red-50 dark:bg-red-900/20 border border-red-300 dark:border-red-600 p-3 rounded"
+    >
       <strong>&lt;div&gt;</strong> - Another generic container
     </div>
     <p class="text-sm text-zinc-700 dark:text-zinc-300">
@@ -79,39 +91,48 @@ import ExampleCard from './ExampleCard.astro';
   </div>
 </ExampleCard>
 
-<CategorySectionTitle id="section-elements">Section Elements</CategorySectionTitle>
+<CategorySectionTitle id="section-elements"
+  >Section Elements</CategorySectionTitle
+>
 
-<ExampleCard 
-  title="Section with heading" 
+<ExampleCard
+  title="Section with heading"
   description="✅ Proper use of section element with heading. Sections should have headings to provide context about their content."
 >
-  <section class="bg-zinc-50 dark:bg-zinc-800 p-4 rounded border border-zinc-200 dark:border-zinc-700">
-    <h4 class="text-lg font-bold text-zinc-900 dark:text-zinc-100 mb-2">About Our Services</h4>
+  <section
+    class="bg-zinc-50 dark:bg-zinc-800 p-4 rounded border border-zinc-200 dark:border-zinc-700"
+  >
+    <h4 class="text-lg font-bold text-zinc-900 dark:text-zinc-100 mb-2">
+      About Our Services
+    </h4>
     <p class="text-zinc-700 dark:text-zinc-300">
       This section element has a clear heading that describes its content.
     </p>
   </section>
 </ExampleCard>
 
-<ExampleCard 
-  title="Section without heading" 
+<ExampleCard
+  title="Section without heading"
   description="❌ Section element without a heading. Sections should have headings to be meaningful landmarks for screen reader users."
 >
-  <section class="bg-red-50 dark:bg-red-900/20 p-4 rounded border border-red-300 dark:border-red-600">
+  <section
+    class="bg-red-50 dark:bg-red-900/20 p-4 rounded border border-red-300 dark:border-red-600"
+  >
     <p class="text-zinc-700 dark:text-zinc-300">
-      This section lacks a heading, making it unclear what this content is about.
+      This section lacks a heading, making it unclear what this content is
+      about.
     </p>
   </section>
 </ExampleCard>
 
+<CategorySectionTitle id="iframe-elements">iFrame Elements</CategorySectionTitle
+>
 
-<CategorySectionTitle id="iframe-elements">iFrame Elements</CategorySectionTitle>
-
-<ExampleCard 
-  title="iFrame with title attribute" 
+<ExampleCard
+  title="iFrame with title attribute"
   description="✅ iFrame with proper title attribute that describes the content. Essential for screen readers to understand what the frame contains."
 >
-  <iframe 
+  <iframe
     src="/a11y-visualizer/iframe-sample/"
     title="Sample content iframe"
     class="w-full h-32 border border-zinc-300 dark:border-zinc-600 rounded"
@@ -119,22 +140,22 @@ import ExampleCard from './ExampleCard.astro';
   </iframe>
 </ExampleCard>
 
-<ExampleCard 
-  title="iFrame without title attribute" 
+<ExampleCard
+  title="iFrame without title attribute"
   description="❌ iFrame missing title attribute. Screen readers cannot determine what content the frame contains, making it inaccessible."
 >
-  <iframe 
+  <iframe
     src="/a11y-visualizer/iframe-no-title/"
     class="w-full h-32 border border-red-300 dark:border-red-600 rounded border-2"
   >
   </iframe>
 </ExampleCard>
 
-<ExampleCard 
-  title="iFrame with loading='lazy'" 
+<ExampleCard
+  title="iFrame with loading='lazy'"
   description="iFrame with lazy loading for performance. Still needs proper title attribute for accessibility."
 >
-  <iframe 
+  <iframe
     src="/a11y-visualizer/iframe-lazy/"
     title="Lazy loaded iframe content"
     loading="lazy"
@@ -145,25 +166,30 @@ import ExampleCard from './ExampleCard.astro';
 
 <CategorySectionTitle id="dialog-modal">Dialog and Modal</CategorySectionTitle>
 
-<ExampleCard 
-  title="Dialog element" 
+<ExampleCard
+  title="Dialog element"
   description="Example of HTML5 dialog element. When opened with showModal(), it becomes a modal that traps focus and blocks interaction with background content."
 >
   <div class="space-y-4">
-    <button 
+    <button
       id="open-dialog-btn"
       class="bg-teal-700 text-white px-4 py-2 rounded hover:bg-teal-800 transition-colors"
       onclick="document.getElementById('example-dialog').showModal()"
     >
       Open Dialog
     </button>
-    
-    <dialog id="example-dialog" class="p-6 rounded-lg shadow-lg backdrop:bg-black backdrop:bg-opacity-50">
+
+    <dialog
+      id="example-dialog"
+      class="p-6 rounded-lg shadow-lg backdrop:bg-black backdrop:bg-opacity-50"
+    >
       <div class="space-y-4">
         <h3 class="text-lg font-bold text-zinc-900">Example Dialog</h3>
-        <p class="text-zinc-700">This is a modal dialog opened with showModal().</p>
+        <p class="text-zinc-700">
+          This is a modal dialog opened with showModal().
+        </p>
         <div class="flex gap-2">
-          <button 
+          <button
             class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition-colors"
             onclick="document.getElementById('example-dialog').close()"
           >
@@ -175,32 +201,37 @@ import ExampleCard from './ExampleCard.astro';
   </div>
 </ExampleCard>
 
-<ExampleCard 
-  title="Element with aria-modal='true'" 
+<ExampleCard
+  title="Element with aria-modal='true'"
   description="✅ Custom modal implementation with proper focus management - traps focus inside the modal and returns focus to the opening button when closed."
 >
-  <div 
-    role="dialog" 
-    aria-modal="true" 
+  <div
+    role="dialog"
+    aria-modal="true"
     aria-labelledby="modal-title"
     class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden"
     id="custom-modal"
   >
-    <div class="bg-white dark:bg-zinc-800 p-6 rounded-lg shadow-lg max-w-md w-full mx-4">
-      <h3 id="modal-title" class="text-lg font-bold text-zinc-900 dark:text-zinc-100 mb-4">
+    <div
+      class="bg-white dark:bg-zinc-800 p-6 rounded-lg shadow-lg max-w-md w-full mx-4"
+    >
+      <h3
+        id="modal-title"
+        class="text-lg font-bold text-zinc-900 dark:text-zinc-100 mb-4"
+      >
         Custom Modal
       </h3>
       <p class="text-zinc-700 dark:text-zinc-300 mb-4">
         This modal uses aria-modal="true" with proper focus management.
       </p>
       <div class="flex gap-2">
-        <button 
+        <button
           id="modal-action-btn"
           class="bg-teal-700 text-white px-4 py-2 rounded hover:bg-teal-800 transition-colors"
         >
           Action
         </button>
-        <button 
+        <button
           id="modal-close-btn"
           class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition-colors"
         >
@@ -209,8 +240,8 @@ import ExampleCard from './ExampleCard.astro';
       </div>
     </div>
   </div>
-  
-  <button 
+
+  <button
     id="open-custom-modal-btn"
     class="bg-teal-700 text-white px-4 py-2 rounded hover:bg-teal-800 transition-colors"
   >
@@ -218,19 +249,21 @@ import ExampleCard from './ExampleCard.astro';
   </button>
 
   <script>
-    (function() {
-      const modal = document.getElementById('custom-modal');
-      const openBtn = document.getElementById('open-custom-modal-btn');
-      const closeBtn = document.getElementById('modal-close-btn');
+    (function () {
+      const modal = document.getElementById("custom-modal");
+      const openBtn = document.getElementById("open-custom-modal-btn");
+      const closeBtn = document.getElementById("modal-close-btn");
       let previousFocusElement = null;
 
       // モーダルを開く
       function openModal() {
         previousFocusElement = document.activeElement;
-        modal?.classList.remove('hidden');
-        
+        modal?.classList.remove("hidden");
+
         // 最初のフォーカス可能な要素にフォーカス
-        const firstFocusableElement = modal?.querySelector('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+        const firstFocusableElement = modal?.querySelector(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+        );
         if (firstFocusableElement) {
           firstFocusableElement.focus();
         }
@@ -238,8 +271,8 @@ import ExampleCard from './ExampleCard.astro';
 
       // モーダルを閉じる
       function closeModal() {
-        modal?.classList.add('hidden');
-        
+        modal?.classList.add("hidden");
+
         // フォーカスを開いたボタンに戻す
         if (previousFocusElement && previousFocusElement.focus) {
           previousFocusElement.focus();
@@ -248,12 +281,14 @@ import ExampleCard from './ExampleCard.astro';
 
       // フォーカストラップ
       function trapFocus(e) {
-        if (!modal?.classList.contains('hidden')) {
-          const focusableElements = modal?.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+        if (!modal?.classList.contains("hidden")) {
+          const focusableElements = modal?.querySelectorAll(
+            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+          );
           const firstElement = focusableElements?.[0];
           const lastElement = focusableElements?.[focusableElements.length - 1];
 
-          if (e.key === 'Tab') {
+          if (e.key === "Tab") {
             if (e.shiftKey) {
               // Shift + Tab
               if (document.activeElement === firstElement) {
@@ -270,19 +305,19 @@ import ExampleCard from './ExampleCard.astro';
           }
 
           // Escapeキーでモーダルを閉じる
-          if (e.key === 'Escape') {
+          if (e.key === "Escape") {
             closeModal();
           }
         }
       }
 
       // イベントリスナー
-      openBtn?.addEventListener('click', openModal);
-      closeBtn?.addEventListener('click', closeModal);
-      document.addEventListener('keydown', trapFocus);
+      openBtn?.addEventListener("click", openModal);
+      closeBtn?.addEventListener("click", closeModal);
+      document.addEventListener("keydown", trapFocus);
 
       // モーダル外クリックで閉じる
-      modal?.addEventListener('click', function(e) {
+      modal?.addEventListener("click", function (e) {
         if (e.target === modal) {
           closeModal();
         }

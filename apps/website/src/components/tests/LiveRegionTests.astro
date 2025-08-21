@@ -1,26 +1,31 @@
 ---
-import CategoryTitle from './CategoryTitle.astro';
-import CategorySectionTitle from './CategorySectionTitle.astro';
-import ExampleCard from './ExampleCard.astro';
+import CategoryTitle from "./CategoryTitle.astro";
+import CategorySectionTitle from "./CategorySectionTitle.astro";
+import ExampleCard from "./ExampleCard.astro";
 ---
 
 <CategoryTitle id="live-regions">Live Regions</CategoryTitle>
 <p class="text-zinc-700 dark:text-zinc-300 mb-6">
-  Live regions announce dynamic content changes to screen readers. They're essential for providing feedback about 
-  status updates, errors, and other dynamic content that users need to be aware of immediately.
+  Live regions announce dynamic content changes to screen readers. They're
+  essential for providing feedback about status updates, errors, and other
+  dynamic content that users need to be aware of immediately.
 </p>
 
 <CategorySectionTitle id="aria-live">aria-live Attribute</CategorySectionTitle>
 
-<ExampleCard 
-  title="aria-live='polite'" 
+<ExampleCard
+  title="aria-live='polite'"
   description="✅ Polite live region that announces changes when the user is idle. Good for status updates that aren't urgent."
 >
   <div class="space-y-4">
-    <div id="polite-region" aria-live="polite" class="bg-blue-50 dark:bg-blue-900/20 p-3 rounded border border-blue-200 dark:border-blue-700">
+    <div
+      id="polite-region"
+      aria-live="polite"
+      class="bg-blue-50 dark:bg-blue-900/20 p-3 rounded border border-blue-200 dark:border-blue-700"
+    >
       Status: Ready
     </div>
-    <button 
+    <button
       class="bg-teal-700 text-white px-4 py-2 rounded hover:bg-teal-800 transition-colors"
       onclick="document.getElementById('polite-region').textContent = 'Status: Updated at ' + new Date().toLocaleTimeString()"
     >
@@ -29,21 +34,25 @@ import ExampleCard from './ExampleCard.astro';
   </div>
 </ExampleCard>
 
-<ExampleCard 
-  title="aria-live='assertive'" 
+<ExampleCard
+  title="aria-live='assertive'"
   description="✅ Assertive live region that immediately interrupts screen readers to announce changes. Use for critical alerts and errors."
 >
   <div class="space-y-4">
-    <div id="assertive-region" aria-live="assertive" class="bg-red-50 dark:bg-red-900/20 p-3 rounded border border-red-200 dark:border-red-700 min-h-12">
+    <div
+      id="assertive-region"
+      aria-live="assertive"
+      class="bg-red-50 dark:bg-red-900/20 p-3 rounded border border-red-200 dark:border-red-700 min-h-12"
+    >
       <!-- Error messages will appear here -->
     </div>
-    <button 
+    <button
       class="bg-zinc-600 text-white px-4 py-2 rounded hover:bg-zinc-700 transition-colors"
       onclick="document.getElementById('assertive-region').textContent = 'Error: Something went wrong! ' + new Date().toLocaleTimeString()"
     >
       Trigger Error (Assertive)
     </button>
-    <button 
+    <button
       class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition-colors"
       onclick="document.getElementById('assertive-region').textContent = ''"
     >
@@ -52,17 +61,23 @@ import ExampleCard from './ExampleCard.astro';
   </div>
 </ExampleCard>
 
-<CategorySectionTitle id="live-region-roles">Live Region Roles</CategorySectionTitle>
+<CategorySectionTitle id="live-region-roles"
+  >Live Region Roles</CategorySectionTitle
+>
 
-<ExampleCard 
-  title="role='status'" 
+<ExampleCard
+  title="role='status'"
   description="✅ Status role provides advisory information that isn't critical. Equivalent to aria-live='polite'."
 >
   <div class="space-y-4">
-    <div id="status-region" role="status" class="bg-green-50 dark:bg-green-900/20 p-3 rounded border border-green-200 dark:border-green-700">
+    <div
+      id="status-region"
+      role="status"
+      class="bg-green-50 dark:bg-green-900/20 p-3 rounded border border-green-200 dark:border-green-700"
+    >
       Form saved successfully
     </div>
-    <button 
+    <button
       class="bg-teal-700 text-white px-4 py-2 rounded hover:bg-teal-800 transition-colors"
       onclick="document.getElementById('status-region').textContent = 'Form saved at ' + new Date().toLocaleTimeString()"
     >
@@ -71,15 +86,19 @@ import ExampleCard from './ExampleCard.astro';
   </div>
 </ExampleCard>
 
-<ExampleCard 
-  title="role='alert'" 
+<ExampleCard
+  title="role='alert'"
   description="✅ Alert role for important, time-sensitive information. Equivalent to aria-live='assertive'."
 >
   <div class="space-y-4">
-    <div id="alert-region" role="alert" class="bg-orange-50 dark:bg-orange-900/20 p-3 rounded border border-orange-200 dark:border-orange-700 min-h-12">
+    <div
+      id="alert-region"
+      role="alert"
+      class="bg-orange-50 dark:bg-orange-900/20 p-3 rounded border border-orange-200 dark:border-orange-700 min-h-12"
+    >
       <!-- Alerts will appear here -->
     </div>
-    <button 
+    <button
       class="bg-zinc-600 text-white px-4 py-2 rounded hover:bg-zinc-700 transition-colors"
       onclick="document.getElementById('alert-region').textContent = 'Warning: Session expires in 5 minutes!'"
     >
@@ -90,36 +109,41 @@ import ExampleCard from './ExampleCard.astro';
 
 <CategorySectionTitle id="output-element">Output Element</CategorySectionTitle>
 
-<ExampleCard 
-  title="&lt;output&gt; element" 
+<ExampleCard
+  title="<output> element"
   description="✅ Output element for displaying calculation results or form output. Automatically has live region behavior."
 >
   <div class="space-y-4">
     <fieldset class="border border-zinc-300 dark:border-zinc-600 rounded p-4">
-      <legend class="text-zinc-900 dark:text-zinc-100 font-medium px-2">Addition Calculator</legend>
+      <legend class="text-zinc-900 dark:text-zinc-100 font-medium px-2"
+        >Addition Calculator</legend
+      >
       <div class="flex items-center gap-3 mt-2">
         <label for="num1" class="sr-only">First number</label>
-        <input 
-          type="number" 
-          id="num1" 
-          value="5" 
+        <input
+          type="number"
+          id="num1"
+          value="5"
           class="border border-zinc-300 dark:border-zinc-600 rounded p-2 w-20 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100"
         />
         <span class="text-zinc-700 dark:text-zinc-300">+</span>
         <label for="num2" class="sr-only">Second number</label>
-        <input 
-          type="number" 
-          id="num2" 
-          value="3" 
+        <input
+          type="number"
+          id="num2"
+          value="3"
           class="border border-zinc-300 dark:border-zinc-600 rounded p-2 w-20 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100"
         />
         <span class="text-zinc-700 dark:text-zinc-300">=</span>
-        <output id="calc-output" class="bg-zinc-100 dark:bg-zinc-700 p-2 rounded text-zinc-900 dark:text-zinc-100 min-w-16 text-center">
+        <output
+          id="calc-output"
+          class="bg-zinc-100 dark:bg-zinc-700 p-2 rounded text-zinc-900 dark:text-zinc-100 min-w-16 text-center"
+        >
           8
         </output>
       </div>
     </fieldset>
-    <button 
+    <button
       class="bg-teal-700 text-white px-4 py-2 rounded hover:bg-teal-800 transition-colors"
       onclick="
         const num1 = parseInt(document.getElementById('num1').value) || 0;
@@ -132,16 +156,18 @@ import ExampleCard from './ExampleCard.astro';
   </div>
 </ExampleCard>
 
-<CategorySectionTitle id="aria-atomic">aria-atomic Attribute</CategorySectionTitle>
+<CategorySectionTitle id="aria-atomic"
+  >aria-atomic Attribute</CategorySectionTitle
+>
 
-<ExampleCard 
-  title="Live region with aria-atomic='true'" 
+<ExampleCard
+  title="Live region with aria-atomic='true'"
   description="Live region where the entire content is announced when any part changes, rather than just the changed portion."
 >
   <div class="space-y-4">
-    <div 
-      id="atomic-region" 
-      aria-live="polite" 
+    <div
+      id="atomic-region"
+      aria-live="polite"
       aria-atomic="true"
       class="bg-indigo-50 dark:bg-indigo-900/20 p-3 rounded border border-indigo-200 dark:border-indigo-700"
     >
@@ -150,7 +176,7 @@ import ExampleCard from './ExampleCard.astro';
       <span> | Total: $</span>
       <strong id="cart-total">0.00</strong>
     </div>
-    <button 
+    <button
       class="bg-teal-700 text-white px-4 py-2 rounded hover:bg-teal-800 transition-colors"
       onclick="
         const count = document.getElementById('cart-count');
@@ -165,211 +191,274 @@ import ExampleCard from './ExampleCard.astro';
   </div>
 </ExampleCard>
 
-<CategorySectionTitle id="problematic-live-regions">Problematic Live Regions</CategorySectionTitle>
+<CategorySectionTitle id="problematic-live-regions"
+  >Problematic Live Regions</CategorySectionTitle
+>
 
-<ExampleCard 
-  title="Dynamic content without live region" 
+<ExampleCard
+  title="Dynamic content without live region"
   description="❌ Content that changes dynamically but isn't marked as a live region. Screen readers won't announce these changes."
 >
   <div class="space-y-4">
-    <div id="no-live-region" class="bg-red-50 dark:bg-red-900/20 p-3 rounded border border-red-300 dark:border-red-600">
+    <div
+      id="no-live-region"
+      class="bg-red-50 dark:bg-red-900/20 p-3 rounded border border-red-300 dark:border-red-600"
+    >
       Current time: <span id="current-time">Click button to see time</span>
     </div>
-    <button 
+    <button
       class="bg-zinc-600 text-white px-4 py-2 rounded hover:bg-zinc-700 transition-colors"
       onclick="document.getElementById('current-time').textContent = new Date().toLocaleTimeString()"
     >
       Update Time (Silent)
     </button>
     <p class="text-sm text-zinc-700 dark:text-zinc-300">
-      Screen readers won't announce the time update because this isn't a live region.
+      Screen readers won't announce the time update because this isn't a live
+      region.
     </p>
   </div>
 </ExampleCard>
 
-<CategorySectionTitle id="priority-interactions">Live Region Priority Interactions</CategorySectionTitle>
+<CategorySectionTitle id="priority-interactions"
+  >Live Region Priority Interactions</CategorySectionTitle
+>
 
-<ExampleCard 
-  title="Polite and Assertive simultaneous updates" 
+<ExampleCard
+  title="Polite and Assertive simultaneous updates"
   description="⚠️ Demonstrates how assertive live regions interrupt polite ones. When both update simultaneously, the polite announcement may be suppressed."
 >
   <div class="space-y-4">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
       <div>
-        <div id="polite-simultaneous" aria-live="polite" class="bg-blue-50 dark:bg-blue-900/20 p-3 rounded border border-blue-200 dark:border-blue-700 min-h-16">
+        <div
+          id="polite-simultaneous"
+          aria-live="polite"
+          class="bg-blue-50 dark:bg-blue-900/20 p-3 rounded border border-blue-200 dark:border-blue-700 min-h-16"
+        >
           Polite region: Waiting...
         </div>
-        <p class="text-sm text-blue-700 dark:text-blue-300 mt-2">Polite (should be announced)</p>
+        <p class="text-sm text-blue-700 dark:text-blue-300 mt-2">
+          Polite (should be announced)
+        </p>
       </div>
       <div>
-        <div id="assertive-simultaneous" aria-live="assertive" class="bg-red-50 dark:bg-red-900/20 p-3 rounded border border-red-200 dark:border-red-700 min-h-16">
+        <div
+          id="assertive-simultaneous"
+          aria-live="assertive"
+          class="bg-red-50 dark:bg-red-900/20 p-3 rounded border border-red-200 dark:border-red-700 min-h-16"
+        >
           Assertive region: Waiting...
         </div>
-        <p class="text-sm text-red-700 dark:text-red-300 mt-2">Assertive (will interrupt)</p>
+        <p class="text-sm text-red-700 dark:text-red-300 mt-2">
+          Assertive (will interrupt)
+        </p>
       </div>
     </div>
-    
+
     <div class="flex flex-wrap gap-2">
-      <button 
+      <button
         id="update-both"
         class="bg-teal-700 text-white px-4 py-2 rounded hover:bg-teal-800 transition-colors"
       >
         Update Both Simultaneously
       </button>
-      <button 
+      <button
         id="update-polite-only"
         class="bg-zinc-600 text-white px-4 py-2 rounded hover:bg-zinc-700 transition-colors"
       >
         Update Polite Only
       </button>
-      <button 
+      <button
         id="update-assertive-only"
         class="bg-zinc-600 text-white px-4 py-2 rounded hover:bg-zinc-700 transition-colors"
       >
         Update Assertive Only
       </button>
-      <button 
+      <button
         id="clear-both"
         class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition-colors"
       >
         Clear Both
       </button>
     </div>
-    
-    <div class="bg-yellow-50 dark:bg-yellow-900/20 p-3 rounded border border-yellow-200 dark:border-yellow-700">
+
+    <div
+      class="bg-yellow-50 dark:bg-yellow-900/20 p-3 rounded border border-yellow-200 dark:border-yellow-700"
+    >
       <p class="text-sm text-yellow-800 dark:text-yellow-200">
-        <strong>Test behavior:</strong> Click "Update Both Simultaneously" and observe that the polite region's 
-        announcement may be suppressed by the assertive region. The Accessibility Visualizer extension shows this 
-        behavior by only displaying the assertive announcement when both regions update at the same time.
+        <strong>Test behavior:</strong> Click "Update Both Simultaneously" and observe
+        that the polite region's announcement may be suppressed by the assertive
+        region. The Accessibility Visualizer extension shows this behavior by only
+        displaying the assertive announcement when both regions update at the same
+        time.
       </p>
     </div>
   </div>
 </ExampleCard>
 
-<ExampleCard 
-  title="Sequential updates with different priorities" 
+<ExampleCard
+  title="Sequential updates with different priorities"
   description="Demonstrates how assertive announcements can clear pending polite announcements from the queue."
 >
   <div class="space-y-4">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
       <div>
-        <div id="polite-sequence" aria-live="polite" class="bg-green-50 dark:bg-green-900/20 p-3 rounded border border-green-200 dark:border-green-700 min-h-16">
+        <div
+          id="polite-sequence"
+          aria-live="polite"
+          class="bg-green-50 dark:bg-green-900/20 p-3 rounded border border-green-200 dark:border-green-700 min-h-16"
+        >
           Polite sequence: Ready
         </div>
-        <p class="text-sm text-green-700 dark:text-green-300 mt-2">Polite announcements</p>
+        <p class="text-sm text-green-700 dark:text-green-300 mt-2">
+          Polite announcements
+        </p>
       </div>
       <div>
-        <div id="assertive-sequence" aria-live="assertive" class="bg-orange-50 dark:bg-orange-900/20 p-3 rounded border border-orange-200 dark:border-orange-700 min-h-16">
+        <div
+          id="assertive-sequence"
+          aria-live="assertive"
+          class="bg-orange-50 dark:bg-orange-900/20 p-3 rounded border border-orange-200 dark:border-orange-700 min-h-16"
+        >
           Assertive sequence: Ready
         </div>
-        <p class="text-sm text-orange-700 dark:text-orange-300 mt-2">Assertive interruptions</p>
+        <p class="text-sm text-orange-700 dark:text-orange-300 mt-2">
+          Assertive interruptions
+        </p>
       </div>
     </div>
-    
+
     <div class="flex flex-wrap gap-2">
-      <button 
+      <button
         id="start-polite-sequence"
         class="bg-teal-700 text-white px-4 py-2 rounded hover:bg-teal-800 transition-colors"
       >
         Start Polite Sequence (8 messages)
       </button>
-      <button 
+      <button
         id="interrupt-with-assertive"
         class="bg-zinc-600 text-white px-4 py-2 rounded hover:bg-zinc-700 transition-colors"
       >
         Interrupt with Assertive
       </button>
-      <button 
+      <button
         id="reset-sequence"
         class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition-colors"
       >
         Reset
       </button>
     </div>
-    
-    <div class="bg-blue-50 dark:bg-blue-900/20 p-3 rounded border border-blue-200 dark:border-blue-700">
+
+    <div
+      class="bg-blue-50 dark:bg-blue-900/20 p-3 rounded border border-blue-200 dark:border-blue-700"
+    >
       <p class="text-sm text-blue-800 dark:text-blue-200">
-        <strong>Test behavior:</strong> Start the polite sequence to see 8 polite messages being displayed sequentially. 
-        Then click "Interrupt with Assertive" - the assertive message will be triggered after 3 seconds to avoid focusin clearing the live region display. 
-        Observe how the assertive announcement interrupts and clears the remaining polite messages.
+        <strong>Test behavior:</strong> Start the polite sequence to see 8 polite
+        messages being displayed sequentially. Then click "Interrupt with Assertive"
+        - the assertive message will be triggered after 3 seconds to avoid focusin
+        clearing the live region display. Observe how the assertive announcement
+        interrupts and clears the remaining polite messages.
       </p>
     </div>
   </div>
 </ExampleCard>
 
-<CategorySectionTitle id="aria-busy-suppression">aria-busy Suppression</CategorySectionTitle>
+<CategorySectionTitle id="aria-busy-suppression"
+  >aria-busy Suppression</CategorySectionTitle
+>
 
-<ExampleCard 
-  title="Live region with aria-busy suppression" 
+<ExampleCard
+  title="Live region with aria-busy suppression"
   description="⚠️ Demonstrates how aria-busy='true' suppresses live region announcements. When a region is marked as busy, content changes are not announced to screen readers."
 >
   <div class="space-y-4">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
       <div>
-        <div id="busy-region" aria-live="polite" class="bg-yellow-50 dark:bg-yellow-900/20 p-3 rounded border border-yellow-200 dark:border-yellow-700 min-h-16">
+        <div
+          id="busy-region"
+          aria-live="polite"
+          class="bg-yellow-50 dark:bg-yellow-900/20 p-3 rounded border border-yellow-200 dark:border-yellow-700 min-h-16"
+        >
           Status: Ready
         </div>
-        <p class="text-sm text-yellow-700 dark:text-yellow-300 mt-2">Live region (will be suppressed when busy)</p>
+        <p class="text-sm text-yellow-700 dark:text-yellow-300 mt-2">
+          Live region (will be suppressed when busy)
+        </p>
       </div>
       <div>
-        <div class="bg-gray-50 dark:bg-gray-800 p-3 rounded border border-gray-200 dark:border-gray-600">
-          <p class="text-sm font-medium text-gray-900 dark:text-gray-100">aria-busy status:</p>
-          <p id="busy-status" class="text-sm text-gray-700 dark:text-gray-300">false</p>
+        <div
+          class="bg-gray-50 dark:bg-gray-800 p-3 rounded border border-gray-200 dark:border-gray-600"
+        >
+          <p class="text-sm font-medium text-gray-900 dark:text-gray-100">
+            aria-busy status:
+          </p>
+          <p id="busy-status" class="text-sm text-gray-700 dark:text-gray-300">
+            false
+          </p>
         </div>
       </div>
     </div>
-    
+
     <div class="flex flex-wrap gap-2">
-      <button 
+      <button
         id="update-content"
         class="bg-teal-700 text-white px-4 py-2 rounded hover:bg-teal-800 transition-colors"
       >
         Update Content
       </button>
-      <button 
+      <button
         id="toggle-busy"
         class="bg-zinc-600 text-white px-4 py-2 rounded hover:bg-zinc-700 transition-colors"
         aria-pressed="false"
       >
         Toggle aria-busy
       </button>
-      <button 
+      <button
         id="reset-busy"
         class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition-colors"
       >
         Reset
       </button>
     </div>
-    
-    <div class="bg-orange-50 dark:bg-orange-900/20 p-3 rounded border border-orange-200 dark:border-orange-700">
+
+    <div
+      class="bg-orange-50 dark:bg-orange-900/20 p-3 rounded border border-orange-200 dark:border-orange-700"
+    >
       <p class="text-sm text-orange-800 dark:text-orange-200">
-        <strong>Test behavior:</strong> Click "Update Content" to see normal live region announcements. 
-        Then click "Toggle aria-busy" to mark the region as busy, and try "Update Content" again - 
-        the content will change but no announcement will be made. The Accessibility Visualizer extension 
-        respects aria-busy and will not display announcements for busy regions.
+        <strong>Test behavior:</strong> Click "Update Content" to see normal live
+        region announcements. Then click "Toggle aria-busy" to mark the region as
+        busy, and try "Update Content" again - the content will change but no announcement
+        will be made. The Accessibility Visualizer extension respects aria-busy and
+        will not display announcements for busy regions.
       </p>
     </div>
   </div>
 </ExampleCard>
 
-<CategorySectionTitle id="continuous-live-regions">Continuously Updating Live Regions</CategorySectionTitle>
+<CategorySectionTitle id="continuous-live-regions"
+  >Continuously Updating Live Regions</CategorySectionTitle
+>
 
-<ExampleCard 
-  title="Timer with polite announcements" 
+<ExampleCard
+  title="Timer with polite announcements"
   description="Timer that updates every second with polite live region. Good for testing extension behavior with frequent updates."
 >
   <div class="space-y-4">
-    <div id="timer-region" aria-live="polite" class="bg-blue-50 dark:bg-blue-900/20 p-3 rounded border border-blue-200 dark:border-blue-700">
+    <div
+      id="timer-region"
+      aria-live="polite"
+      class="bg-blue-50 dark:bg-blue-900/20 p-3 rounded border border-blue-200 dark:border-blue-700"
+    >
       Timer: <span id="timer-display">00:00</span>
     </div>
     <div class="flex gap-2">
-      <button 
+      <button
         id="start-timer"
         class="bg-teal-700 text-white px-4 py-2 rounded hover:bg-teal-800 transition-colors"
       >
         Start Timer
       </button>
-      <button 
+      <button
         id="stop-timer"
         class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition-colors"
       >
@@ -379,22 +468,26 @@ import ExampleCard from './ExampleCard.astro';
   </div>
 </ExampleCard>
 
-<ExampleCard 
-  title="Live counter with assertive announcements" 
+<ExampleCard
+  title="Live counter with assertive announcements"
   description="Counter that auto-increments every 2 seconds with assertive live region. Useful for testing frequent interruptions."
 >
   <div class="space-y-4">
-    <div id="counter-region" aria-live="assertive" class="bg-orange-50 dark:bg-orange-900/20 p-3 rounded border border-orange-200 dark:border-orange-700">
+    <div
+      id="counter-region"
+      aria-live="assertive"
+      class="bg-orange-50 dark:bg-orange-900/20 p-3 rounded border border-orange-200 dark:border-orange-700"
+    >
       Counter: <span id="counter-display">0</span>
     </div>
     <div class="flex gap-2">
-      <button 
+      <button
         id="start-counter"
         class="bg-zinc-600 text-white px-4 py-2 rounded hover:bg-zinc-700 transition-colors"
       >
         Start Counter
       </button>
-      <button 
+      <button
         id="stop-counter"
         class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition-colors"
       >
@@ -404,22 +497,26 @@ import ExampleCard from './ExampleCard.astro';
   </div>
 </ExampleCard>
 
-<ExampleCard 
-  title="Status updates with role='status'" 
+<ExampleCard
+  title="Status updates with role='status'"
   description="Status messages that update every 3 seconds. Tests extension handling of role-based live regions with continuous updates."
 >
   <div class="space-y-4">
-    <div id="status-updates" role="status" class="bg-green-50 dark:bg-green-900/20 p-3 rounded border border-green-200 dark:border-green-700">
+    <div
+      id="status-updates"
+      role="status"
+      class="bg-green-50 dark:bg-green-900/20 p-3 rounded border border-green-200 dark:border-green-700"
+    >
       System Status: <span id="status-display">Initializing...</span>
     </div>
     <div class="flex gap-2">
-      <button 
+      <button
         id="start-status"
         class="bg-teal-700 text-white px-4 py-2 rounded hover:bg-teal-800 transition-colors"
       >
         Start Status Updates
       </button>
-      <button 
+      <button
         id="stop-status"
         class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition-colors"
       >
@@ -433,108 +530,119 @@ import ExampleCard from './ExampleCard.astro';
   // Timer functionality
   let timerInterval = null;
   let timerSeconds = 0;
-  
+
   function updateTimer() {
     const minutes = Math.floor(timerSeconds / 60);
     const seconds = timerSeconds % 60;
-    const display = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-    document.getElementById('timer-display').textContent = display;
+    const display = `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+    document.getElementById("timer-display").textContent = display;
     timerSeconds++;
   }
-  
-  document.getElementById('start-timer').addEventListener('click', () => {
+
+  document.getElementById("start-timer").addEventListener("click", () => {
     if (!timerInterval) {
       timerInterval = setInterval(updateTimer, 1000);
     }
   });
-  
-  document.getElementById('stop-timer').addEventListener('click', () => {
+
+  document.getElementById("stop-timer").addEventListener("click", () => {
     if (timerInterval) {
       clearInterval(timerInterval);
       timerInterval = null;
       timerSeconds = 0;
-      document.getElementById('timer-display').textContent = '00:00';
+      document.getElementById("timer-display").textContent = "00:00";
     }
   });
-  
+
   // Counter functionality
   let counterInterval = null;
   let counterValue = 0;
-  
+
   function updateCounter() {
     counterValue++;
-    document.getElementById('counter-display').textContent = counterValue;
+    document.getElementById("counter-display").textContent = counterValue;
   }
-  
-  document.getElementById('start-counter').addEventListener('click', () => {
+
+  document.getElementById("start-counter").addEventListener("click", () => {
     if (!counterInterval) {
       counterInterval = setInterval(updateCounter, 2000);
     }
   });
-  
-  document.getElementById('stop-counter').addEventListener('click', () => {
+
+  document.getElementById("stop-counter").addEventListener("click", () => {
     if (counterInterval) {
       clearInterval(counterInterval);
       counterInterval = null;
       counterValue = 0;
-      document.getElementById('counter-display').textContent = '0';
+      document.getElementById("counter-display").textContent = "0";
     }
   });
-  
+
   // Status updates functionality
   let statusInterval = null;
   const statusMessages = [
-    'System Status: Running',
-    'System Status: Processing data',
-    'System Status: Updating records',
-    'System Status: Syncing files',
-    'System Status: Backing up data',
-    'System Status: Optimizing performance',
-    'System Status: Ready'
+    "System Status: Running",
+    "System Status: Processing data",
+    "System Status: Updating records",
+    "System Status: Syncing files",
+    "System Status: Backing up data",
+    "System Status: Optimizing performance",
+    "System Status: Ready",
   ];
   let statusIndex = 0;
-  
+
   function updateStatus() {
-    document.getElementById('status-display').textContent = statusMessages[statusIndex];
+    document.getElementById("status-display").textContent =
+      statusMessages[statusIndex];
     statusIndex = (statusIndex + 1) % statusMessages.length;
   }
-  
-  document.getElementById('start-status').addEventListener('click', () => {
+
+  document.getElementById("start-status").addEventListener("click", () => {
     if (!statusInterval) {
       statusInterval = setInterval(updateStatus, 3000);
     }
   });
-  
-  document.getElementById('stop-status').addEventListener('click', () => {
+
+  document.getElementById("stop-status").addEventListener("click", () => {
     if (statusInterval) {
       clearInterval(statusInterval);
       statusInterval = null;
       statusIndex = 0;
-      document.getElementById('status-display').textContent = 'Initializing...';
+      document.getElementById("status-display").textContent = "Initializing...";
     }
   });
-  
+
   // Priority interaction functionality - Simultaneous updates
-  document.getElementById('update-both').addEventListener('click', () => {
+  document.getElementById("update-both").addEventListener("click", () => {
     const timestamp = new Date().toLocaleTimeString();
     // Update both regions simultaneously to demonstrate priority behavior
-    document.getElementById('polite-simultaneous').textContent = `Polite update: ${timestamp}`;
-    document.getElementById('assertive-simultaneous').textContent = `Assertive update: ${timestamp}`;
+    document.getElementById("polite-simultaneous").textContent =
+      `Polite update: ${timestamp}`;
+    document.getElementById("assertive-simultaneous").textContent =
+      `Assertive update: ${timestamp}`;
   });
 
-  document.getElementById('update-polite-only').addEventListener('click', () => {
-    const timestamp = new Date().toLocaleTimeString();
-    document.getElementById('polite-simultaneous').textContent = `Polite update: ${timestamp}`;
-  });
+  document
+    .getElementById("update-polite-only")
+    .addEventListener("click", () => {
+      const timestamp = new Date().toLocaleTimeString();
+      document.getElementById("polite-simultaneous").textContent =
+        `Polite update: ${timestamp}`;
+    });
 
-  document.getElementById('update-assertive-only').addEventListener('click', () => {
-    const timestamp = new Date().toLocaleTimeString();
-    document.getElementById('assertive-simultaneous').textContent = `Assertive update: ${timestamp}`;
-  });
+  document
+    .getElementById("update-assertive-only")
+    .addEventListener("click", () => {
+      const timestamp = new Date().toLocaleTimeString();
+      document.getElementById("assertive-simultaneous").textContent =
+        `Assertive update: ${timestamp}`;
+    });
 
-  document.getElementById('clear-both').addEventListener('click', () => {
-    document.getElementById('polite-simultaneous').textContent = 'Polite region: Waiting...';
-    document.getElementById('assertive-simultaneous').textContent = 'Assertive region: Waiting...';
+  document.getElementById("clear-both").addEventListener("click", () => {
+    document.getElementById("polite-simultaneous").textContent =
+      "Polite region: Waiting...";
+    document.getElementById("assertive-simultaneous").textContent =
+      "Assertive region: Waiting...";
   });
 
   // Priority interaction functionality - Sequential updates
@@ -545,65 +653,74 @@ import ExampleCard from './ExampleCard.astro';
   function startPoliteSequence() {
     sequenceStep = 0;
     const politeMessages = [
-      'Polite message 1: Initializing process...',
-      'Polite message 2: Loading configuration...',
-      'Polite message 3: Connecting to database...',
-      'Polite message 4: Validating credentials...',
-      'Polite message 5: Processing data...',
-      'Polite message 6: Analyzing results...',
-      'Polite message 7: Generating report...',
-      'Polite message 8: Finalizing output...'
+      "Polite message 1: Initializing process...",
+      "Polite message 2: Loading configuration...",
+      "Polite message 3: Connecting to database...",
+      "Polite message 4: Validating credentials...",
+      "Polite message 5: Processing data...",
+      "Polite message 6: Analyzing results...",
+      "Polite message 7: Generating report...",
+      "Polite message 8: Finalizing output...",
     ];
-    
+
     function showNextMessage() {
       if (sequenceStep < politeMessages.length) {
-        document.getElementById('polite-sequence').textContent = politeMessages[sequenceStep];
+        document.getElementById("polite-sequence").textContent =
+          politeMessages[sequenceStep];
         sequenceStep++;
         politeSequenceTimeout = setTimeout(showNextMessage, 1500);
       } else {
-        document.getElementById('polite-sequence').textContent = 'Polite sequence: Complete';
+        document.getElementById("polite-sequence").textContent =
+          "Polite sequence: Complete";
       }
     }
-    
+
     showNextMessage();
   }
 
-  document.getElementById('start-polite-sequence').addEventListener('click', () => {
-    if (politeSequenceTimeout) {
-      clearTimeout(politeSequenceTimeout);
-    }
-    if (interruptTimeout) {
-      clearTimeout(interruptTimeout);
-      interruptTimeout = null;
-    }
-    startPoliteSequence();
-  });
-
-  document.getElementById('interrupt-with-assertive').addEventListener('click', () => {
-    // Schedule assertive interruption after 3 seconds
-    if (interruptTimeout) {
-      clearTimeout(interruptTimeout);
-    }
-    
-    document.getElementById('assertive-sequence').textContent = 'Assertive interruption scheduled in 3 seconds...';
-    
-    interruptTimeout = setTimeout(() => {
-      // Send assertive interruption
-      const timestamp = new Date().toLocaleTimeString();
-      document.getElementById('assertive-sequence').textContent = `URGENT: Critical error occurred at ${timestamp}`;
-      
-      // Clear ongoing polite sequence
+  document
+    .getElementById("start-polite-sequence")
+    .addEventListener("click", () => {
       if (politeSequenceTimeout) {
         clearTimeout(politeSequenceTimeout);
-        politeSequenceTimeout = null;
       }
-      document.getElementById('polite-sequence').textContent = 'Polite sequence: Interrupted by assertive message';
-      
-      interruptTimeout = null;
-    }, 3000);
-  });
+      if (interruptTimeout) {
+        clearTimeout(interruptTimeout);
+        interruptTimeout = null;
+      }
+      startPoliteSequence();
+    });
 
-  document.getElementById('reset-sequence').addEventListener('click', () => {
+  document
+    .getElementById("interrupt-with-assertive")
+    .addEventListener("click", () => {
+      // Schedule assertive interruption after 3 seconds
+      if (interruptTimeout) {
+        clearTimeout(interruptTimeout);
+      }
+
+      document.getElementById("assertive-sequence").textContent =
+        "Assertive interruption scheduled in 3 seconds...";
+
+      interruptTimeout = setTimeout(() => {
+        // Send assertive interruption
+        const timestamp = new Date().toLocaleTimeString();
+        document.getElementById("assertive-sequence").textContent =
+          `URGENT: Critical error occurred at ${timestamp}`;
+
+        // Clear ongoing polite sequence
+        if (politeSequenceTimeout) {
+          clearTimeout(politeSequenceTimeout);
+          politeSequenceTimeout = null;
+        }
+        document.getElementById("polite-sequence").textContent =
+          "Polite sequence: Interrupted by assertive message";
+
+        interruptTimeout = null;
+      }, 3000);
+    });
+
+  document.getElementById("reset-sequence").addEventListener("click", () => {
     if (politeSequenceTimeout) {
       clearTimeout(politeSequenceTimeout);
       politeSequenceTimeout = null;
@@ -613,28 +730,32 @@ import ExampleCard from './ExampleCard.astro';
       interruptTimeout = null;
     }
     sequenceStep = 0;
-    document.getElementById('polite-sequence').textContent = 'Polite sequence: Ready';
-    document.getElementById('assertive-sequence').textContent = 'Assertive sequence: Ready';
+    document.getElementById("polite-sequence").textContent =
+      "Polite sequence: Ready";
+    document.getElementById("assertive-sequence").textContent =
+      "Assertive sequence: Ready";
   });
 
   // aria-busy suppression functionality
   let busyUpdateCounter = 0;
 
   function updateBusyStatus() {
-    const busyRegion = document.getElementById('busy-region');
-    const toggleButton = document.getElementById('toggle-busy');
-    const isBusy = busyRegion.getAttribute('aria-busy') === 'true';
-    
-    document.getElementById('busy-status').textContent = isBusy ? 'true' : 'false';
-    toggleButton.setAttribute('aria-pressed', isBusy ? 'true' : 'false');
+    const busyRegion = document.getElementById("busy-region");
+    const toggleButton = document.getElementById("toggle-busy");
+    const isBusy = busyRegion.getAttribute("aria-busy") === "true";
+
+    document.getElementById("busy-status").textContent = isBusy
+      ? "true"
+      : "false";
+    toggleButton.setAttribute("aria-pressed", isBusy ? "true" : "false");
   }
 
-  document.getElementById('update-content').addEventListener('click', () => {
+  document.getElementById("update-content").addEventListener("click", () => {
     busyUpdateCounter++;
     const timestamp = new Date().toLocaleTimeString();
-    const busyRegion = document.getElementById('busy-region');
-    const isBusy = busyRegion.getAttribute('aria-busy') === 'true';
-    
+    const busyRegion = document.getElementById("busy-region");
+    const isBusy = busyRegion.getAttribute("aria-busy") === "true";
+
     if (isBusy) {
       busyRegion.textContent = `Status: Update ${busyUpdateCounter} at ${timestamp} (suppressed)`;
     } else {
@@ -642,22 +763,22 @@ import ExampleCard from './ExampleCard.astro';
     }
   });
 
-  document.getElementById('toggle-busy').addEventListener('click', () => {
-    const busyRegion = document.getElementById('busy-region');
-    const isBusy = busyRegion.getAttribute('aria-busy') === 'true';
-    
+  document.getElementById("toggle-busy").addEventListener("click", () => {
+    const busyRegion = document.getElementById("busy-region");
+    const isBusy = busyRegion.getAttribute("aria-busy") === "true";
+
     if (isBusy) {
-      busyRegion.removeAttribute('aria-busy');
+      busyRegion.removeAttribute("aria-busy");
     } else {
-      busyRegion.setAttribute('aria-busy', 'true');
+      busyRegion.setAttribute("aria-busy", "true");
     }
     updateBusyStatus();
   });
 
-  document.getElementById('reset-busy').addEventListener('click', () => {
-    const busyRegion = document.getElementById('busy-region');
-    busyRegion.removeAttribute('aria-busy');
-    busyRegion.textContent = 'Status: Ready';
+  document.getElementById("reset-busy").addEventListener("click", () => {
+    const busyRegion = document.getElementById("busy-region");
+    busyRegion.removeAttribute("aria-busy");
+    busyRegion.textContent = "Status: Ready";
     busyUpdateCounter = 0;
     updateBusyStatus();
   });
@@ -667,12 +788,12 @@ import ExampleCard from './ExampleCard.astro';
 
   // Initialize clock for demonstration
   function updateTime() {
-    const timeElement = document.getElementById('current-time');
-    if (timeElement && timeElement.textContent === 'Click button to see time') {
+    const timeElement = document.getElementById("current-time");
+    if (timeElement && timeElement.textContent === "Click button to see time") {
       timeElement.textContent = new Date().toLocaleTimeString();
     }
   }
-  
+
   // Update time every second for demo
   setInterval(updateTime, 1000);
 </script>

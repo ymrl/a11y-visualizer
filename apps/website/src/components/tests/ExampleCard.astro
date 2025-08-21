@@ -7,15 +7,23 @@ interface Props {
 const { title, description } = Astro.props;
 ---
 
-<div class="border border-zinc-200 dark:border-zinc-700 rounded-lg p-4 mb-4 bg-white dark:bg-zinc-800">
+<div
+  class="border border-zinc-200 dark:border-zinc-700 rounded-lg p-4 mb-4 bg-white dark:bg-zinc-800"
+>
   <div class="mb-3">
     <h5 class="font-medium text-zinc-900 dark:text-zinc-100 mb-1">{title}</h5>
-    {description && (
-      <p class="text-sm text-zinc-700 dark:text-zinc-300 mb-3">{description}</p>
-    )}
+    {
+      description && (
+        <p class="text-sm text-zinc-700 dark:text-zinc-300 mb-3">
+          {description}
+        </p>
+      )
+    }
   </div>
-  
-  <div class="bg-zinc-50 dark:bg-zinc-900 rounded border border-zinc-200 dark:border-zinc-700 p-3">
+
+  <div
+    class="bg-zinc-50 dark:bg-zinc-900 rounded border border-zinc-200 dark:border-zinc-700 p-3"
+  >
     <slot />
   </div>
 </div>

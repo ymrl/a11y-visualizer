@@ -1,22 +1,26 @@
 ---
-import CategoryTitle from './CategoryTitle.astro';
-import CategorySectionTitle from './CategorySectionTitle.astro';
-import ExampleCard from './ExampleCard.astro';
+import CategoryTitle from "./CategoryTitle.astro";
+import CategorySectionTitle from "./CategorySectionTitle.astro";
+import ExampleCard from "./ExampleCard.astro";
 ---
 
 <CategoryTitle id="images">Images</CategoryTitle>
 <p class="text-zinc-700 dark:text-zinc-300 mb-6">
-  Images are a fundamental part of web content that must be accessible to users of assistive technologies. 
-  The following examples demonstrate various approaches to image accessibility, including both correct implementations and common mistakes.
+  Images are a fundamental part of web content that must be accessible to users
+  of assistive technologies. The following examples demonstrate various
+  approaches to image accessibility, including both correct implementations and
+  common mistakes.
 </p>
 
-<CategorySectionTitle id="img-element">&lt;img&gt; element</CategorySectionTitle>
+<CategorySectionTitle id="img-element">&lt;img&gt; element</CategorySectionTitle
+>
 <p class="text-sm text-zinc-700 dark:text-zinc-300 mb-4">
-  The <code class="bg-zinc-100 dark:bg-zinc-800 px-1 rounded">img</code> element requires proper alternative text to be accessible.
+  The <code class="bg-zinc-100 dark:bg-zinc-800 px-1 rounded">img</code> element
+  requires proper alternative text to be accessible.
 </p>
 
-<ExampleCard 
-  title="Image with alt text" 
+<ExampleCard
+  title="Image with alt text"
   description="Properly accessible image with descriptive alternative text. This is the correct way to make images accessible."
 >
   <img
@@ -28,8 +32,8 @@ import ExampleCard from './ExampleCard.astro';
   />
 </ExampleCard>
 
-<ExampleCard 
-  title="Image with alt and title" 
+<ExampleCard
+  title="Image with alt and title"
   description="Image with both alt text and title attribute. The title attribute shows as a tooltip but doesn't improve accessibility significantly."
 >
   <img
@@ -42,15 +46,20 @@ import ExampleCard from './ExampleCard.astro';
   />
 </ExampleCard>
 
-<ExampleCard 
-  title="Image without alt attribute" 
+<ExampleCard
+  title="Image without alt attribute"
   description="❌ Missing alt attribute - this is problematic! Screen readers will announce the filename or 'image' instead of meaningful content."
 >
-  <img class="w-full max-w-40" src="/a11y-visualizer/images/bigsight.jpg" width="160" height="120" />
+  <img
+    class="w-full max-w-40"
+    src="/a11y-visualizer/images/bigsight.jpg"
+    width="160"
+    height="120"
+  />
 </ExampleCard>
 
-<ExampleCard 
-  title="Image with title but no alt" 
+<ExampleCard
+  title="Image with title but no alt"
   description="❌ Having only a title attribute is insufficient for accessibility. Screen readers primarily use the alt attribute, not title."
 >
   <img
@@ -62,8 +71,8 @@ import ExampleCard from './ExampleCard.astro';
   />
 </ExampleCard>
 
-<ExampleCard 
-  title="Decorative image with empty alt" 
+<ExampleCard
+  title="Decorative image with empty alt"
   description="✅ Empty alt attribute for decorative images. This tells screen readers to skip the image since it doesn't convey important information."
 >
   <img
@@ -75,8 +84,8 @@ import ExampleCard from './ExampleCard.astro';
   />
 </ExampleCard>
 
-<ExampleCard 
-  title="Decorative image with empty alt and title" 
+<ExampleCard
+  title="Decorative image with empty alt and title"
   description="Decorative image marked properly with empty alt, but unnecessarily includes a title. The title may still show tooltips to mouse users."
 >
   <img
@@ -89,8 +98,8 @@ import ExampleCard from './ExampleCard.astro';
   />
 </ExampleCard>
 
-<ExampleCard 
-  title="Image with aria-hidden" 
+<ExampleCard
+  title="Image with aria-hidden"
   description="Image hidden from assistive technologies using aria-hidden. This is another way to mark decorative images, though empty alt is more common."
 >
   <img
@@ -103,37 +112,34 @@ import ExampleCard from './ExampleCard.astro';
   />
 </ExampleCard>
 
-<CategorySectionTitle id="svg-element">&lt;svg&gt; element</CategorySectionTitle>
+<CategorySectionTitle id="svg-element">&lt;svg&gt; element</CategorySectionTitle
+>
 <p class="text-sm text-zinc-700 dark:text-zinc-300 mb-4">
-  SVG elements can be made accessible using various techniques including title elements, aria-label, and role attributes.
+  SVG elements can be made accessible using various techniques including title
+  elements, aria-label, and role attributes.
 </p>
 
-<ExampleCard 
-  title="SVG with title element" 
+<ExampleCard
+  title="SVG with title element"
   description="✅ SVG with a title element provides accessible names to screen readers. This is the standard way to make SVG content accessible."
 >
-  <svg
-    width="100"
-    height="100"
-    viewBox="0 0 100 100"
-    class="block"
-  >
+  <svg width="100" height="100" viewBox="0 0 100 100" class="block">
     <title>Blue circle</title>
-    <circle cx="50" cy="50" r="40" fill="rgb(59 130 246)" />
+    <circle cx="50" cy="50" r="40" fill="rgb(59 130 246)"></circle>
   </svg>
 </ExampleCard>
 
-<ExampleCard 
-  title="SVG without title element" 
+<ExampleCard
+  title="SVG without title element"
   description="❌ SVG without title or other accessibility attributes. Screen readers may not be able to understand what this graphic represents."
 >
   <svg width="100" height="100" viewBox="0 0 100 100" class="block">
-    <circle cx="50" cy="50" r="40" fill="rgb(59 130 246)" />
+    <circle cx="50" cy="50" r="40" fill="rgb(59 130 246)"></circle>
   </svg>
 </ExampleCard>
 
-<ExampleCard 
-  title="SVG with aria-hidden" 
+<ExampleCard
+  title="SVG with aria-hidden"
   description="SVG hidden from assistive technologies. Use this for decorative graphics that don't convey important information."
 >
   <svg
@@ -144,12 +150,12 @@ import ExampleCard from './ExampleCard.astro';
     class="block"
   >
     <title>Blue circle</title>
-    <circle cx="50" cy="50" r="40" fill="rgb(59 130 246)" />
+    <circle cx="50" cy="50" r="40" fill="rgb(59 130 246)"></circle>
   </svg>
 </ExampleCard>
 
-<ExampleCard 
-  title="SVG with aria-label" 
+<ExampleCard
+  title="SVG with aria-label"
   description="✅ SVG with aria-label attribute. This provides an accessible name without needing a title element."
 >
   <svg
@@ -159,12 +165,12 @@ import ExampleCard from './ExampleCard.astro';
     aria-label="Blue circle"
     class="block"
   >
-    <circle cx="50" cy="50" r="40" fill="rgb(59 130 246)" />
+    <circle cx="50" cy="50" r="40" fill="rgb(59 130 246)"></circle>
   </svg>
 </ExampleCard>
 
-<ExampleCard 
-  title="SVG with img role" 
+<ExampleCard
+  title="SVG with img role"
   description="✅ SVG with explicit img role and aria-label. This clearly indicates the SVG is an image and provides its accessible name."
 >
   <svg
@@ -175,12 +181,12 @@ import ExampleCard from './ExampleCard.astro';
     aria-label="Blue circle"
     class="block"
   >
-    <circle cx="50" cy="50" r="40" fill="rgb(59 130 246)" />
+    <circle cx="50" cy="50" r="40" fill="rgb(59 130 246)"></circle>
   </svg>
 </ExampleCard>
 
-<ExampleCard 
-  title="SVG with presentation role" 
+<ExampleCard
+  title="SVG with presentation role"
   description="SVG marked as decorative using role='presentation'. This removes semantic meaning from the SVG."
 >
   <svg
@@ -190,17 +196,20 @@ import ExampleCard from './ExampleCard.astro';
     role="presentation"
     class="block"
   >
-    <circle cx="50" cy="50" r="40" fill="rgb(59 130 246)" />
+    <circle cx="50" cy="50" r="40" fill="rgb(59 130 246)"></circle>
   </svg>
 </ExampleCard>
 
-<ExampleCard 
-  title="SVG inside link" 
+<ExampleCard
+  title="SVG inside link"
   description="SVG used as part of a link. The link text provides context, and the SVG itself may not need additional labeling."
 >
-  <a href="https://example.com" class="text-teal-700 dark:text-teal-400 hover:underline inline-flex items-center gap-2">
+  <a
+    href="https://example.com"
+    class="text-teal-700 dark:text-teal-400 hover:underline inline-flex items-center gap-2"
+  >
     <svg width="100" height="100" viewBox="0 0 100 100" class="block">
-      <circle cx="50" cy="50" r="40" fill="rgb(59 130 246)" />
+      <circle cx="50" cy="50" r="40" fill="rgb(59 130 246)"></circle>
     </svg>
     example
   </a>
@@ -208,27 +217,23 @@ import ExampleCard from './ExampleCard.astro';
 
 <CategorySectionTitle id="role-img">role="img"</CategorySectionTitle>
 <p class="text-sm text-zinc-700 dark:text-zinc-300 mb-4">
-  Elements with <code class="bg-zinc-100 dark:bg-zinc-800 px-1 rounded">role="img"</code> should have accessible names, typically provided by aria-label.
+  Elements with <code class="bg-zinc-100 dark:bg-zinc-800 px-1 rounded"
+    >role="img"</code
+  > should have accessible names, typically provided by aria-label.
 </p>
 
-<ExampleCard 
-  title='role="img" with aria-label' 
+<ExampleCard
+  title='role="img" with aria-label'
   description="✅ Proper use of role='img' with descriptive aria-label. This technique is useful for text-based graphics or emoji."
 >
-  <span
-    role="img"
-    aria-label="tableflip text art"
-    class="text-lg block"
-  >
-    (╯°□°)╯︵ ┻━┻ 
+  <span role="img" aria-label="tableflip text art" class="text-lg block">
+    (╯°□°)╯︵ ┻━┻
   </span>
 </ExampleCard>
 
-<ExampleCard 
-  title='role="img" without aria-label' 
+<ExampleCard
+  title='role="img" without aria-label'
   description="❌ Role='img' without aria-label provides no accessible name. Screen readers may read the literal text content, which could be confusing."
 >
-  <span role="img" class="text-lg block">
-    (╯°□°)╯︵ ┻━┻ 
-  </span>
+  <span role="img" class="text-lg block"> (╯°□°)╯︵ ┻━┻ </span>
 </ExampleCard>

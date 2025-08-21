@@ -8,6 +8,7 @@ import { loadEnabled } from "../../src/enabled";
 
 type InjectOptions = RootOptions & {
   mountOnce?: boolean;
+  mountType?: "initial" | "enabled";
 };
 
 const mount = (w: Window, parent: Element, options?: RootOptions) => {
@@ -19,11 +20,14 @@ const mount = (w: Window, parent: Element, options?: RootOptions) => {
   parent.append(rootElement);
   const root = ReactDOM.createRoot(rootElement);
   const parentRef = { current: parent };
-  const render = (settings: Settings) => {
+  const render = (
+    settings: Settings,
+    renderType?: "initial" | "enabled" | "visibilitychange",
+  ) => {
     root.render(
       <React.StrictMode>
         <SettingsProvider settings={settings}>
-          <Root parentRef={parentRef} options={options} />
+          <Root parentRef={parentRef} options={{ ...options, renderType }} />
         </SettingsProvider>
       </React.StrictMode>,
     );
@@ -50,7 +54,7 @@ export const injectRoot = async (
   const enabled = await loadEnabled();
 
   let mountReturn = enabled ? mount(w, parent, options) : null;
-  mountReturn?.render(settings);
+  mountReturn?.render(settings, "initial");
 
   const listener = (message: SettingsMessage) => {
     if (
@@ -75,7 +79,10 @@ export const injectRoot = async (
     }
     if (message.enabled) {
       if (!mountOnce) {
-        (mountReturn || (mountReturn = mount(w, parent))).render(settings);
+        (mountReturn || (mountReturn = mount(w, parent))).render(
+          settings,
+          "enabled",
+        );
       }
     } else {
       mountReturn?.unmount();
@@ -90,7 +97,10 @@ export const injectRoot = async (
         type: "isEnabled",
       });
       if (enabled) {
-        (mountReturn || (mountReturn = mount(w, parent))).render(settings);
+        (mountReturn || (mountReturn = mount(w, parent))).render(
+          settings,
+          "visibilitychange",
+        );
       } else {
         mountReturn?.unmount();
         mountReturn = null;

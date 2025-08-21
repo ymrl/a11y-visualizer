@@ -11,6 +11,7 @@ import { useElementMeta } from "./hooks/useElementMeta";
 export type RootOptions = {
   srcdoc?: boolean;
   announceMode?: "self" | "parent";
+  renderType?: "initial" | "enabled" | "visibilitychange";
 };
 
 const getIframeElements = (el: Element): HTMLIFrameElement[] =>
@@ -83,6 +84,7 @@ export const Root = ({
   const { announcements, observeLiveRegion } = useLiveRegion({
     parentRef,
     iframeElements,
+    renderType: options?.renderType,
   });
   const { metaList, width, height, topLayers, iframeLayers, updateMetaList } =
     useElementMeta({
@@ -93,6 +95,7 @@ export const Root = ({
 
   const [outdated, setOutDated] = React.useState(false);
 
+  const firstTimeUpdateRef = React.useRef(true);
   const updateInfo = useDebouncedCallback(
     () => {
       setOutDated(false);
@@ -109,8 +112,11 @@ export const Root = ({
           setOutDated(true);
         },
       );
-      observeLiveRegion(parentRef.current);
+      observeLiveRegion(parentRef.current, {
+        firstTime: firstTimeUpdateRef.current,
+      });
       updateMetaList(iframeElements);
+      firstTimeUpdateRef.current = false;
     },
     200,
     [injectToFrames, settings, observeLiveRegion],
@@ -224,9 +230,9 @@ export const Root = ({
       )}
       {settings.showLiveRegions && announceMode === "self" && (
         <Announcements
-          announcements={announcements.map((a) => ({
-            content: a.content,
-            level: a.level,
+          announcements={announcements.map(({ content, level }) => ({
+            content,
+            level,
           }))}
         />
       )}

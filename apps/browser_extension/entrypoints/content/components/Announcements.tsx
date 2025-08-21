@@ -74,7 +74,7 @@ export const Announcements = ({
                   aria-hidden="true"
                 />
               )}
-              <p>{announcement.content}</p>
+              {announcement.content && <p>{announcement.content}</p>}
             </li>
           ))}
         </ul>

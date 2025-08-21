@@ -156,5 +156,7 @@
   "Read Only: true": "読み取り専用",
   "Read Only: false": "読み取り専用でない",
   "Required: true": "必須",
-  "Required: false": "必須でない"
+  "Required: false": "必須でない",
+  "Should have an appropriate role": "適切なrole属性が必要",
+  "Has inappropriate role for text input": "テキスト入力に不適切なrole属性"
 }

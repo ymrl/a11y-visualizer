@@ -6,6 +6,7 @@ const FOCUSABLE_SELECTOR = [
   "object",
   "select",
   "textarea",
+  "[contenteditable]",
   "details > summary",
   "[tabindex]",
 ].join(", ");

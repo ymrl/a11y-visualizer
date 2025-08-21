@@ -156,5 +156,7 @@
   "Read Only: true": "Read only",
   "Read Only: false": "Not read only",
   "Required: true": "Required",
-  "Required: false": "Not required"
+  "Required: false": "Not required",
+  "Should have an appropriate role": "적절한 role 속성이 필요합니다",
+  "Has inappropriate role for text input": "텍스트 입력에 부적절한 role 속성"
 }

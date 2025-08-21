@@ -156,5 +156,7 @@
   "Read Only: true": "Read only",
   "Read Only: false": "Not read only",
   "Required: true": "Required",
-  "Required: false": "Not required"
+  "Required: false": "Not required",
+  "Should have an appropriate role": "Should have an appropriate role",
+  "Has inappropriate role for text input": "Has inappropriate role for text input"
 }

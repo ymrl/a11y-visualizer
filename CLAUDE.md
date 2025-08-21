@@ -171,7 +171,12 @@ When updating user documentation (docs/ directory), follow these guidelines:
 ### Rule Development
 
 - **Rule Severity Levels**: Use `warning` for issues that might be false positives or context-dependent (e.g., ID references that might be valid in certain scenarios like hidden tab panels). Use `error` for clear accessibility violations.
-- **Message Format**: Include specific context in error messages, especially for ID reference issues. Format: `"missing-id1, missing-id2 (attribute-name)"` to clearly show which attribute references which missing IDs.
+- **Message Format**: 
+  - Keep messages concise and omit subjects since they are displayed as overlays on the target elements where context is clear
+  - Include specific context in error messages, especially for ID reference issues. Format: `"missing-id1, missing-id2 (attribute-name)"` to clearly show which attribute references which missing IDs
+  - Use imperative mood: "Should have an appropriate role" instead of "Element should have an appropriate role"
+  - **Japanese**: Omit polite endings like "です" and "ます" for brevity: "適切なrole属性が必要" instead of "適切なrole属性が必要です"
+  - **All languages**: Aim for clarity and brevity while maintaining meaning
 - **Rule Testing**: When adding new test cases, ensure they cover:
   - Multiple attributes with the same issue type
   - Mixed scenarios (some valid, some invalid references)

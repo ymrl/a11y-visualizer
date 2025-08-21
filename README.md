@@ -33,14 +33,7 @@ $ pnpm --filter=@a11y-visualizer/browser-extension dev:firefox
 
 WXT will automatically open your browser and load the extension in development mode.
 
-There is a test page in `apps/test_site/` directory. You can use it to test the extension:
-
-```
-# Start the test site server
-$ pnpm --filter=@a11y-visualizer/test-site dev
-```
-
-Then visit http://localhost:5173 to access various test pages for accessibility features.
+You can test the extension using the test pages available on the website at `/tests`. The website serves as both promotional content and comprehensive test cases for accessibility features.
 
 ## How to build
 

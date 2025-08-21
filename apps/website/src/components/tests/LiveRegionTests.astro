@@ -297,6 +297,61 @@ import ExampleCard from './ExampleCard.astro';
   </div>
 </ExampleCard>
 
+<CategorySectionTitle id="aria-busy-suppression">aria-busy Suppression</CategorySectionTitle>
+
+<ExampleCard 
+  title="Live region with aria-busy suppression" 
+  description="⚠️ Demonstrates how aria-busy='true' suppresses live region announcements. When a region is marked as busy, content changes are not announced to screen readers."
+>
+  <div class="space-y-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <div id="busy-region" aria-live="polite" class="bg-yellow-50 dark:bg-yellow-900/20 p-3 rounded border border-yellow-200 dark:border-yellow-700 min-h-16">
+          Status: Ready
+        </div>
+        <p class="text-sm text-yellow-700 dark:text-yellow-300 mt-2">Live region (will be suppressed when busy)</p>
+      </div>
+      <div>
+        <div class="bg-gray-50 dark:bg-gray-800 p-3 rounded border border-gray-200 dark:border-gray-600">
+          <p class="text-sm font-medium text-gray-900 dark:text-gray-100">aria-busy status:</p>
+          <p id="busy-status" class="text-sm text-gray-700 dark:text-gray-300">false</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="flex flex-wrap gap-2">
+      <button 
+        id="update-content"
+        class="bg-teal-700 text-white px-4 py-2 rounded hover:bg-teal-800 transition-colors"
+      >
+        Update Content
+      </button>
+      <button 
+        id="toggle-busy"
+        class="bg-zinc-600 text-white px-4 py-2 rounded hover:bg-zinc-700 transition-colors"
+        aria-pressed="false"
+      >
+        Toggle aria-busy
+      </button>
+      <button 
+        id="reset-busy"
+        class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition-colors"
+      >
+        Reset
+      </button>
+    </div>
+    
+    <div class="bg-orange-50 dark:bg-orange-900/20 p-3 rounded border border-orange-200 dark:border-orange-700">
+      <p class="text-sm text-orange-800 dark:text-orange-200">
+        <strong>Test behavior:</strong> Click "Update Content" to see normal live region announcements. 
+        Then click "Toggle aria-busy" to mark the region as busy, and try "Update Content" again - 
+        the content will change but no announcement will be made. The Accessibility Visualizer extension 
+        respects aria-busy and will not display announcements for busy regions.
+      </p>
+    </div>
+  </div>
+</ExampleCard>
+
 <CategorySectionTitle id="continuous-live-regions">Continuously Updating Live Regions</CategorySectionTitle>
 
 <ExampleCard 
@@ -561,6 +616,54 @@ import ExampleCard from './ExampleCard.astro';
     document.getElementById('polite-sequence').textContent = 'Polite sequence: Ready';
     document.getElementById('assertive-sequence').textContent = 'Assertive sequence: Ready';
   });
+
+  // aria-busy suppression functionality
+  let busyUpdateCounter = 0;
+
+  function updateBusyStatus() {
+    const busyRegion = document.getElementById('busy-region');
+    const toggleButton = document.getElementById('toggle-busy');
+    const isBusy = busyRegion.getAttribute('aria-busy') === 'true';
+    
+    document.getElementById('busy-status').textContent = isBusy ? 'true' : 'false';
+    toggleButton.setAttribute('aria-pressed', isBusy ? 'true' : 'false');
+  }
+
+  document.getElementById('update-content').addEventListener('click', () => {
+    busyUpdateCounter++;
+    const timestamp = new Date().toLocaleTimeString();
+    const busyRegion = document.getElementById('busy-region');
+    const isBusy = busyRegion.getAttribute('aria-busy') === 'true';
+    
+    if (isBusy) {
+      busyRegion.textContent = `Status: Update ${busyUpdateCounter} at ${timestamp} (suppressed)`;
+    } else {
+      busyRegion.textContent = `Status: Update ${busyUpdateCounter} at ${timestamp}`;
+    }
+  });
+
+  document.getElementById('toggle-busy').addEventListener('click', () => {
+    const busyRegion = document.getElementById('busy-region');
+    const isBusy = busyRegion.getAttribute('aria-busy') === 'true';
+    
+    if (isBusy) {
+      busyRegion.removeAttribute('aria-busy');
+    } else {
+      busyRegion.setAttribute('aria-busy', 'true');
+    }
+    updateBusyStatus();
+  });
+
+  document.getElementById('reset-busy').addEventListener('click', () => {
+    const busyRegion = document.getElementById('busy-region');
+    busyRegion.removeAttribute('aria-busy');
+    busyRegion.textContent = 'Status: Ready';
+    busyUpdateCounter = 0;
+    updateBusyStatus();
+  });
+
+  // Initialize busy status display
+  updateBusyStatus();
 
   // Initialize clock for demonstration
   function updateTime() {

@@ -15,6 +15,7 @@ Claude Coude should follow these guidelines when working with this repository:
 - This browser extensions is enabled by many users who is engaged not only in an accessibility related work but also many other works. So ensure code quality and stability. Avoid introducing changes without proper testing.
 - If you are asked something that includes some braking changes, please ask the developer to ensure it is acceptable before implementing it.
 - **Before completing your work**: Always run `pnpm lint-fix` to format code with Prettier and fix linting issues. This ensures consistent code formatting across the project.
+- **After any code changes**: Run `pnpm lint-fix` at the end of every work session to maintain code quality and formatting consistency.
 
 ## Commands
 

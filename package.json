@@ -14,10 +14,8 @@
     "zip": "pnpm --filter @a11y-visualizer/browser-extension run zip",
     "zip:firefox": "pnpm --filter @a11y-visualizer/browser-extension run zip:firefox",
     "lint": "run-p lint:*",
-    "lint:monorepo": "prettier . --check",
     "lint:packages": "pnpm --filter @a11y-visualizer/* lint",
     "lint-fix": "run-p lint-fix:*",
-    "lint-fix:monorepo": "prettier . --write",
     "lint-fix:packages": "pnpm --filter @a11y-visualizer/* lint-fix",
     "bump_version:packages": "pnpm --filter @a11y-visualizer/* --no-git-tag-version bump_version",
     "bump_version": "pnpm version --no-git-tag-version",
@@ -26,6 +24,7 @@
   "devDependencies": {
     "npm-run-all": "^4.1.5",
     "playwright": "^1.52.0",
-    "prettier": "3.2.5"
+    "prettier": "3.2.5",
+    "prettier-plugin-astro": "^0.14.1"
   }
 }

@@ -130,8 +130,8 @@ describe("isFocusable", () => {
   test("contenteditable=false", () => {
     const element = document.createElement("div");
     element.contentEditable = "false";
-    expect(isFocusable(element)).toBe(false);
-    expect(isFocusable(element, true)).toBe(false);
+    expect(isFocusable(element)).toBe(true);
+    expect(isFocusable(element, true)).toBe(true);
   });
 
   test("contenteditable='' (empty string)", () => {

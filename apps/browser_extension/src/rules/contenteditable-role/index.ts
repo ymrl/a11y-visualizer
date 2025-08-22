@@ -15,9 +15,8 @@ export const ContenteditableRole: RuleObject = {
       return;
     }
 
-    // Double-check that this is actually a contenteditable element
-    const contenteditable = element.getAttribute("contenteditable");
-    if (contenteditable !== "true" && contenteditable !== "") {
+    const isContenteditable = element.hasAttribute("contenteditable");
+    if (!isContenteditable) {
       return;
     }
 

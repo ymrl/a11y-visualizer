@@ -98,7 +98,7 @@ describe("ContenteditableRole", () => {
     });
   });
 
-  test("ignores contenteditable=false", () => {
+  test("works if contenteditable=false (invalid)", () => {
     document.body.innerHTML = `<div contenteditable="false">Content</div>`;
     const element = document.querySelector("div")!;
     const result = ContenteditableRole.evaluate(
@@ -106,7 +106,11 @@ describe("ContenteditableRole", () => {
       ContenteditableRole.defaultOptions,
       {},
     );
-    expect(result).toBeUndefined();
+    expect(result![0]).toEqual({
+      type: "warning",
+      message: "Should have an appropriate role",
+      ruleName: "contenteditable-role",
+    });
   });
 
   test("ignores non-contenteditable elements", () => {

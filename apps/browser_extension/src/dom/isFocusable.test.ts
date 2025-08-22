@@ -119,4 +119,32 @@ describe("isFocusable", () => {
     expect(isFocusable(element)).toBe(true);
     expect(isFocusable(element, true)).toBe(false);
   });
+
+  test("contenteditable=true", () => {
+    const element = document.createElement("div");
+    element.contentEditable = "true";
+    expect(isFocusable(element)).toBe(true);
+    expect(isFocusable(element, true)).toBe(true);
+  });
+
+  test("contenteditable=false", () => {
+    const element = document.createElement("div");
+    element.contentEditable = "false";
+    expect(isFocusable(element)).toBe(true);
+    expect(isFocusable(element, true)).toBe(true);
+  });
+
+  test("contenteditable='' (empty string)", () => {
+    const element = document.createElement("div");
+    element.setAttribute("contenteditable", "");
+    expect(isFocusable(element)).toBe(true);
+    expect(isFocusable(element, true)).toBe(true);
+  });
+
+  test("contenteditable=inherit", () => {
+    const element = document.createElement("div");
+    element.contentEditable = "inherit";
+    expect(isFocusable(element)).toBe(false);
+    expect(isFocusable(element, true)).toBe(false);
+  });
 });

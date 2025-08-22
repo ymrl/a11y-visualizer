@@ -3,6 +3,7 @@ import { AccessibleName } from "./accessible-name";
 import { AriaAttributes } from "./aria-attributes";
 import { AriaState } from "./aria-state";
 import { AriaValidation } from "./aria-validation";
+import { ContenteditableRole } from "./contenteditable-role";
 import { ControlFocus } from "./control-focus";
 import { ControlName } from "./control-name";
 import { Fieldset } from "./fieldset";
@@ -35,6 +36,7 @@ export const Rules = [
   AccessibleName,
   ControlFocus,
   ControlName,
+  ContenteditableRole,
   Fieldset,
   Hgroup,
   HeadingName,

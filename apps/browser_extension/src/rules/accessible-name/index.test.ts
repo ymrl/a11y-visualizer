@@ -9,12 +9,10 @@ describe("accessible-name", () => {
   test("div", () => {
     const element = document.createElement("div");
     document.body.appendChild(element);
-    expect(AccessibleName.evaluate(element, { enabled: true }, {})).toEqual(
-      undefined,
-    );
+    expect(AccessibleName.evaluate(element, { enabled: true }, {})).toBeUndefined();
   });
 
-  test("div with name by condition", () => {
+  test("div with content", () => {
     const element = document.createElement("div");
     document.body.appendChild(element);
     expect(
@@ -23,13 +21,29 @@ describe("accessible-name", () => {
         { enabled: true },
         { name: "Hello, World!" },
       ),
-    ).toEqual([
+    ).toBeUndefined();
+  });
+
+  test("div with role", () => {
+    const element = document.createElement("div");
+    element.setAttribute("role", "button");
+    element.textContent = "Hello, World!";
+    document.body.appendChild(element);
+    expect(AccessibleName.evaluate(element, { enabled: true }, {})).toEqual([
       {
         type: "name",
         content: "Hello, World!",
         ruleName: "accessible-name",
       },
     ]);
+  });
+
+  test("prohibited role", () => {
+    const element = document.createElement("div");
+    element.setAttribute("role", "caption");
+    element.textContent = "Hello, World!";
+    document.body.appendChild(element);
+    expect(AccessibleName.evaluate(element, { enabled: true }, {})).toBeUndefined();
   });
 
   test("button without name", () => {

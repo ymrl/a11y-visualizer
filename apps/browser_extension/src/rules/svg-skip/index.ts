@@ -31,7 +31,7 @@ export const SvgSkip: RuleObject<Options, Condition> = {
     if (
       tagName === "svg" &&
       element.getAttribute("aria-hidden") !== "true" &&
-      !role &&
+      role === "graphics-document" &&
       !hasTitle &&
       !isPresentationalChildren(element)
     ) {

@@ -37,9 +37,6 @@ pnpm dev:firefox
 pnpm dev:website
 # or: pnpm --filter=@a11y-visualizer/website dev
 
-# Start test site for extension testing
-pnpm --filter=@a11y-visualizer/test-site dev
-# Visit http://localhost:5173 for test pages
 ```
 
 ### Building
@@ -89,7 +86,6 @@ pnpm test src/rules/rule-name/index.test.ts
 ### Monorepo Structure
 
 - `apps/browser_extension/` - Main WXT-based browser extension
-- `apps/test_site/` - Vite/React test site for extension development
 - `apps/website/` - Promotional website with GitHub Pages deployment
 - `docs/` - User guides in multiple languages
 

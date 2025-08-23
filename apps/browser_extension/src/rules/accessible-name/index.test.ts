@@ -9,7 +9,9 @@ describe("accessible-name", () => {
   test("div", () => {
     const element = document.createElement("div");
     document.body.appendChild(element);
-    expect(AccessibleName.evaluate(element, { enabled: true }, {})).toBeUndefined();
+    expect(
+      AccessibleName.evaluate(element, { enabled: true }, {}),
+    ).toBeUndefined();
   });
 
   test("div with content", () => {
@@ -43,7 +45,9 @@ describe("accessible-name", () => {
     element.setAttribute("role", "caption");
     element.textContent = "Hello, World!";
     document.body.appendChild(element);
-    expect(AccessibleName.evaluate(element, { enabled: true }, {})).toBeUndefined();
+    expect(
+      AccessibleName.evaluate(element, { enabled: true }, {}),
+    ).toBeUndefined();
   });
 
   test("button without name", () => {

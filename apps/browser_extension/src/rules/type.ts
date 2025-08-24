@@ -51,8 +51,7 @@ export type RuleResultRawContent = {
   ruleName: string;
   content: string;
   contentLabel?: string;
-
-}
+};
 
 export type RuleResultState = {
   type: "state";

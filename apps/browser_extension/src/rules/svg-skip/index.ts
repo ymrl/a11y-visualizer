@@ -14,10 +14,7 @@ export const SvgSkip: RuleObject<Options, Condition> = {
   ruleName,
   defaultOptions,
   tagNames: ["svg"],
-  evaluate: (
-    element: Element,
-    { enabled }: Options = defaultOptions,
-  ) => {
+  evaluate: (element: Element, { enabled }: Options = defaultOptions) => {
     if (!enabled) {
       return undefined;
     }

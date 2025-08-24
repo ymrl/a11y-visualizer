@@ -36,6 +36,23 @@ export type RuleResultContent = {
   contentLabel?: string;
 };
 
+export const RAW_CONTENT_TYPES = [
+  "name",
+  "description",
+  "lang",
+  "linkTarget",
+  "pageTitle",
+  "tableHeader",
+  "ariaAttribute",
+] as const;
+
+export type RuleResultRawContent = {
+  type: (typeof RAW_CONTENT_TYPES)[number];
+  ruleName: string;
+  content: string;
+  contentLabel?: string;
+};
+
 export type RuleResultState = {
   type: "state";
   ruleName: string;

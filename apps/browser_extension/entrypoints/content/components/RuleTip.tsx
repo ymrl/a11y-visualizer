@@ -1,4 +1,4 @@
-import { RuleResult } from "../../../src/rules";
+import { RAW_CONTENT_TYPES, RuleResult } from "../../../src/rules";
 import { useLang } from "../../../src/useLang";
 import {
   IoAccessibility,
@@ -190,7 +190,9 @@ export const RuleTip = ({
           ? t(result.message, result.messageParams)
           : result.type === "state"
             ? t(result.state)
-            : `${result.contentLabel ? t(result.contentLabel) : ""} ${t(result.content)}`)}
+            : (RAW_CONTENT_TYPES as readonly string[]).includes(result.type)
+              ? `${result.contentLabel ? t(result.contentLabel) : ""} ${result.content}`
+              : `${result.contentLabel ? t(result.contentLabel) : ""} ${t(result.content)}`)}
     </div>
   );
 };

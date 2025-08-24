@@ -95,6 +95,10 @@ const knownRoles = [
   "treeitem",
   "widget",
   "window",
+  // for SVG
+  "graphics-document",
+  "graphics-object",
+  "graphics-symbol",
 ] as const;
 
 export type KnownRole = (typeof knownRoles)[number];
@@ -109,8 +113,12 @@ export const getKnownRole = (el: Element): KnownRole | null => {
   if (knownRole) {
     return knownRole as KnownRole;
   }
+
   if (el.tagName.toLowerCase() === "input") {
     return inputRole(el as HTMLInputElement);
+  }
+  if (el.tagName.toLowerCase() === "svg") {
+    return "graphics-document";
   }
   return null;
 };

@@ -1,5 +1,21 @@
 import { computeAccessibleName } from "dom-accessibility-api";
 import { RuleObject } from "../type";
+import { getKnownRole } from "../../dom/getKnownRole";
+
+const NAMING_PROHIBITED_ROLES = [
+  "caption",
+  "code",
+  "deletion",
+  "emphasis",
+  "generic",
+  "insertion",
+  "paragraph",
+  "presentation",
+  "none",
+  "strong",
+  "subscript",
+  "superscript",
+];
 
 const ruleName = "accessible-name";
 const defaultOptions = { enabled: true };
@@ -9,9 +25,18 @@ export const AccessibleName: RuleObject = {
   evaluate: (
     element,
     { enabled },
-    { name = computeAccessibleName(element) },
+    { name = computeAccessibleName(element), role = getKnownRole(element) },
   ) => {
     if (!enabled) {
+      return undefined;
+    }
+    const roleAttribute = element.getAttribute("role");
+    const isNamingAllowed =
+      (role || roleAttribute) &&
+      !NAMING_PROHIBITED_ROLES.includes(
+        (role as string | null) || roleAttribute || "",
+      );
+    if (!isNamingAllowed) {
       return undefined;
     }
     // For SVG elements without computed accessible name, check for title element

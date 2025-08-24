@@ -40,4 +40,10 @@ describe("getKnownRole", () => {
     const role = getKnownRole(el);
     expect(role).toBe("textbox");
   });
+
+  test("svg without role", () => {
+    const el = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    const role = getKnownRole(el);
+    expect(role).toBe("graphics-document");
+  });
 });

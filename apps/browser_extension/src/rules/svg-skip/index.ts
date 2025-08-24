@@ -1,5 +1,4 @@
 import { RuleObject } from "../type";
-import { getKnownRole } from "../../dom/getKnownRole";
 import { isPresentationalChildren } from "../../dom/isPresentationalChildren";
 
 type Options = {
@@ -15,11 +14,7 @@ export const SvgSkip: RuleObject<Options, Condition> = {
   ruleName,
   defaultOptions,
   tagNames: ["svg"],
-  evaluate: (
-    element: Element,
-    { enabled }: Options = defaultOptions,
-    { role = getKnownRole(element) }: Condition,
-  ) => {
+  evaluate: (element: Element, { enabled }: Options = defaultOptions) => {
     if (!enabled) {
       return undefined;
     }
@@ -31,7 +26,7 @@ export const SvgSkip: RuleObject<Options, Condition> = {
     if (
       tagName === "svg" &&
       element.getAttribute("aria-hidden") !== "true" &&
-      !role &&
+      !element.hasAttribute("role") &&
       !hasTitle &&
       !isPresentationalChildren(element)
     ) {

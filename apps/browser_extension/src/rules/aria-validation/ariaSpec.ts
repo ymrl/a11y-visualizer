@@ -6,7 +6,7 @@
  * - AriaState rule: Uses subset of attributes for display purposes
  */
 
-import { KnownRole } from "../../dom/getKnownRole";
+import { KnownRole } from "../../dom/KnownRole";
 
 // ============================================================================
 // ALL ARIA ATTRIBUTES

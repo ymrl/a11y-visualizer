@@ -40,6 +40,19 @@ describe("accessible-name", () => {
     ]);
   });
 
+  test("div with aria-label without role", () => {
+    const element = document.createElement("div");
+    element.setAttribute("aria-label", "Hello, World!");
+    document.body.appendChild(element);
+    expect(AccessibleName.evaluate(element, { enabled: true }, {})).toEqual([
+      {
+        type: "error",
+        message: "Cannot be named",
+        ruleName: "accessible-name",
+      },
+    ]);
+  });
+
   test("prohibited role", () => {
     const element = document.createElement("div");
     element.setAttribute("role", "caption");
@@ -48,6 +61,20 @@ describe("accessible-name", () => {
     expect(
       AccessibleName.evaluate(element, { enabled: true }, {}),
     ).toBeUndefined();
+  });
+
+  test("prohibited role with aria-label", () => {
+    const element = document.createElement("div");
+    element.setAttribute("role", "caption");
+    element.setAttribute("aria-label", "Hello, World!");
+    document.body.appendChild(element);
+    expect(AccessibleName.evaluate(element, { enabled: true }, {})).toEqual([
+      {
+        type: "error",
+        message: "Cannot be named",
+        ruleName: "accessible-name",
+      },
+    ]);
   });
 
   test("button without name", () => {
@@ -185,20 +212,55 @@ describe("accessible-name", () => {
     document.body.appendChild(element);
     const result = AccessibleName.evaluate(element, { enabled: true }, {});
 
-    // Check if computeAccessibleName recognizes SVG title
-    // If it doesn't, we may need additional handling
-    if (result) {
-      expect(result).toEqual([
-        {
-          type: "name",
-          content: "Chart data",
-          ruleName: "accessible-name",
-        },
-      ]);
-    } else {
-      // SVG title not recognized by computeAccessibleName
-      expect(result).toBeUndefined();
-    }
+    expect(result).toEqual([
+      {
+        type: "name",
+        content: "Chart data",
+        ruleName: "accessible-name",
+      },
+    ]);
+  });
+
+  test("warning role without naming", () => {
+    const element = document.createElement("div");
+    element.setAttribute("role", "term");
+    document.body.appendChild(element);
+    expect(
+      AccessibleName.evaluate(element, { enabled: true }, {}),
+    ).toBeUndefined();
+  });
+
+  test("warning role with title", () => {
+    const element = document.createElement("div");
+    element.setAttribute("role", "term");
+    element.setAttribute("title", "Hello, World!");
+    document.body.appendChild(element);
+    expect(AccessibleName.evaluate(element, { enabled: true }, {})).toEqual([
+      {
+        type: "name",
+        content: "Hello, World!",
+        ruleName: "accessible-name",
+      },
+    ]);
+  });
+
+  test("name with warning", () => {
+    const element = document.createElement("div");
+    element.setAttribute("role", "term");
+    element.setAttribute("aria-label", "Hello, World!");
+    document.body.appendChild(element);
+    expect(AccessibleName.evaluate(element, { enabled: true }, {})).toEqual([
+      {
+        type: "name",
+        content: "Hello, World!",
+        ruleName: "accessible-name",
+      },
+      {
+        type: "warning",
+        message: "Should not be named",
+        ruleName: "accessible-name",
+      },
+    ]);
   });
 
   test("disabled", () => {

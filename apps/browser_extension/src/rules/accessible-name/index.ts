@@ -1,6 +1,7 @@
 import { computeAccessibleName } from "dom-accessibility-api";
-import { RuleObject } from "../type";
+import { RuleObject, RuleResult } from "../type";
 import { getKnownRole } from "../../dom/getKnownRole";
+import { getComputedImplictRole } from "../../dom/getComputedImplicitRole";
 
 const NAMING_PROHIBITED_ROLES = [
   "caption",
@@ -16,6 +17,13 @@ const NAMING_PROHIBITED_ROLES = [
   "subscript",
   "superscript",
 ];
+const NAMING_WARNING_ROLES = [
+  "definition",
+  "mark",
+  "suggestion",
+  "term",
+  "time",
+];
 
 const ruleName = "accessible-name";
 const defaultOptions = { enabled: true };
@@ -30,38 +38,47 @@ export const AccessibleName: RuleObject = {
     if (!enabled) {
       return undefined;
     }
-    const roleAttribute = element.getAttribute("role");
-    const isNamingAllowed =
-      (role || roleAttribute) &&
-      !NAMING_PROHIBITED_ROLES.includes(
-        (role as string | null) || roleAttribute || "",
-      );
-    if (!isNamingAllowed) {
-      return undefined;
-    }
-    // For SVG elements without computed accessible name, check for title element
-    const tagName = element.tagName.toLowerCase();
-    if (!name && tagName === "svg") {
-      const titleElement = element.querySelector("title");
-      if (titleElement && titleElement.textContent) {
-        return [
-          {
-            type: "name",
-            content: titleElement.textContent,
-            ruleName,
-          },
-        ];
-      }
-    }
-
-    if (name) {
+    const computedRole =
+      role || element.getAttribute("role") || getComputedImplictRole(element);
+    const isNamingProhibited =
+      computedRole && NAMING_PROHIBITED_ROLES.includes(computedRole);
+    if (
+      isNamingProhibited &&
+      (element.hasAttribute("aria-label") ||
+        element.hasAttribute("aria-labelledby"))
+    ) {
       return [
         {
-          type: "name",
-          content: `${name}`,
+          type: "error",
+          message: "Cannot be named",
           ruleName,
         },
       ];
+    } else if (isNamingProhibited) {
+      return undefined;
+    }
+
+    const tagName = element.tagName.toLowerCase();
+    const results: RuleResult[] = name
+      ? [
+          {
+            type: "name",
+            content: `${name}`,
+            ruleName,
+          },
+        ]
+      : [];
+
+    // For SVG elements without computed accessible name, check for title element
+    if (!name && tagName === "svg") {
+      const titleElement = element.querySelector("title");
+      if (titleElement && titleElement.textContent) {
+        results.push({
+          type: "name",
+          content: titleElement.textContent,
+          ruleName,
+        });
+      }
     }
 
     if (!name && tagName === "area") {
@@ -72,16 +89,27 @@ export const AccessibleName: RuleObject = {
       const alt = element.getAttribute("alt");
       const title = element.getAttribute("title");
       if (alt || title) {
-        return [
-          {
-            type: "name",
-            content: `${alt || title}`,
-            ruleName,
-          },
-        ];
+        results.push({
+          type: "name",
+          content: `${alt || title}`,
+          ruleName,
+        });
       }
     }
-    // errors will be handled by other rules
-    return undefined;
+
+    if (
+      ((computedRole && NAMING_WARNING_ROLES.includes(computedRole)) ||
+        !computedRole) &&
+      (element.hasAttribute("aria-label") ||
+        element.hasAttribute("aria-labelledby"))
+    ) {
+      results.push({
+        type: "warning",
+        message: "Should not be named",
+        ruleName,
+      });
+    }
+
+    return results.length > 0 ? results : undefined;
   },
 };

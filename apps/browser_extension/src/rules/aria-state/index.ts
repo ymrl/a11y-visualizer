@@ -1,4 +1,5 @@
-import { getKnownRole, KnownRole } from "../../dom/getKnownRole";
+import { getKnownRole } from "../../dom/getKnownRole";
+import { KnownRole } from "../../dom/KnownRole";
 import { RuleObject, RuleResultMessage, RuleResultState } from "../type";
 import {
   ARIA_ATTRIBUTE_VALUES,

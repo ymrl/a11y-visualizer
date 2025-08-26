@@ -158,5 +158,7 @@
   "Required: true": "Required",
   "Required: false": "Not required",
   "Should have an appropriate role": "Should have an appropriate role",
-  "Has inappropriate role for text input": "Has inappropriate role for text input"
+  "Has inappropriate role for text input": "Has inappropriate role for text input",
+  "Cannot be named": "Cannot be named",
+  "Should not be named": "Should not be named"
 }

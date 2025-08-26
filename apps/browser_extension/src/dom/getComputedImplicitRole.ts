@@ -2,12 +2,10 @@ import { computeAccessibleName } from "dom-accessibility-api";
 import { KnownRole, knownRoles } from "./KnownRole";
 
 const isScopedToSectioningContent = (el: Element) => {
-  return el.closest('article,aside,nav,section') !== null;
+  return el.closest("article,aside,nav,section") !== null;
 };
 const isScopedToMainOrSectioningContent = (el: Element) => {
-  return (
-    el.closest('main,article,aside,nav,section') !== null
-  );
+  return el.closest("main,article,aside,nav,section") !== null;
 };
 
 export const COMPUTED_ROLES = [
@@ -73,7 +71,7 @@ export const getComputedImplictRole = (el: Element): ComputedRole | null => {
       return "complementary";
     }
     case "audio":
-      return "html-audio"
+      return "html-audio";
     case "b":
       return "generic";
     case "base":
@@ -93,7 +91,7 @@ export const getComputedImplictRole = (el: Element): ComputedRole | null => {
     case "button":
       return "button";
     case "canvas":
-      return "html-canvas"
+      return "html-canvas";
     case "caption":
       return "caption";
     case "cite":
@@ -135,7 +133,7 @@ export const getComputedImplictRole = (el: Element): ComputedRole | null => {
     case "em":
       return "emphasis";
     case "embed":
-      return "html-embed"
+      return "html-embed";
     case "fieldset":
       return "group";
     case "figcaption":
@@ -248,7 +246,7 @@ export const getComputedImplictRole = (el: Element): ComputedRole | null => {
     case "main":
       return "main";
     case "map":
-      return "html-map"
+      return "html-map";
     case "mark":
       return "mark";
     case "math":
@@ -266,7 +264,7 @@ export const getComputedImplictRole = (el: Element): ComputedRole | null => {
       // no corresponding role
       return null;
     case "object":
-      return 'html-object';
+      return "html-object";
     case "ol":
       return "list";
     case "optgrouop":
@@ -290,9 +288,9 @@ export const getComputedImplictRole = (el: Element): ComputedRole | null => {
     case "q":
       return "generic";
     case "rp":
-      return "html-rp"
+      return "html-rp";
     case "rt":
-      return "html-rt"
+      return "html-rt";
     case "ruby":
       return "html-ruby";
     case "s":
@@ -336,8 +334,9 @@ export const getComputedImplictRole = (el: Element): ComputedRole | null => {
       return null;
     case "sub":
       return "subscript";
-    case "summary":{
-      if (el.parentElement?.tagName.toLowerCase() === "details" &&
+    case "summary": {
+      if (
+        el.parentElement?.tagName.toLowerCase() === "details" &&
         el.parentElement?.firstElementChild === el
       ) {
         return "html-summary";
@@ -443,7 +442,7 @@ export const computedRoleToKnownRole = (
       // Chrome: Iframe
       // Firefox: internal frame
       return null;
-    case 'html-input-color':
+    case "html-input-color":
       // Chrome: ColorWell
       // Firefox: button
       return "button";
@@ -489,7 +488,7 @@ export const computedRoleToKnownRole = (
       return null;
     case "html-map":
       // Chrome: node not exposed
-      // Firefox: 
+      // Firefox:
       return null;
     case "html-object":
       // Chrome: PluginObject
@@ -497,7 +496,7 @@ export const computedRoleToKnownRole = (
       return null;
     case "html-rp":
       // Chrome: node not exposed
-      // Firefox: 
+      // Firefox:
       return null;
     case "html-rt":
       // Chrome: Accessibility node not exposed
@@ -517,4 +516,4 @@ export const computedRoleToKnownRole = (
       return null;
   }
   return null;
-}
+};

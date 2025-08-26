@@ -1,5 +1,10 @@
 import { describe, test, expect, afterEach } from "vitest";
-import { getComputedImplictRole, COMPUTED_ROLES, computedRoleToKnownRole, ComputedRole } from "./getComputedImplicitRole";
+import {
+  getComputedImplictRole,
+  COMPUTED_ROLES,
+  computedRoleToKnownRole,
+  ComputedRole,
+} from "./getComputedImplicitRole";
 
 describe("getComputedImplictRole", () => {
   afterEach(() => {
@@ -41,7 +46,20 @@ describe("getComputedImplictRole", () => {
 
   test("returns generic role for generic elements", () => {
     const elements = [
-      "b", "bdi", "bdo", "body", "data", "div", "html", "i", "pre", "q", "samp", "small", "span", "u"
+      "b",
+      "bdi",
+      "bdo",
+      "body",
+      "data",
+      "div",
+      "html",
+      "i",
+      "pre",
+      "q",
+      "samp",
+      "small",
+      "span",
+      "u",
     ];
 
     elements.forEach((tagName) => {
@@ -112,7 +130,7 @@ describe("getComputedImplictRole", () => {
     expect(getComputedImplictRole(multipleSelect)).toBe("listbox");
 
     const sizedSelect = document.createElement("select") as HTMLSelectElement;
-    Object.defineProperty(sizedSelect, 'size', { value: 2, writable: true });
+    Object.defineProperty(sizedSelect, "size", { value: 2, writable: true });
     expect(getComputedImplictRole(sizedSelect)).toBe("listbox");
   });
 
@@ -321,7 +339,7 @@ describe("getComputedImplictRole", () => {
     const summary = document.createElement("summary");
     details.appendChild(summary);
     document.body.appendChild(details);
-    
+
     expect(getComputedImplictRole(summary)).toBe("html-summary");
 
     // summary not as first child of details should be generic
@@ -479,14 +497,15 @@ describe("getComputedImplictRole", () => {
 });
 
 describe("computedRoleToKnownRole", () => {
-
   test("converts html-input roles to known roles", () => {
     expect(computedRoleToKnownRole("html-input-color")).toBe("button");
     expect(computedRoleToKnownRole("html-input-date")).toBe("textbox");
     expect(computedRoleToKnownRole("html-input-month")).toBe("textbox");
     expect(computedRoleToKnownRole("html-input-week")).toBe("textbox");
     expect(computedRoleToKnownRole("html-input-time")).toBe("textbox");
-    expect(computedRoleToKnownRole("html-input-datetime-local")).toBe("textbox");
+    expect(computedRoleToKnownRole("html-input-datetime-local")).toBe(
+      "textbox",
+    );
     expect(computedRoleToKnownRole("html-input-file")).toBe("button");
     expect(computedRoleToKnownRole("html-input-password")).toBe("textbox");
   });

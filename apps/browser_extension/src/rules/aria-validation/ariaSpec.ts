@@ -6,8 +6,6 @@
  * - AriaState rule: Uses subset of attributes for display purposes
  */
 
-import { KnownRole } from "../../dom/KnownRole";
-
 // ============================================================================
 // ALL ARIA ATTRIBUTES
 // ============================================================================
@@ -163,267 +161,254 @@ export const ARIA_ATTRIBUTE_VALUES: Record<
  * Roles that can use each ARIA attribute.
  * Used by AriaValidation rule for role compatibility validation.
  */
-export const ARIA_ATTRIBUTE_ROLES: Record<AriaAttribute, KnownRole[] | "all"> =
-  {
-    "aria-activedescendant": [
-      "application",
-      "combobox",
-      "composite",
-      "group",
-      "textbox",
-      "columnheader",
-      "grid",
-      "gridcell",
-      "listbox",
-      "menu",
-      "menubar",
-      "radiogroup",
-      "row",
-      "rowheader",
-      "searchbox",
-      "select",
-      "tablist",
-      "tree",
-      "treegrid",
-      "treeitem",
-    ],
-    "aria-atomic": "all", // global
-    "aria-autocomplete": ["combobox", "textbox", "searchbox"],
-    "aria-braillelabel": "all", // global
-    "aria-brailleroledescription": "all", // global
-    "aria-busy": "all", // global
-    "aria-checked": [
-      "checkbox",
-      "menuitemcheckbox",
-      "option",
-      "radio",
-      "switch",
-      "menuitemradio",
-      "treeitem",
-    ],
-    "aria-colcount": ["table", "grid", "treegrid"],
-    "aria-colindex": ["cell", "columnheader", "gridcell", "row", "rowheader"],
-    "aria-colindextext": [
-      "cell",
-      "columnheader",
-      "gridcell",
-      "row",
-      "rowheader",
-    ],
-    "aria-colspan": ["cell", "columnheader", "gridcell", "rowheader"],
-    "aria-controls": "all", // global
-    "aria-current": "all", // global
-    "aria-describedby": "all", // global
-    "aria-description": "all", // global
-    "aria-details": "all", // global
-    "aria-disabled": [
-      "application",
-      "button",
-      "composite",
-      "gridcell",
-      "group",
-      "input",
-      "link",
-      "menuitem",
-      "scrollbar",
-      "separator",
-      "tab",
-      "checkbox",
-      "columnheader",
-      "combobox",
-      "grid",
-      "listbox",
-      "menu",
-      "menubar",
-      "menuitemcheckbox",
-      "menuitemradio",
-      "option",
-      "radio",
-      "radiogroup",
-      "row",
-      "rowheader",
-      "searchbox",
-      "select",
-      "slider",
-      "spinbutton",
-      "switch",
-      "tablist",
-      "textbox",
-      "toolbar",
-      "tree",
-      "treegrid",
-      "treeitem",
-    ],
-    "aria-dropeffect": "all", // global (deprecated)
-    "aria-errormessage": "all", // global
-    "aria-expanded": [
-      "application",
-      "button",
-      "checkbox",
-      "combobox",
-      "gridcell",
-      "link",
-      "listbox",
-      "menuitem",
-      "row",
-      "rowheader",
-      "tab",
-      "treeitem",
-      "columnheader",
-      "menuitemcheckbox",
-      "menuitemradio",
-      "switch",
-    ],
-    "aria-flowto": "all", // global
-    "aria-grabbed": "all", // global (deprecated)
-    "aria-haspopup": "all", // global
-    "aria-hidden": "all", // global
-    "aria-invalid": [
-      "application",
-      "checkbox",
-      "combobox",
-      "gridcell",
-      "listbox",
-      "radiogroup",
-      "slider",
-      "spinbutton",
-      "textbox",
-      "tree",
-      "columnheader",
-      "rowheader",
-      "searchbox",
-      "switch",
-      "treegrid",
-    ],
-    "aria-keyshortcuts": "all", // global
-    "aria-label": "all", // global
-    "aria-labelledby": "all", // global
-    "aria-level": ["heading", "listitem", "row", "treeitem"],
-    "aria-live": "all", // global
-    "aria-modal": ["dialog"],
-    "aria-multiline": ["textbox", "searchbox"],
-    "aria-multiselectable": ["grid", "listbox", "tablist", "tree", "treegrid"],
-    "aria-orientation": [
-      "scrollbar",
-      "select",
-      "separator",
-      "slider",
-      "tablist",
-      "toolbar",
-      "listbox",
-      "menu",
-      "menubar",
-      "radiogroup",
-      "tree",
-      "treegrid",
-    ],
-    "aria-owns": "all", // global
-    "aria-placeholder": ["textbox", "searchbox"],
-    "aria-posinset": [
-      "article",
-      "listitem",
-      "menuitem",
-      "option",
-      "radio",
-      "tab",
-      "menuitemcheckbox",
-      "menuitemradio",
-      "treeitem",
-    ],
-    "aria-pressed": ["button"],
-    "aria-readonly": [
-      "checkbox",
-      "combobox",
-      "grid",
-      "gridcell",
-      "listbox",
-      "radiogroup",
-      "slider",
-      "spinbutton",
-      "textbox",
-      "columnheader",
-      "rowheader",
-      "searchbox",
-      "switch",
-      "treegrid",
-    ],
-    "aria-relevant": "all", // global
-    "aria-required": [
-      "checkbox",
-      "combobox",
-      "gridcell",
-      "listbox",
-      "radiogroup",
-      "spinbutton",
-      "textbox",
-      "tree",
-      "columnheader",
-      "rowheader",
-      "searchbox",
-      "switch",
-      "treegrid",
-    ],
-    "aria-roledescription": "all", // global
-    "aria-rowcount": ["table", "grid", "treegrid"],
-    "aria-rowindex": ["cell", "row", "columnheader", "gridcell", "rowheader"],
-    "aria-rowindextext": [
-      "cell",
-      "row",
-      "columnheader",
-      "gridcell",
-      "rowheader",
-    ],
-    "aria-rowspan": ["cell", "columnheader", "gridcell", "rowheader"],
-    "aria-selected": [
-      "gridcell",
-      "option",
-      "row",
-      "tab",
-      "columnheader",
-      "rowheader",
-      "treeitem",
-    ],
-    "aria-setsize": [
-      "article",
-      "listitem",
-      "menuitem",
-      "option",
-      "radio",
-      "tab",
-      "menuitemcheckbox",
-      "menuitemradio",
-      "treeitem",
-    ],
-    "aria-sort": ["columnheader", "rowheader"],
-    "aria-valuemax": [
-      "progressbar",
-      "scrollbar",
-      "separator",
-      "slider",
-      "spinbutton",
-    ],
-    "aria-valuemin": [
-      "progressbar",
-      "scrollbar",
-      "separator",
-      "slider",
-      "spinbutton",
-    ],
-    "aria-valuenow": [
-      "progressbar",
-      "scrollbar",
-      "separator",
-      "slider",
-      "spinbutton",
-    ],
-    "aria-valuetext": [
-      "progressbar",
-      "scrollbar",
-      "separator",
-      "slider",
-      "spinbutton",
-    ],
-  } as const;
+export const ARIA_ATTRIBUTE_ROLES: Record<AriaAttribute, string[] | "all"> = {
+  "aria-activedescendant": [
+    "application",
+    "combobox",
+    "composite",
+    "group",
+    "textbox",
+    "columnheader",
+    "grid",
+    "gridcell",
+    "listbox",
+    "menu",
+    "menubar",
+    "radiogroup",
+    "row",
+    "rowheader",
+    "searchbox",
+    "select",
+    "tablist",
+    "tree",
+    "treegrid",
+    "treeitem",
+  ],
+  "aria-atomic": "all", // global
+  "aria-autocomplete": ["combobox", "textbox", "searchbox"],
+  "aria-braillelabel": "all", // global
+  "aria-brailleroledescription": "all", // global
+  "aria-busy": "all", // global
+  "aria-checked": [
+    "checkbox",
+    "menuitemcheckbox",
+    "option",
+    "radio",
+    "switch",
+    "menuitemradio",
+    "treeitem",
+  ],
+  "aria-colcount": ["table", "grid", "treegrid"],
+  "aria-colindex": ["cell", "columnheader", "gridcell", "row", "rowheader"],
+  "aria-colindextext": ["cell", "columnheader", "gridcell", "row", "rowheader"],
+  "aria-colspan": ["cell", "columnheader", "gridcell", "rowheader"],
+  "aria-controls": "all", // global
+  "aria-current": "all", // global
+  "aria-describedby": "all", // global
+  "aria-description": "all", // global
+  "aria-details": "all", // global
+  "aria-disabled": [
+    "application",
+    "button",
+    "composite",
+    "gridcell",
+    "group",
+    "input",
+    "link",
+    "menuitem",
+    "scrollbar",
+    "separator",
+    "tab",
+    "checkbox",
+    "columnheader",
+    "combobox",
+    "grid",
+    "listbox",
+    "menu",
+    "menubar",
+    "menuitemcheckbox",
+    "menuitemradio",
+    "option",
+    "radio",
+    "radiogroup",
+    "row",
+    "rowheader",
+    "searchbox",
+    "select",
+    "slider",
+    "spinbutton",
+    "switch",
+    "tablist",
+    "textbox",
+    "toolbar",
+    "tree",
+    "treegrid",
+    "treeitem",
+  ],
+  "aria-dropeffect": "all", // global (deprecated)
+  "aria-errormessage": "all", // global
+  "aria-expanded": [
+    "application",
+    "button",
+    "checkbox",
+    "combobox",
+    "gridcell",
+    "link",
+    "listbox",
+    "menuitem",
+    "row",
+    "rowheader",
+    "tab",
+    "treeitem",
+    "columnheader",
+    "menuitemcheckbox",
+    "menuitemradio",
+    "switch",
+  ],
+  "aria-flowto": "all", // global
+  "aria-grabbed": "all", // global (deprecated)
+  "aria-haspopup": "all", // global
+  "aria-hidden": "all", // global
+  "aria-invalid": [
+    "application",
+    "checkbox",
+    "combobox",
+    "gridcell",
+    "listbox",
+    "radiogroup",
+    "slider",
+    "spinbutton",
+    "textbox",
+    "tree",
+    "columnheader",
+    "rowheader",
+    "searchbox",
+    "switch",
+    "treegrid",
+  ],
+  "aria-keyshortcuts": "all", // global
+  "aria-label": "all", // global
+  "aria-labelledby": "all", // global
+  "aria-level": ["heading", "listitem", "row", "treeitem"],
+  "aria-live": "all", // global
+  "aria-modal": ["dialog"],
+  "aria-multiline": ["textbox", "searchbox"],
+  "aria-multiselectable": ["grid", "listbox", "tablist", "tree", "treegrid"],
+  "aria-orientation": [
+    "scrollbar",
+    "select",
+    "separator",
+    "slider",
+    "tablist",
+    "toolbar",
+    "listbox",
+    "menu",
+    "menubar",
+    "radiogroup",
+    "tree",
+    "treegrid",
+  ],
+  "aria-owns": "all", // global
+  "aria-placeholder": ["textbox", "searchbox"],
+  "aria-posinset": [
+    "article",
+    "listitem",
+    "menuitem",
+    "option",
+    "radio",
+    "tab",
+    "menuitemcheckbox",
+    "menuitemradio",
+    "treeitem",
+  ],
+  "aria-pressed": ["button"],
+  "aria-readonly": [
+    "checkbox",
+    "combobox",
+    "grid",
+    "gridcell",
+    "listbox",
+    "radiogroup",
+    "slider",
+    "spinbutton",
+    "textbox",
+    "columnheader",
+    "rowheader",
+    "searchbox",
+    "switch",
+    "treegrid",
+  ],
+  "aria-relevant": "all", // global
+  "aria-required": [
+    "checkbox",
+    "combobox",
+    "gridcell",
+    "listbox",
+    "radiogroup",
+    "spinbutton",
+    "textbox",
+    "tree",
+    "columnheader",
+    "rowheader",
+    "searchbox",
+    "switch",
+    "treegrid",
+  ],
+  "aria-roledescription": "all", // global
+  "aria-rowcount": ["table", "grid", "treegrid"],
+  "aria-rowindex": ["cell", "row", "columnheader", "gridcell", "rowheader"],
+  "aria-rowindextext": ["cell", "row", "columnheader", "gridcell", "rowheader"],
+  "aria-rowspan": ["cell", "columnheader", "gridcell", "rowheader"],
+  "aria-selected": [
+    "gridcell",
+    "option",
+    "row",
+    "tab",
+    "columnheader",
+    "rowheader",
+    "treeitem",
+  ],
+  "aria-setsize": [
+    "article",
+    "listitem",
+    "menuitem",
+    "option",
+    "radio",
+    "tab",
+    "menuitemcheckbox",
+    "menuitemradio",
+    "treeitem",
+  ],
+  "aria-sort": ["columnheader", "rowheader"],
+  "aria-valuemax": [
+    "progressbar",
+    "scrollbar",
+    "separator",
+    "slider",
+    "spinbutton",
+  ],
+  "aria-valuemin": [
+    "progressbar",
+    "scrollbar",
+    "separator",
+    "slider",
+    "spinbutton",
+  ],
+  "aria-valuenow": [
+    "progressbar",
+    "scrollbar",
+    "separator",
+    "slider",
+    "spinbutton",
+  ],
+  "aria-valuetext": [
+    "progressbar",
+    "scrollbar",
+    "separator",
+    "slider",
+    "spinbutton",
+  ],
+} as const;
 
 // ============================================================================
 // VALIDATION HELPER FUNCTIONS
@@ -437,19 +422,6 @@ export const validateAriaAttributeValue = (
   value: string,
 ): boolean => {
   const validValues = ARIA_ATTRIBUTE_VALUES[attribute];
-
-  if (validValues === "any") {
-    return value.trim().length > 0;
-  }
-
-  if (validValues === "id-reference") {
-    return /^[a-zA-Z][\w\-_:.]*$/.test(value.trim());
-  }
-
-  if (validValues === "id-reference-list") {
-    const ids = value.trim().split(/\s+/);
-    return ids.every((id) => /^[a-zA-Z][\w\-_:.]*$/.test(id));
-  }
 
   if (validValues === "integer") {
     const num = parseInt(value.trim(), 10);
@@ -475,7 +447,7 @@ export const validateAriaAttributeValue = (
     );
   }
 
-  return false;
+  return true;
 };
 
 /**
@@ -483,7 +455,7 @@ export const validateAriaAttributeValue = (
  */
 export const isValidAriaAttributeForRole = (
   attribute: AriaAttribute,
-  role: KnownRole | null,
+  role: string | null,
 ): boolean => {
   const validRoles = ARIA_ATTRIBUTE_ROLES[attribute];
 
@@ -495,5 +467,5 @@ export const isValidAriaAttributeForRole = (
     return false;
   }
 
-  return (validRoles as KnownRole[]).includes(role);
+  return validRoles.includes(role);
 };

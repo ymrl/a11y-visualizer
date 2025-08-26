@@ -158,5 +158,7 @@
   "Required: true": "必須",
   "Required: false": "必須でない",
   "Should have an appropriate role": "適切なrole属性が必要",
-  "Has inappropriate role for text input": "テキスト入力に不適切なrole属性"
+  "Has inappropriate role for text input": "テキスト入力に不適切なrole属性",
+  "Cannot be named": "名前付けできない",
+  "Should not be named": "名前付けすべきではない"
 }

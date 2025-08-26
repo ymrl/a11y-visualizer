@@ -493,4 +493,123 @@ describe("IdReference", () => {
       ruleName: "id-reference",
     });
   });
+
+  describe("Exception conditions", () => {
+    test("ignores aria-controls when aria-expanded='false'", () => {
+      document.body.innerHTML = `
+        <button aria-controls="missing-panel" aria-expanded="false">Toggle</button>
+      `;
+      const button = document.querySelector("button")!;
+      const result = IdReference.evaluate(
+        button,
+        IdReference.defaultOptions,
+        {},
+      );
+      expect(result).toBeUndefined();
+    });
+
+    test("reports warning for aria-controls when aria-expanded='true' with missing ID", () => {
+      document.body.innerHTML = `
+        <button aria-controls="missing-panel" aria-expanded="true">Toggle</button>
+      `;
+      const button = document.querySelector("button")!;
+      const result = IdReference.evaluate(
+        button,
+        IdReference.defaultOptions,
+        {},
+      );
+      expect(result).toHaveLength(1);
+      expect(result![0]).toEqual({
+        type: "warning",
+        message: "Referenced IDs do not exist: {{idsWithAttributes}}",
+        messageParams: {
+          idsWithAttributes: "missing-panel (aria-controls)",
+        },
+        ruleName: "id-reference",
+      });
+    });
+
+    test("ignores aria-controls when role='tab' and aria-selected='false'", () => {
+      document.body.innerHTML = `
+        <div role="tab" aria-controls="missing-tabpanel" aria-selected="false">Tab</div>
+      `;
+      const tab = document.querySelector("div")!;
+      const result = IdReference.evaluate(tab, IdReference.defaultOptions, {});
+      expect(result).toBeUndefined();
+    });
+
+    test("reports warning for aria-controls when role='tab' and aria-selected='true' with missing ID", () => {
+      document.body.innerHTML = `
+        <div role="tab" aria-controls="missing-tabpanel" aria-selected="true">Tab</div>
+      `;
+      const tab = document.querySelector("div")!;
+      const result = IdReference.evaluate(tab, IdReference.defaultOptions, {});
+      expect(result).toHaveLength(1);
+      expect(result![0]).toEqual({
+        type: "warning",
+        message: "Referenced IDs do not exist: {{idsWithAttributes}}",
+        messageParams: {
+          idsWithAttributes: "missing-tabpanel (aria-controls)",
+        },
+        ruleName: "id-reference",
+      });
+    });
+
+    test("reports warning for aria-controls when role='tab' but no aria-selected attribute", () => {
+      document.body.innerHTML = `
+        <div role="tab" aria-controls="missing-tabpanel">Tab</div>
+      `;
+      const tab = document.querySelector("div")!;
+      const result = IdReference.evaluate(tab, IdReference.defaultOptions, {});
+      expect(result).toHaveLength(1);
+      expect(result![0]).toEqual({
+        type: "warning",
+        message: "Referenced IDs do not exist: {{idsWithAttributes}}",
+        messageParams: {
+          idsWithAttributes: "missing-tabpanel (aria-controls)",
+        },
+        ruleName: "id-reference",
+      });
+    });
+
+    test("reports warning for other attributes even when aria-expanded='false'", () => {
+      document.body.innerHTML = `
+        <button aria-controls="missing-panel" aria-describedby="missing-desc" aria-expanded="false">Toggle</button>
+      `;
+      const button = document.querySelector("button")!;
+      const result = IdReference.evaluate(
+        button,
+        IdReference.defaultOptions,
+        {},
+      );
+      expect(result).toHaveLength(1);
+      expect(result![0]).toEqual({
+        type: "warning",
+        message: "Referenced IDs do not exist: {{idsWithAttributes}}",
+        messageParams: {
+          idsWithAttributes: "missing-desc (aria-describedby)",
+        },
+        ruleName: "id-reference",
+      });
+    });
+
+    test("handles combined exception conditions correctly", () => {
+      document.body.innerHTML = `
+        <div role="tab" aria-controls="missing-tabpanel" aria-selected="false" aria-labelledby="missing-label">
+          Tab
+        </div>
+      `;
+      const tab = document.querySelector("div")!;
+      const result = IdReference.evaluate(tab, IdReference.defaultOptions, {});
+      expect(result).toHaveLength(1);
+      expect(result![0]).toEqual({
+        type: "warning",
+        message: "Referenced IDs do not exist: {{idsWithAttributes}}",
+        messageParams: {
+          idsWithAttributes: "missing-label (aria-labelledby)",
+        },
+        ruleName: "id-reference",
+      });
+    });
+  });
 });

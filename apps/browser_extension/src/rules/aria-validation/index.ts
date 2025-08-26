@@ -20,13 +20,16 @@ const defaultOptions = { enabled: true };
 export const AriaValidation: RuleObject = {
   ruleName,
   defaultOptions,
-  evaluate: (element: Element, { enabled }: Options = defaultOptions) => {
+  evaluate: (
+    element: Element,
+    { enabled }: Options = defaultOptions,
+    { role = getKnownRole(element) },
+  ) => {
     if (!enabled) {
       return undefined;
     }
 
     const results: RuleResult[] = [];
-    const role = getKnownRole(element);
 
     // Validate all ARIA attributes
     for (const attribute of ALL_ARIA_ATTRIBUTES) {
@@ -34,11 +37,6 @@ export const AriaValidation: RuleObject = {
 
       if (value === null) {
         continue; // Attribute not present, no validation needed
-      }
-
-      // Skip aria-hidden as it's handled by AriaAttributes rule
-      if (attribute === "aria-hidden") {
-        continue;
       }
 
       // Validate attribute value

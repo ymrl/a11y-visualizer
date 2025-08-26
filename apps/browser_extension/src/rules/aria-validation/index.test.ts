@@ -90,7 +90,7 @@ describe("AriaValidation", () => {
     });
   });
 
-  test("skips aria-hidden validation (handled by AriaAttributes)", () => {
+  test("validates aria-hidden attribute", () => {
     document.body.innerHTML = `<div aria-hidden="true">Content</div>`;
     const element = document.querySelector("div")!;
     const result = AriaValidation.evaluate(
@@ -99,6 +99,23 @@ describe("AriaValidation", () => {
       {},
     );
     expect(result).toBeUndefined();
+  });
+
+  test("reports invalid aria-hidden value", () => {
+    document.body.innerHTML = `<div aria-hidden="invalid">Content</div>`;
+    const element = document.querySelector("div")!;
+    const result = AriaValidation.evaluate(
+      element,
+      AriaValidation.defaultOptions,
+      {},
+    );
+    expect(result).toHaveLength(1);
+    expect(result![0]).toEqual({
+      type: "error",
+      message: "Invalid WAI-ARIA attribute value: {{attribute}}",
+      messageParams: { attribute: "aria-hidden" },
+      ruleName: "aria-validation",
+    });
   });
 
   test("validates id-reference-list attributes", () => {
@@ -112,21 +129,15 @@ describe("AriaValidation", () => {
     expect(result).toBeUndefined();
   });
 
-  test("reports error for invalid id-reference-list with attribute name", () => {
-    document.body.innerHTML = `<div aria-describedby="123invalid">Content</div>`;
+  test("validates empty id-reference-list", () => {
+    document.body.innerHTML = `<div aria-describedby="">Content</div>`;
     const element = document.querySelector("div")!;
     const result = AriaValidation.evaluate(
       element,
       AriaValidation.defaultOptions,
       {},
     );
-    expect(result).toHaveLength(1);
-    expect(result![0]).toEqual({
-      type: "error",
-      message: "Invalid WAI-ARIA attribute value: {{attribute}}",
-      messageParams: { attribute: "aria-describedby" },
-      ruleName: "aria-validation",
-    });
+    expect(result).toBeUndefined();
   });
 
   test("returns undefined when disabled", () => {

@@ -1,3 +1,4 @@
+import { AbstractRole } from "./abstract-role";
 import { AccessibleDescription } from "./accessible-description";
 import { AccessibleName } from "./accessible-name";
 import { AriaAttributes } from "./aria-attributes";
@@ -64,4 +65,5 @@ export const Rules = [
   AriaValidation,
   AriaAttributes,
   AccessibleDescription,
+  AbstractRole,
 ] as const;

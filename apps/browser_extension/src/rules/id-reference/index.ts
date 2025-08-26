@@ -1,3 +1,4 @@
+import { getKnownRole } from "../../dom/getKnownRole";
 import { RuleObject } from "../type";
 
 const ruleName = "id-reference";
@@ -33,12 +34,36 @@ type Options = {
 };
 
 /**
+ * Check if aria-controls attribute should be ignored based on element state
+ */
+const shouldIgnoreAriaControls = (
+  element: Element,
+  role: string | null,
+): boolean => {
+  // Skip aria-controls when aria-expanded="false" (collapsed state)
+  if (element.getAttribute("aria-expanded") === "false") {
+    return true;
+  }
+
+  // Skip aria-controls when role="tab" and aria-selected="false" (inactive tab)
+  if (role === "tab" && element.getAttribute("aria-selected") === "false") {
+    return true;
+  }
+
+  return false;
+};
+
+/**
  * Validates that referenced IDs exist in the document
  */
 export const IdReference: RuleObject = {
   ruleName,
   defaultOptions,
-  evaluate: (element: Element, { enabled }: Options = defaultOptions) => {
+  evaluate: (
+    element: Element,
+    { enabled }: Options = defaultOptions,
+    { role = getKnownRole(element) },
+  ) => {
     if (!enabled) {
       return undefined;
     }
@@ -58,6 +83,14 @@ export const IdReference: RuleObject = {
 
     // Check ID list reference attributes
     for (const attribute of ID_REFERENCE_LIST_ATTRIBUTES) {
+      // Special handling for aria-controls
+      if (
+        attribute === "aria-controls" &&
+        shouldIgnoreAriaControls(element, role)
+      ) {
+        continue;
+      }
+
       const value = element.getAttribute(attribute);
       if (value) {
         const ids = value

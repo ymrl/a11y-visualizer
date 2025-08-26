@@ -160,5 +160,6 @@
   "Should have an appropriate role": "適切なrole属性が必要",
   "Has inappropriate role for text input": "テキスト入力に不適切なrole属性",
   "Cannot be named": "名前付けできない",
-  "Should not be named": "名前付けすべきではない"
+  "Should not be named": "名前付けすべきではない",
+  "Abstract role cannot be used": "抽象ロールは使用できません"
 }

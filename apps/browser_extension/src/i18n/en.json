@@ -160,5 +160,6 @@
   "Should have an appropriate role": "Should have an appropriate role",
   "Has inappropriate role for text input": "Has inappropriate role for text input",
   "Cannot be named": "Cannot be named",
-  "Should not be named": "Should not be named"
+  "Should not be named": "Should not be named",
+  "Abstract role cannot be used": "Abstract role cannot be used"
 }

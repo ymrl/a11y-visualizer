@@ -17,6 +17,7 @@ const mount = (w: Window, parent: Element, options?: RootOptions) => {
   rootElement.style.position = "static";
   rootElement.style.margin = "0";
   rootElement.style.padding = "0";
+  rootElement.setAttribute("data-a11y-visualizer-extension", "");
   parent.append(rootElement);
   const root = ReactDOM.createRoot(rootElement);
   const parentRef = { current: parent };

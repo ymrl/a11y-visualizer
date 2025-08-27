@@ -192,4 +192,131 @@ describe(TargetSize.ruleName, () => {
     document.body.appendChild(el);
     expect(TargetSize.evaluate(el, { enabled: false }, {})).toBeUndefined();
   });
+
+  test("small button with adequate spacing", () => {
+    const container = document.createElement("div");
+    container.style.position = "absolute";
+    container.style.left = "0px";
+    container.style.top = "0px";
+    container.style.width = "300px";
+    container.style.height = "300px";
+
+    // First small button at (50, 50)
+    const el1 = document.createElement("button");
+    el1.textContent = "button1";
+    el1.style.position = "absolute";
+    el1.style.left = "50px";
+    el1.style.top = "50px";
+    el1.style.width = "10px";
+    el1.style.height = "10px";
+    container.appendChild(el1);
+
+    // Second small button at (150, 50) - 100px away (>> 24px spacing)
+    const el2 = document.createElement("button");
+    el2.textContent = "button2";
+    el2.style.position = "absolute";
+    el2.style.left = "150px";
+    el2.style.top = "50px";
+    el2.style.width = "10px";
+    el2.style.height = "10px";
+    container.appendChild(el2);
+
+    document.body.appendChild(container);
+
+    // Both buttons should not show warnings due to adequate spacing
+    expect(TargetSize.evaluate(el1, { enabled: true }, {})).toBeUndefined();
+    expect(TargetSize.evaluate(el2, { enabled: true }, {})).toBeUndefined();
+  });
+
+  test("small button with inadequate spacing", () => {
+    const container = document.createElement("div");
+    container.style.position = "absolute";
+    container.style.left = "0px";
+    container.style.top = "0px";
+    container.style.width = "200px";
+    container.style.height = "200px";
+
+    // First small button at (50, 50)
+    const el1 = document.createElement("button");
+    el1.textContent = "button1";
+    el1.style.position = "absolute";
+    el1.style.left = "50px";
+    el1.style.top = "50px";
+    el1.style.width = "10px";
+    el1.style.height = "10px";
+    container.appendChild(el1);
+
+    // Second small button at (65, 50) - 15px away (< 24px spacing, within 24px square)
+    const el2 = document.createElement("button");
+    el2.textContent = "button2";
+    el2.style.position = "absolute";
+    el2.style.left = "65px";
+    el2.style.top = "50px";
+    el2.style.width = "10px";
+    el2.style.height = "10px";
+    container.appendChild(el2);
+
+    document.body.appendChild(container);
+
+    // Both buttons should show warnings due to inadequate spacing
+    expect(TargetSize.evaluate(el1, { enabled: true }, {})).toEqual([
+      {
+        type: "warning",
+        message: "Small target",
+        ruleName: "target-size",
+      },
+    ]);
+    expect(TargetSize.evaluate(el2, { enabled: true }, {})).toEqual([
+      {
+        type: "warning",
+        message: "Small target",
+        ruleName: "target-size",
+      },
+    ]);
+  });
+
+  test("small button near large button", () => {
+    const container = document.createElement("div");
+    container.style.position = "absolute";
+    container.style.left = "0px";
+    container.style.top = "0px";
+    container.style.width = "200px";
+    container.style.height = "200px";
+
+    // Small button at (50, 50)
+    const smallButton = document.createElement("button");
+    smallButton.textContent = "small";
+    smallButton.style.position = "absolute";
+    smallButton.style.left = "50px";
+    smallButton.style.top = "50px";
+    smallButton.style.width = "10px";
+    smallButton.style.height = "10px";
+    container.appendChild(smallButton);
+
+    // Large button at (62, 45) - overlaps with 24px square around small button
+    const largeButton = document.createElement("button");
+    largeButton.textContent = "large";
+    largeButton.style.position = "absolute";
+    largeButton.style.left = "62px";
+    largeButton.style.top = "45px";
+    largeButton.style.width = "30px";
+    largeButton.style.height = "30px";
+    container.appendChild(largeButton);
+
+    document.body.appendChild(container);
+
+    // Small button should show warning due to inadequate spacing with large button
+    expect(TargetSize.evaluate(smallButton, { enabled: true }, {})).toEqual([
+      {
+        type: "warning",
+        message: "Small target",
+        ruleName: "target-size",
+      },
+    ]);
+
+    // Large button should not show warning (not small)
+    expect(
+      TargetSize.evaluate(largeButton, { enabled: true }, {}),
+    ).toBeUndefined();
+  });
 });

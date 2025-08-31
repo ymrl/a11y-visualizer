@@ -26,6 +26,7 @@ import { PageLang } from "./page-lang";
 import { PageTitle } from "./page-title";
 import { RadioGroup } from "./radio-group";
 import { Role } from "./role";
+import { SvgSkip } from "./svg-skip";
 import { TableHeader } from "./table-header";
 import { TablePosition } from "./table-position";
 import { TableSize } from "./table-size";
@@ -53,6 +54,7 @@ export const Rules = [
   PageTitle,
   PageLang,
   RadioGroup,
+  SvgSkip,
   TableHeader,
   TablePosition,
   TableSize,

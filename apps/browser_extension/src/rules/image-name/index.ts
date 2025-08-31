@@ -71,17 +71,6 @@ export const ImageName: RuleObject = {
             },
           ];
         }
-      } else if (tagName === "svg") {
-        const titleElement = element.querySelector("title");
-        if (!titleElement || !titleElement.textContent) {
-          return [
-            {
-              type: "warning",
-              message: "No <title> element",
-              ruleName,
-            },
-          ];
-        }
       } else if (role === "img") {
         return [
           {

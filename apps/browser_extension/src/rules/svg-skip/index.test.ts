@@ -61,4 +61,14 @@ describe("svg-skip", () => {
     const result = SvgSkip.evaluate(element, { enabled: true }, {});
     expect(result).toBeUndefined();
   });
+
+  test('svg with parent having aria-hidden="true"', () => {
+    const parent = document.createElement("div");
+    parent.setAttribute("aria-hidden", "true");
+    const element = document.createElement("svg");
+    parent.appendChild(element);
+    document.body.appendChild(parent);
+    const result = SvgSkip.evaluate(element, { enabled: true }, {});
+    expect(result).toBeUndefined();
+  });
 });

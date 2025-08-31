@@ -1,5 +1,6 @@
 import { RuleObject } from "../type";
 import { isPresentationalChildren } from "../../dom/isPresentationalChildren";
+import { isInAriaHidden } from "../../dom/isAriaHidden";
 
 type Options = {
   enabled: boolean;
@@ -25,7 +26,7 @@ export const SvgSkip: RuleObject<Options, Condition> = {
 
     if (
       tagName === "svg" &&
-      element.getAttribute("aria-hidden") !== "true" &&
+      !isInAriaHidden(element) &&
       !element.hasAttribute("role") &&
       !hasTitle &&
       !isPresentationalChildren(element)

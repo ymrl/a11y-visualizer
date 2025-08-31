@@ -108,7 +108,6 @@
   "No href attribute": "href属性なし",
   "Nested interactive element": "インタラクティブ要素の入れ子",
   "No lang attribute on <html>": "<html>要素にlang属性なし",
-  "No <title> element": "<title>要素なし",
   "No name attribute": "name属性なし",
   "Ungrouped radio button": "グループ化されていないラジオボタン",
   "Unknown role": "不明なロール",

@@ -1,20 +1,25 @@
 import { RuleObject } from "../type";
 import { isPresentationalChildren } from "../../dom/isPresentationalChildren";
+import { isInAriaHidden } from "../../dom/isAriaHidden";
+import { computeAccessibleName } from "dom-accessibility-api";
 
 type Options = {
   enabled: boolean;
 };
-type Condition = { role?: string | null };
 const ruleName = "svg-skip";
 const defaultOptions: Options = {
   enabled: true,
 };
 
-export const SvgSkip: RuleObject<Options, Condition> = {
+export const SvgSkip: RuleObject<Options> = {
   ruleName,
   defaultOptions,
   tagNames: ["svg"],
-  evaluate: (element: Element, { enabled }: Options = defaultOptions) => {
+  evaluate: (
+    element: Element,
+    { enabled }: Options = defaultOptions,
+    { name = computeAccessibleName(element) } = {},
+  ) => {
     if (!enabled) {
       return undefined;
     }
@@ -25,18 +30,29 @@ export const SvgSkip: RuleObject<Options, Condition> = {
 
     if (
       tagName === "svg" &&
-      element.getAttribute("aria-hidden") !== "true" &&
+      !isInAriaHidden(element) &&
       !element.hasAttribute("role") &&
       !hasTitle &&
       !isPresentationalChildren(element)
     ) {
-      return [
-        {
-          type: "warning",
-          message: "May be skipped",
-          ruleName: ruleName,
-        },
-      ];
+      // Check if SVG has accessible name
+      if (!name) {
+        return [
+          {
+            type: "warning",
+            message: "No accessible name",
+            ruleName: ruleName,
+          },
+        ];
+      } else {
+        return [
+          {
+            type: "warning",
+            message: "May be skipped",
+            ruleName: ruleName,
+          },
+        ];
+      }
     }
     return undefined;
   },

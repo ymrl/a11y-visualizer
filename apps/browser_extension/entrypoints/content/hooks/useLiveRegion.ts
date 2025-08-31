@@ -1,6 +1,6 @@
 import React from "react";
 import { SettingsContext } from "../contexts/SettingsContext";
-import { isInAriaHidden } from "../dom";
+import { isInAriaHidden } from "../../../src/dom/isAriaHidden";
 import { isHidden } from "../../../src/dom/isHidden";
 import { getKnownRole } from "../../../src/dom/getKnownRole";
 import { detectModals } from "../dom/detectModals";

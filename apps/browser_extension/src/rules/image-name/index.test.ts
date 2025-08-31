@@ -103,13 +103,7 @@ describe("image-name", () => {
     const element = document.createElement("svg");
     document.body.appendChild(element);
     const result = ImageName.evaluate(element, { enabled: true }, {});
-    expect(result).toEqual([
-      {
-        type: "warning",
-        message: "No <title> element",
-        ruleName: "image-name",
-      },
-    ]);
+    expect(result).toBeUndefined();
   });
 
   test("svg with empty title", () => {
@@ -119,13 +113,7 @@ describe("image-name", () => {
     element.appendChild(title);
     document.body.appendChild(element);
     const result = ImageName.evaluate(element, { enabled: true }, {});
-    expect(result).toEqual([
-      {
-        type: "warning",
-        message: "No <title> element",
-        ruleName: "image-name",
-      },
-    ]);
+    expect(result).toBeUndefined();
   });
 
   test("svg with aria-hidden", () => {

@@ -271,4 +271,36 @@ describe("accessible-name", () => {
       undefined,
     );
   });
+
+  test('element with aria-hidden="true"', () => {
+    const element = document.createElement("button");
+    element.setAttribute("aria-hidden", "true");
+    element.textContent = "Hidden Button";
+    document.body.appendChild(element);
+    expect(AccessibleName.evaluate(element, { enabled: true }, {})).toEqual(
+      undefined,
+    );
+  });
+
+  test("element with aria-hidden ancestor", () => {
+    const parent = document.createElement("div");
+    parent.setAttribute("aria-hidden", "true");
+    const element = document.createElement("button");
+    element.textContent = "Button in Hidden Container";
+    parent.appendChild(element);
+    document.body.appendChild(parent);
+    expect(AccessibleName.evaluate(element, { enabled: true }, {})).toEqual(
+      undefined,
+    );
+  });
+
+  test("svg element with aria-hidden", () => {
+    const element = document.createElement("svg");
+    element.setAttribute("aria-hidden", "true");
+    element.setAttribute("aria-label", "Hidden Chart");
+    document.body.appendChild(element);
+    expect(AccessibleName.evaluate(element, { enabled: true }, {})).toEqual(
+      undefined,
+    );
+  });
 });

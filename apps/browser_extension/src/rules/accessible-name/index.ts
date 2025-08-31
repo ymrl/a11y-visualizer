@@ -2,6 +2,7 @@ import { computeAccessibleName } from "dom-accessibility-api";
 import { RuleObject, RuleResult } from "../type";
 import { getKnownRole } from "../../dom/getKnownRole";
 import { getComputedImplictRole } from "../../dom/getComputedImplicitRole";
+import { isInAriaHidden } from "../../dom/isAriaHidden";
 
 const NAMING_PROHIBITED_ROLES = [
   "caption",
@@ -36,6 +37,11 @@ export const AccessibleName: RuleObject = {
     { name = computeAccessibleName(element), role = getKnownRole(element) },
   ) => {
     if (!enabled) {
+      return undefined;
+    }
+
+    // Skip elements that are aria-hidden or have aria-hidden ancestors
+    if (isInAriaHidden(element)) {
       return undefined;
     }
     const computedRole =

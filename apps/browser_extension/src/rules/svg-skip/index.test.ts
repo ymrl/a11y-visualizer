@@ -30,7 +30,7 @@ describe("svg-skip", () => {
       {
         type: "warning",
         ruleName: "svg-skip",
-        message: "May be skipped",
+        message: "No accessible name",
       },
     ]);
   });
@@ -70,5 +70,32 @@ describe("svg-skip", () => {
     document.body.appendChild(parent);
     const result = SvgSkip.evaluate(element, { enabled: true }, {});
     expect(result).toBeUndefined();
+  });
+
+  test("svg without role, title, and no accessible name", () => {
+    const element = document.createElement("svg");
+    document.body.appendChild(element);
+    const result = SvgSkip.evaluate(element, { enabled: true }, {});
+    expect(result).toEqual([
+      {
+        type: "warning",
+        ruleName: "svg-skip",
+        message: "No accessible name",
+      },
+    ]);
+  });
+
+  test("svg without role, title, but with accessible name", () => {
+    const element = document.createElement("svg");
+    element.setAttribute("aria-label", "Chart");
+    document.body.appendChild(element);
+    const result = SvgSkip.evaluate(element, { enabled: true }, {});
+    expect(result).toEqual([
+      {
+        type: "warning",
+        ruleName: "svg-skip",
+        message: "May be skipped",
+      },
+    ]);
   });
 });

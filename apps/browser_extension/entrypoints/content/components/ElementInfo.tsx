@@ -211,13 +211,11 @@ export const ElementInfo = ({
             ))}
           </div>
           {ruleResultAttribute && (
-            <div className="ElementInfo__attributeTip">
-              <RuleTip
-                maxWidth={tipMaxWidth}
-                hideLabel={interactiveMode && hideTips ? !hovered : false}
-                result={ruleResultAttribute}
-              />
-            </div>
+            <RuleTip
+              maxWidth={tipMaxWidth}
+              hideLabel={interactiveMode && hideTips ? !hovered : false}
+              result={ruleResultAttribute}
+            />
           )}
         </div>
       </div>

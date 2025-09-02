@@ -63,7 +63,7 @@ export const Rules = [
   Role,
   ListItem,
   AriaValidation,
-  AriaAttributes,
   AccessibleDescription,
   AbstractRole,
+  AriaAttributes,
 ] as const;

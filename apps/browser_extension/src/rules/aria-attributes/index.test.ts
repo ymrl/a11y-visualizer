@@ -13,15 +13,13 @@ describe("AriaAttributes", () => {
       AriaAttributes.defaultOptions,
       {},
     );
-    expect(result).toHaveLength(2);
-    expect(result).toContainEqual({
-      type: "ariaAttribute",
-      content: "aria-controls: menu1",
-      ruleName: "aria-attributes",
-    });
-    expect(result).toContainEqual({
-      type: "ariaAttribute",
-      content: "aria-level: 2",
+    expect(result).toHaveLength(1);
+    expect(result![0]).toEqual({
+      type: "ariaAttributes",
+      attributes: [
+        { name: "aria-controls", value: "menu1" },
+        { name: "aria-level", value: "2" },
+      ],
       ruleName: "aria-attributes",
     });
   });
@@ -34,20 +32,19 @@ describe("AriaAttributes", () => {
       AriaAttributes.defaultOptions,
       {},
     );
-    expect(result).toHaveLength(3);
-    expect(result).toContainEqual({
-      type: "ariaAttribute",
-      content: "aria-controls: menu1",
-      ruleName: "aria-attributes",
-    });
-    expect(result).toContainEqual({
-      type: "ariaAttribute",
-      content: "aria-label: test",
-      ruleName: "aria-attributes",
-    });
+    expect(result).toHaveLength(2);
     expect(result).toContainEqual({
       type: "warning",
-      message: "aria-hidden: true",
+      message: "Inaccessible",
+      ruleName: "aria-attributes",
+    });
+    expect(result).toContainEqual({
+      type: "ariaAttributes",
+      attributes: [
+        { name: "aria-controls", value: "menu1" },
+        { name: "aria-hidden", value: "true" },
+        { name: "aria-label", value: "test" },
+      ],
       ruleName: "aria-attributes",
     });
   });
@@ -59,20 +56,14 @@ describe("AriaAttributes", () => {
       AriaAttributes.defaultOptions,
       {},
     );
-    expect(result).toHaveLength(3);
-    expect(result).toContainEqual({
-      type: "ariaAttribute",
-      content: "aria-controls: menu1",
-      ruleName: "aria-attributes",
-    });
-    expect(result).toContainEqual({
-      type: "ariaAttribute",
-      content: "aria-label: test",
-      ruleName: "aria-attributes",
-    });
-    expect(result).toContainEqual({
-      type: "ariaAttribute",
-      content: "aria-hidden: false",
+    expect(result).toHaveLength(1);
+    expect(result![0]).toEqual({
+      type: "ariaAttributes",
+      attributes: [
+        { name: "aria-controls", value: "menu1" },
+        { name: "aria-hidden", value: "false" },
+        { name: "aria-label", value: "test" },
+      ],
       ruleName: "aria-attributes",
     });
   });
@@ -94,8 +85,55 @@ describe("AriaAttributes", () => {
     );
     expect(result).toHaveLength(1);
     expect(result![0]).toEqual({
-      type: "ariaAttribute",
-      content: "aria-controls: ",
+      type: "ariaAttributes",
+      attributes: [{ name: "aria-controls", value: "" }],
+      ruleName: "aria-attributes",
+    });
+  });
+
+  test("provides attributes data for list-style display", () => {
+    const ariaAttributesResult = {
+      type: "ariaAttributes" as const,
+      attributes: [
+        { name: "aria-current", value: "page" },
+        { name: "aria-expanded", value: "false" },
+      ],
+      ruleName: "aria-attributes",
+    };
+
+    // データ構造が正しく提供されていることを確認
+    expect(ariaAttributesResult.attributes).toHaveLength(2);
+    expect(ariaAttributesResult.attributes[0]).toEqual({
+      name: "aria-current",
+      value: "page",
+    });
+    expect(ariaAttributesResult.attributes[1]).toEqual({
+      name: "aria-expanded",
+      value: "false",
+    });
+  });
+
+  test("includes aria-hidden in attributes while also showing warning", () => {
+    document.body.innerHTML = `<div aria-hidden="true">Content</div>`;
+    const element = document.querySelector("div")!;
+    const result = AriaAttributes.evaluate(
+      element,
+      AriaAttributes.defaultOptions,
+      {},
+    );
+    expect(result).toHaveLength(2);
+
+    // 警告が表示される
+    expect(result).toContainEqual({
+      type: "warning",
+      message: "Inaccessible",
+      ruleName: "aria-attributes",
+    });
+
+    // aria-hidden="true"もariaAttributesに含まれる
+    expect(result).toContainEqual({
+      type: "ariaAttributes",
+      attributes: [{ name: "aria-hidden", value: "true" }],
       ruleName: "aria-attributes",
     });
   });

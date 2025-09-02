@@ -59,10 +59,20 @@ export type RuleResultState = {
   state: string;
 };
 
+export type RuleResultAriaAttributes = {
+  type: "ariaAttributes";
+  ruleName: string;
+  attributes: Array<{
+    name: string;
+    value: string;
+  }>;
+};
+
 export type RuleResult =
   | RuleResultMessage
   | RuleResultContent
-  | RuleResultState;
+  | RuleResultState
+  | RuleResultAriaAttributes;
 
 type RuleOptions = {
   enabled: boolean;

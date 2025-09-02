@@ -158,7 +158,7 @@ const Icon = ({ type }: { type: RuleResult["type"] }) => {
           aria-label={t("tip.listType")}
         />
       );
-    case "ariaAttribute":
+    case "ariaAttributes":
       return (
         <IoCog
           className="Tip__icon"
@@ -185,14 +185,27 @@ export const RuleTip = ({
       style={{ maxWidth }}
     >
       <Icon type={result.type} />
-      {!hideLabel &&
-        (result.type === "error" || result.type === "warning"
-          ? t(result.message, result.messageParams)
-          : result.type === "state"
-            ? t(result.state)
-            : (RAW_CONTENT_TYPES as readonly string[]).includes(result.type)
-              ? `${result.contentLabel ? t(result.contentLabel) : ""} ${result.content}`
-              : `${result.contentLabel ? t(result.contentLabel) : ""} ${t(result.content)}`)}
+      {!hideLabel && (
+        <div className="Tip__label">
+          {result.type === "error" || result.type === "warning" ? (
+            t(result.message, result.messageParams)
+          ) : result.type === "state" ? (
+            t(result.state)
+          ) : result.type === "ariaAttributes" ? (
+            <ul className="Tip__ariaAttributesList">
+              {result.attributes.map((attr, index) => (
+                <li key={index}>
+                  {attr.name}="{attr.value}"
+                </li>
+              ))}
+            </ul>
+          ) : (RAW_CONTENT_TYPES as readonly string[]).includes(result.type) ? (
+            `${result.contentLabel ? t(result.contentLabel) : ""} ${result.content}`
+          ) : (
+            `${result.contentLabel ? t(result.contentLabel) : ""} ${t(result.content)}`
+          )}
+        </div>
+      )}
     </div>
   );
 };

@@ -119,6 +119,12 @@ export const ElementInfo = ({
       ? width - 2 * TIP_SIDE_MARGIN
       : (horizontalPosition === "right" ? x + width : rootWidth - x) -
         TIP_SIDE_MARGIN;
+  const ruleResultsWithoutAttributes = ruleResults.filter(
+    (r) => r.type !== "ariaAttributes",
+  );
+  const ruleResultAttribute = ruleResults.find(
+    (r) => r.type === "ariaAttributes",
+  );
   return (
     <div
       className={`ElementInfo${hovered ? " ElementInfo--hovered" : ""}`}
@@ -183,20 +189,36 @@ export const ElementInfo = ({
             "ElementInfo__tips",
             `ElementInfo__tips--${verticalPosition}`,
             `ElementInfo__tips--${horizontalPosition}`,
-          ].join(" ")}
+            interactiveMode && hideTips && !hovered
+              ? "ElementInfo__tips--hideLabel"
+              : "",
+          ]
+            .filter(Boolean)
+            .join(" ")}
           style={{
             fontSize: tipFontSize,
             maxWidth: `max(160px, ${tipMaxWidth}px)`,
           }}
         >
-          {ruleResults.map((result, i) => (
-            <RuleTip
-              maxWidth={tipMaxWidth}
-              hideLabel={interactiveMode && hideTips ? !hovered : false}
-              key={i}
-              result={result}
-            />
-          ))}
+          <div className="ElementInfo__normalTips">
+            {ruleResultsWithoutAttributes.map((result, i) => (
+              <RuleTip
+                maxWidth={tipMaxWidth}
+                hideLabel={interactiveMode && hideTips ? !hovered : false}
+                key={i}
+                result={result}
+              />
+            ))}
+          </div>
+          {ruleResultAttribute && (
+            <div className="ElementInfo__attributeTip">
+              <RuleTip
+                maxWidth={tipMaxWidth}
+                hideLabel={interactiveMode && hideTips ? !hovered : false}
+                result={ruleResultAttribute}
+              />
+            </div>
+          )}
         </div>
       </div>
     </div>

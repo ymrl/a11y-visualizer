@@ -187,11 +187,10 @@ export const RuleTip = ({
       <Icon type={result.type} />
       {!hideLabel && (
         <div className="Tip__label">
-          {result.type === "error" || result.type === "warning" ? (
-            t(result.message, result.messageParams)
-          ) : result.type === "state" ? (
-            t(result.state)
-          ) : result.type === "ariaAttributes" ? (
+          {(result.type === "error" || result.type === "warning") &&
+            t(result.message, result.messageParams)}
+          {result.type === "state" && t(result.state)}
+          {result.type === "ariaAttributes" && (
             <ul className="Tip__ariaAttributesList">
               {result.attributes.map((attr, index) => (
                 <li key={index}>
@@ -199,11 +198,14 @@ export const RuleTip = ({
                 </li>
               ))}
             </ul>
-          ) : (RAW_CONTENT_TYPES as readonly string[]).includes(result.type) ? (
-            `${result.contentLabel ? t(result.contentLabel) : ""} ${result.content}`
-          ) : (
-            `${result.contentLabel ? t(result.contentLabel) : ""} ${t(result.content)}`
           )}
+          {result.type !== "error" &&
+            result.type !== "warning" &&
+            result.type !== "state" &&
+            result.type !== "ariaAttributes" &&
+            ((RAW_CONTENT_TYPES as readonly string[]).includes(result.type)
+              ? `${result.contentLabel ? t(result.contentLabel) : ""} ${result.content}`
+              : `${result.contentLabel ? t(result.contentLabel) : ""} ${t(result.content)}`)}
         </div>
       )}
     </div>

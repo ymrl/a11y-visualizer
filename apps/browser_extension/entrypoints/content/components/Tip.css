@@ -3,11 +3,16 @@
   font: bold 1em/1 sans-serif;
   display: inline-flex;
   flex-direction: row;
-  align-items: center;
+  align-items: start;
   gap: 0.4em;
   color: #000;
   background-color: #fff;
   border-radius: 0.2em;
+}
+.Tip__label {
+  margin: 0;
+  line-height: 1.2;
+  padding: 0;
 }
 .Tip--name {
   background-color: var(--base-green);
@@ -69,8 +74,8 @@
 .Tip--lang {
   background-color: var(--base-cream);
 }
-.Tip--ariaAttribute {
-  background-color: var(--base-beige);
+.Tip--ariaAttributes {
+  background-color: var(--base-pink);
 }
 
 .Tip__icon {
@@ -78,4 +83,10 @@
   height: 1.2em;
   flex-shrink: 0;
   background-color: transparent;
+}
+
+.Tip__ariaAttributesList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }

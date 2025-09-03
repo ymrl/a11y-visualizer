@@ -35,6 +35,8 @@ import { TargetSize } from "./target-size";
 export const Rules = [
   HeadingLevel,
   AccessibleName,
+  AriaState,
+  Lang,
   ControlFocus,
   ControlName,
   ContenteditableRole,
@@ -46,7 +48,6 @@ export const Rules = [
   ImageName,
   LabelAssociatedControl,
   Landmark,
-  Lang,
   LinkHref,
   LinkTarget,
   List,
@@ -61,9 +62,8 @@ export const Rules = [
   TargetSize,
   Role,
   ListItem,
-  AriaState,
   AriaValidation,
-  AriaAttributes,
   AccessibleDescription,
   AbstractRole,
+  AriaAttributes,
 ] as const;

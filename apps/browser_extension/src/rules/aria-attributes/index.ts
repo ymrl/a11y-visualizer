@@ -76,26 +76,39 @@ export const AriaAttributes: RuleObject = {
       return undefined;
     }
 
-    const results: RuleResult[] = [];
+    const ariaAttributesList: Array<{ name: string; value: string }> = [];
+    const warnings: RuleResult[] = [];
 
+    // 要素に存在する属性を検出し、ariaAttributes配列の順序で処理
     for (const attribute of ariaAttributes) {
       const value = element.getAttribute(attribute);
       if (value === null) {
         continue;
       }
+      // aria-hidden="true"の場合は警告も表示
       if (attribute === "aria-hidden" && value === "true") {
-        results.push({
+        warnings.push({
           type: "warning",
-          message: `${attribute}: ${value}`,
-          ruleName,
-        });
-      } else {
-        results.push({
-          type: "ariaAttribute",
-          content: `${attribute}: ${value}`,
+          message: "Inaccessible",
           ruleName,
         });
       }
+      // すべてのaria属性をariaAttributesに含める
+      ariaAttributesList.push({ name: attribute, value });
+    }
+
+    const results: RuleResult[] = [];
+
+    // 警告は個別に表示
+    results.push(...warnings);
+
+    // aria属性がある場合は配列形式で結果を返す
+    if (ariaAttributesList.length > 0) {
+      results.push({
+        type: "ariaAttributes",
+        attributes: ariaAttributesList,
+        ruleName,
+      });
     }
 
     return results.length > 0 ? results : undefined;

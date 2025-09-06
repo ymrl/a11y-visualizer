@@ -1,12 +1,16 @@
-import { ChangeEvent, useState } from "react";
-import { Settings, ElementTypeMode, CategorySettings } from "../settings/types";
+import { type ChangeEvent, useId, useState } from "react";
+import {
+  defaultCustomCategorySettings,
+  getCategorySettingsFromMode,
+} from "../settings";
+import type {
+  CategorySettings,
+  ElementTypeMode,
+  Settings,
+} from "../settings/types";
 import { useLang } from "../useLang";
 import { Checkbox } from "./Checkbox";
 import { ElementTypeTabs } from "./ElementTypeTabs";
-import {
-  getCategorySettingsFromMode,
-  defaultCustomCategorySettings,
-} from "../settings";
 
 export const SettingsEditor = ({
   settings,
@@ -348,6 +352,7 @@ const DisplaySettingsSection = ({
   collapsed: boolean;
 }) => {
   const [isCollapsed, setIsCollapsed] = useState(collapsed);
+  const id = useId();
 
   const content = (
     <div className="flex flex-col gap-2">
@@ -379,7 +384,7 @@ const DisplaySettingsSection = ({
           </span>
         </div>
         <input
-          id="tipOpacityPercent"
+          id={`${id}-tipOpacityPercent`}
           className="accent-teal-600 dark:accent-teal-400"
           type="range"
           min={0}
@@ -425,7 +430,7 @@ const DisplaySettingsSection = ({
           </span>
         </div>
         <input
-          id="liveRegionOpacityPercent"
+          id={`${id}-liveRegionOpacityPercent`}
           className="accent-teal-600 dark:accent-teal-400"
           type="range"
           min={0}
@@ -522,14 +527,14 @@ const DisplaySettingsSection = ({
   }
 
   return (
-    <details className="w-full" open={!isCollapsed}>
-      <summary
-        className="cursor-pointer select-none text-sm font-bold text-zinc-700 dark:text-zinc-300 gap-1 mb-2"
-        onClick={(e) => {
-          e.preventDefault();
-          setIsCollapsed(!isCollapsed);
-        }}
-      >
+    <details
+      className="w-full"
+      open={!isCollapsed}
+      onToggle={(e) => {
+        setIsCollapsed(!e.currentTarget.open);
+      }}
+    >
+      <summary className="cursor-pointer select-none text-sm font-bold text-zinc-700 dark:text-zinc-300 gap-1 mb-2">
         {t("settings.displayCustomization")}
       </summary>
       {content}

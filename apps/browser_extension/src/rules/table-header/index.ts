@@ -1,7 +1,7 @@
 import { computeAccessibleName } from "dom-accessibility-api";
 import { getClosestByRoles } from "../../dom/getClosestByRoles";
 import { Table } from "../../table";
-import { RuleObject, RuleResult } from "../type";
+import type { RuleObject, RuleResult } from "../type";
 
 const ruleName = "table-header";
 const defaultOptions = {

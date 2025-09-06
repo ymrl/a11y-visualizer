@@ -1,7 +1,7 @@
 import { computeAccessibleName } from "dom-accessibility-api";
 import { getKnownRole } from "../../dom/getKnownRole";
-import { KnownRole } from "../../dom/KnownRole";
-import { RuleObject } from "../type";
+import type { KnownRole } from "../../dom/KnownRole";
+import type { RuleObject } from "../type";
 
 const ruleName = "landmark";
 const defaultOptions = { enabled: true };

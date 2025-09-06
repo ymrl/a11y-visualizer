@@ -1,5 +1,5 @@
-import React from "react";
-import { Settings } from "../../../src/settings";
+import type React from "react";
+import type { Settings } from "../../../src/settings";
 import { SettingsContext } from "../contexts/SettingsContext";
 
 export const SettingsProvider = ({

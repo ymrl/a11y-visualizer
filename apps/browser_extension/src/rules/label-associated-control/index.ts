@@ -1,5 +1,5 @@
-import { RuleObject } from "../type";
 import { isHidden } from "../../dom/isHidden";
+import type { RuleObject } from "../type";
 
 const LABELABLE_SELECTOR = [
   "button",
@@ -26,9 +26,10 @@ export const LabelAssociatedControl: RuleObject = {
     }
 
     const forAttr = element.getAttribute("for");
-    const forElement = forAttr && elementDocument.getElementById(forAttr);
-    const controlByFor =
-      forElement && forElement.matches(LABELABLE_SELECTOR) ? forElement : null;
+    const forElement = forAttr ? elementDocument.getElementById(forAttr) : null;
+    const controlByFor = forElement?.matches(LABELABLE_SELECTOR)
+      ? forElement
+      : null;
     const controlInside = element.querySelector(LABELABLE_SELECTOR);
     if (
       (!controlByFor && !controlInside) ||

@@ -1,4 +1,4 @@
-import { defineBackground, browser } from "#imports";
+import { browser, defineBackground } from "#imports";
 export default defineBackground(() => {
   const ENABLED_KEY = "__enabled__";
 

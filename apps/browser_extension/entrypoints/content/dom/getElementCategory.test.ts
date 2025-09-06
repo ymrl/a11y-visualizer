@@ -1,19 +1,19 @@
 import { describe, expect, test } from "vitest";
 import {
   getElementCategory,
-  isImage,
-  isPage,
-  isHeading,
+  isButton,
   isFormControl,
   isGroup,
-  isButton,
+  isHeading,
+  isImage,
   isLang,
   isLink,
   isList,
+  isListItem,
+  isPage,
   isSection,
   isTable,
   isTableCell,
-  isListItem,
 } from "./getElementCategory";
 
 describe("getElementCategory", () => {

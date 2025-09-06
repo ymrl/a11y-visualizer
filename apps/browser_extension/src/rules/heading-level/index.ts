@@ -1,4 +1,4 @@
-import { RuleObject } from "../type";
+import type { RuleObject } from "../type";
 
 const ruleName = "heading-level";
 const defaultOptions = { enabled: true };
@@ -25,7 +25,7 @@ export const HeadingLevel: RuleObject = {
       ];
     }
     const levelNumber = parseInt(level, 10);
-    if (levelNumber < 1 || isNaN(levelNumber)) {
+    if (levelNumber < 1 || Number.isNaN(levelNumber)) {
       return [
         {
           type: "error",

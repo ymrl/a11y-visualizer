@@ -1,5 +1,5 @@
-import { RuleObject } from "../type";
 import { getKnownRole } from "../../dom/getKnownRole";
+import type { RuleObject } from "../type";
 
 const ruleName = "contenteditable-role";
 const defaultOptions = {

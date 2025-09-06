@@ -1,6 +1,6 @@
-import { ElementMeta } from "../types";
-import { ElementInfo } from "./ElementInfo";
 import root from "react-shadow";
+import type { ElementMeta } from "../types";
+import { ElementInfo } from "./ElementInfo";
 import { Style } from "./Style";
 
 export const ElementList = ({

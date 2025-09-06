@@ -1,28 +1,28 @@
 import React from "react";
 import "../popup/index.css";
+import { SettingsEditor } from "../../src/components/SettingsEditor";
 import {
-  Settings,
   initialSettings,
   loadDefaultSettings,
   resetDefaultSettings,
+  type Settings,
   saveDefaultSettings,
 } from "../../src/settings";
 import type { SupportedLanguage } from "../../src/settings/types";
-import { SettingsEditor } from "../../src/components/SettingsEditor";
 import { useLang } from "../../src/useLang";
 
 export const OptionsPage = () => {
   const [settings, setSettings] = React.useState<Settings>(initialSettings);
-  const getSettings = async () => {
+  const getSettings = React.useCallback(async () => {
     const [newSettings] = await loadDefaultSettings();
     setSettings(newSettings);
-  };
+  }, []);
   const resetRef = React.useRef<HTMLDetailsElement>(null);
   const [resetDone, setResetDone] = React.useState(false);
 
   React.useEffect(() => {
     getSettings();
-  }, []);
+  }, [getSettings]);
 
   const updateSettings = async (newSettings: Settings) => {
     setSettings(newSettings);
@@ -74,13 +74,15 @@ export const OptionsPage = () => {
           useTabsForElementTypes={false}
         />
         <p className="text-sm text-gray-500">{t("optionsPage.description")}</p>
-        <details ref={resetRef}>
-          <summary
-            className="text-sm link text-teal-700 underline hover:enabled:text-teal-900 transition-colors dark:text-teal-400 hover:enabled:dark:text-teal-200 cursor-pointer"
-            onClick={() => {
+        <details
+          ref={resetRef}
+          onToggle={(e) => {
+            if (!e.currentTarget.open) {
               setResetDone(false);
-            }}
-          >
+            }
+          }}
+        >
+          <summary className="text-sm link text-teal-700 underline hover:enabled:text-teal-900 transition-colors dark:text-teal-400 hover:enabled:dark:text-teal-200 cursor-pointer">
             {t("optionsPage.resetSettings")}
           </summary>
           <div className="flex flex-col gap-2 pl-3 pt-2">
@@ -89,6 +91,7 @@ export const OptionsPage = () => {
             </p>
             <div className="text-sm flex flex-row gap-2 flex-wrap">
               <button
+                type="button"
                 className="link text-teal-700 underline hover:enabled:text-teal-900 transition-colors dark:text-teal-400 hover:enabled:dark:text-teal-200"
                 onClick={async () => {
                   await resetDefaultSettings();
@@ -99,6 +102,7 @@ export const OptionsPage = () => {
                 {t("optionsPage.resetSettingsConfirmYes")}
               </button>
               <button
+                type="button"
                 className="link text-teal-700 underline hover:enabled:text-teal-900 transition-colors dark:text-teal-400 hover:enabled:dark:text-teal-200"
                 onClick={() => {
                   if (resetRef.current) {

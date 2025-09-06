@@ -1,3 +1,3 @@
 import React from "react";
-import { Settings, initialSettings } from "../../../src/settings";
+import { initialSettings, type Settings } from "../../../src/settings";
 export const SettingsContext = React.createContext<Settings>(initialSettings);

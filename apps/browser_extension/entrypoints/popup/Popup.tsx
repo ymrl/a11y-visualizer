@@ -1,25 +1,25 @@
-import { browser } from "#imports";
 import React from "react";
+import { browser } from "#imports";
 import "./index.css";
-import {
-  SettingsMessage,
-  Settings,
-  initialSettings,
-  loadUrlSettings,
-  resetUrlSettings,
-  saveUrlSettings,
-} from "../../src/settings";
-import { useLang } from "../../src/useLang";
+import { IoBackspaceOutline, IoReloadOutline } from "react-icons/io5";
+import icon from "../../src/assets/icon.svg";
+import iconDisabled from "../../src/assets/icon-disabled.svg";
 import {
   sendMessageToActiveTab,
   sendMessageToActiveTabs,
 } from "../../src/browser/tabs";
+import { Checkbox } from "../../src/components/Checkbox";
 import { SettingsEditor } from "../../src/components/SettingsEditor";
 import { loadEnabled, saveEnabled } from "../../src/enabled";
-import { Checkbox } from "../../src/components/Checkbox";
-import icon from "../../src/assets/icon.svg";
-import iconDisabled from "../../src/assets/icon-disabled.svg";
-import { IoBackspaceOutline, IoReloadOutline } from "react-icons/io5";
+import {
+  initialSettings,
+  loadUrlSettings,
+  resetUrlSettings,
+  type Settings,
+  type SettingsMessage,
+  saveUrlSettings,
+} from "../../src/settings";
+import { useLang } from "../../src/useLang";
 
 const getUrl = async () => {
   const tabs = await browser.tabs.query({ active: true, currentWindow: true });
@@ -35,7 +35,7 @@ export const Popup = () => {
   const [hostSetting, setHostSetting] = React.useState<boolean>(false);
   const { t, lang } = useLang();
 
-  const loadSettings = async () => {
+  const loadSettings = React.useCallback(async () => {
     const loadedEnabled = await loadEnabled();
     setEnabled(loadedEnabled);
     const url = await getUrl();
@@ -53,11 +53,11 @@ export const Popup = () => {
     setHostSetting(found);
     setSettings(newSettings);
     return newSettings;
-  };
+  }, []);
 
   React.useEffect(() => {
     loadSettings();
-  }, []);
+  }, [loadSettings]);
 
   const updateSettings = async (newSettings: Settings) => {
     setSettings(newSettings);
@@ -187,6 +187,7 @@ export const Popup = () => {
           <p className="text-xs text-zinc-500 dark:text-zinc-400 px-2">
             {t("popup.hostDesc")}
             <button
+              type="button"
               className="link text-teal-700 underline hover:enabled:text-teal-900 transition-colors dark:text-teal-400 hover:enabled:dark:text-teal-200"
               onClick={() => browser.runtime.openOptionsPage()}
             >

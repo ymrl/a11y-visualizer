@@ -1,9 +1,9 @@
-import { describe, test, expect, afterEach } from "vitest";
+import { afterEach, describe, expect, test } from "vitest";
 import {
-  getComputedImplictRole,
   COMPUTED_ROLES,
+  type ComputedRole,
   computedRoleToKnownRole,
-  ComputedRole,
+  getComputedImplictRole,
 } from "./getComputedImplicitRole";
 
 describe("getComputedImplictRole", () => {

@@ -1,12 +1,12 @@
 import React from "react";
-import { collectElements } from "../dom";
-import { ElementMeta } from "../types";
-import { SettingsContext } from "../contexts/SettingsContext";
 import {
-  CategorySettings,
-  getCategorySettingsFromMode,
+  type CategorySettings,
   defaultCustomCategorySettings,
+  getCategorySettingsFromMode,
 } from "../../../src/settings";
+import { SettingsContext } from "../contexts/SettingsContext";
+import { collectElements } from "../dom";
+import type { ElementMeta } from "../types";
 
 type Layer = {
   element: Element;

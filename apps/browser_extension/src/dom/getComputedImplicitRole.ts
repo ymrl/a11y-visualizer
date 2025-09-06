@@ -1,5 +1,5 @@
 import { computeAccessibleName } from "dom-accessibility-api";
-import { KnownRole, knownRoles } from "./KnownRole";
+import { type KnownRole, knownRoles } from "./KnownRole";
 
 const isScopedToSectioningContent = (el: Element) => {
   return el.closest("article,aside,nav,section") !== null;

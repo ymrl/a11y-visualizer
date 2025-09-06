@@ -1,12 +1,12 @@
 import React from "react";
 import { createPortal } from "react-dom";
-import { ElementList } from "./components/ElementList";
-import { injectRoot } from "./injectRoot";
 import { Announcements } from "./components/Announcements";
+import { ElementList } from "./components/ElementList";
 import { SettingsContext } from "./contexts/SettingsContext";
-import { useLiveRegion } from "./hooks/useLiveRegion";
 import { useDebouncedCallback } from "./hooks/useDebouncedCallback";
 import { useElementMeta } from "./hooks/useElementMeta";
+import { useLiveRegion } from "./hooks/useLiveRegion";
+import { injectRoot } from "./injectRoot";
 
 export type RootOptions = {
   srcdoc?: boolean;
@@ -15,22 +15,20 @@ export type RootOptions = {
 };
 
 const getIframeElements = (el: Element): HTMLIFrameElement[] =>
-  [...el.querySelectorAll<HTMLIFrameElement>("iframe")]
-    .map((iframe) => {
-      const iframeWindow = iframe.contentWindow;
-      if (!iframeWindow) return iframe;
-      try {
-        const d = iframeWindow.document;
-        const { readyState } = d;
-        if (readyState === "complete") {
-          return [iframe, ...getIframeElements(d.body)];
-        }
-      } catch {
-        /* noop */
+  [...el.querySelectorAll<HTMLIFrameElement>("iframe")].flatMap((iframe) => {
+    const iframeWindow = iframe.contentWindow;
+    if (!iframeWindow) return iframe;
+    try {
+      const d = iframeWindow.document;
+      const { readyState } = d;
+      if (readyState === "complete") {
+        return [iframe, ...getIframeElements(d.body)];
       }
-      return iframe;
-    })
-    .flat();
+    } catch {
+      /* noop */
+    }
+    return iframe;
+  });
 
 const injectToFrames = (
   el: Element,
@@ -229,12 +227,7 @@ export const Root = ({
         ),
       )}
       {settings.showLiveRegions && announceMode === "self" && (
-        <Announcements
-          announcements={announcements.map(({ content, level }) => ({
-            content,
-            level,
-          }))}
-        />
+        <Announcements announcements={announcements} />
       )}
     </section>
   );

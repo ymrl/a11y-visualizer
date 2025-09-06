@@ -1,8 +1,8 @@
 import { computeAccessibleName } from "dom-accessibility-api";
-import { RuleObject, RuleResult } from "../type";
-import { getKnownRole } from "../../dom/getKnownRole";
 import { getComputedImplictRole } from "../../dom/getComputedImplicitRole";
+import { getKnownRole } from "../../dom/getKnownRole";
 import { isInAriaHidden } from "../../dom/isAriaHidden";
+import type { RuleObject, RuleResult } from "../type";
 
 const NAMING_PROHIBITED_ROLES = [
   "caption",
@@ -78,7 +78,7 @@ export const AccessibleName: RuleObject = {
     // For SVG elements without computed accessible name, check for title element
     if (!name && tagName === "svg") {
       const titleElement = element.querySelector("title");
-      if (titleElement && titleElement.textContent) {
+      if (titleElement?.textContent) {
         results.push({
           type: "name",
           content: titleElement.textContent,

@@ -1,6 +1,6 @@
 import { getClosestByRoles } from "../../dom/getClosestByRoles";
 import { Table } from "../../table";
-import { RuleObject } from "../type";
+import type { RuleObject } from "../type";
 
 const ruleName = "table-position";
 const defaultOptions = {

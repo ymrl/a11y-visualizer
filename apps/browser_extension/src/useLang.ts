@@ -1,9 +1,9 @@
-import { browser } from "#imports";
 import React from "react";
-import i18n from "./i18n";
 import { useTranslation } from "react-i18next";
+import { browser } from "#imports";
+import i18n from "./i18n";
 import { loadDefaultSettings } from "./settings";
-import type { SupportedLanguage, Settings } from "./settings/types";
+import type { Settings, SupportedLanguage } from "./settings/types";
 
 const getLanguageFromBrowser = (): SupportedLanguage => {
   const browserLang = browser.i18n.getUILanguage();
@@ -33,8 +33,8 @@ export const useLang = () => {
     const handleStorageChange = (
       changes: Record<string, { newValue?: unknown; oldValue?: unknown }>,
     ) => {
-      if (changes["__default__"] && changes["__default__"].newValue) {
-        const newSettings = changes["__default__"].newValue as Settings;
+      if (changes.__default__?.newValue) {
+        const newSettings = changes.__default__.newValue as Settings;
         if (newSettings.language) {
           const resolvedLang = resolveLanguage(newSettings.language);
           setLang(resolvedLang);

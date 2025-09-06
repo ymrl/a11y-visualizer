@@ -1,12 +1,7 @@
 import React from "react";
-import { SettingsContext } from "../contexts/SettingsContext";
-import { LiveLevel } from "../hooks/useLiveRegion";
 import { IoAlertCircleOutline } from "react-icons/io5";
-
-export type AnnouncementItem = {
-  content: string;
-  level: LiveLevel;
-};
+import { SettingsContext } from "../contexts/SettingsContext";
+import type { AnnouncementItem } from "../hooks/useLiveRegion";
 
 export const Announcements = ({
   announcements,
@@ -55,7 +50,7 @@ export const Announcements = ({
           }}
           ref={ref}
         >
-          {announcements.map((announcement, i) => (
+          {announcements.map((announcement) => (
             <li
               style={{
                 margin: 0,
@@ -63,7 +58,7 @@ export const Announcements = ({
                 alignItems: "center",
                 gap: "0.25em",
               }}
-              key={i}
+              key={`${announcement.timestamp}-${announcement.content}`}
             >
               {announcement.level === "assertive" && (
                 <IoAlertCircleOutline

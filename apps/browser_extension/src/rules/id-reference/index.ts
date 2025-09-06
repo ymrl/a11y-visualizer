@@ -1,5 +1,5 @@
 import { getKnownRole } from "../../dom/getKnownRole";
-import { RuleObject } from "../type";
+import type { RuleObject } from "../type";
 
 const ruleName = "id-reference";
 const defaultOptions = { enabled: true };

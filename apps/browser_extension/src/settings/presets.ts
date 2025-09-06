@@ -1,4 +1,4 @@
-import { CategorySettings, PresetId } from "./types";
+import type { CategorySettings, PresetId } from "./types";
 
 export interface Preset {
   id: Exclude<PresetId, "custom">;

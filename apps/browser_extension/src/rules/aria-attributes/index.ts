@@ -1,4 +1,4 @@
-import { RuleObject, RuleResult } from "../type";
+import type { RuleObject, RuleResult } from "../type";
 
 type Options = {
   enabled: boolean;

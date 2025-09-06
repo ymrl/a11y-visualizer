@@ -1,4 +1,4 @@
-import { CategorySettings } from "../../../src/settings";
+import type { CategorySettings } from "../../../src/settings";
 
 export const Selectors: Record<keyof CategorySettings, string[]> = {
   image: ["img", "svg", "[role~='img']"] as const,

@@ -1,20 +1,41 @@
-import { Table } from "../table";
+import type { Table } from "../table";
 
-export type RuleResultError = {
-  type: "error";
+type RuleResultBase = {
   ruleName: string;
+  type: unknown;
+};
+
+export type RuleResultError = RuleResultBase & {
+  type: "error";
   message: string;
   messageParams?: Record<string, string>;
 };
-export type RuleResultWarning = {
+export type RuleResultWarning = RuleResultBase & {
   type: "warning";
-  ruleName: string;
   message: string;
   messageParams?: Record<string, string>;
 };
 export type RuleResultMessage = RuleResultError | RuleResultWarning;
 
-export type RuleResultContent = {
+export const CONTENT_TYPES = [
+  "name",
+  "description",
+  "role",
+  "heading",
+  "lang",
+  "linkTarget",
+  "pageTitle",
+  "landmark",
+  "tagName",
+  "tableHeader",
+  "tableSize",
+  "tableCellPosition",
+  "list",
+  "listType",
+  "ariaAttribute",
+] as const;
+
+export type RuleResultContent = RuleResultBase & {
   type:
     | "name"
     | "description"
@@ -31,7 +52,6 @@ export type RuleResultContent = {
     | "list"
     | "listType"
     | "ariaAttribute";
-  ruleName: string;
   content: string;
   contentLabel?: string;
 };
@@ -46,22 +66,19 @@ export const RAW_CONTENT_TYPES = [
   "ariaAttribute",
 ] as const;
 
-export type RuleResultRawContent = {
+export type RuleResultRawContent = RuleResultBase & {
   type: (typeof RAW_CONTENT_TYPES)[number];
-  ruleName: string;
   content: string;
   contentLabel?: string;
 };
 
-export type RuleResultState = {
+export type RuleResultState = RuleResultBase & {
   type: "state";
-  ruleName: string;
   state: string;
 };
 
-export type RuleResultAriaAttributes = {
+export type RuleResultAriaAttributes = RuleResultBase & {
   type: "ariaAttributes";
-  ruleName: string;
   attributes: Array<{
     name: string;
     value: string;

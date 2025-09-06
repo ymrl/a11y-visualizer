@@ -1,11 +1,11 @@
 import { getKnownRole } from "../../dom/getKnownRole";
-import { KnownRole } from "../../dom/KnownRole";
-import { RuleObject, RuleResultMessage, RuleResultState } from "../type";
+import type { KnownRole } from "../../dom/KnownRole";
 import {
-  ARIA_ATTRIBUTE_VALUES,
   ARIA_ATTRIBUTE_ROLES,
-  AriaAttribute,
+  ARIA_ATTRIBUTE_VALUES,
+  type AriaAttribute,
 } from "../aria-validation/ariaSpec";
+import type { RuleObject, RuleResultMessage, RuleResultState } from "../type";
 
 const ruleName = "aria-state";
 const defaultOptions = { enabled: true };

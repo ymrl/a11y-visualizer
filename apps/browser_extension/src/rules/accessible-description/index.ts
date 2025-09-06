@@ -1,5 +1,5 @@
 import { computeAccessibleDescription } from "dom-accessibility-api";
-import { RuleObject } from "../type";
+import type { RuleObject } from "../type";
 
 const ruleName = "accessible-description";
 const defaultOptions = {

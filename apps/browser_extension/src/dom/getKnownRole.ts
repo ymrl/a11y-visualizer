@@ -1,5 +1,5 @@
 import { getRole } from "dom-accessibility-api";
-import { KnownRole, knownRoles } from "./KnownRole";
+import { type KnownRole, knownRoles } from "./KnownRole";
 
 export const getKnownRole = (el: Element): KnownRole | null => {
   const role = getRole(el);
@@ -91,10 +91,10 @@ const inputRole = (el: HTMLInputElement): KnownRole | null => {
       return "textbox";
     // ここまで仮のロール
 
-    case "text": //html-aria: textbox/combobox
-    case "tel": //html-aria: textbox/combobox
-    case "url": //html-aria: textbox/combobox
-    case "email": //html-aria: textbox/combobox
+    // case "text": //html-aria: textbox/combobox
+    // case "tel": //html-aria: textbox/combobox
+    // case "url": //html-aria: textbox/combobox
+    // case "email": //html-aria: textbox/combobox
     default:
       return el.getAttribute("list") ? "combobox" : "textbox";
   }

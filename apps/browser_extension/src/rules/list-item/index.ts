@@ -1,5 +1,6 @@
 import { getKnownRole } from "../../dom/getKnownRole";
-import { RuleObject, RuleResult } from "../type";
+import type { RuleObject, RuleResult } from "../type";
+
 const ruleName = "list-item";
 const defaultOptions = { enabled: true };
 const menuItemRoles = ["menuitem", "menuitemcheckbox", "menuitemradio"];

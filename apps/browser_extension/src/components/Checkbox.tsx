@@ -1,4 +1,4 @@
-import { ReactNode, ChangeEventHandler } from "react";
+import type { ChangeEventHandler, ReactNode } from "react";
 export const Checkbox = ({
   children,
   onChange,

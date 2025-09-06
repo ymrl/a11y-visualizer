@@ -1,6 +1,6 @@
 import { hasInteractiveDescendant } from "../../dom/hasInteractiveDescendant";
 import { hasTabIndexDescendant } from "../../dom/hasTabIndexDescendant";
-import { RuleObject } from "../type";
+import type { RuleObject } from "../type";
 
 const ruleName = "nested-interactive";
 const defaultOptions = {

@@ -1,26 +1,31 @@
-import { ElementMeta } from "../types";
-import { getPositionBaseElement } from "./getPositionBaseElement";
-import { isHidden } from "../../../src/dom/isHidden";
-import { getElementPosition } from "./getElementPosition";
 import { computeAccessibleName } from "dom-accessibility-api";
-import { CategorySettings } from "../../../src/settings";
-import { Table } from "../../../src/table";
-import { getScrollBaseElement } from "./getScrollBaseElement";
-import { isRuleTargetElement, RuleResult, Rules } from "../../../src/rules";
 import { getKnownRole } from "../../../src/dom/getKnownRole";
-import { Selectors } from "./Selectors";
-import { getElementCategory } from "./getElementCategory";
+import { isHidden } from "../../../src/dom/isHidden";
+import {
+  isRuleTargetElement,
+  type RuleResult,
+  Rules,
+} from "../../../src/rules";
+import type { CategorySettings } from "../../../src/settings";
+import type { Table } from "../../../src/table";
+import type { ElementMeta } from "../types";
 import { detectModals } from "./detectModals";
+import { getElementCategory } from "./getElementCategory";
+import { getElementPosition } from "./getElementPosition";
+import { getPositionBaseElement } from "./getPositionBaseElement";
+import { getScrollBaseElement } from "./getScrollBaseElement";
+import { Selectors } from "./Selectors";
 
 const getSelector = (settings: Partial<CategorySettings>) => {
-  const s = Object.keys(settings).reduce(
-    (prev, key) =>
+  const s = Object.keys(settings).reduce((acc, key) => {
+    if (
       settings[key as keyof CategorySettings] &&
       Selectors[key as keyof CategorySettings]
-        ? [...prev, ...Selectors[key as keyof CategorySettings]]
-        : prev,
-    [] as string[],
-  );
+    ) {
+      acc.push(...Selectors[key as keyof CategorySettings]);
+    }
+    return acc;
+  }, [] as string[]);
   return s.join(",");
 };
 

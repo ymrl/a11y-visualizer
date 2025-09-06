@@ -1,5 +1,5 @@
 import { getKnownRole } from "./getKnownRole";
-import { KnownRole } from "./KnownRole";
+import type { KnownRole } from "./KnownRole";
 
 export const getClosestByRoles = (
   el: Element,

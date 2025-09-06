@@ -1,5 +1,6 @@
 import { getClosestByRoles } from "./getClosestByRoles";
-import { KnownRole } from "./KnownRole";
+import type { KnownRole } from "./KnownRole";
+
 const ChildrenPresentationalRoles: KnownRole[] = [
   "button",
   "checkbox",

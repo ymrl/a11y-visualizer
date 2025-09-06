@@ -1,4 +1,5 @@
-import { RuleObject } from "../type";
+import type { RuleObject } from "../type";
+
 const ruleName = "link-href";
 const defaultOptions = { enabled: true };
 

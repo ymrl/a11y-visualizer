@@ -1,6 +1,6 @@
 import { computeAccessibleName } from "dom-accessibility-api";
-import { RuleObject } from "../type";
 import { isPresentationalChildren } from "../../dom/isPresentationalChildren";
+import type { RuleObject } from "../type";
 
 const ruleName = "iframe-name";
 

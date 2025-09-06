@@ -1,10 +1,10 @@
+import { computeAccessibleName } from "dom-accessibility-api";
 import React from "react";
-import { SettingsContext } from "../contexts/SettingsContext";
+import { getKnownRole } from "../../../src/dom/getKnownRole";
 import { isInAriaHidden } from "../../../src/dom/isAriaHidden";
 import { isHidden } from "../../../src/dom/isHidden";
-import { getKnownRole } from "../../../src/dom/getKnownRole";
+import { SettingsContext } from "../contexts/SettingsContext";
 import { detectModals } from "../dom/detectModals";
-import { computeAccessibleName } from "dom-accessibility-api";
 
 const LIVEREGION_SELECTOR =
   "output, [role~='status'], [role~='alert'], [role~='log'], [aria-live]:not([aria-live='off'])";
@@ -14,6 +14,12 @@ const ALERT_SELECTOR = "[role~='alert']";
 const BUSY_SELECTOR = "[aria-busy='true']";
 
 export type LiveLevel = "polite" | "assertive";
+export type AnnouncementItem = {
+  content: string;
+  level: LiveLevel;
+  duration: number;
+  timestamp: number;
+};
 
 const getClosestElement = (node: Node): Element | null => {
   if (node.nodeType === Node.ELEMENT_NODE) {
@@ -44,22 +50,20 @@ const getLiveRegions = (
   iframeElements: HTMLIFrameElement[],
 ): Element[] => [
   ...el.querySelectorAll<Element>(LIVEREGION_SELECTOR),
-  ...iframeElements
-    .map((iframe): Element[] => {
-      try {
-        if (iframe.contentWindow?.document?.readyState === "complete") {
-          return [
-            ...iframe.contentWindow.document.querySelectorAll<Element>(
-              LIVEREGION_SELECTOR,
-            ),
-          ];
-        }
-      } catch {
-        /* noop */
+  ...iframeElements.flatMap((iframe): Element[] => {
+    try {
+      if (iframe.contentWindow?.document?.readyState === "complete") {
+        return [
+          ...iframe.contentWindow.document.querySelectorAll<Element>(
+            LIVEREGION_SELECTOR,
+          ),
+        ];
       }
-      return [];
-    })
-    .flat(),
+    } catch {
+      /* noop */
+    }
+    return [];
+  }),
 ];
 
 const isBusy = (el: Element): boolean => {
@@ -83,11 +87,11 @@ export const useLiveRegion = ({
   const liveRegionsRef = React.useRef<Element[]>([]);
   const liveRegionObserverRef = React.useRef<MutationObserver | null>(null);
   const processedAlertsRef = React.useRef<WeakSet<Element>>(new WeakSet());
-  const [announcements, setAnnouncements] = React.useState<
-    { content: string; level: LiveLevel; duration: number }[]
-  >([]);
+  const [announcements, setAnnouncements] = React.useState<AnnouncementItem[]>(
+    [],
+  );
   const [pausedAnnouncements, setPausedAnnouncements] = React.useState<
-    { content: string; level: LiveLevel; duration: number }[]
+    AnnouncementItem[]
   >([]);
   const currentTimeoutRef = React.useRef<number | null>(null);
 
@@ -102,7 +106,13 @@ export const useLiveRegion = ({
         Math.max(1, content.length) * announcementSecondsPerCharacter * 1000,
         announcementMaxSeconds * 1000,
       );
-      const announcement = { content, level, duration };
+      const timestamp = Date.now();
+      const announcement: AnnouncementItem = {
+        content,
+        level,
+        duration,
+        timestamp,
+      };
 
       setAnnouncements((prev) => [...prev, announcement]);
     },
@@ -377,7 +387,9 @@ export const useLiveRegion = ({
         addAnnouncement(c.content, c.level);
       });
     });
-    liveRegionsRef.current.forEach((el) => connectLiveRegion(observer, el, {}));
+    liveRegionsRef.current.forEach((el) => {
+      connectLiveRegion(observer, el, {});
+    });
     liveRegionObserverRef.current = observer;
 
     return () => {
@@ -386,14 +398,11 @@ export const useLiveRegion = ({
     };
   }, [
     showLiveRegions,
-    announcementMaxSeconds,
-    announcementSecondsPerCharacter,
     connectLiveRegion,
     addAnnouncement,
     clearAnnouncements,
     pausedAnnouncements,
     parentRef,
-    handleAlertAppearance,
   ]);
 
   React.useEffect(() => {

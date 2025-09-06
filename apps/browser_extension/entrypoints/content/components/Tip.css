@@ -1,6 +1,6 @@
 .Tip {
   padding: 0.2em 0.4em;
-  font: bold 1em/1 sans-serif;
+  font: bold 1em / 1 sans-serif;
   display: inline-flex;
   flex-direction: row;
   align-items: start;

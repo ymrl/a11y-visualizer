@@ -1,5 +1,5 @@
 import { browser } from "#imports";
-import { SettingsMessage } from "../settings";
+import type { SettingsMessage } from "../settings";
 
 export const sendMessageToActiveTab = async <
   T extends SettingsMessage,
@@ -8,7 +8,11 @@ export const sendMessageToActiveTab = async <
   message: T,
 ) => {
   const tabs = await browser.tabs.query({ active: true, currentWindow: true });
-  tabs.forEach(({ id }) => id && browser.tabs.sendMessage<T, R>(id, message));
+  tabs.forEach(({ id }) => {
+    if (id) {
+      browser.tabs.sendMessage<T, R>(id, message);
+    }
+  });
 };
 
 export const sendMessageToActiveTabs = async <
@@ -18,5 +22,9 @@ export const sendMessageToActiveTabs = async <
   message: T,
 ) => {
   const tabs = await browser.tabs.query({ active: true });
-  tabs.forEach(({ id }) => id && browser.tabs.sendMessage<T, R>(id, message));
+  tabs.forEach(({ id }) => {
+    if (id) {
+      browser.tabs.sendMessage<T, R>(id, message);
+    }
+  });
 };

@@ -1,10 +1,14 @@
-import { browser } from "#imports";
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { Root, RootOptions } from "./Root";
-import { Settings, SettingsMessage, loadUrlSettings } from "../../src/settings";
-import { SettingsProvider } from "./components/SettingsProvider";
+import { browser } from "#imports";
 import { loadEnabled } from "../../src/enabled";
+import {
+  loadUrlSettings,
+  type Settings,
+  type SettingsMessage,
+} from "../../src/settings";
+import { SettingsProvider } from "./components/SettingsProvider";
+import { Root, type RootOptions } from "./Root";
 
 type InjectOptions = RootOptions & {
   mountOnce?: boolean;
@@ -80,10 +84,8 @@ export const injectRoot = async (
     }
     if (message.enabled) {
       if (!mountOnce) {
-        (mountReturn || (mountReturn = mount(w, parent))).render(
-          settings,
-          "enabled",
-        );
+        mountReturn = mountReturn || mount(w, parent);
+        mountReturn.render(settings, "enabled");
       }
     } else {
       mountReturn?.unmount();
@@ -98,10 +100,8 @@ export const injectRoot = async (
         type: "isEnabled",
       });
       if (enabled) {
-        (mountReturn || (mountReturn = mount(w, parent))).render(
-          settings,
-          "visibilitychange",
-        );
+        mountReturn = mountReturn || mount(w, parent);
+        mountReturn.render(settings, "visibilitychange");
       } else {
         mountReturn?.unmount();
         mountReturn = null;

@@ -1,23 +1,24 @@
-import React, {
-  useRef,
-  useId,
+import type React from "react";
+import {
+  type KeyboardEvent,
   useCallback,
-  KeyboardEvent,
-  useState,
   useEffect,
+  useId,
+  useRef,
+  useState,
 } from "react";
 import {
-  CategorySettings,
-  ElementTypeMode,
-  PresetId,
-  presets,
-  getCategorySettingsFromMode,
+  type CategorySettings,
   defaultCustomCategorySettings,
+  type ElementTypeMode,
+  getCategorySettingsFromMode,
+  type PresetId,
+  presets,
 } from "../settings";
 import {
+  getInitialCustomSettings,
   loadCustomSettings,
   saveCustomSettings,
-  getInitialCustomSettings,
 } from "../settings/storage";
 import { useLang } from "../useLang";
 import { Checkbox } from "./Checkbox";
@@ -58,6 +59,7 @@ export const ElementTypeTabs: React.FC<ElementTypeTabsProps> = ({
   const tabListRef = useRef<HTMLDivElement>(null);
   const tabPanelId = useId();
   const tabListId = useId();
+  const customTabId = useId();
 
   // カスタム設定を独立して保持するstate
   const [customSettings, setCustomSettings] = useState<CategorySettings>(
@@ -238,7 +240,7 @@ export const ElementTypeTabs: React.FC<ElementTypeTabsProps> = ({
             key="custom"
             type="button"
             role="tab"
-            id="tab-custom"
+            id={customTabId}
             aria-selected={activeTab === "custom"}
             aria-controls={`${tabPanelId}-panel`}
             tabIndex={activeTab === "custom" ? 0 : -1}
@@ -260,7 +262,6 @@ export const ElementTypeTabs: React.FC<ElementTypeTabsProps> = ({
           role="tabpanel"
           id={`${tabPanelId}-panel`}
           aria-labelledby={`tab-${activeTab}`}
-          tabIndex={0}
         >
           {/* カスタムタブの場合のみチェックボックスを表示 */}
           {activeTab === "custom" ? (

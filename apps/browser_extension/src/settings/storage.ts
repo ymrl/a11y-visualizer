@@ -1,12 +1,12 @@
-import { Settings, CategorySettings } from "./types";
+import { getAsync, removeAsync, setAsync } from "../browser/localStorage";
 import {
   DEFAULT_SETTING_KEY,
+  defaultCustomCategorySettings,
   FILE_SETTING_KEY,
   initialSettings,
-  defaultCustomCategorySettings,
 } from "./constants";
-import { getAsync, removeAsync, setAsync } from "../browser/localStorage";
 import { presets } from "./presets";
+import type { CategorySettings, Settings } from "./types";
 
 // 古い形式の設定を新しい形式に変換
 function migrateLegacySettings(settings: unknown): Settings {

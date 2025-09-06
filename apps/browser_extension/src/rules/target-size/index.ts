@@ -1,7 +1,7 @@
-import { isInline } from "../../dom/isInline";
-import { isDefaultSize } from "../../dom/isDefaultSize";
-import { RuleObject } from "../type";
 import { getElementPosition } from "../../../entrypoints/content/dom/getElementPosition";
+import { isDefaultSize } from "../../dom/isDefaultSize";
+import { isInline } from "../../dom/isInline";
+import type { RuleObject } from "../type";
 
 const ruleName = "target-size";
 const defaultOptions = { enabled: true };

@@ -1,5 +1,5 @@
 import { getKnownRole } from "../dom/getKnownRole";
-import { RuleObject } from "./type";
+import type { RuleObject, RuleResult } from "./type";
 
 export const isRuleTargetElement = (
   element: Element,
@@ -14,4 +14,18 @@ export const isRuleTargetElement = (
   if (ruleObject.selectors && element.matches(ruleObject.selectors.join(",")))
     return true;
   return false;
+};
+
+export const getRuleResultIdentifier = (result: RuleResult): string => {
+  switch (result.type) {
+    case "error":
+    case "warning":
+      return `${result.type}-${result.ruleName}-${result.message}`;
+    case "state":
+      return `${result.type}-${result.state}`;
+    case "ariaAttributes":
+      return "ariaAttributes";
+    default:
+      return `${result.type}-${result.content}`;
+  }
 };

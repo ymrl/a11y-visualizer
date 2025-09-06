@@ -1,4 +1,4 @@
-import { describe, test, expect, afterEach } from "vitest";
+import { afterEach, describe, expect, test } from "vitest";
 import { IdReference } from "./index";
 
 describe("IdReference", () => {
@@ -11,17 +11,23 @@ describe("IdReference", () => {
       <label for="test-input">Label</label>
       <input id="test-input" />
     `;
-    const label = document.querySelector("label")!;
+    const label = document.querySelector("label");
+    if (!label) {
+      throw new Error("Label element not found");
+    }
     const result = IdReference.evaluate(label, IdReference.defaultOptions, {});
     expect(result).toBeUndefined();
   });
 
   test("reports warning for for attribute with non-existing ID", () => {
     document.body.innerHTML = `<label for="non-existent">Label</label>`;
-    const label = document.querySelector("label")!;
+    const label = document.querySelector("label");
+    if (!label) {
+      throw new Error("Label element not found");
+    }
     const result = IdReference.evaluate(label, IdReference.defaultOptions, {});
     expect(result).toHaveLength(1);
-    expect(result![0]).toEqual({
+    expect(result?.[0]).toEqual({
       type: "warning",
       message: "Referenced IDs do not exist: {{idsWithAttributes}}",
       messageParams: {
@@ -36,7 +42,10 @@ describe("IdReference", () => {
       <div id="title">Title</div>
       <div aria-labelledby="title">Content</div>
     `;
-    const element = document.querySelector("div[aria-labelledby]")!;
+    const element = document.querySelector("div[aria-labelledby]");
+    if (!element) {
+      throw new Error("Element with aria-labelledby not found");
+    }
     const result = IdReference.evaluate(
       element,
       IdReference.defaultOptions,
@@ -47,14 +56,17 @@ describe("IdReference", () => {
 
   test("reports warning for aria-labelledby with non-existing ID", () => {
     document.body.innerHTML = `<div aria-labelledby="missing-id">Content</div>`;
-    const element = document.querySelector("div")!;
+    const element = document.querySelector("div");
+    if (!element) {
+      throw new Error("Element with aria-labelledby not found");
+    }
     const result = IdReference.evaluate(
       element,
       IdReference.defaultOptions,
       {},
     );
     expect(result).toHaveLength(1);
-    expect(result![0]).toEqual({
+    expect(result?.[0]).toEqual({
       type: "warning",
       message: "Referenced IDs do not exist: {{idsWithAttributes}}",
       messageParams: {
@@ -70,7 +82,10 @@ describe("IdReference", () => {
       <div id="title2">Title 2</div>
       <div aria-labelledby="title1 title2">Content</div>
     `;
-    const element = document.querySelector("div[aria-labelledby]")!;
+    const element = document.querySelector("div[aria-labelledby]");
+    if (!element) {
+      throw new Error("Element with aria-labelledby not found");
+    }
     const result = IdReference.evaluate(
       element,
       IdReference.defaultOptions,
@@ -84,14 +99,17 @@ describe("IdReference", () => {
       <div id="title1">Title 1</div>
       <div aria-labelledby="title1 missing-id">Content</div>
     `;
-    const element = document.querySelector("div[aria-labelledby]")!;
+    const element = document.querySelector("div[aria-labelledby]");
+    if (!element) {
+      throw new Error("Element with aria-labelledby not found");
+    }
     const result = IdReference.evaluate(
       element,
       IdReference.defaultOptions,
       {},
     );
     expect(result).toHaveLength(1);
-    expect(result![0]).toEqual({
+    expect(result?.[0]).toEqual({
       type: "warning",
       message: "Referenced IDs do not exist: {{idsWithAttributes}}",
       messageParams: {
@@ -107,7 +125,10 @@ describe("IdReference", () => {
         <div id="option1" role="option">Option 1</div>
       </div>
     `;
-    const listbox = document.querySelector("div[role='listbox']")!;
+    const listbox = document.querySelector("div[role='listbox']");
+    if (!listbox) {
+      throw new Error("Listbox element not found");
+    }
     const result = IdReference.evaluate(
       listbox,
       IdReference.defaultOptions,
@@ -122,14 +143,17 @@ describe("IdReference", () => {
         <div id="option1" role="option">Option 1</div>
       </div>
     `;
-    const listbox = document.querySelector("div[role='listbox']")!;
+    const listbox = document.querySelector("div[role='listbox']");
+    if (!listbox) {
+      throw new Error("Listbox element not found");
+    }
     const result = IdReference.evaluate(
       listbox,
       IdReference.defaultOptions,
       {},
     );
     expect(result).toHaveLength(1);
-    expect(result![0]).toEqual({
+    expect(result?.[0]).toEqual({
       type: "warning",
       message: "Referenced IDs do not exist: {{idsWithAttributes}}",
       messageParams: {
@@ -145,7 +169,10 @@ describe("IdReference", () => {
       <div id="desc2">Description 2</div>
       <button aria-describedby="desc1 desc2">Button</button>
     `;
-    const button = document.querySelector("button")!;
+    const button = document.querySelector("button");
+    if (!button) {
+      throw new Error("Button element not found");
+    }
     const result = IdReference.evaluate(button, IdReference.defaultOptions, {});
     expect(result).toBeUndefined();
   });
@@ -154,14 +181,17 @@ describe("IdReference", () => {
     document.body.innerHTML = `
       <div aria-labelledby="missing1 missing2">Content</div>
     `;
-    const element = document.querySelector("div")!;
+    const element = document.querySelector("div");
+    if (!element) {
+      throw new Error("Element with aria-labelledby not found");
+    }
     const result = IdReference.evaluate(
       element,
       IdReference.defaultOptions,
       {},
     );
     expect(result).toHaveLength(1);
-    expect(result![0]).toEqual({
+    expect(result?.[0]).toEqual({
       type: "warning",
       message: "Referenced IDs do not exist: {{idsWithAttributes}}",
       messageParams: {
@@ -175,10 +205,13 @@ describe("IdReference", () => {
     document.body.innerHTML = `
       <label for="missing-input" aria-describedby="missing-desc1 missing-desc2">Label</label>
     `;
-    const label = document.querySelector("label")!;
+    const label = document.querySelector("label");
+    if (!label) {
+      throw new Error("Label element not found");
+    }
     const result = IdReference.evaluate(label, IdReference.defaultOptions, {});
     expect(result).toHaveLength(1);
-    expect(result![0]).toEqual({
+    expect(result?.[0]).toEqual({
       type: "warning",
       message: "Referenced IDs do not exist: {{idsWithAttributes}}",
       messageParams: {
@@ -193,10 +226,13 @@ describe("IdReference", () => {
     document.body.innerHTML = `
       <input form="missing-form" list="missing-datalist" aria-activedescendant="missing-active" />
     `;
-    const input = document.querySelector("input")!;
+    const input = document.querySelector("input");
+    if (!input) {
+      throw new Error("Input element not found");
+    }
     const result = IdReference.evaluate(input, IdReference.defaultOptions, {});
     expect(result).toHaveLength(1);
-    expect(result![0]).toEqual({
+    expect(result?.[0]).toEqual({
       type: "warning",
       message: "Referenced IDs do not exist: {{idsWithAttributes}}",
       messageParams: {
@@ -213,10 +249,13 @@ describe("IdReference", () => {
         Content
       </div>
     `;
-    const div = document.querySelector("div")!;
+    const div = document.querySelector("div");
+    if (!div) {
+      throw new Error("Div element not found");
+    }
     const result = IdReference.evaluate(div, IdReference.defaultOptions, {});
     expect(result).toHaveLength(1);
-    expect(result![0]).toEqual({
+    expect(result?.[0]).toEqual({
       type: "warning",
       message: "Referenced IDs do not exist: {{idsWithAttributes}}",
       messageParams: {
@@ -239,10 +278,13 @@ describe("IdReference", () => {
         Button
       </button>
     `;
-    const button = document.querySelector("button")!;
+    const button = document.querySelector("button");
+    if (!button) {
+      throw new Error("Button element not found");
+    }
     const result = IdReference.evaluate(button, IdReference.defaultOptions, {});
     expect(result).toHaveLength(1);
-    expect(result![0]).toEqual({
+    expect(result?.[0]).toEqual({
       type: "warning",
       message: "Referenced IDs do not exist: {{idsWithAttributes}}",
       messageParams: {
@@ -266,10 +308,13 @@ describe("IdReference", () => {
         </tr>
       </table>
     `;
-    const td = document.querySelector("td")!;
+    const td = document.querySelector("td");
+    if (!td) {
+      throw new Error("Table cell (td) element not found");
+    }
     const result = IdReference.evaluate(td, IdReference.defaultOptions, {});
     expect(result).toHaveLength(1);
-    expect(result![0]).toEqual({
+    expect(result?.[0]).toEqual({
       type: "warning",
       message: "Referenced IDs do not exist: {{idsWithAttributes}}",
       messageParams: {
@@ -282,7 +327,10 @@ describe("IdReference", () => {
 
   test("ignores empty attribute values", () => {
     document.body.innerHTML = `<div aria-labelledby="">Content</div>`;
-    const element = document.querySelector("div")!;
+    const element = document.querySelector("div");
+    if (!element) {
+      throw new Error("Element with aria-labelledby not found");
+    }
     const result = IdReference.evaluate(
       element,
       IdReference.defaultOptions,
@@ -293,7 +341,10 @@ describe("IdReference", () => {
 
   test("ignores whitespace-only attribute values", () => {
     document.body.innerHTML = `<div aria-labelledby="   ">Content</div>`;
-    const element = document.querySelector("div")!;
+    const element = document.querySelector("div");
+    if (!element) {
+      throw new Error("Element with aria-labelledby not found");
+    }
     const result = IdReference.evaluate(
       element,
       IdReference.defaultOptions,
@@ -304,14 +355,20 @@ describe("IdReference", () => {
 
   test("returns undefined when disabled", () => {
     document.body.innerHTML = `<label for="non-existent">Label</label>`;
-    const label = document.querySelector("label")!;
+    const label = document.querySelector("label");
+    if (!label) {
+      throw new Error("Label element not found");
+    }
     const result = IdReference.evaluate(label, { enabled: false }, {});
     expect(result).toBeUndefined();
   });
 
   test("handles elements without ID reference attributes", () => {
     document.body.innerHTML = `<div>Content</div>`;
-    const element = document.querySelector("div")!;
+    const element = document.querySelector("div");
+    if (!element) {
+      throw new Error("Div element not found");
+    }
     const result = IdReference.evaluate(
       element,
       IdReference.defaultOptions,
@@ -325,7 +382,10 @@ describe("IdReference", () => {
       <button aria-controls="panel">Toggle</button>
       <div id="panel">Panel content</div>
     `;
-    const button = document.querySelector("button")!;
+    const button = document.querySelector("button");
+    if (!button) {
+      throw new Error("Button element not found");
+    }
     const result = IdReference.evaluate(button, IdReference.defaultOptions, {});
     expect(result).toBeUndefined();
   });
@@ -335,7 +395,10 @@ describe("IdReference", () => {
       <div aria-details="detail-info">Content</div>
       <div id="detail-info">Detailed information</div>
     `;
-    const element = document.querySelector("div[aria-details]")!;
+    const element = document.querySelector("div[aria-details]");
+    if (!element) {
+      throw new Error("Element with aria-details not found");
+    }
     const result = IdReference.evaluate(
       element,
       IdReference.defaultOptions,
@@ -349,7 +412,10 @@ describe("IdReference", () => {
       <input aria-errormessage="error-msg" />
       <div id="error-msg">Error message</div>
     `;
-    const input = document.querySelector("input")!;
+    const input = document.querySelector("input");
+    if (!input) {
+      throw new Error("Input element not found");
+    }
     const result = IdReference.evaluate(input, IdReference.defaultOptions, {});
     expect(result).toBeUndefined();
   });
@@ -362,17 +428,23 @@ describe("IdReference", () => {
         <option value="Firefox">
       </datalist>
     `;
-    const input = document.querySelector("input")!;
+    const input = document.querySelector("input");
+    if (!input) {
+      throw new Error("Input element not found");
+    }
     const result = IdReference.evaluate(input, IdReference.defaultOptions, {});
     expect(result).toBeUndefined();
   });
 
   test("reports warning for list attribute with non-existing ID", () => {
     document.body.innerHTML = `<input list="missing-datalist" />`;
-    const input = document.querySelector("input")!;
+    const input = document.querySelector("input");
+    if (!input) {
+      throw new Error("Input element not found");
+    }
     const result = IdReference.evaluate(input, IdReference.defaultOptions, {});
     expect(result).toHaveLength(1);
-    expect(result![0]).toEqual({
+    expect(result?.[0]).toEqual({
       type: "warning",
       message: "Referenced IDs do not exist: {{idsWithAttributes}}",
       messageParams: {
@@ -387,17 +459,23 @@ describe("IdReference", () => {
       <form id="my-form"></form>
       <input form="my-form" />
     `;
-    const input = document.querySelector("input")!;
+    const input = document.querySelector("input");
+    if (!input) {
+      throw new Error("Input element not found");
+    }
     const result = IdReference.evaluate(input, IdReference.defaultOptions, {});
     expect(result).toBeUndefined();
   });
 
   test("reports warning for form attribute with non-existing ID", () => {
     document.body.innerHTML = `<input form="missing-form" />`;
-    const input = document.querySelector("input")!;
+    const input = document.querySelector("input");
+    if (!input) {
+      throw new Error("Input element not found");
+    }
     const result = IdReference.evaluate(input, IdReference.defaultOptions, {});
     expect(result).toHaveLength(1);
-    expect(result![0]).toEqual({
+    expect(result?.[0]).toEqual({
       type: "warning",
       message: "Referenced IDs do not exist: {{idsWithAttributes}}",
       messageParams: {
@@ -419,7 +497,10 @@ describe("IdReference", () => {
         </tr>
       </table>
     `;
-    const td = document.querySelector("td")!;
+    const td = document.querySelector("td");
+    if (!td) {
+      throw new Error("Table cell (td) element not found");
+    }
     const result = IdReference.evaluate(td, IdReference.defaultOptions, {});
     expect(result).toBeUndefined();
   });
@@ -435,10 +516,13 @@ describe("IdReference", () => {
         </tr>
       </table>
     `;
-    const td = document.querySelector("td")!;
+    const td = document.querySelector("td");
+    if (!td) {
+      throw new Error("Table cell (td) element not found");
+    }
     const result = IdReference.evaluate(td, IdReference.defaultOptions, {});
     expect(result).toHaveLength(1);
-    expect(result![0]).toEqual({
+    expect(result?.[0]).toEqual({
       type: "warning",
       message: "Referenced IDs do not exist: {{idsWithAttributes}}",
       messageParams: {
@@ -461,7 +545,10 @@ describe("IdReference", () => {
         </tr>
       </table>
     `;
-    const td = document.querySelector("td")!;
+    const td = document.querySelector("td");
+    if (!td) {
+      throw new Error("Table cell (td) element not found");
+    }
     const result = IdReference.evaluate(td, IdReference.defaultOptions, {});
     expect(result).toBeUndefined();
   });
@@ -474,17 +561,23 @@ describe("IdReference", () => {
       </menu>
       <div contextmenu="context-menu">Right-click me</div>
     `;
-    const div = document.querySelector("div")!;
+    const div = document.querySelector("div");
+    if (!div) {
+      throw new Error("Div element not found");
+    }
     const result = IdReference.evaluate(div, IdReference.defaultOptions, {});
     expect(result).toBeUndefined();
   });
 
   test("reports warning for contextmenu attribute with non-existing ID", () => {
     document.body.innerHTML = `<div contextmenu="missing-menu">Right-click me</div>`;
-    const div = document.querySelector("div")!;
+    const div = document.querySelector("div");
+    if (!div) {
+      throw new Error("Div element not found");
+    }
     const result = IdReference.evaluate(div, IdReference.defaultOptions, {});
     expect(result).toHaveLength(1);
-    expect(result![0]).toEqual({
+    expect(result?.[0]).toEqual({
       type: "warning",
       message: "Referenced IDs do not exist: {{idsWithAttributes}}",
       messageParams: {
@@ -499,7 +592,10 @@ describe("IdReference", () => {
       document.body.innerHTML = `
         <button aria-controls="missing-panel" aria-expanded="false">Toggle</button>
       `;
-      const button = document.querySelector("button")!;
+      const button = document.querySelector("button");
+      if (!button) {
+        throw new Error("Button element not found");
+      }
       const result = IdReference.evaluate(
         button,
         IdReference.defaultOptions,
@@ -512,14 +608,17 @@ describe("IdReference", () => {
       document.body.innerHTML = `
         <button aria-controls="missing-panel" aria-expanded="true">Toggle</button>
       `;
-      const button = document.querySelector("button")!;
+      const button = document.querySelector("button");
+      if (!button) {
+        throw new Error("Button element not found");
+      }
       const result = IdReference.evaluate(
         button,
         IdReference.defaultOptions,
         {},
       );
       expect(result).toHaveLength(1);
-      expect(result![0]).toEqual({
+      expect(result?.[0]).toEqual({
         type: "warning",
         message: "Referenced IDs do not exist: {{idsWithAttributes}}",
         messageParams: {
@@ -533,7 +632,10 @@ describe("IdReference", () => {
       document.body.innerHTML = `
         <div role="tab" aria-controls="missing-tabpanel" aria-selected="false">Tab</div>
       `;
-      const tab = document.querySelector("div")!;
+      const tab = document.querySelector("div");
+      if (!tab) {
+        throw new Error("Tab element not found");
+      }
       const result = IdReference.evaluate(tab, IdReference.defaultOptions, {});
       expect(result).toBeUndefined();
     });
@@ -542,10 +644,13 @@ describe("IdReference", () => {
       document.body.innerHTML = `
         <div role="tab" aria-controls="missing-tabpanel" aria-selected="true">Tab</div>
       `;
-      const tab = document.querySelector("div")!;
+      const tab = document.querySelector("div");
+      if (!tab) {
+        throw new Error("Tab element not found");
+      }
       const result = IdReference.evaluate(tab, IdReference.defaultOptions, {});
       expect(result).toHaveLength(1);
-      expect(result![0]).toEqual({
+      expect(result?.[0]).toEqual({
         type: "warning",
         message: "Referenced IDs do not exist: {{idsWithAttributes}}",
         messageParams: {
@@ -559,10 +664,13 @@ describe("IdReference", () => {
       document.body.innerHTML = `
         <div role="tab" aria-controls="missing-tabpanel">Tab</div>
       `;
-      const tab = document.querySelector("div")!;
+      const tab = document.querySelector("div");
+      if (!tab) {
+        throw new Error("Tab element not found");
+      }
       const result = IdReference.evaluate(tab, IdReference.defaultOptions, {});
       expect(result).toHaveLength(1);
-      expect(result![0]).toEqual({
+      expect(result?.[0]).toEqual({
         type: "warning",
         message: "Referenced IDs do not exist: {{idsWithAttributes}}",
         messageParams: {
@@ -576,14 +684,17 @@ describe("IdReference", () => {
       document.body.innerHTML = `
         <button aria-controls="missing-panel" aria-describedby="missing-desc" aria-expanded="false">Toggle</button>
       `;
-      const button = document.querySelector("button")!;
+      const button = document.querySelector("button");
+      if (!button) {
+        throw new Error("Button element not found");
+      }
       const result = IdReference.evaluate(
         button,
         IdReference.defaultOptions,
         {},
       );
       expect(result).toHaveLength(1);
-      expect(result![0]).toEqual({
+      expect(result?.[0]).toEqual({
         type: "warning",
         message: "Referenced IDs do not exist: {{idsWithAttributes}}",
         messageParams: {
@@ -599,10 +710,13 @@ describe("IdReference", () => {
           Tab
         </div>
       `;
-      const tab = document.querySelector("div")!;
+      const tab = document.querySelector("div");
+      if (!tab) {
+        throw new Error("Tab element not found");
+      }
       const result = IdReference.evaluate(tab, IdReference.defaultOptions, {});
       expect(result).toHaveLength(1);
-      expect(result![0]).toEqual({
+      expect(result?.[0]).toEqual({
         type: "warning",
         message: "Referenced IDs do not exist: {{idsWithAttributes}}",
         messageParams: {

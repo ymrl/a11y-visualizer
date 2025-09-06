@@ -1,7 +1,7 @@
-import { RuleObject } from "../type";
-import { isPresentationalChildren } from "../../dom/isPresentationalChildren";
-import { isInAriaHidden } from "../../dom/isAriaHidden";
 import { computeAccessibleName } from "dom-accessibility-api";
+import { isInAriaHidden } from "../../dom/isAriaHidden";
+import { isPresentationalChildren } from "../../dom/isPresentationalChildren";
+import type { RuleObject } from "../type";
 
 type Options = {
   enabled: boolean;

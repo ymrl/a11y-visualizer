@@ -1,4 +1,4 @@
-import { describe, test, expect, afterEach } from "vitest";
+import { afterEach, describe, expect, test } from "vitest";
 import { AriaAttributes } from "./index";
 
 describe("AriaAttributes", () => {
@@ -7,14 +7,17 @@ describe("AriaAttributes", () => {
   });
   test("displays aria attributes with values", () => {
     document.body.innerHTML = `<div aria-controls="menu1" aria-level="2">Content</div>`;
-    const element = document.querySelector("div")!;
+    const element = document.querySelector("div");
+    if (!element) {
+      throw new Error("Element not found");
+    }
     const result = AriaAttributes.evaluate(
       element,
       AriaAttributes.defaultOptions,
       {},
     );
     expect(result).toHaveLength(1);
-    expect(result![0]).toEqual({
+    expect(result?.[0]).toEqual({
       type: "ariaAttributes",
       attributes: [
         { name: "aria-controls", value: "menu1" },
@@ -26,7 +29,10 @@ describe("AriaAttributes", () => {
 
   test("returns warning when aria-hidden is true", () => {
     document.body.innerHTML = `<div aria-label="test" aria-hidden="true" aria-controls="menu1">Content</div>`;
-    const element = document.querySelector("div")!;
+    const element = document.querySelector("div");
+    if (!element) {
+      throw new Error("Element not found");
+    }
     const result = AriaAttributes.evaluate(
       element,
       AriaAttributes.defaultOptions,
@@ -50,14 +56,17 @@ describe("AriaAttributes", () => {
   });
   test("returns ariaAttribute when aria-hidden is false", () => {
     document.body.innerHTML = `<div aria-label="test" aria-hidden="false" aria-controls="menu1">Content</div>`;
-    const element = document.querySelector("div")!;
+    const element = document.querySelector("div");
+    if (!element) {
+      throw new Error("Element not found");
+    }
     const result = AriaAttributes.evaluate(
       element,
       AriaAttributes.defaultOptions,
       {},
     );
     expect(result).toHaveLength(1);
-    expect(result![0]).toEqual({
+    expect(result?.[0]).toEqual({
       type: "ariaAttributes",
       attributes: [
         { name: "aria-controls", value: "menu1" },
@@ -70,21 +79,27 @@ describe("AriaAttributes", () => {
 
   test("returns undefined when disabled", () => {
     document.body.innerHTML = `<div aria-controls="menu1">Content</div>`;
-    const element = document.querySelector("div")!;
+    const element = document.querySelector("div");
+    if (!element) {
+      throw new Error("Element not found");
+    }
     const result = AriaAttributes.evaluate(element, { enabled: false }, {});
     expect(result).toBeUndefined();
   });
 
   test("handles empty attribute values", () => {
     document.body.innerHTML = `<div aria-controls="">Content</div>`;
-    const element = document.querySelector("div")!;
+    const element = document.querySelector("div");
+    if (!element) {
+      throw new Error("Element not found");
+    }
     const result = AriaAttributes.evaluate(
       element,
       AriaAttributes.defaultOptions,
       {},
     );
     expect(result).toHaveLength(1);
-    expect(result![0]).toEqual({
+    expect(result?.[0]).toEqual({
       type: "ariaAttributes",
       attributes: [{ name: "aria-controls", value: "" }],
       ruleName: "aria-attributes",
@@ -115,7 +130,10 @@ describe("AriaAttributes", () => {
 
   test("includes aria-hidden in attributes while also showing warning", () => {
     document.body.innerHTML = `<div aria-hidden="true">Content</div>`;
-    const element = document.querySelector("div")!;
+    const element = document.querySelector("div");
+    if (!element) {
+      throw new Error("Element not found");
+    }
     const result = AriaAttributes.evaluate(
       element,
       AriaAttributes.defaultOptions,

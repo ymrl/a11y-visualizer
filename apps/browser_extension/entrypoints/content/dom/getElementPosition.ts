@@ -1,4 +1,4 @@
-import { ElementPosition } from "../types";
+import type { ElementPosition } from "../types";
 export const getElementPosition = (
   el: Element,
   w: Window,

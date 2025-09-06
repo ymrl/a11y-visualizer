@@ -1,5 +1,6 @@
-import { describe, test, expect, afterEach } from "vitest";
+import { afterEach, describe, expect, test } from "vitest";
 import { AriaState } from ".";
+
 describe("aria-state", () => {
   afterEach(() => {
     document.body.innerHTML = "";

@@ -1,4 +1,4 @@
-import { RuleObject } from "../type";
+import type { RuleObject } from "../type";
 
 const ruleName = "page-title";
 const defaultOptions = { enabled: true };

@@ -1,4 +1,4 @@
-import { RuleResult } from "../../src/rules";
+import type { RuleResult } from "../../src/rules";
 
 export type ElementMeta = {
   name: string;

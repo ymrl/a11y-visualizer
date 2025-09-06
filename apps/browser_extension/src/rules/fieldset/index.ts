@@ -1,4 +1,4 @@
-import { RuleObject } from "../type";
+import type { RuleObject } from "../type";
 
 const ruleName = "fieldset";
 const defaultOptions = { enabled: true };

@@ -17,7 +17,7 @@ export const isFocusable = (
   const matches = element.matches(FOCUSABLE_SELECTOR);
   if (keyboard && matches) {
     const tabindex = element.getAttribute("tabindex");
-    return tabindex === null || parseInt(tabindex) >= 0;
+    return tabindex === null || parseInt(tabindex, 10) >= 0;
   }
   return matches;
 };

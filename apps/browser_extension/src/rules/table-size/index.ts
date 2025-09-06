@@ -1,5 +1,5 @@
 import { Table } from "../../table";
-import { RuleObject } from "../type";
+import type { RuleObject } from "../type";
 
 const ruleName = "table-size";
 const defaultOptions = {

@@ -1,9 +1,9 @@
 import { getKnownRole } from "../../dom/getKnownRole";
-import { RuleObject, RuleResult } from "../type";
+import type { RuleObject, RuleResult } from "../type";
 import {
   ALL_ARIA_ATTRIBUTES,
-  validateAriaAttributeValue,
   isValidAriaAttributeForRole,
+  validateAriaAttributeValue,
 } from "./ariaSpec";
 
 type Options = {

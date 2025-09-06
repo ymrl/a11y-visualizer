@@ -1,5 +1,5 @@
-import { Category } from "../types";
 import { getKnownRole } from "../../../src/dom/getKnownRole";
+import type { Category } from "../types";
 
 export const getElementCategory = (
   el: Element,

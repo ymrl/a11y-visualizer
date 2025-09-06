@@ -1,10 +1,10 @@
 import { describe, expect, test } from "vitest";
 import {
-  Table,
+  getCellElements,
   getRowElements,
   getRowGroupElements,
-  getCellElements,
   isEmptyCellElement,
+  Table,
 } from ".";
 
 describe("Table", () => {

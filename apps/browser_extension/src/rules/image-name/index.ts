@@ -1,7 +1,7 @@
 import { computeAccessibleName } from "dom-accessibility-api";
-import { RuleObject } from "../type";
 import { getKnownRole } from "../../dom/getKnownRole";
 import { isPresentationalChildren } from "../../dom/isPresentationalChildren";
+import type { RuleObject } from "../type";
 
 const ruleName = "image-name";
 
@@ -42,7 +42,7 @@ export const ImageName: RuleObject = {
     let effectiveName = name;
     if (tagName === "svg" && !name) {
       const titleElement = element.querySelector("title");
-      if (titleElement && titleElement.textContent) {
+      if (titleElement?.textContent) {
         effectiveName = titleElement.textContent;
       }
     }

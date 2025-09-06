@@ -1,5 +1,5 @@
 import { computeAccessibleName } from "dom-accessibility-api";
-import { RuleObject } from "../type";
+import type { RuleObject } from "../type";
 
 const ruleName = "control-name";
 const defaultOptions = {

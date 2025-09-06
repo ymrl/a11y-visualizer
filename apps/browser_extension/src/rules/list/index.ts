@@ -1,5 +1,6 @@
 import { getKnownRole } from "../../dom/getKnownRole";
-import { RuleObject, RuleResult } from "../type";
+import type { RuleObject, RuleResult } from "../type";
+
 const ruleName = "list";
 const defaultOptions = { enabled: true };
 const roles = ["list", "directory", "menu", "menubar"];
@@ -160,13 +161,14 @@ export const getListItems = (
               }
               return null;
             })
-            .reduce(
-              (prev: Element[], curr: Element | Element[] | null) =>
-                curr
-                  ? [...prev, ...(Array.isArray(curr) ? curr : [curr])]
-                  : prev,
-              [] as Element[],
-            );
+            .reduce((acc: Element[], curr: Element | Element[] | null) => {
+              if (Array.isArray(curr)) {
+                acc.push(...curr);
+              } else if (curr) {
+                acc.push(curr);
+              }
+              return acc;
+            }, [] as Element[]);
         } else if (
           childRole === "presentation" ||
           childRole === "none" ||
@@ -196,9 +198,12 @@ export const getListItems = (
       }
       return null;
     })
-    .reduce(
-      (prev: Element[], curr: Element | Element[] | null) =>
-        curr ? [...prev, ...(Array.isArray(curr) ? curr : [curr])] : prev,
-      [] as Element[],
-    );
+    .reduce((acc: Element[], curr: Element | Element[] | null) => {
+      if (Array.isArray(curr)) {
+        acc.push(...curr);
+      } else if (curr) {
+        acc.push(curr);
+      }
+      return acc;
+    }, [] as Element[]);
 };

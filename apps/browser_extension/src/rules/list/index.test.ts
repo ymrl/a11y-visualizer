@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, test } from "vitest";
-import { getListItems, List } from ".";
 import { getKnownRole } from "../../dom/getKnownRole";
+import { getListItems, List } from ".";
 
 describe("List", () => {
   afterEach(() => {

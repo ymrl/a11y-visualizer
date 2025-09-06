@@ -1,4 +1,5 @@
-import { RuleObject } from "../type";
+import type { RuleObject } from "../type";
+
 const ruleName = "link-target";
 const defaultOptions = { enabled: true };
 export const LinkTarget: RuleObject = {

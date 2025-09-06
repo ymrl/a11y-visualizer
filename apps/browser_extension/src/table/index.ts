@@ -44,8 +44,7 @@ export class Table {
         : prevFirstCell
           ? prevFirstCell.positionY + 1
           : rowIndex;
-      return [
-        ...rows,
+      rows.push(
         cellElements.reduce((cells, cell) => {
           const cellTagName = cell.tagName.toLowerCase();
           const cellRole = getKnownRole(cell);
@@ -66,10 +65,8 @@ export class Table {
             while (dy >= 0) {
               for (let i = 0; i < rows[dy].length; i++) {
                 const cell = rows[dy][i];
-                if (cell.positionX + cell.sizeX <= positionX) {
-                  // positionXより左にあるセルは無視
-                  continue;
-                } else if (
+                if (
+                  cell.positionX + cell.sizeX > positionX &&
                   cell.positionX <= positionX &&
                   positionX < cell.positionX + cell.sizeX
                 ) {
@@ -112,19 +109,18 @@ export class Table {
                 : cellRole === "rowheader"
                   ? "row"
                   : "none";
-          return [
-            ...cells,
-            {
-              element: cell,
-              sizeX,
-              sizeY,
-              positionX,
-              positionY,
-              headerScope,
-            },
-          ];
+          cells.push({
+            element: cell,
+            sizeX,
+            sizeY,
+            positionX,
+            positionY,
+            headerScope,
+          });
+          return cells;
         }, [] as Cell[]),
-      ];
+      );
+      return rows;
     }, [] as Cell[][]);
     const ariaRowCount = table.getAttribute("aria-rowcount");
     const ariaColCount = table.getAttribute("aria-colcount");
@@ -153,7 +149,7 @@ export class Table {
           rowGroups.length > 0 ? rowGroups[rowGroups.length - 1] : null;
         if (
           prevGroup &&
-          ((prevGroup.element && prevGroup.element.contains(row)) ||
+          (prevGroup.element?.contains(row) ||
             (!prevGroup.element && !rowGroupElements[0]) ||
             (!prevGroup.element && !groupElements[0].contains(row)))
         ) {
@@ -204,7 +200,8 @@ export class Table {
                   }, 0),
                   1,
                 );
-            return [...groups, { positionX, sizeX, element: group }];
+            groups.push({ positionX, sizeX, element: group });
+            return groups;
           }, [] as ColGroup[])
         : [];
     this.rowGroups = rowGroups;
@@ -232,10 +229,13 @@ export class Table {
             ...this.getColHeaderElements(cell),
             ...this.getColGroupHeaderElements(cell),
           ]
-    ).reduce(
-      (prev, el) => (prev.includes(el) ? prev : [...prev, el]),
-      [] as Element[],
-    );
+    ).reduce((prev, el) => {
+      if (prev.includes(el)) {
+        return prev;
+      }
+      prev.push(el);
+      return prev;
+    }, [] as Element[]);
   };
 
   getSlotCells = (x: number, y: number): Cell[] => {
@@ -300,7 +300,7 @@ export class Table {
           .map((_, i) => positionX - 1 - i)
           .forEach((x) => {
             const candidates = this.getSlotCells(x, y);
-            candidates.map((c) => {
+            candidates.forEach((c) => {
               if (c.headerScope !== "none") {
                 inHeaderBlock = true;
                 headersFromCurrentHeaderBlock.push(c);
@@ -334,7 +334,7 @@ export class Table {
     );
     if (!rowGroup) return [];
     return this.cells
-      .map((row) =>
+      .flatMap((row) =>
         row.filter(
           (c) =>
             c.headerScope === "rowgroup" &&
@@ -342,7 +342,6 @@ export class Table {
             c.positionY + c.sizeY > rowGroup.positionY,
         ),
       )
-      .flat()
       .map((c) => c.element)
       .filter((el) => el !== element && !isEmptyCellElement(el));
   };
@@ -363,7 +362,7 @@ export class Table {
           .map((_, i) => positionY - 1 - i)
           .forEach((y) => {
             const candidates = this.getSlotCells(x, y);
-            candidates.map((c) => {
+            candidates.forEach((c) => {
               if (c.headerScope !== "none") {
                 inHeaderBlock = true;
                 headersFromCurrentHeaderBlock.push(c);
@@ -397,7 +396,7 @@ export class Table {
     );
     if (!colGroup) return [];
     return this.cells
-      .map((row) =>
+      .flatMap((row) =>
         row.filter(
           (c) =>
             c.positionY < positionY &&
@@ -406,7 +405,6 @@ export class Table {
             c.positionX + c.sizeX > colGroup.positionX,
         ),
       )
-      .flat()
       .map((c) => c.element)
       .filter((el) => el !== element && !isEmptyCellElement(el));
   };
@@ -447,8 +445,9 @@ export const getRowElements = (el: Element): Element[] => {
     const exceptFooters = children.filter(
       (child) => child.tagName.toLowerCase() !== "tfoot",
     );
-    return [...exceptFooters, ...footers].reduce((prev, child) => {
-      return [...prev, ...getRowElementsInElement(child, tagName === "table")];
+    return [...exceptFooters, ...footers].reduce((acc, child) => {
+      acc.push(...getRowElementsInElement(child, tagName === "table"));
+      return acc;
     }, [] as Element[]);
   }
 
@@ -467,8 +466,9 @@ const getRowElementsInElement = (
     (inTableElement && ["thead", "tbody", "tfoot"].includes(tagName)) ||
     ["rowgroup", "none", "presentation"].includes(role as string)
   ) {
-    return [...el.children].reduce((prev, child) => {
-      return [...prev, ...getRowElementsInElement(child, inTableElement)];
+    return [...el.children].reduce((acc, child) => {
+      acc.push(...getRowElementsInElement(child, inTableElement));
+      return acc;
     }, [] as Element[]);
   }
   return [];
@@ -490,11 +490,9 @@ export const getRowGroupElements = (el: Element): Element[] => {
     const exceptFooters = children.filter(
       (child) => child.tagName.toLowerCase() !== "tfoot",
     );
-    return [...exceptFooters, ...footers].reduce((prev, child) => {
-      return [
-        ...prev,
-        ...getRowGroupElementsInElement(child, tagName === "table"),
-      ];
+    return [...exceptFooters, ...footers].reduce((acc, child) => {
+      acc.push(...getRowGroupElementsInElement(child, tagName === "table"));
+      return acc;
     }, [] as Element[]);
   }
   return [];
@@ -516,8 +514,9 @@ const getRowGroupElementsInElement = (
     role === "presentation" ||
     role === "none"
   ) {
-    return [...el.children].reduce((prev, child) => {
-      return [...prev, ...getRowGroupElementsInElement(child, inTableElement)];
+    return [...el.children].reduce((acc, child) => {
+      acc.push(...getRowGroupElementsInElement(child, inTableElement));
+      return acc;
     }, [] as Element[]);
   }
   return [];
@@ -532,22 +531,20 @@ export const getCellElements = (el: Element): Element[] => {
     );
   }
   if (["row", "presentation", "none"].includes(role as string)) {
-    return [...el.children]
-      .map((child) => {
-        const childRole = getKnownRole(child);
-        if (
-          ["cell", "gridcell", "columnheader", "rowheader"].includes(
-            childRole as string,
-          )
-        ) {
-          return child;
-        }
-        if (["presentation", "none"].includes(childRole as string)) {
-          return getCellElements(child);
-        }
-        return [];
-      })
-      .flat();
+    return [...el.children].flatMap((child) => {
+      const childRole = getKnownRole(child);
+      if (
+        ["cell", "gridcell", "columnheader", "rowheader"].includes(
+          childRole as string,
+        )
+      ) {
+        return child;
+      }
+      if (["presentation", "none"].includes(childRole as string)) {
+        return getCellElements(child);
+      }
+      return [];
+    });
   }
   return [];
 };

@@ -1,5 +1,5 @@
-import { RuleObject } from "../type";
 import { isFocusable } from "../../dom/isFocusable";
+import type { RuleObject } from "../type";
 
 const ruleName = "control-focus";
 const defaultOptions = {

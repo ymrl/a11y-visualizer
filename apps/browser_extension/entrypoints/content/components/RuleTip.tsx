@@ -1,5 +1,3 @@
-import { RAW_CONTENT_TYPES, RuleResult } from "../../../src/rules";
-import { useLang } from "../../../src/useLang";
 import {
   IoAccessibility,
   IoAlertCircle,
@@ -20,6 +18,8 @@ import {
   IoPricetag,
   IoWarning,
 } from "react-icons/io5";
+import { RAW_CONTENT_TYPES, type RuleResult } from "../../../src/rules";
+import { useLang } from "../../../src/useLang";
 
 const Icon = ({ type }: { type: RuleResult["type"] }) => {
   const { t } = useLang();
@@ -192,8 +192,8 @@ export const RuleTip = ({
           {result.type === "state" && t(result.state)}
           {result.type === "ariaAttributes" && (
             <ul className="Tip__ariaAttributesList">
-              {result.attributes.map((attr, index) => (
-                <li key={index}>
+              {result.attributes.map((attr) => (
+                <li key={attr.name}>
                   {attr.name}="{attr.value}"
                 </li>
               ))}

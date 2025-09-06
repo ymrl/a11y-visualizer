@@ -1,6 +1,7 @@
 import React from "react";
-import { ElementMeta } from "../types";
+import { getRuleResultIdentifier } from "../../../src/rules";
 import { SettingsContext } from "../contexts/SettingsContext";
+import type { ElementMeta } from "../types";
 import { RuleTip } from "./RuleTip";
 
 const ELEMENT_SIZE_ENHANCEMENT = 4;
@@ -137,6 +138,7 @@ export const ElementInfo = ({
       ref={selfRef}
     >
       {interactiveMode && (
+        // biome-ignore lint/a11y/noStaticElementInteractions: for observing hover
         <div
           className="ElementInfo__overlay"
           style={{
@@ -165,9 +167,9 @@ export const ElementInfo = ({
       >
         {ruleResults.length > 0 &&
           (rects.length > 0 ? (
-            rects.map((rect, i) => (
+            rects.map((rect) => (
               <div
-                key={i}
+                key={`${category}-${rect.relativeX},${rect.relativeY},${rect.width},${rect.height}`}
                 className={`ElementInfo__border ElementInfo__border--${category}`}
                 style={{
                   top: rect.relativeY,
@@ -201,11 +203,11 @@ export const ElementInfo = ({
           }}
         >
           <div className="ElementInfo__normalTips">
-            {ruleResultsWithoutAttributes.map((result, i) => (
+            {ruleResultsWithoutAttributes.map((result) => (
               <RuleTip
                 maxWidth={tipMaxWidth}
                 hideLabel={interactiveMode && hideTips ? !hovered : false}
-                key={i}
+                key={getRuleResultIdentifier(result)}
                 result={result}
               />
             ))}

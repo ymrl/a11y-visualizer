@@ -1,4 +1,4 @@
-import { RuleObject } from "../type";
+import type { RuleObject } from "../type";
 
 const ruleName = "radio-group";
 const defaultOptions = {

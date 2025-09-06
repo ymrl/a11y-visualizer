@@ -425,12 +425,12 @@ export const validateAriaAttributeValue = (
 
   if (validValues === "integer") {
     const num = parseInt(value.trim(), 10);
-    return !isNaN(num) && num.toString() === value.trim() && num >= 1;
+    return !Number.isNaN(num) && num.toString() === value.trim() && num >= 1;
   }
 
   if (validValues === "number") {
     const num = parseFloat(value.trim());
-    return !isNaN(num) && isFinite(num);
+    return !Number.isNaN(num) && Number.isFinite(num);
   }
 
   if (Array.isArray(validValues)) {

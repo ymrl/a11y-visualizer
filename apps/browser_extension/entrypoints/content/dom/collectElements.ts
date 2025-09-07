@@ -1,6 +1,7 @@
 import { computeAccessibleName } from "dom-accessibility-api";
 import { getKnownRole } from "../../../src/dom/getKnownRole";
 import { isHidden } from "../../../src/dom/isHidden";
+import { isOutOfSight } from "../../../src/dom/isOutOfSight";
 import {
   isRuleTargetElement,
   type RuleResult,
@@ -35,6 +36,7 @@ export const collectElements = (
   settings: Partial<CategorySettings>,
   options: {
     srcdoc?: boolean;
+    hideOutOfSightElementTips?: boolean;
   } = {},
 ): {
   elements: ElementMeta[];
@@ -94,6 +96,13 @@ export const collectElements = (
         // モーダルが表示されている場合、モーダル外の要素を非表示にする
         if (hasActiveModals) {
           return modals.some((modal) => modal.contains(el) || modal === el);
+        }
+        return true;
+      })
+      .filter((el) => {
+        // 視覚的に見えない要素のフィルタリング
+        if (options.hideOutOfSightElementTips) {
+          return !isOutOfSight(el, excludes);
         }
         return true;
       })

@@ -41,7 +41,8 @@
     "liveRegionFontSize": "Live region font size",
     "displaySettings": "Display Settings",
     "displayCustomization": "Display Customization",
-    "uncheckAll": "Uncheck all"
+    "uncheckAll": "Uncheck all",
+    "hideOutOfSightElementTips": "Hide visually obscured elements"
   },
   "presets": {
     "basic": "Basic",

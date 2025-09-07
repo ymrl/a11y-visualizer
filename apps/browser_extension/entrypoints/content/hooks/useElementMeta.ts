@@ -20,6 +20,7 @@ const collectTopLayers = (
   container: Element | null,
   categorySettings: CategorySettings,
   srcdoc: boolean | undefined,
+  hideOutOfSightElementTips: boolean | undefined,
 ) => {
   const elements = [...el.querySelectorAll("dialog, [popover]")];
   const layers: Layer[] = elements
@@ -29,7 +30,7 @@ const collectTopLayers = (
         element,
         [],
         categorySettings,
-        { srcdoc },
+        { srcdoc, hideOutOfSightElementTips },
       );
       return {
         element,
@@ -45,6 +46,7 @@ const collectTopLayers = (
 const collectIFrames = (
   iframeElements: HTMLIFrameElement[],
   categorySettings: CategorySettings,
+  hideOutOfSightElementTips: boolean | undefined,
 ): Layer[] =>
   iframeElements
     .map((iframe): Layer | null => {
@@ -58,7 +60,10 @@ const collectIFrames = (
             d.body,
             [],
             categorySettings,
-            { srcdoc: iframe.hasAttribute("srcdoc") },
+            {
+              srcdoc: iframe.hasAttribute("srcdoc"),
+              hideOutOfSightElementTips,
+            },
           );
           return {
             element: d.body,
@@ -116,9 +121,16 @@ export const useElementMeta = ({
         containerRef.current,
         categorySettings,
         srcdoc,
+        settings.hideOutOfSightElementTips,
       );
       setTopLayers(topLayers);
-      setIframeLayers(collectIFrames(iframeElements, categorySettings));
+      setIframeLayers(
+        collectIFrames(
+          iframeElements,
+          categorySettings,
+          settings.hideOutOfSightElementTips,
+        ),
+      );
 
       const { elements, rootHeight, rootWidth } = collectElements(
         parentRef.current,
@@ -126,7 +138,10 @@ export const useElementMeta = ({
           (el): el is Element => !!el,
         ),
         categorySettings,
-        { srcdoc },
+        {
+          srcdoc,
+          hideOutOfSightElementTips: settings.hideOutOfSightElementTips,
+        },
       );
       setMetaList(elements);
       setWidth(rootWidth);

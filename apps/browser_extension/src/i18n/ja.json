@@ -41,7 +41,8 @@
     "liveRegionFontSize": "ライブリージョンの文字サイズ",
     "displaySettings": "表示設定",
     "displayCustomization": "表示のカスタマイズ",
-    "uncheckAll": "すべて外す"
+    "uncheckAll": "すべて外す",
+    "hideOutOfSightElementTips": "視覚的に隠されている要素を非表示"
   },
   "presets": {
     "basic": "基本",

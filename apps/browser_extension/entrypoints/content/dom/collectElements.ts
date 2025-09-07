@@ -133,26 +133,29 @@ export const collectElements = (
           height: rect.height,
         }));
 
+        const ruleResults = Rules.reduce<RuleResult[]>((prev, rule) => {
+          const result = isRuleTargetElement(el, rule, role)
+            ? rule.evaluate(el, rule.defaultOptions, {
+                tables: internalTables,
+                elementDocument: d,
+                elementWindow: w,
+                name,
+                role,
+                srcdoc: options.srcdoc,
+              })
+            : undefined;
+          return result ? prev.concat(result) : prev;
+        }, []);
+
         return {
           ...elementPosition,
           rects,
           name: name || "",
           category: getElementCategory(el, role),
-          ruleResults: Rules.reduce((prev, rule) => {
-            const result = isRuleTargetElement(el, rule, role)
-              ? rule.evaluate(el, rule.defaultOptions, {
-                  tables: internalTables,
-                  elementDocument: d,
-                  elementWindow: w,
-                  name,
-                  role,
-                  srcdoc: options.srcdoc,
-                })
-              : undefined;
-            return result ? prev.concat(result) : prev;
-          }, [] as RuleResult[]),
+          ruleResults,
         };
       })
-      .filter((el): el is ElementMeta => el !== null),
+      .filter((el): el is ElementMeta => el !== null)
+      .filter((el) => el.ruleResults.length > 0),
   };
 };

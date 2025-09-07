@@ -40,7 +40,8 @@
     "tipFontSize": "Tip font size",
     "liveRegionFontSize": "Live region font size",
     "displaySettings": "표시 설정",
-    "displayCustomization": "표시 커스터마이징"
+    "displayCustomization": "표시 커스터마이징",
+    "uncheckAll": "모두 선택 해제"
   },
   "presets": {
     "basic": "기본",

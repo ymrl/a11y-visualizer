@@ -40,7 +40,8 @@
     "tipFontSize": "チップの文字サイズ",
     "liveRegionFontSize": "ライブリージョンの文字サイズ",
     "displaySettings": "表示設定",
-    "displayCustomization": "表示のカスタマイズ"
+    "displayCustomization": "表示のカスタマイズ",
+    "uncheckAll": "すべて外す"
   },
   "presets": {
     "basic": "基本",

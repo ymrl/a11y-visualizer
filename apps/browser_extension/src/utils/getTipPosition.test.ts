@@ -66,7 +66,7 @@ describe("getTipPosition - category: section", () => {
       ruleResults: [
         { type: "name", ruleName: "r", content: "x" },
         { type: "role", ruleName: "r", content: "x" },
-      ] 
+      ],
     });
     expect(verticalPosition).toBe("inner-top");
   });

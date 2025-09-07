@@ -357,6 +357,37 @@ export const ElementTypeTabs: React.FC<ElementTypeTabsProps> = ({
               >
                 <span className="text-sm">{t("settings.waiAria")}</span>
               </Checkbox>
+              <div className="grow flex flex-row justify-end">
+                <button
+                  type="button"
+                  className="text-teal-700 bg-opacity-0 rounded-full shrink-0 px-2 py-1 text-xs underline
+                      dark:text-teal-200
+                      hover:enabled:bg-zinc-200 transition-colors cursor-pointer
+                      dark:hover:enabled:bg-teal-800
+                      disabled:text-zinc-400 disabled:cursor-not-allowed"
+                  onClick={() => {
+                    // すべてのチェックボックスを外す
+                    const allUnchecked = Object.keys(customSettings).reduce(
+                      (acc, key) => {
+                        acc[key as keyof CategorySettings] = false;
+                        return acc;
+                      },
+                      {} as CategorySettings,
+                    );
+
+                    setCustomSettings(allUnchecked);
+                    saveCustomSettings(url, allUnchecked);
+
+                    onChange({
+                      mode: "custom",
+                      settings: allUnchecked,
+                    });
+                  }}
+                  disabled={disabled}
+                >
+                  {t("settings.uncheckAll")}
+                </button>
+              </div>
             </div>
           ) : (
             <div className="px-2 py-1">

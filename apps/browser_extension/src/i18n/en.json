@@ -40,7 +40,8 @@
     "tipFontSize": "Tip font size",
     "liveRegionFontSize": "Live region font size",
     "displaySettings": "Display Settings",
-    "displayCustomization": "Display Customization"
+    "displayCustomization": "Display Customization",
+    "uncheckAll": "Uncheck all"
   },
   "presets": {
     "basic": "Basic",

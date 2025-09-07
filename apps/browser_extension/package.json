@@ -15,6 +15,8 @@
     "lint": "biome check src entrypoints ",
     "lint-fix": "biome check --fix src entrypoints",
     "test": "vitest run --config vite.test.config.ts",
+    "test:jsdom": "vitest run --config vite.test.jsdom.config.ts",
+    "test:jsdom:watch": "vitest --config vite.test.jsdom.config.ts",
     "test:watch": "vitest --config vite.test.config.ts",
     "postinstall": "wxt prepare",
     "bump_version": "pnpm version --no-git-tag-version"

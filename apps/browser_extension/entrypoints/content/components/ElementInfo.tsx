@@ -1,17 +1,12 @@
 import React from "react";
 import { getRuleResultIdentifier } from "../../../src/rules";
+import { getTipPosition } from "../../../src/utils/getTipPosition";
 import { SettingsContext } from "../contexts/SettingsContext";
 import type { ElementMeta } from "../types";
 import { RuleTip } from "./RuleTip";
 
 const ELEMENT_SIZE_ENHANCEMENT = 4;
 const TIP_SIDE_MARGIN = 8;
-
-type VerticalPosition =
-  | "inner-top"
-  | "inner-bottom"
-  | "outer-top"
-  | "outer-bottom";
 export const ElementInfo = ({
   meta: {
     x,
@@ -53,31 +48,21 @@ export const ElementInfo = ({
   const scrollOffsetX = absoluteX - scrollX;
   const scrollOffsetY = absoluteY - scrollY;
 
-  const horizontalPosition =
-    category === "page"
-      ? "center"
-      : ((category === "section" || category === "group") &&
-            width > tipFontSize * 16) ||
-          (width < tipFontSize * 16 &&
-            scrollOffsetX + width > rootWidth - tipFontSize * 16)
-        ? "right"
-        : "left";
-  const verticalPosition: VerticalPosition =
-    category === "page"
-      ? "inner-top"
-      : ["section", "heading", "table", "list"].includes(category)
-        ? scrollOffsetY < tipFontSize * 2.4
-          ? "inner-top"
-          : "outer-top"
-        : category === "image" ||
-            category === "group" ||
-            category === "tableCell"
-          ? scrollOffsetY > tipFontSize * 2.4 && height < tipFontSize * 3.2
-            ? "outer-top"
-            : "inner-top"
-          : y + height > rootHeight - tipFontSize * 2.4
-            ? "inner-bottom"
-            : "outer-bottom";
+  // Positions are decided by reusable utilities for readability and testability
+
+  const { horizontalPosition, verticalPosition } = getTipPosition({
+    category,
+    x,
+    y,
+    width,
+    height,
+    scrollOffsetX,
+    scrollOffsetY,
+    rootWidth,
+    rootHeight,
+    tipFontSize,
+    ruleResults,
+  });
 
   const disappear = () => {
     setHovered(false);
@@ -117,9 +102,12 @@ export const ElementInfo = ({
   };
   const tipMaxWidth =
     horizontalPosition === "center"
-      ? width - 2 * TIP_SIDE_MARGIN
-      : (horizontalPosition === "right" ? x + width : rootWidth - x) -
-        TIP_SIDE_MARGIN;
+      ? Math.max(160, width - 2 * TIP_SIDE_MARGIN)
+      : Math.max(
+          160,
+          (horizontalPosition === "right" ? x + width : rootWidth - x) -
+            TIP_SIDE_MARGIN,
+        );
   const ruleResultsWithoutAttributes = ruleResults.filter(
     (r) => r.type !== "ariaAttributes",
   );

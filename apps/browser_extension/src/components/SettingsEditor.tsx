@@ -19,6 +19,7 @@ export const SettingsEditor = ({
   showDisplaySettingsCollapsed = false,
   useTabsForElementTypes = true,
   url,
+  disableOutOfSightElementTips = false,
 }: {
   settings: Settings;
   onChange: (settings: Settings) => void;
@@ -26,6 +27,7 @@ export const SettingsEditor = ({
   showDisplaySettingsCollapsed?: boolean;
   useTabsForElementTypes?: boolean;
   url?: string;
+  disableOutOfSightElementTips?: boolean;
 }) => {
   const { t, lang } = useLang();
   const handleChangeCheckbox = (
@@ -126,7 +128,7 @@ export const SettingsEditor = ({
                       handleChangeCheckbox("hideOutOfSightElementTips", e);
                     }}
                     checked={settings.hideOutOfSightElementTips}
-                    disabled={disabled || !settings.accessibilityInfo}
+                    disabled={disabled || !settings.accessibilityInfo || disableOutOfSightElementTips}
                   >
                     <span className="text-xs">
                       {t("settings.hideOutOfSightElementTips")}
@@ -319,7 +321,7 @@ export const SettingsEditor = ({
                       handleChangeCheckbox("hideOutOfSightElementTips", e);
                     }}
                     checked={settings.hideOutOfSightElementTips}
-                    disabled={disabled || !settings.accessibilityInfo}
+                    disabled={disabled || !settings.accessibilityInfo || disableOutOfSightElementTips}
                   >
                     <span className="text-xs">
                       {t("settings.hideOutOfSightElementTips")}

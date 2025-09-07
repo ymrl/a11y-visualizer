@@ -72,6 +72,7 @@ export const OptionsPage = () => {
           onChange={updateSettings}
           showDisplaySettingsCollapsed={false}
           useTabsForElementTypes={false}
+          disableOutOfSightElementTips={true}
         />
         <p className="text-sm text-gray-500">{t("optionsPage.description")}</p>
         <details

@@ -50,6 +50,9 @@ function migrateLegacySettings(settings: unknown): Settings {
       showLiveRegions:
         (settingsObj.showLiveRegions as boolean) ??
         initialSettings.showLiveRegions,
+      hideOutOfSightElementTips:
+        (settingsObj.hideOutOfSightElementTips as boolean) ??
+        initialSettings.hideOutOfSightElementTips,
       announcementMaxSeconds:
         (settingsObj.announcementMaxSeconds as number) ??
         initialSettings.announcementMaxSeconds,

@@ -53,13 +53,31 @@ const isVisibleByElementFromPoint = (
   const win = element.ownerDocument?.defaultView;
   if (!win) return false;
 
-  // 要素の4つの角をチェック（1px内側）
-  const points = [
-    { x: rect.left + 1, y: rect.top + 1 },
-    { x: rect.right - 1, y: rect.top + 1 },
-    { x: rect.left + 1, y: rect.bottom - 1 },
-    { x: rect.right - 1, y: rect.bottom - 1 },
-  ];
+  const centerX = rect.left + rect.width / 2;
+  const centerY = rect.top + rect.height / 2;
+
+  let points: { x: number; y: number }[];
+
+  // 幅または高さが2px以下の場合は中央点のみ評価
+  if (rect.width <= 2 || rect.height <= 2) {
+    points = [{ x: centerX, y: centerY }];
+  } else {
+    // 要素の4つの角、中央点、各辺の中点をチェック（1px内側）
+    points = [
+      // 4つの角（1px内側）
+      { x: rect.left + 1, y: rect.top + 1 },
+      { x: rect.right - 1, y: rect.top + 1 },
+      { x: rect.left + 1, y: rect.bottom - 1 },
+      { x: rect.right - 1, y: rect.bottom - 1 },
+      // 中央点
+      { x: centerX, y: centerY },
+      // 各辺の中点（1px内側）
+      { x: centerX, y: rect.top + 1 }, // 上辺の中点
+      { x: rect.right - 1, y: centerY }, // 右辺の中点
+      { x: centerX, y: rect.bottom - 1 }, // 下辺の中点
+      { x: rect.left + 1, y: centerY }, // 左辺の中点
+    ];
+  }
 
   for (const point of points) {
     // elementsFromPointで全ての要素を取得

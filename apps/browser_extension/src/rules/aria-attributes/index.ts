@@ -1,3 +1,4 @@
+import { isFocusable } from "../../dom/isFocusable";
 import type { RuleObject, RuleResult } from "../type";
 
 type Options = {
@@ -87,11 +88,21 @@ export const AriaAttributes: RuleObject = {
       }
       // aria-hidden="true"の場合は警告も表示
       if (attribute === "aria-hidden" && value === "true") {
-        warnings.push({
-          type: "warning",
-          message: "Inaccessible",
-          ruleName,
-        });
+        // コンテンツを含まない、かつフォーカス可能でない要素は警告を表示しない
+        const hasContent = element.textContent?.trim() !== "";
+        const isSelfFocusable = isFocusable(element, true);
+        const hasFocusableDescendants =
+          element.querySelector(
+            'a[href], map > area[href], button, input:not([type=hidden]), object, select, textarea, [contenteditable], details > summary, [tabindex]:not([tabindex="-1"])',
+          ) !== null;
+
+        if (hasContent || isSelfFocusable || hasFocusableDescendants) {
+          warnings.push({
+            type: "warning",
+            message: "Inaccessible",
+            ruleName,
+          });
+        }
       }
       // すべてのaria属性をariaAttributesに含める
       ariaAttributesList.push({ name: attribute, value });

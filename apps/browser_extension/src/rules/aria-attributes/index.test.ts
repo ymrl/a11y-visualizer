@@ -155,4 +155,70 @@ describe("AriaAttributes", () => {
       ruleName: "aria-attributes",
     });
   });
+
+  test("does not show warning for empty aria-hidden elements without focusable content", () => {
+    document.body.innerHTML = `<div aria-hidden="true"></div>`;
+    const element = document.querySelector("div");
+    if (!element) {
+      throw new Error("Element not found");
+    }
+    const result = AriaAttributes.evaluate(
+      element,
+      AriaAttributes.defaultOptions,
+      {},
+    );
+    expect(result).toHaveLength(1);
+
+    // 警告は表示されない
+    expect(result.some((r) => r.type === "warning")).toBe(false);
+
+    // aria-hidden="true"は属性として表示される
+    expect(result).toContainEqual({
+      type: "ariaAttributes",
+      attributes: [{ name: "aria-hidden", value: "true" }],
+      ruleName: "aria-attributes",
+    });
+  });
+
+  test("shows warning for aria-hidden elements with focusable descendants", () => {
+    document.body.innerHTML = `<div aria-hidden="true"><button>Click me</button></div>`;
+    const element = document.querySelector("div");
+    if (!element) {
+      throw new Error("Element not found");
+    }
+    const result = AriaAttributes.evaluate(
+      element,
+      AriaAttributes.defaultOptions,
+      {},
+    );
+    expect(result).toHaveLength(2);
+
+    // フォーカス可能な子要素があるため警告が表示される
+    expect(result).toContainEqual({
+      type: "warning",
+      message: "Inaccessible",
+      ruleName: "aria-attributes",
+    });
+  });
+
+  test("shows warning for focusable aria-hidden elements", () => {
+    document.body.innerHTML = `<button aria-hidden="true">Button</button>`;
+    const element = document.querySelector("button");
+    if (!element) {
+      throw new Error("Element not found");
+    }
+    const result = AriaAttributes.evaluate(
+      element,
+      AriaAttributes.defaultOptions,
+      {},
+    );
+    expect(result).toHaveLength(2);
+
+    // 要素自身がフォーカス可能なため警告が表示される
+    expect(result).toContainEqual({
+      type: "warning",
+      message: "Inaccessible",
+      ruleName: "aria-attributes",
+    });
+  });
 });

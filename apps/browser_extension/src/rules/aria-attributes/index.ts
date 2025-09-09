@@ -1,5 +1,6 @@
 import { isFocusable } from "../../dom/isFocusable";
 import type { RuleObject, RuleResult } from "../type";
+import { hasAnyContent } from "./hasAnyContent";
 
 type Options = {
   enabled: boolean;
@@ -89,14 +90,10 @@ export const AriaAttributes: RuleObject = {
       // aria-hidden="true"の場合は警告も表示
       if (attribute === "aria-hidden" && value === "true") {
         // コンテンツを含まない、かつフォーカス可能でない要素は警告を表示しない
-        const hasContent = element.textContent?.trim() !== "";
+        const hasContent = hasAnyContent(element);
         const isSelfFocusable = isFocusable(element, true);
-        const hasFocusableDescendants =
-          element.querySelector(
-            'a[href], map > area[href], button, input:not([type=hidden]), object, select, textarea, [contenteditable], details > summary, [tabindex]:not([tabindex="-1"])',
-          ) !== null;
 
-        if (hasContent || isSelfFocusable || hasFocusableDescendants) {
+        if (hasContent || isSelfFocusable) {
           warnings.push({
             type: "warning",
             message: "Inaccessible",

@@ -1,4 +1,4 @@
-const FOCUSABLE_SELECTOR = [
+export const FOCUSABLE_SELECTOR = [
   "a[href]",
   "map > area[href]",
   "button",

@@ -168,6 +168,9 @@ describe("AriaAttributes", () => {
       {},
     );
     expect(result).toHaveLength(1);
+    if (!result) {
+      throw new Error("Result is undefined");
+    }
 
     // 警告は表示されない
     expect(result.some((r) => r.type === "warning")).toBe(false);
@@ -218,6 +221,53 @@ describe("AriaAttributes", () => {
     expect(result).toContainEqual({
       type: "warning",
       message: "Inaccessible",
+      ruleName: "aria-attributes",
+    });
+  });
+
+  test("shows warning for aria-hidden elements that are media", () => {
+    const img = document.createElement("img");
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    const canvas = document.createElement("canvas");
+    const video = document.createElement("video");
+    img.setAttribute("aria-hidden", "true");
+    svg.setAttribute("aria-hidden", "true");
+    canvas.setAttribute("aria-hidden", "true");
+    video.setAttribute("aria-hidden", "true");
+    document.body.appendChild(img);
+    document.body.appendChild(svg);
+    document.body.appendChild(canvas);
+    document.body.appendChild(video);
+
+    [img, svg, canvas, video].forEach((element) => {
+      const result = AriaAttributes.evaluate(
+        element,
+        AriaAttributes.defaultOptions,
+        {},
+      );
+      expect(result).toHaveLength(2);
+      expect(result).toContainEqual({
+        type: "warning",
+        message: "Inaccessible",
+        ruleName: "aria-attributes",
+      });
+    });
+  });
+
+  test("does not show warning for aria-hidden elements with tabindex -1 focusable descendants", () => {
+    const div = document.createElement("div");
+    div.setAttribute("aria-hidden", "true");
+    div.innerHTML = `<button tabindex="-1"></button>`;
+    document.body.appendChild(div);
+    const result = AriaAttributes.evaluate(
+      div,
+      AriaAttributes.defaultOptions,
+      {},
+    );
+    expect(result).toHaveLength(1);
+    expect(result).toContainEqual({
+      type: "ariaAttributes",
+      attributes: [{ name: "aria-hidden", value: "true" }],
       ruleName: "aria-attributes",
     });
   });

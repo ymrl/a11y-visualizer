@@ -89,11 +89,12 @@ export const AriaAttributes: RuleObject = {
       }
       // aria-hidden="true"の場合は警告も表示
       if (attribute === "aria-hidden" && value === "true") {
-        // コンテンツを含まない、かつフォーカス可能でない要素は警告を表示しない
+        // コンテンツを含まない、かつフォーカス可能でない、それ自身がコンテンツではない要素は警告を表示しない
         const hasContent = hasAnyContent(element);
         const isSelfFocusable = isFocusable(element, true);
+        const isContent = element.matches("img, svg, canvas, video");
 
-        if (hasContent || isSelfFocusable) {
+        if (hasContent || isSelfFocusable || isContent) {
           warnings.push({
             type: "warning",
             message: "Inaccessible",

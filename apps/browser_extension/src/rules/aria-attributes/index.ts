@@ -1,4 +1,6 @@
+import { isFocusable } from "../../dom/isFocusable";
 import type { RuleObject, RuleResult } from "../type";
+import { hasAnyContent } from "./hasAnyContent";
 
 type Options = {
   enabled: boolean;
@@ -87,11 +89,18 @@ export const AriaAttributes: RuleObject = {
       }
       // aria-hidden="true"の場合は警告も表示
       if (attribute === "aria-hidden" && value === "true") {
-        warnings.push({
-          type: "warning",
-          message: "Inaccessible",
-          ruleName,
-        });
+        // コンテンツを含まない、かつフォーカス可能でない、それ自身がコンテンツではない要素は警告を表示しない
+        const hasContent = hasAnyContent(element);
+        const isSelfFocusable = isFocusable(element, true);
+        const isContent = element.matches("img, svg, canvas, video");
+
+        if (hasContent || isSelfFocusable || isContent) {
+          warnings.push({
+            type: "warning",
+            message: "Inaccessible",
+            ruleName,
+          });
+        }
       }
       // すべてのaria属性をariaAttributesに含める
       ariaAttributesList.push({ name: attribute, value });

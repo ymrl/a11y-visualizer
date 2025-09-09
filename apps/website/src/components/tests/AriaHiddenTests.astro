@@ -49,22 +49,6 @@ import ExampleCard from "./ExampleCard.astro";
   </div>
 </ExampleCard>
 
-<ExampleCard
-  title="Hidden text with aria-hidden='false'"
-  description="❌ Content hidden visually but forced to be exposed to screen readers. This creates confusion as screen readers announce content that sighted users cannot see."
->
-  <div>
-    <p class="text-zinc-900 dark:text-zinc-100">Main content here</p>
-    <p
-      aria-hidden="false"
-      style="display: none;"
-      class="text-zinc-500 border border-red-300 dark:border-red-600"
-    >
-      This hidden text is forced to be accessible - problematic!
-    </p>
-  </div>
-</ExampleCard>
-
 <CategorySectionTitle id="icons">Icons</CategorySectionTitle>
 
 <ExampleCard

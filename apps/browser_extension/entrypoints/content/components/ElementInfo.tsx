@@ -5,6 +5,7 @@ import { SettingsContext } from "../contexts/SettingsContext";
 import type { ElementMeta } from "../types";
 import { RuleTip } from "./RuleTip";
 
+const ELEMENT_SIZE_ENHANCEMENT = 4;
 const TIP_SIDE_MARGIN = 8;
 export const ElementInfo = ({
   meta: {
@@ -20,16 +21,27 @@ export const ElementInfo = ({
   },
   rootWidth,
   rootHeight,
-  isHovered,
 }: {
   meta: ElementMeta;
   rootWidth: number;
   rootHeight: number;
-  isHovered: boolean;
 }) => {
   const { interactiveMode, hideTips, tipFontSize, ...settings } =
     React.useContext(SettingsContext);
+  const [hovered, setHovered] = React.useState(false);
   const selfRef = React.useRef<HTMLDivElement>(null);
+  const listenerRef = React.useRef<((e: MouseEvent) => void) | null>(null);
+
+  React.useEffect(() => {
+    const w = selfRef.current?.ownerDocument?.defaultView;
+    return () => {
+      if (listenerRef.current && w) {
+        setHovered(false);
+        w.removeEventListener("mousemove", listenerRef.current);
+        listenerRef.current = null;
+      }
+    };
+  }, []);
 
   const scrollX = selfRef.current?.ownerDocument?.defaultView?.scrollX || 0;
   const scrollY = selfRef.current?.ownerDocument?.defaultView?.scrollY || 0;
@@ -52,6 +64,42 @@ export const ElementInfo = ({
     ruleResults,
   });
 
+  const disappear = () => {
+    setHovered(false);
+    if (!selfRef.current) return;
+    const d = selfRef.current.ownerDocument;
+    const w = d.defaultView;
+    if (listenerRef.current)
+      w?.removeEventListener("mousemove", listenerRef.current);
+    listenerRef.current = null;
+  };
+  const appear = () => {
+    if (!selfRef.current || listenerRef.current) return;
+    const d = selfRef.current.ownerDocument;
+    const w = d.defaultView;
+    setHovered(true);
+    const listener = (ew: MouseEvent) => {
+      const mx = ew.pageX;
+      const my = ew.pageY;
+      if (
+        mx < absoluteX - ELEMENT_SIZE_ENHANCEMENT ||
+        mx > absoluteX + width + ELEMENT_SIZE_ENHANCEMENT ||
+        my < absoluteY - ELEMENT_SIZE_ENHANCEMENT ||
+        my > absoluteY + height + ELEMENT_SIZE_ENHANCEMENT
+      ) {
+        disappear();
+      }
+    };
+    w?.addEventListener("mousemove", listener);
+    listenerRef.current = listener;
+  };
+
+  const handleHovered = () => {
+    if (!interactiveMode || hovered) {
+      return;
+    }
+    appear();
+  };
   const tipMaxWidth =
     horizontalPosition === "center"
       ? Math.max(160, width - 2 * TIP_SIDE_MARGIN)
@@ -68,7 +116,7 @@ export const ElementInfo = ({
   );
   return (
     <div
-      className={`ElementInfo${isHovered ? " ElementInfo--hovered" : ""}`}
+      className={`ElementInfo${hovered ? " ElementInfo--hovered" : ""}`}
       style={{
         top: y,
         left: x,
@@ -77,11 +125,32 @@ export const ElementInfo = ({
       }}
       ref={selfRef}
     >
+      {interactiveMode && (
+        // biome-ignore lint/a11y/noStaticElementInteractions: for observing hover
+        <div
+          className="ElementInfo__overlay"
+          style={{
+            top: y > ELEMENT_SIZE_ENHANCEMENT ? -ELEMENT_SIZE_ENHANCEMENT : -y,
+            left: x > ELEMENT_SIZE_ENHANCEMENT ? -ELEMENT_SIZE_ENHANCEMENT : -x,
+            bottom:
+              y + height + ELEMENT_SIZE_ENHANCEMENT < rootHeight
+                ? -ELEMENT_SIZE_ENHANCEMENT
+                : rootHeight - y - height,
+            right:
+              x + width + ELEMENT_SIZE_ENHANCEMENT < rootWidth
+                ? -ELEMENT_SIZE_ENHANCEMENT
+                : rootWidth - x - width,
+            pointerEvents: hovered ? "none" : "auto",
+          }}
+          onMouseEnter={handleHovered}
+          onMouseMove={handleHovered}
+        />
+      )}
       <div
         className="ElementInfo__content"
         style={{
           opacity:
-            interactiveMode && isHovered ? 1 : settings.tipOpacityPercent / 100,
+            interactiveMode && hovered ? 1 : settings.tipOpacityPercent / 100,
         }}
       >
         {ruleResults.length > 0 &&
@@ -110,7 +179,7 @@ export const ElementInfo = ({
             "ElementInfo__tips",
             `ElementInfo__tips--${verticalPosition}`,
             `ElementInfo__tips--${horizontalPosition}`,
-            interactiveMode && hideTips && !isHovered
+            interactiveMode && hideTips && !hovered
               ? "ElementInfo__tips--hideLabel"
               : "",
           ]
@@ -125,7 +194,7 @@ export const ElementInfo = ({
             {ruleResultsWithoutAttributes.map((result) => (
               <RuleTip
                 maxWidth={tipMaxWidth}
-                hideLabel={interactiveMode && hideTips ? !isHovered : false}
+                hideLabel={interactiveMode && hideTips ? !hovered : false}
                 key={getRuleResultIdentifier(result)}
                 result={result}
               />
@@ -134,7 +203,7 @@ export const ElementInfo = ({
           {ruleResultAttribute && (
             <RuleTip
               maxWidth={tipMaxWidth}
-              hideLabel={interactiveMode && hideTips ? !isHovered : false}
+              hideLabel={interactiveMode && hideTips ? !hovered : false}
               result={ruleResultAttribute}
             />
           )}

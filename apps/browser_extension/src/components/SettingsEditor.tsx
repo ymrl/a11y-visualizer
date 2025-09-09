@@ -128,11 +128,7 @@ export const SettingsEditor = ({
                       handleChangeCheckbox("hideOutOfSightElementTips", e);
                     }}
                     checked={settings.hideOutOfSightElementTips}
-                    disabled={
-                      disabled ||
-                      !settings.accessibilityInfo ||
-                      disableOutOfSightElementTips
-                    }
+                    disabled={disabled || !settings.accessibilityInfo || disableOutOfSightElementTips}
                   >
                     <span className="text-xs">
                       {t("settings.hideOutOfSightElementTips")}
@@ -325,11 +321,7 @@ export const SettingsEditor = ({
                       handleChangeCheckbox("hideOutOfSightElementTips", e);
                     }}
                     checked={settings.hideOutOfSightElementTips}
-                    disabled={
-                      disabled ||
-                      !settings.accessibilityInfo ||
-                      disableOutOfSightElementTips
-                    }
+                    disabled={disabled || !settings.accessibilityInfo || disableOutOfSightElementTips}
                   >
                     <span className="text-xs">
                       {t("settings.hideOutOfSightElementTips")}

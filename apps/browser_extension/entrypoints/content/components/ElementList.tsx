@@ -17,13 +17,13 @@ export const ElementList = ({
   height: number;
 }) => {
   const { interactiveMode } = React.useContext(SettingsContext);
-  const [hoveredElementIndices, setHoveredElementIndices] = React.useState<
-    number[]
-  >([]);
+  const [hoveredElementIndex, setHoveredElementIndex] = React.useState<
+    number | null
+  >(null);
 
   React.useEffect(() => {
     if (!interactiveMode) {
-      setHoveredElementIndices([]);
+      setHoveredElementIndex(null);
       return;
     }
 
@@ -31,8 +31,8 @@ export const ElementList = ({
       const mouseX = e.pageX;
       const mouseY = e.pageY;
 
-      // Find all elements the mouse is over
-      const newHoveredIndices: number[] = [];
+      // Find which element the mouse is over
+      let newHoveredIndex: number | null = null;
 
       for (let i = 0; i < list.length; i++) {
         const {
@@ -48,11 +48,12 @@ export const ElementList = ({
           mouseY >= absoluteY - ELEMENT_SIZE_ENHANCEMENT &&
           mouseY <= absoluteY + elHeight + ELEMENT_SIZE_ENHANCEMENT
         ) {
-          newHoveredIndices.push(i);
+          newHoveredIndex = i;
+          break; // First match wins
         }
       }
 
-      setHoveredElementIndices(newHoveredIndices);
+      setHoveredElementIndex(newHoveredIndex);
     };
 
     window.addEventListener("mousemove", handleMouseMove);
@@ -78,7 +79,7 @@ export const ElementList = ({
               meta={meta}
               rootHeight={height}
               rootWidth={width}
-              isHovered={hoveredElementIndices.includes(i)}
+              isHovered={hoveredElementIndex === i}
             />
           );
         })}

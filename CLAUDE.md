@@ -164,6 +164,10 @@ When updating user documentation (docs/ directory), follow these guidelines:
 
 ## Development Guidelines
 
+- Use t-wada's TDD approach: write tests first, then implement the minimum code to pass the tests.
+- Each typescript (except React components) code must be covered by tests
+- React components should be simple and small, complex logic should be extracted to plain TypeScript modules and covered by tests
+
 ### Rule Development
 
 - **Rule Severity Levels**: Use `warning` for issues that might be false positives or context-dependent (e.g., ID references that might be valid in certain scenarios like hidden tab panels). Use `error` for clear accessibility violations.

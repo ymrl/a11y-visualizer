@@ -41,7 +41,8 @@
     "liveRegionFontSize": "Live region font size",
     "displaySettings": "표시 설정",
     "displayCustomization": "표시 커스터마이징",
-    "uncheckAll": "모두 선택 해제"
+    "uncheckAll": "모두 선택 해제",
+    "hideOutOfSightElementTips": "시각적으로 가려진 요소 표시 안함"
   },
   "presets": {
     "basic": "기본",

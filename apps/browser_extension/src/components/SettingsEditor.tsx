@@ -19,6 +19,7 @@ export const SettingsEditor = ({
   showDisplaySettingsCollapsed = false,
   useTabsForElementTypes = true,
   url,
+  disableOutOfSightElementTips = false,
 }: {
   settings: Settings;
   onChange: (settings: Settings) => void;
@@ -26,6 +27,7 @@ export const SettingsEditor = ({
   showDisplaySettingsCollapsed?: boolean;
   useTabsForElementTypes?: boolean;
   url?: string;
+  disableOutOfSightElementTips?: boolean;
 }) => {
   const { t, lang } = useLang();
   const handleChangeCheckbox = (
@@ -113,12 +115,31 @@ export const SettingsEditor = ({
           </div>
           <div className="flex flex-col gap-2">
             {useTabsForElementTypes ? (
-              <ElementTypeTabs
-                elementTypeMode={settings.elementTypeMode}
-                onChange={handleElementTypeModeChange}
-                disabled={disabled || !settings.accessibilityInfo}
-                url={url}
-              />
+              <>
+                <ElementTypeTabs
+                  elementTypeMode={settings.elementTypeMode}
+                  onChange={handleElementTypeModeChange}
+                  disabled={disabled || !settings.accessibilityInfo}
+                  url={url}
+                />
+                <div className="px-2 flex justify-end">
+                  <Checkbox
+                    onChange={(e) => {
+                      handleChangeCheckbox("hideOutOfSightElementTips", e);
+                    }}
+                    checked={settings.hideOutOfSightElementTips}
+                    disabled={
+                      disabled ||
+                      !settings.accessibilityInfo ||
+                      disableOutOfSightElementTips
+                    }
+                  >
+                    <span className="text-xs">
+                      {t("settings.hideOutOfSightElementTips")}
+                    </span>
+                  </Checkbox>
+                </div>
+              </>
             ) : (
               <div className="px-2 py-1 bg-zinc-100 dark:bg-zinc-800 rounded-md">
                 <fieldset className="border-0 flex flex-col">
@@ -298,6 +319,23 @@ export const SettingsEditor = ({
                     </Checkbox>
                   </div>
                 </fieldset>
+                <div className="px-2 pt-2 flex justify-end">
+                  <Checkbox
+                    onChange={(e) => {
+                      handleChangeCheckbox("hideOutOfSightElementTips", e);
+                    }}
+                    checked={settings.hideOutOfSightElementTips}
+                    disabled={
+                      disabled ||
+                      !settings.accessibilityInfo ||
+                      disableOutOfSightElementTips
+                    }
+                  >
+                    <span className="text-xs">
+                      {t("settings.hideOutOfSightElementTips")}
+                    </span>
+                  </Checkbox>
+                </div>
               </div>
             )}
           </div>

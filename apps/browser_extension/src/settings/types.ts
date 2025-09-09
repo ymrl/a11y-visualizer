@@ -31,6 +31,7 @@ export type Settings = {
   interactiveMode: boolean;
   hideTips: boolean;
   showLiveRegions: boolean;
+  hideOutOfSightElementTips: boolean;
   announcementMaxSeconds: number;
   announcementSecondsPerCharacter: number;
   tipOpacityPercent: number;

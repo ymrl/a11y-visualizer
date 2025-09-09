@@ -1,5 +1,13 @@
-import { afterEach, describe, expect, test } from "vitest";
+import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
+import { isOutOfSight } from "../../../src/dom/isOutOfSight";
 import { collectElements } from "./collectElements";
+
+// isOutOfSightモジュールをモック
+vi.mock("../../../src/dom/isOutOfSight", () => ({
+  isOutOfSight: vi.fn(),
+}));
+
+const mockIsOutOfSight = vi.mocked(isOutOfSight);
 
 describe("collectElements()", () => {
   afterEach(() => {
@@ -87,5 +95,69 @@ describe("collectElements()", () => {
       <div aria-hidden="true">hidden</div>`;
     const result = collectElements(document.body, [], { waiAria: true });
     expect(result.elements).toHaveLength(1);
+  });
+
+  describe("hideOutOfSightElementTips option", () => {
+    beforeEach(() => {
+      // モックをクリア
+      vi.clearAllMocks();
+    });
+
+    test("hideOutOfSightElementTips が false の場合、視覚的に見えない要素もフィルタしない", () => {
+      document.body.innerHTML = `
+        <img src="test.jpg" alt="Test image">
+        <div style="opacity: 0;"><img src="hidden.jpg" alt="Hidden image"></div>
+      `;
+
+      // isOutOfSightが呼ばれないはず
+      const result = collectElements(
+        document.body,
+        [],
+        { image: true },
+        { hideOutOfSightElementTips: false },
+      );
+
+      expect(mockIsOutOfSight).not.toHaveBeenCalled();
+      expect(result.elements).toHaveLength(2);
+    });
+
+    test("hideOutOfSightElementTips が true の場合、視覚的に見えない要素をフィルタする", () => {
+      document.body.innerHTML = `
+        <img src="test.jpg" alt="Test image">
+        <div style="opacity: 0;"><img src="hidden.jpg" alt="Hidden image"></div>
+      `;
+
+      // 最初の画像は見える、2番目は見えない
+      mockIsOutOfSight
+        .mockReturnValueOnce(false) // 最初の画像
+        .mockReturnValueOnce(true); // 2番目の画像
+
+      const result = collectElements(
+        document.body,
+        [],
+        { image: true },
+        { hideOutOfSightElementTips: true },
+      );
+
+      expect(mockIsOutOfSight).toHaveBeenCalledTimes(2);
+      expect(result.elements).toHaveLength(1);
+    });
+
+    test("hideOutOfSightElementTips が undefined の場合、デフォルトでフィルタしない", () => {
+      document.body.innerHTML = `
+        <img src="test.jpg" alt="Test image">
+        <div style="opacity: 0;"><img src="hidden.jpg" alt="Hidden image"></div>
+      `;
+
+      const result = collectElements(
+        document.body,
+        [],
+        { image: true },
+        {}, // hideOutOfSightElementTips 未指定
+      );
+
+      expect(mockIsOutOfSight).not.toHaveBeenCalled();
+      expect(result.elements).toHaveLength(2);
+    });
   });
 });

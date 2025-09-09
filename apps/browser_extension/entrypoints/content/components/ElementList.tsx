@@ -20,8 +20,14 @@ export const ElementList = ({
   const [hoveredElementIndices, setHoveredElementIndices] = React.useState<
     number[]
   >([]);
+  const ref = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
+    if (!ref.current) return;
+    const doc = ref.current.ownerDocument;
+    if (!doc) return;
+    const win = doc.defaultView;
+    if (!win) return;
     if (!interactiveMode) {
       setHoveredElementIndices([]);
       return;
@@ -55,9 +61,9 @@ export const ElementList = ({
       setHoveredElementIndices(newHoveredIndices);
     };
 
-    window.addEventListener("mousemove", handleMouseMove);
+    win.addEventListener("mousemove", handleMouseMove);
     return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
+      win.removeEventListener("mousemove", handleMouseMove);
     };
   }, [interactiveMode, list]);
   return (
@@ -70,6 +76,7 @@ export const ElementList = ({
           height: height,
           overflow: "hidden",
         }}
+        ref={ref}
       >
         {list.map((meta, i) => {
           return (

@@ -1,9 +1,17 @@
 import { defineConfig } from "astro/config";
 import tailwind from "@astrojs/tailwind";
 import react from "@astrojs/react";
+import sitemap from "@astrojs/sitemap";
 
 export default defineConfig({
-  integrations: [tailwind(), react()],
+  site: "https://ymrl.github.io/a11y-visualizer/",
+  integrations: [
+    tailwind(),
+    react(),
+    sitemap({
+      filter: (page) => !page.includes("/iframe-"),
+    }),
+  ],
   base: "/a11y-visualizer/",
   outDir: "./dist",
   server: {

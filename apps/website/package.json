@@ -33,6 +33,7 @@
     "vite": "^5.4.0"
   },
   "dependencies": {
+    "@astrojs/sitemap": "^3.5.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-icons": "^5.5.0"

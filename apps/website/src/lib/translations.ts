@@ -87,8 +87,8 @@ export const translations: Record<string, Translation> = {
     guide: {
       title: "User Guide",
       description: "Learn how to use Accessibility Visualizer",
-      link: "View User Guide on GitHub",
-      url: "https://github.com/ymrl/a11y-visualizer/blob/main/docs/en/UsersGuide.md",
+      link: "View User Guide",
+      url: "/a11y-visualizer/docs/UsersGuide",
     },
     tests: {
       title: "Test Pages",
@@ -148,8 +148,8 @@ export const translations: Record<string, Translation> = {
     guide: {
       title: "ユーザーガイド",
       description: "Accessibility Visualizerの使用方法を学ぶ",
-      link: "GitHub でユーザーガイドを見る",
-      url: "https://github.com/ymrl/a11y-visualizer/blob/main/docs/ja/UsersGuide.md",
+      link: "ユーザーガイドを見る",
+      url: "/a11y-visualizer/docs/ja/UsersGuide",
     },
     tests: {
       title: "テスト用ページ",
@@ -208,8 +208,8 @@ export const translations: Record<string, Translation> = {
     guide: {
       title: "사용자 가이드",
       description: "Accessibility Visualizer 사용 방법을 배워보세요",
-      link: "GitHub에서 사용자 가이드 보기",
-      url: "https://github.com/ymrl/a11y-visualizer/blob/main/docs/ko/UsersGuide.md",
+      link: "사용자 가이드 보기",
+      url: "/a11y-visualizer/docs/ko/UsersGuide",
     },
     tests: {
       title: "테스트 페이지",

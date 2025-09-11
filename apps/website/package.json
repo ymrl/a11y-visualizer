@@ -3,7 +3,9 @@
   "version": "6.0.2",
   "type": "module",
   "scripts": {
+    "predev": "node ./scripts/sync-docs.mjs",
     "dev": "astro dev",
+    "prebuild": "node ./scripts/sync-docs.mjs",
     "build": "astro build",
     "preview": "astro preview",
     "lint": "prettier . --check && eslint . --ext ts,tsx,astro --report-unused-disable-directives --max-warnings 0",
@@ -30,6 +32,7 @@
     "prettier": "3.2.5",
     "prettier-plugin-astro": "^0.14.1",
     "tailwindcss": "^3.4.17",
+    "@tailwindcss/typography": "^0.5.15",
     "vite": "^5.4.0"
   },
   "dependencies": {

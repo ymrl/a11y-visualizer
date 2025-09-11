@@ -90,7 +90,7 @@ function getVerticalPosition(args: PositionArgs): VerticalPosition {
     "list",
   ]);
   const bottomPreferred = new Set<Category>(["control"]);
-  const outerPreferred = new Set<Category>(["control"]);
+  const outerPreferred = new Set<Category>(["heading", "control"]);
 
   const estimatedHeight = estimateTipHeight(tipFontSize, ruleResults);
   const margin = tipFontSize * 0.8;

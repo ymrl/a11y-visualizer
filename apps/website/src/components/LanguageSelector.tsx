@@ -12,12 +12,29 @@ export default function LanguageSelector({
   currentLang,
 }: LanguageSelectorProps) {
   const basePath = "/a11y-visualizer";
+  const isBrowser = typeof window !== "undefined";
 
   const getLanguageUrl = (langCode: string) => {
-    if (langCode === "en") {
-      return basePath + "/";
+    // SSR-safe fallback hrefs (updated after hydration)
+    if (!isBrowser) {
+      return langCode === "en" ? `${basePath}/` : `${basePath}/${langCode}/`;
     }
-    return basePath + `/${langCode}/`;
+
+    const { pathname } = window.location;
+    const ensureBase = (p: string) =>
+      p.startsWith(basePath) ? p : basePath + p;
+
+    if (pathname.startsWith(`${basePath}/docs/`)) {
+      const rest = pathname.slice((basePath + "/docs/").length);
+      const parts = rest.split("/").filter(Boolean);
+      const first = parts[0];
+      const isLocalized = first === "ja" || first === "ko";
+      const slug = isLocalized ? parts.slice(1).join("/") : parts.join("/");
+      if (langCode === "en") return ensureBase(`/docs/${slug}`);
+      return ensureBase(`/docs/${langCode}/${slug}`);
+    }
+
+    return langCode === "en" ? `${basePath}/` : `${basePath}/${langCode}/`;
   };
 
   const handleLanguageChange = (langCode: string) => {

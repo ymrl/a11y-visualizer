@@ -62,7 +62,7 @@ export const IdReference: RuleObject = {
   evaluate: (
     element: Element,
     { enabled }: Options = defaultOptions,
-    { role = getKnownRole(element) },
+    { role = getKnownRole(element), elementDocument = document } = {},
   ) => {
     if (!enabled) {
       return undefined;
@@ -75,7 +75,7 @@ export const IdReference: RuleObject = {
       const value = element.getAttribute(attribute);
       if (value) {
         const id = value.trim();
-        if (id && !document.getElementById(id)) {
+        if (id && !elementDocument.getElementById(id)) {
           missingIdsByAttribute[attribute] = [id];
         }
       }
@@ -97,7 +97,7 @@ export const IdReference: RuleObject = {
           .trim()
           .split(/\s+/)
           .filter((id) => id.length > 0);
-        const missingIds = ids.filter((id) => !document.getElementById(id));
+        const missingIds = ids.filter((id) => !elementDocument.getElementById(id));
         if (missingIds.length > 0) {
           missingIdsByAttribute[attribute] = missingIds;
         }

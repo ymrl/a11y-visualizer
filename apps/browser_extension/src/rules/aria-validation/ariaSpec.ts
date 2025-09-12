@@ -316,6 +316,7 @@ export const ARIA_ATTRIBUTE_ROLES: Record<AriaAttribute, string[] | "all"> = {
     "menuitem",
     "option",
     "radio",
+    "row", // only in treegrid
     "tab",
     "menuitemcheckbox",
     "menuitemradio",
@@ -374,6 +375,7 @@ export const ARIA_ATTRIBUTE_ROLES: Record<AriaAttribute, string[] | "all"> = {
     "menuitem",
     "option",
     "radio",
+    "row", // only in treegrid
     "tab",
     "menuitemcheckbox",
     "menuitemradio",

@@ -97,7 +97,9 @@ export const IdReference: RuleObject = {
           .trim()
           .split(/\s+/)
           .filter((id) => id.length > 0);
-        const missingIds = ids.filter((id) => !elementDocument.getElementById(id));
+        const missingIds = ids.filter(
+          (id) => !elementDocument.getElementById(id),
+        );
         if (missingIds.length > 0) {
           missingIdsByAttribute[attribute] = missingIds;
         }

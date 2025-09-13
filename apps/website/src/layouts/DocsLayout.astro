@@ -14,7 +14,10 @@ interface Frontmatter {
 const fm = (Astro.props as { frontmatter?: Frontmatter }).frontmatter || {};
 const lang = fm.lang || "en";
 const pageTitle = fm.title;
-const tCommon = createLocalT(lang === "ja" ? jaDict : lang === "ko" ? koDict : enDict, enDict);
+const tCommon = createLocalT(
+  lang === "ja" ? jaDict : lang === "ko" ? koDict : enDict,
+  enDict,
+);
 ---
 
 <!doctype html>
@@ -24,12 +27,16 @@ const tCommon = createLocalT(lang === "ja" ? jaDict : lang === "ko" ? koDict : e
     <link rel="icon" type="image/svg+xml" href="/a11y-visualizer/icon.svg" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
-    <title>{pageTitle ? `${pageTitle} - ${tCommon("title")}` : tCommon("title")}</title>
+    <title>
+      {pageTitle ? `${pageTitle} - ${tCommon("title")}` : tCommon("title")}
+    </title>
     <meta name="description" content={tCommon("description")} />
     <meta property="og:type" content="website" />
     <meta
       property="og:title"
-      content={pageTitle ? `${pageTitle} - ${tCommon("title")}` : tCommon("title")}
+      content={pageTitle
+        ? `${pageTitle} - ${tCommon("title")}`
+        : tCommon("title")}
     />
     <meta property="og:description" content={tCommon("description")} />
     <meta

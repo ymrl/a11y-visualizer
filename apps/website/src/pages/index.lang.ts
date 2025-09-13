@@ -16,7 +16,8 @@ const dict = {
       },
       detection: {
         title: "Issue Detection",
-        description: "Highlight problematic markup and techniques that need attention",
+        description:
+          "Highlight problematic markup and techniques that need attention",
       },
       liveRegions: {
         title: "Live Regions",
@@ -51,4 +52,3 @@ const dict = {
 } as const;
 
 export default dict;
-

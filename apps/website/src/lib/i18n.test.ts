@@ -11,7 +11,7 @@ describe("i18n createT", () => {
 
   test("falls back to English when key missing in locale", () => {
     const en = { x: { y: "YY" } } as const;
-    const ja = { } as const;
+    const ja = {} as const;
     const t = createLocalT(ja, en);
     expect(t("x.y")).toBe("YY");
   });

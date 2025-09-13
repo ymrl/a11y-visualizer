@@ -16,15 +16,18 @@ const dict = {
       },
       detection: {
         title: "問題の検出",
-        description: "問題のあるマークアップや注意するべきテクニックをハイライト",
+        description:
+          "問題のあるマークアップや注意するべきテクニックをハイライト",
       },
       liveRegions: {
         title: "ライブリージョン",
-        description: "スクリーンリーダーなどの支援技術に動的に伝わる情報を視覚的に表示",
+        description:
+          "スクリーンリーダーなどの支援技術に動的に伝わる情報を視覚的に表示",
       },
       customizable: {
         title: "カスタマイズ可能",
-        description: "対象のWebサイトにあわせて、要素の種類や表示方法をカスタマイズ",
+        description:
+          "対象のWebサイトにあわせて、要素の種類や表示方法をカスタマイズ",
       },
     },
   },
@@ -49,4 +52,3 @@ const dict = {
 } as const;
 
 export default dict;
-

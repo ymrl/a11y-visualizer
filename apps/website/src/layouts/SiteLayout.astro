@@ -23,32 +23,61 @@ const { lang, t, subtitle } = Astro.props as Props;
     <meta property="og:type" content="website" />
     <meta property="og:title" content={t("title")} />
     <meta property="og:description" content={t("description")} />
-    <meta property="og:image" content="https://ymrl.github.io/a11y-visualizer/images/ogp.png" />
+    <meta
+      property="og:image"
+      content="https://ymrl.github.io/a11y-visualizer/images/ogp.png"
+    />
     <meta property="og:image:alt" content={t("hero.imageAlt")} />
     <meta property="og:site_name" content="Accessibility Visualizer" />
-    <meta property="og:locale" content={lang === "ja" ? "ja_JP" : lang === "ko" ? "ko_KR" : "en_US"} />
+    <meta
+      property="og:locale"
+      content={lang === "ja" ? "ja_JP" : lang === "ko" ? "ko_KR" : "en_US"}
+    />
     <meta name="color-scheme" content="light dark" />
     <script>
       if (typeof window !== "undefined") {
         const theme =
           localStorage.getItem("theme") ||
-          (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+          (window.matchMedia("(prefers-color-scheme: dark)").matches
+            ? "dark"
+            : "light");
         document.documentElement.classList.toggle("dark", theme === "dark");
       }
     </script>
   </head>
-  <body class="bg-zinc-50 dark:bg-zinc-900 text-zinc-800 dark:text-zinc-300 transition-colors">
+  <body
+    class="bg-zinc-50 dark:bg-zinc-900 text-zinc-800 dark:text-zinc-300 transition-colors"
+  >
     <div class="min-h-screen">
-      <header class="bg-white dark:bg-zinc-900 shadow-sm border-b border-zinc-200 dark:border-zinc-700">
+      <header
+        class="bg-white dark:bg-zinc-900 shadow-sm border-b border-zinc-200 dark:border-zinc-700"
+      >
         <div class="max-w-6xl mx-auto px-4 sm:px-2 lg:px-8 py-2">
-          <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-1 sm:gap-4">
-            <a href={lang === "en" ? "/a11y-visualizer/" : `/a11y-visualizer/${lang}/`} class="flex items-center">
-              <img src="/a11y-visualizer/icon.svg" alt="" class="w-12 h-12 mr-4" />
+          <div
+            class="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-1 sm:gap-4"
+          >
+            <a
+              href={lang === "en"
+                ? "/a11y-visualizer/"
+                : `/a11y-visualizer/${lang}/`}
+              class="flex items-center"
+            >
+              <img
+                src="/a11y-visualizer/icon.svg"
+                alt=""
+                class="w-12 h-12 mr-4"
+              />
               <div>
-                <h1 class="text-3xl font-bold text-teal-700 dark:text-teal-200">{t("title")}</h1>
-                {subtitle && (
-                  <p class="text-sm sm:text-base text-zinc-600 dark:text-zinc-400">{subtitle}</p>
-                )}
+                <h1 class="text-3xl font-bold text-teal-700 dark:text-teal-200">
+                  {t("title")}
+                </h1>
+                {
+                  subtitle && (
+                    <p class="text-sm sm:text-base text-zinc-600 dark:text-zinc-400">
+                      {subtitle}
+                    </p>
+                  )
+                }
               </div>
             </a>
             <div class="flex-shrink-0 self-end sm:self-auto">
@@ -62,7 +91,9 @@ const { lang, t, subtitle } = Astro.props as Props;
         <slot />
       </main>
 
-      <footer class="bg-zinc-900 dark:bg-zinc-950 text-zinc-300 dark:text-zinc-400 py-8">
+      <footer
+        class="bg-zinc-900 dark:bg-zinc-950 text-zinc-300 dark:text-zinc-400 py-8"
+      >
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <p>
             {t("footer.copyright")}<a
@@ -75,4 +106,4 @@ const { lang, t, subtitle } = Astro.props as Props;
       </footer>
     </div>
   </body>
-  </html>
+</html>

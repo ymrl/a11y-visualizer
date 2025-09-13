@@ -20,7 +20,8 @@ const dict = {
       },
       liveRegions: {
         title: "라이브 영역",
-        description: "스크린 리더 등 보조 기술에 동적으로 전달되는 정보를 시각적으로 표시",
+        description:
+          "스크린 리더 등 보조 기술에 동적으로 전달되는 정보를 시각적으로 표시",
       },
       customizable: {
         title: "사용자 정의 가능",
@@ -49,4 +50,3 @@ const dict = {
 } as const;
 
 export default dict;
-

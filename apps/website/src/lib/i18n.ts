@@ -20,7 +20,10 @@ export type TFn = (key: string) => string;
  * - `localeDict`: the page/component-specific language dictionary (near the file)
  * - `fallbackDict`: English dictionary for fallback
  */
-export function createLocalT(localeDict: Dict | undefined, fallbackDict: Dict): TFn {
+export function createLocalT(
+  localeDict: Dict | undefined,
+  fallbackDict: Dict,
+): TFn {
   return (key: string): string => {
     const path = key.split(".");
     const valLang = getDeep(localeDict, path);

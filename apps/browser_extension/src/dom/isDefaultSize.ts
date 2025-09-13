@@ -223,8 +223,16 @@ export const isDefaultSize = (el: Element): boolean => {
       (prop) => defaultStyle[prop] === elementStyle.get(prop)?.toString(),
     );
   }
-  const type = elementType(el);
-  const elementStyle = window.getComputedStyle(el);
+  // `computedStyleMap` is not in the Element interface in TypeScript
+  // But computedStyleMap is not supported in Firefox
+  const typedEl: Element = el as Element; // casting `never` to `Element`
+  const type = elementType(typedEl);
+  const d = typedEl.ownerDocument as Document;
+  const w = d?.defaultView;
+  if (!w) {
+    return false;
+  }
+  const elementStyle = w.getComputedStyle(typedEl);
   return (
     type === "button" ? SizePropertiesWithoutWidth : SizeProperties
   ).every((prop) => defaultStyle[prop] === elementStyle.getPropertyValue(prop));

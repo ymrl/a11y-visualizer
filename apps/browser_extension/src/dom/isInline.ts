@@ -6,7 +6,12 @@ const hasPreviousInlineSibling = (el: Element): boolean => {
         return true;
       }
     } else if (prev.nodeType === Node.ELEMENT_NODE) {
-      const style = window.getComputedStyle(prev as HTMLElement);
+      const d = (prev as Element).ownerDocument;
+      const w = d?.defaultView;
+      if (!w) {
+        return false;
+      }
+      const style = w.getComputedStyle(prev as HTMLElement);
       if (style.position === "absolute" || style.position === "fixed") {
         /* no op */
       } else if (

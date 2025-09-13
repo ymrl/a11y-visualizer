@@ -72,4 +72,29 @@ describe("label-associated-control", () => {
     );
     expect(result).toBeUndefined();
   });
+
+  test("iframe: label[for] resolves inside iframe document", () => {
+    const iframe = document.createElement("iframe");
+    document.body.appendChild(iframe);
+
+    const iframeDoc = iframe.contentDocument;
+    if (!iframeDoc) throw new Error("no contentDocument");
+    iframeDoc.open();
+    iframeDoc.write(
+      "<!doctype html><html><body>\n" +
+        '  <input id="name" type="text">\n' +
+        '  <label for="name">Name</label>\n' +
+        "</body></html>",
+    );
+    iframeDoc.close();
+    const label = iframeDoc.querySelector("label");
+    if (!label) throw new Error("missing label");
+
+    const result = LabelAssociatedControl.evaluate(
+      label as HTMLLabelElement,
+      { enabled: true },
+      {},
+    );
+    expect(result).toBeUndefined();
+  });
 });

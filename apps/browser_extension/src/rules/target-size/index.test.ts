@@ -319,4 +319,34 @@ describe(TargetSize.ruleName, () => {
       TargetSize.evaluate(largeButton, { enabled: true }, {}),
     ).toBeUndefined();
   });
+
+  test("iframe: uses iframe window/document when evaluating", () => {
+    const originalGetComputedStyle = window.getComputedStyle;
+    // If code accidentally uses top-level window.getComputedStyle, this will throw
+    window.getComputedStyle = () => {
+      throw new Error("top-level getComputedStyle should not be called");
+    };
+    try {
+      const iframe = document.createElement("iframe");
+      document.body.appendChild(iframe);
+
+      const iframeDoc = iframe.contentDocument;
+      if (!iframeDoc) throw new Error("no contentDocument");
+      iframeDoc.open();
+      iframeDoc.write(
+        "<!doctype html><html><body>\n" +
+          '  <button id="btn">Click</button>\n' +
+          "</body></html>",
+      );
+      iframeDoc.close();
+      const button = iframeDoc.getElementById("btn");
+      if (!button) throw new Error("missing button");
+
+      const result = TargetSize.evaluate(button, { enabled: true }, {});
+      const ok = result === undefined || Array.isArray(result);
+      expect(ok).toBe(true);
+    } finally {
+      window.getComputedStyle = originalGetComputedStyle;
+    }
+  });
 });

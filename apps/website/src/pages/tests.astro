@@ -8,8 +8,8 @@ import TableTests from "../components/tests/TableTests.astro";
 import AriaHiddenTests from "../components/tests/AriaHiddenTests.astro";
 import LayoutTests from "../components/tests/LayoutTests.astro";
 import LiveRegionTests from "../components/tests/LiveRegionTests.astro";
+import Warning from "../components/tests/Warning.astro";
 
-import { IoWarning } from "react-icons/io5";
 
 export const prerender = true;
 import { createLocalT } from "../lib/i18n";
@@ -65,29 +65,7 @@ const t = createLocalT(pageEn, pageEn);
       <!-- Main Content -->
       <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <!-- Warning Section -->
-        <div
-          class="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-6 mb-8"
-        >
-          <div class="flex items-start">
-            <div class="flex-shrink-0">
-              <IoWarning
-                className="w-8 h-8 text-amber-600 dark:text-amber-400"
-              />
-            </div>
-            <div class="ml-3">
-              <h2
-                class="text-lg font-semibold text-amber-800 dark:text-amber-200"
-              >
-                {t("notice.title")}
-              </h2>
-              <div class="mt-2 text-amber-700 dark:text-amber-300">
-                <p class="mb-2">{t("notice.p1")}</p>
-                <p class="mb-2"><strong>{t("notice.p2")}</strong></p>
-                <p>{t("notice.p3")}</p>
-              </div>
-            </div>
-          </div>
-        </div>
+        <Warning lang="en" />
 
         <!-- Introduction -->
         <div class="mb-8">

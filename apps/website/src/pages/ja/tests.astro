@@ -8,6 +8,7 @@ import TableTests from "../../components/tests/TableTests.astro";
 import AriaHiddenTests from "../../components/tests/AriaHiddenTests.astro";
 import LayoutTests from "../../components/tests/LayoutTests.astro";
 import LiveRegionTests from "../../components/tests/LiveRegionTests.astro";
+import Warning from "../../components/tests/Warning.astro";
 
 export const prerender = true;
 import { createLocalT } from "../../lib/i18n";
@@ -61,43 +62,7 @@ const t = createLocalT(pageJa, pageEn);
       </header>
 
       <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div
-          class="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-6 mb-8"
-        >
-          <div class="flex items-start">
-            <div class="flex-shrink-0">
-              <div class="w-6 h-6 text-amber-600 dark:text-amber-400">
-                <svg fill="currentColor" viewBox="0 0 512 512">
-                  <path
-                    d="M85.57,446.25H426.43a32,32,0,0,0,28.17-47.17L284.18,82.58a32,32,0,0,0-56.36,0L57.4,399.08A32,32,0,0,0,85.57,446.25Z"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="32"></path>
-                  <path
-                    d="m250.26 195.39 5.74 122 5.73-121.95a5.74 5.74 0 0 0-5.79-6h0a5.74 5.74 0 0 0-5.68 5.95z"
-                    fill="currentColor"></path>
-                  <path
-                    d="m256 397.25a20 20 0 1 1 20-20 20 20 0 0 1-20 20z"
-                    fill="currentColor"></path>
-                </svg>
-              </div>
-            </div>
-            <div class="ml-3">
-              <h2
-                class="text-lg font-semibold text-amber-800 dark:text-amber-200"
-              >
-                {t("notice.title")}
-              </h2>
-              <div class="mt-2 text-amber-700 dark:text-amber-300">
-                <p class="mb-2">{t("notice.p1")}</p>
-                <p class="mb-2"><strong>{t("notice.p2")}</strong></p>
-                <p>{t("notice.p3")}</p>
-              </div>
-            </div>
-          </div>
-        </div>
+        <Warning lang="ja" />
 
         <div class="mb-8">
           <h2 class="text-4xl font-bold text-zinc-900 dark:text-zinc-100 mb-4">

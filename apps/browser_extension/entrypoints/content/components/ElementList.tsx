@@ -38,26 +38,30 @@ export const ElementList = ({
       const mouseY = e.pageY;
 
       // Find all elements the mouse is over
-      const newHoveredIndices: number[] = [];
-
-      for (let i = 0; i < list.length; i++) {
-        const {
-          absoluteX,
-          absoluteY,
-          width: elWidth,
-          height: elHeight,
-        } = list[i];
-
+      const newHoveredIndices = list.reduce<number[]>((acc, meta, i) => {
+        const { absoluteX, absoluteY } = meta;
         if (
-          mouseX >= absoluteX - ELEMENT_SIZE_ENHANCEMENT &&
-          mouseX <= absoluteX + elWidth + ELEMENT_SIZE_ENHANCEMENT &&
-          mouseY >= absoluteY - ELEMENT_SIZE_ENHANCEMENT &&
-          mouseY <= absoluteY + elHeight + ELEMENT_SIZE_ENHANCEMENT
+          meta.rects.some((rect) => {
+            const {
+              relativeX,
+              relativeY,
+              width: rectWidth,
+              height: rectHeight,
+            } = rect;
+            return (
+              mouseX >= absoluteX + relativeX - ELEMENT_SIZE_ENHANCEMENT &&
+              mouseX <=
+                absoluteX + relativeX + rectWidth + ELEMENT_SIZE_ENHANCEMENT &&
+              mouseY >= absoluteY + relativeY - ELEMENT_SIZE_ENHANCEMENT &&
+              mouseY <=
+                absoluteY + relativeY + rectHeight + ELEMENT_SIZE_ENHANCEMENT
+            );
+          })
         ) {
-          newHoveredIndices.push(i);
+          acc.push(i);
         }
-      }
-
+        return acc;
+      }, []);
       setHoveredElementIndices(newHoveredIndices);
     };
 

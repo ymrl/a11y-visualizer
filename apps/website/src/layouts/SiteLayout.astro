@@ -1,14 +1,20 @@
 ---
 import LanguageSelector from "../components/LanguageSelector";
-import type { TFn } from "../lib/i18n";
+import { createLocalT } from "../lib/i18n";
+import { en, ja, ko } from "./SiteLayout.lang";
 
 interface Props {
   lang: string;
-  t: TFn; // translator for layout-level strings
+  title?: string;
   subtitle?: string;
+  description?: string;
 }
 
-const { lang, t, subtitle } = Astro.props as Props;
+const { lang, title, description, subtitle } = Astro.props as Props;
+
+const layoutDict = lang === "ja" ? ja : lang === "ko" ? ko : en;
+
+const t = createLocalT(layoutDict, en);
 ---
 
 <!doctype html>
@@ -18,11 +24,14 @@ const { lang, t, subtitle } = Astro.props as Props;
     <link rel="icon" type="image/svg+xml" href="/a11y-visualizer/icon.svg" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
-    <title>{t("title")}</title>
-    <meta name="description" content={t("description")} />
+    <title>{title || t("title")}</title>
+    <meta name="description" content={description || t("description")} />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content={t("title")} />
-    <meta property="og:description" content={t("description")} />
+    <meta property="og:title" content={title || t("title")} />
+    <meta
+      property="og:description"
+      content={description || t("description")}
+    />
     <meta
       property="og:image"
       content="https://ymrl.github.io/a11y-visualizer/images/ogp.png"
@@ -34,16 +43,6 @@ const { lang, t, subtitle } = Astro.props as Props;
       content={lang === "ja" ? "ja_JP" : lang === "ko" ? "ko_KR" : "en_US"}
     />
     <meta name="color-scheme" content="light dark" />
-    <script>
-      if (typeof window !== "undefined") {
-        const theme =
-          localStorage.getItem("theme") ||
-          (window.matchMedia("(prefers-color-scheme: dark)").matches
-            ? "dark"
-            : "light");
-        document.documentElement.classList.toggle("dark", theme === "dark");
-      }
-    </script>
   </head>
   <body
     class="bg-zinc-50 dark:bg-zinc-900 text-zinc-800 dark:text-zinc-300 transition-colors"

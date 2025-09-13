@@ -2,7 +2,7 @@ const dict = {
   title: "Accessibility Visualizer",
   description:
     "Webページの上にアクセシビリティに関係する注釈を表示し、開発者を支援するブラウザ拡張機能です。",
-  hero: { imageAlt: "ChromeでWikipediaを表示し、Accessibility Visualizerのポップアップを開いている。ページ内にはAccessibility Visualizerによる情報がオーバーレイされている" },
+  hero: { imageAlt: "Accessibility Visualizerのアイコン (カラフルなブロックの上に描かれた漫画の目)" },
   footer: { copyright: "© 2024 ymrl (MIT License)", github: "GitHub" },
 } as const;
 export default dict;

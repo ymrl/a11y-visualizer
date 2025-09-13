@@ -1,6 +1,9 @@
 ---
 import LanguageSelector from "../components/LanguageSelector";
-import { getTranslation } from "../lib/translations";
+import { createLocalT } from "../lib/i18n";
+import enDict from "./SiteLayout.lang.en";
+import jaDict from "./SiteLayout.lang.ja";
+import koDict from "./SiteLayout.lang.ko";
 
 // Markdown layouts receive frontmatter under Astro.props.frontmatter
 interface Frontmatter {
@@ -11,7 +14,7 @@ interface Frontmatter {
 const fm = (Astro.props as { frontmatter?: Frontmatter }).frontmatter || {};
 const lang = fm.lang || "en";
 const pageTitle = fm.title;
-const t = getTranslation(lang);
+const tCommon = createLocalT(lang === "ja" ? jaDict : lang === "ko" ? koDict : enDict, enDict);
 ---
 
 <!doctype html>
@@ -21,19 +24,19 @@ const t = getTranslation(lang);
     <link rel="icon" type="image/svg+xml" href="/a11y-visualizer/icon.svg" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
-    <title>{pageTitle ? `${pageTitle} - ${t.title}` : t.title}</title>
-    <meta name="description" content={t.description} />
+    <title>{pageTitle ? `${pageTitle} - ${tCommon("title")}` : tCommon("title")}</title>
+    <meta name="description" content={tCommon("description")} />
     <meta property="og:type" content="website" />
     <meta
       property="og:title"
-      content={pageTitle ? `${pageTitle} - ${t.title}` : t.title}
+      content={pageTitle ? `${pageTitle} - ${tCommon("title")}` : tCommon("title")}
     />
-    <meta property="og:description" content={t.description} />
+    <meta property="og:description" content={tCommon("description")} />
     <meta
       property="og:image"
       content="https://ymrl.github.io/a11y-visualizer/images/ogp.png"
     />
-    <meta property="og:image:alt" content={t.hero.imageAlt} />
+    <meta property="og:image:alt" content={tCommon("hero.imageAlt")} />
     <meta property="og:site_name" content="Accessibility Visualizer" />
     <meta
       property="og:locale"
@@ -65,7 +68,7 @@ const t = getTranslation(lang);
           >
             <img src="/a11y-visualizer/icon.svg" alt="" class="w-8 h-8" />
             <span class="text-xl font-semibold text-teal-700 dark:text-teal-200"
-              >{t.title}</span
+              >{tCommon("title")}</span
             >
           </a>
           <LanguageSelector currentLang={lang} client:load />
@@ -86,12 +89,12 @@ const t = getTranslation(lang);
     >
       <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <p>
-          {t.footer.copyright}
+          {tCommon("footer.copyright")}
           <a
             href="https://github.com/ymrl/a11y-visualizer"
             class="text-teal-400 dark:text-teal-300 hover:text-teal-300 dark:hover:text-teal-200 underline"
           >
-            {t.footer.github}
+            {tCommon("footer.github")}
           </a>.
         </p>
       </div>

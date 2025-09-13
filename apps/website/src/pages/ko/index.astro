@@ -1,10 +1,106 @@
 ---
-import { getTranslation } from "../../lib/translations";
-import BaseLayout from "../../layouts/BaseLayout.astro";
+import SiteLayout from "../../layouts/SiteLayout.astro";
+import { createLocalT } from "../../lib/i18n";
+import layoutEn from "../../layouts/SiteLayout.lang.en";
+import layoutKo from "../../layouts/SiteLayout.lang.ko";
+import pageDict from "./index.lang";
+import pageEn from "../index.lang";
 
 export const prerender = true;
-
-const t = getTranslation("ko");
+const tCommon = createLocalT(layoutKo, layoutEn);
+const tPage = createLocalT(pageDict, pageEn);
 ---
+<SiteLayout lang="ko" t={tCommon} subtitle={tPage("subtitle")}>
+  <!-- Hero Section -->
+  <section class="bg-gradient-to-br from-teal-50 to-zinc-50 dark:from-zinc-800 dark:to-zinc-900 py-16">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="text-4xl font-bold text-zinc-900 dark:text-zinc-100 mb-4">{tPage("hero.title")}</h2>
+      <p class="text-xl text-zinc-600 dark:text-zinc-400 mb-8 max-w-3xl mx-auto">{tPage("hero.description")}</p>
+      <div class="flex justify-center">
+        <img src={tPage("hero.screenshotSrc")} alt="" class="rounded-lg max-w-full h-auto" />
+      </div>
+    </div>
+  </section>
 
-<BaseLayout lang="ko" t={t} />
+  <!-- Features Section -->
+  <section class="py-16 bg-white dark:bg-zinc-900">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold text-center text-zinc-900 dark:text-zinc-100 mb-12">{tPage("features.title")}</h2>
+      <div class="grid md:grid-cols-2 gap-8">
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-8 h-8 bg-teal-100 dark:bg-teal-800 rounded-full flex items-center justify-center">
+            <span class="text-teal-600 dark:text-teal-200 font-semibold">1</span>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold text-zinc-900 dark:text-zinc-100 mb-2">{tPage("features.items.visual.title")}</h3>
+            <p class="text-zinc-600 dark:text-zinc-400">{tPage("features.items.visual.description")}</p>
+          </div>
+        </div>
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-8 h-8 bg-teal-100 dark:bg-teal-800 rounded-full flex items-center justify-center">
+            <span class="text-teal-600 dark:text-teal-200 font-semibold">2</span>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold text-zinc-900 dark:text-zinc-100 mb-2">{tPage("features.items.detection.title")}</h3>
+            <p class="text-zinc-600 dark:text-zinc-400">{tPage("features.items.detection.description")}</p>
+          </div>
+        </div>
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-8 h-8 bg-teal-100 dark:bg-teal-800 rounded-full flex items-center justify-center">
+            <span class="text-teal-600 dark:text-teal-200 font-semibold">3</span>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold text-zinc-900 dark:text-zinc-100 mb-2">{tPage("features.items.liveRegions.title")}</h3>
+            <p class="text-zinc-600 dark:text-zinc-400">{tPage("features.items.liveRegions.description")}</p>
+          </div>
+        </div>
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0 w-8 h-8 bg-teal-100 dark:bg-teal-800 rounded-full flex items-center justify-center">
+            <span class="text-teal-600 dark:text-teal-200 font-semibold">4</span>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold text-zinc-900 dark:text-zinc-100 mb-2">{tPage("features.items.customizable.title")}</h3>
+            <p class="text-zinc-600 dark:text-zinc-400">{tPage("features.items.customizable.description")}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Download Section -->
+  <section class="py-16 bg-zinc-50 dark:bg-zinc-800">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="text-3xl font-bold text-zinc-900 dark:text-zinc-100 mb-8">{tPage("download.title")}</h2>
+      <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
+        <a href="https://chromewebstore.google.com/detail/accessibility-visualizer/idcacekakoknnpbfjcdhnkffgfbddnhk" class="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-md transition-colors duration-200">
+          {tPage("download.chromeStore")}
+        </a>
+        <a href="https://addons.mozilla.org/ja/firefox/addon/accessibility-visualizer/" class="inline-flex items-center px-6 py-3 bg-orange-700 hover:bg-orange-800 text-white font-semibold rounded-lg shadow-md transition-colors duration-200">
+          {tPage("download.firefoxAddons")}
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Guide Section -->
+  <section class="py-16 bg-white dark:bg-zinc-900">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="text-3xl font-bold text-zinc-900 dark:text-zinc-100 mb-4">{tPage("guide.title")}</h2>
+      <p class="text-lg text-zinc-600 dark:text-zinc-400 mb-8">{tPage("guide.description")}</p>
+      <a href={tPage("guide.url")} class="inline-flex items-center px-6 py-3 bg-teal-700 hover:bg-teal-800 text-white font-semibold rounded-lg shadow-md transition-colors duration-200">
+        {tPage("guide.link")}
+      </a>
+    </div>
+  </section>
+
+  <!-- Test Examples Section -->
+  <section class="py-16 bg-zinc-50 dark:bg-zinc-800">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="text-3xl font-bold text-zinc-900 dark:text-zinc-100 mb-4">{tPage("tests.title")}</h2>
+      <p class="text-lg text-zinc-600 dark:text-zinc-400 mb-8">{tPage("tests.description")}</p>
+      <a href={tPage("tests.url")} class="inline-flex items-center px-6 py-3 bg-zinc-700 hover:bg-zinc-800 text-white font-semibold rounded-lg shadow-md transition-colors duration-200">
+        {tPage("tests.link")}
+      </a>
+    </div>
+  </section>
+</SiteLayout>

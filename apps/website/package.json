@@ -8,6 +8,8 @@
     "prebuild": "node ./scripts/sync-docs.mjs",
     "build": "astro build",
     "preview": "astro preview",
+    "test": "vitest --run --config vitest.config.ts --pool=forks",
+    "test:jsdom": "vitest --run --config vitest.config.ts --pool=forks",
     "lint": "prettier . --check && eslint . --ext ts,tsx,astro --report-unused-disable-directives --max-warnings 0",
     "lint-fix": "prettier . --write && eslint . --ext ts,tsx,astro --fix",
     "clean": "rm -rf dist"
@@ -31,6 +33,7 @@
     "postcss": "^8.5.6",
     "prettier": "3.2.5",
     "prettier-plugin-astro": "^0.14.1",
+    "vitest": "^3.2.2",
     "tailwindcss": "^3.4.17",
     "@tailwindcss/typography": "^0.5.15",
     "vite": "^5.4.0"

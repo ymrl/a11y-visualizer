@@ -77,4 +77,26 @@ describe("page-lang", () => {
     const result = PageLang.evaluate(document.body, { enabled: false }, {});
     expect(result).toBeUndefined();
   });
+
+  test("iframe: reads lang from iframe documentElement", () => {
+    const iframe = document.createElement("iframe");
+    document.body.appendChild(iframe);
+
+    const iframeDoc = iframe.contentDocument;
+    if (!iframeDoc) throw new Error("no contentDocument");
+    iframeDoc.open();
+    iframeDoc.write(
+      '<!doctype html><html lang="fr"><body><p>Hi</p></body></html>',
+    );
+    iframeDoc.close();
+    const result = PageLang.evaluate(iframeDoc.body, { enabled: true }, {});
+    expect(result).toEqual([
+      {
+        type: "lang",
+        ruleName: "page-lang",
+        content: "fr",
+        contentLabel: "Page language",
+      },
+    ]);
+  });
 });

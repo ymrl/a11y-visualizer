@@ -266,6 +266,54 @@ describe("IdReference", () => {
     });
   });
 
+  test("iframe: resolves IDs within iframe document (valid)", () => {
+    const iframe = document.createElement("iframe");
+    document.body.appendChild(iframe);
+
+    const iframeDoc = iframe.contentDocument;
+    if (!iframeDoc) throw new Error("no contentDocument");
+    iframeDoc.open();
+    iframeDoc.write(
+      "<!doctype html><html><body>\n" +
+        '  <span id="label">Label</span>\n' +
+        '  <input id="field" aria-labelledby="label">\n' +
+        "</body></html>",
+    );
+    iframeDoc.close();
+    const el = iframeDoc.getElementById("field");
+    if (!el) throw new Error("missing field");
+
+    const result = IdReference.evaluate(el, { enabled: true }, {});
+    expect(result).toBeUndefined();
+  });
+
+  test("iframe: reports missing IDs within iframe document (invalid)", () => {
+    const iframe = document.createElement("iframe");
+    document.body.appendChild(iframe);
+
+    const iframeDoc = iframe.contentDocument;
+    if (!iframeDoc) throw new Error("no contentDocument");
+    iframeDoc.open();
+    iframeDoc.write(
+      "<!doctype html><html><body>\n" +
+        '  <input id="field" aria-labelledby="missing">\n' +
+        "</body></html>",
+    );
+    iframeDoc.close();
+    const el = iframeDoc.getElementById("field");
+    if (!el) throw new Error("missing field");
+
+    const result = IdReference.evaluate(el, { enabled: true }, {});
+    expect(result).toEqual([
+      {
+        type: "warning",
+        ruleName: "id-reference",
+        message: "Referenced IDs do not exist: {{idsWithAttributes}}",
+        messageParams: { idsWithAttributes: "missing (aria-labelledby)" },
+      },
+    ]);
+  });
+
   test("reports warning for mixed single and list attributes with partial missing IDs", () => {
     document.body.innerHTML = `
       <div id="existing-label">Label</div>

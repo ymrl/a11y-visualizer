@@ -62,7 +62,10 @@ export const IdReference: RuleObject = {
   evaluate: (
     element: Element,
     { enabled }: Options = defaultOptions,
-    { role = getKnownRole(element), elementDocument = document } = {},
+    {
+      role = getKnownRole(element),
+      elementDocument = element.ownerDocument,
+    } = {},
   ) => {
     if (!enabled) {
       return undefined;

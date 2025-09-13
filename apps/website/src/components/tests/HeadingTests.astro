@@ -2,23 +2,27 @@
 import CategoryTitle from "./CategoryTitle.astro";
 import CategorySectionTitle from "./CategorySectionTitle.astro";
 import ExampleCard from "./ExampleCard.astro";
+import { createLocalT } from "../../lib/i18n";
+import en from "./HeadingTests.lang.en";
+import ja from "./HeadingTests.lang.ja";
+
+interface Props {
+  lang?: string;
+}
+const lang = (Astro.props as Props).lang || "en";
+const t = createLocalT(lang === "ja" ? ja : en, en);
 ---
 
-<CategoryTitle id="headings">Headings</CategoryTitle>
-<p class="text-zinc-700 dark:text-zinc-300 mb-6">
-  Headings provide a hierarchical structure to web content, helping users
-  understand page organization and navigate efficiently. Screen readers use
-  headings as navigation landmarks, so proper heading structure is crucial for
-  accessibility.
-</p>
+<CategoryTitle id="headings">{t("title")}</CategoryTitle>
+<p class="text-zinc-700 dark:text-zinc-300 mb-6">{t("intro")}</p>
 
 <CategorySectionTitle id="heading-hierarchy"
-  >Heading Hierarchy</CategorySectionTitle
+  >{t("sections.hierarchy.title")}</CategorySectionTitle
 >
 
 <ExampleCard
-  title="Heading hierarchy demonstration"
-  description="This example shows the standard HTML heading hierarchy from h1 to h6, plus a custom heading using ARIA attributes. Notice how heading levels should follow a logical order."
+  title={t("examples.hierarchy.demo.title")}
+  description={t("examples.hierarchy.demo.desc")}
 >
   <div
     class="flex flex-col gap-4 p-4 border border-zinc-300 dark:border-zinc-600 rounded bg-zinc-50 dark:bg-zinc-800"
@@ -51,24 +55,24 @@ import ExampleCard from "./ExampleCard.astro";
   </div>
 
   <div class="mt-4 text-sm text-zinc-700 dark:text-zinc-300">
-    <p class="mb-2"><strong>Best practices:</strong></p>
+    <p class="mb-2"><strong>{t("examples.hierarchy.best.title")}</strong></p>
     <ul class="list-disc list-inside space-y-1">
-      <li>Start with h1 for main page title</li>
-      <li>Don't skip heading levels (h1 → h3 without h2)</li>
-      <li>Use headings to create a logical content outline</li>
-      <li>Each page should have only one h1</li>
-      <li>Use role="heading" with aria-level for headings beyond h6</li>
+      <li>{t("examples.hierarchy.best.item1")}</li>
+      <li>{t("examples.hierarchy.best.item2")}</li>
+      <li>{t("examples.hierarchy.best.item3")}</li>
+      <li>{t("examples.hierarchy.best.item4")}</li>
+      <li>{t("examples.hierarchy.best.item5")}</li>
     </ul>
   </div>
 </ExampleCard>
 
 <CategorySectionTitle id="problematic-headings"
-  >Problematic Headings</CategorySectionTitle
+  >{t("sections.problematic.title")}</CategorySectionTitle
 >
 
 <ExampleCard
-  title="Problematic heading: Skipped level"
-  description="❌ This example shows incorrect heading hierarchy where h4 appears without h2 or h3. This breaks the logical document structure."
+  title={t("examples.problematic.skipped.title")}
+  description={t("examples.problematic.skipped.desc")}
 >
   <div
     class="p-4 border border-red-300 dark:border-red-600 rounded bg-red-50 dark:bg-red-900/20"
@@ -80,14 +84,14 @@ import ExampleCard from "./ExampleCard.astro";
       Skipped to h4 - This is problematic!
     </h4>
     <p class="text-sm text-zinc-700 dark:text-zinc-300 mt-2">
-      This h4 should be h2 to maintain proper hierarchy.
+      {t("examples.problematic.skipped.note")}
     </p>
   </div>
 </ExampleCard>
 
 <ExampleCard
-  title="Empty heading"
-  description="❌ Heading element with no text content. Screen readers cannot announce meaningful information about this heading."
+  title={t("examples.problematic.empty.title")}
+  description={t("examples.problematic.empty.desc")}
 >
   <h6
     class="border border-red-300 dark:border-red-600 p-2 bg-red-50 dark:bg-red-900/20"
@@ -95,6 +99,6 @@ import ExampleCard from "./ExampleCard.astro";
     <!-- Empty heading -->
   </h6>
   <p class="text-sm text-zinc-700 dark:text-zinc-300 mt-2">
-    This h6 element contains no text and provides no value to users.
+    {t("examples.problematic.empty.note")}
   </p>
 </ExampleCard>

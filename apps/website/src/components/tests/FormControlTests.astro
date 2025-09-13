@@ -2,31 +2,36 @@
 import CategoryTitle from "./CategoryTitle.astro";
 import CategorySectionTitle from "./CategorySectionTitle.astro";
 import ExampleCard from "./ExampleCard.astro";
+import { createLocalT } from "../../lib/i18n";
+import en from "./FormControlTests.lang.en";
+import ja from "./FormControlTests.lang.ja";
 
 const formClasses =
   "border border-zinc-300 dark:border-zinc-600 rounded p-2 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100";
+interface Props {
+  lang?: string;
+}
+const lang = (Astro.props as Props).lang || "en";
+const t = createLocalT(lang === "ja" ? ja : en, en);
 ---
 
-<CategoryTitle id="form-controls">Form Controls</CategoryTitle>
-<p class="text-zinc-700 dark:text-zinc-300 mb-6">
-  Form controls are interactive elements that allow users to input data. They
-  must have proper labels and be accessible to screen readers and keyboard
-  users. The following examples demonstrate both accessible implementations and
-  common accessibility issues.
-</p>
+<CategoryTitle id="form-controls">{t("title")}</CategoryTitle>
+<p class="text-zinc-700 dark:text-zinc-300 mb-6">{t("intro")}</p>
 
-<CategorySectionTitle id="text-inputs">Text Inputs</CategorySectionTitle>
+<CategorySectionTitle id="text-inputs"
+  >{t("sections.textInputs.title")}</CategorySectionTitle
+>
 
 <ExampleCard
-  title="Input without label"
-  description="❌ Text input without any label. Screen readers cannot determine what this field is for, making it inaccessible."
+  title={t("examples.textInputs.withoutLabel.title")}
+  description={t("examples.textInputs.withoutLabel.desc")}
 >
   <input type="text" class={formClasses} />
 </ExampleCard>
 
 <ExampleCard
-  title="Input with proper label"
-  description="✅ Text input with associated label using 'for' and 'id' attributes. This creates a programmatic relationship between label and input."
+  title={t("examples.textInputs.withLabel.title")}
+  description={t("examples.textInputs.withLabel.desc")}
 >
   <label
     for="inputWithLabel"
@@ -38,8 +43,8 @@ const formClasses =
 </ExampleCard>
 
 <ExampleCard
-  title="Input with aria-describedby referencing missing IDs"
-  description="❌ Input using aria-describedby to reference description elements that don't exist in the document."
+  title={t("examples.textInputs.describedbyMissing.title")}
+  description={t("examples.textInputs.describedbyMissing.desc")}
 >
   <label
     for="input-missing-descriptions"
@@ -60,8 +65,8 @@ const formClasses =
 </ExampleCard>
 
 <ExampleCard
-  title="Input with mixed existing and missing ID references"
-  description="⚠️ Input where some referenced IDs exist and others don't. This creates partial accessibility relationships."
+  title={t("examples.textInputs.mixedRefs.title")}
+  description={t("examples.textInputs.mixedRefs.desc")}
 >
   <label
     for="input-partial-references"
@@ -86,12 +91,13 @@ const formClasses =
   </p>
 </ExampleCard>
 
-<CategorySectionTitle id="select-elements">Select Elements</CategorySectionTitle
+<CategorySectionTitle id="select-elements"
+  >{t("sections.selectElements.title")}</CategorySectionTitle
 >
 
 <ExampleCard
-  title="Select without label"
-  description="❌ Select element without label. Users cannot determine what this dropdown is for."
+  title={t("examples.selectElements.withoutLabel.title")}
+  description={t("examples.selectElements.withoutLabel.desc")}
 >
   <select class={formClasses}>
     <option value="1">Option 1</option>
@@ -101,8 +107,8 @@ const formClasses =
 </ExampleCard>
 
 <ExampleCard
-  title="Select with proper label"
-  description="✅ Select element with associated label. Screen readers can announce both the label and the current selection."
+  title={t("examples.selectElements.withLabel.title")}
+  description={t("examples.selectElements.withLabel.desc")}
 >
   <label
     for="selectWithLabel"
@@ -118,20 +124,20 @@ const formClasses =
 </ExampleCard>
 
 <CategorySectionTitle id="textarea-elements"
-  >Textarea Elements</CategorySectionTitle
+  >{t("sections.textareaElements.title")}</CategorySectionTitle
 >
 
 <ExampleCard
-  title="Textarea without label"
-  description="❌ Textarea without label. Users cannot understand what content should be entered here."
+  title={t("examples.textarea.withoutLabel.title")}
+  description={t("examples.textarea.withoutLabel.desc")}
 >
   <textarea class={`${formClasses} border-red-300 dark:border-red-600`}
   ></textarea>
 </ExampleCard>
 
 <ExampleCard
-  title="Textarea with proper label"
-  description="✅ Textarea with associated label. Clearly communicates the purpose of the text area to all users."
+  title={t("examples.textarea.withLabel.title")}
+  description={t("examples.textarea.withLabel.desc")}
 >
   <label
     for="textareaWithLabel"
@@ -143,12 +149,12 @@ const formClasses =
 </ExampleCard>
 
 <CategorySectionTitle id="editable-elements"
-  >Editable Elements</CategorySectionTitle
+  >{t("sections.editableElements.title")}</CategorySectionTitle
 >
 
 <ExampleCard
-  title="Contenteditable div without role"
-  description="⚠️ Contenteditable div without proper role. While functional, screen readers may not announce it as a text input field."
+  title={t("examples.editable.noRole.title")}
+  description={t("examples.editable.noRole.desc")}
 >
   <div
     id="contenteditable-no-role-label"
@@ -168,8 +174,8 @@ const formClasses =
 </ExampleCard>
 
 <ExampleCard
-  title="Contenteditable div with role='textbox' and aria-labelledby"
-  description="✅ Contenteditable div with proper textbox role and accessible labeling. Uses aria-labelledby to connect with the label element."
+  title={t("examples.editable.textboxLabelled.title")}
+  description={t("examples.editable.textboxLabelled.desc")}
 >
   <div
     id="contenteditable-textbox-label"
@@ -191,8 +197,8 @@ const formClasses =
 </ExampleCard>
 
 <ExampleCard
-  title="Contenteditable div with role='textbox' and aria-multiline"
-  description="✅ Contenteditable div configured for multiline editing. The aria-multiline attribute helps screen readers understand the expected input type."
+  title={t("examples.editable.textboxMultiline.title")}
+  description={t("examples.editable.textboxMultiline.desc")}
 >
   <div
     id="contenteditable-multiline-label"
@@ -215,8 +221,8 @@ const formClasses =
 </ExampleCard>
 
 <ExampleCard
-  title="Contenteditable without label"
-  description="❌ Contenteditable element without any label or accessible name. Screen readers cannot identify what this field is for."
+  title={t("examples.editable.noLabel.title")}
+  description={t("examples.editable.noLabel.desc")}
 >
   <div
     contenteditable="true"
@@ -230,8 +236,8 @@ const formClasses =
 </ExampleCard>
 
 <ExampleCard
-  title="Contenteditable with aria-label"
-  description="✅ Contenteditable element using aria-label for accessibility. When a visual label isn't appropriate, aria-label provides the accessible name."
+  title={t("examples.editable.ariaLabel.title")}
+  description={t("examples.editable.ariaLabel.desc")}
 >
   <div
     contenteditable="true"
@@ -246,8 +252,8 @@ const formClasses =
 </ExampleCard>
 
 <ExampleCard
-  title="Contenteditable with placeholder using aria-placeholder"
-  description="✅ Contenteditable element with proper placeholder semantics using aria-placeholder. This provides hint text that's accessible to screen readers."
+  title={t("examples.editable.placeholder.title")}
+  description={t("examples.editable.placeholder.desc")}
 >
   <div
     id="contenteditable-placeholder-label"
@@ -313,11 +319,13 @@ const formClasses =
   </style>
 </ExampleCard>
 
-<CategorySectionTitle id="radio-buttons">Radio Buttons</CategorySectionTitle>
+<CategorySectionTitle id="radio-buttons"
+  >{t("sections.radioButtons.title")}</CategorySectionTitle
+>
 
 <ExampleCard
-  title="Radio buttons with labels"
-  description="✅ Properly labeled radio buttons with shared name attribute. Forms a logical group that screen readers can navigate."
+  title={t("examples.radio.withLabels.title")}
+  description={t("examples.radio.withLabels.desc")}
 >
   <div class="flex flex-wrap gap-3">
     <span class="flex items-center gap-1">
@@ -336,8 +344,8 @@ const formClasses =
 </ExampleCard>
 
 <ExampleCard
-  title="Radio buttons without labels"
-  description="❌ Radio buttons without proper labels. Text appears next to radios but isn't programmatically associated, making it inaccessible."
+  title={t("examples.radio.withoutLabels.title")}
+  description={t("examples.radio.withoutLabels.desc")}
 >
   <div class="flex flex-wrap gap-3">
     <span class="flex items-center gap-1">
@@ -362,8 +370,8 @@ const formClasses =
 </ExampleCard>
 
 <ExampleCard
-  title="Radio buttons without name attribute"
-  description="❌ Radio buttons without shared name attribute. These don't form a proper group, so both can be selected simultaneously."
+  title={t("examples.radio.withoutName.title")}
+  description={t("examples.radio.withoutName.desc")}
 >
   <div class="flex flex-wrap gap-3">
     <span class="flex items-center gap-1">
@@ -382,8 +390,8 @@ const formClasses =
 </ExampleCard>
 
 <ExampleCard
-  title="Radio buttons with different name attributes"
-  description="❌ Radio buttons with different name attributes don't form a logical group. Each acts as an independent radio button."
+  title={t("examples.radio.differentName.title")}
+  description={t("examples.radio.differentName.desc")}
 >
   <div class="flex flex-wrap gap-3">
     <span class="flex items-center gap-1">
@@ -409,11 +417,13 @@ const formClasses =
   </div>
 </ExampleCard>
 
-<CategorySectionTitle id="checkboxes">Checkboxes</CategorySectionTitle>
+<CategorySectionTitle id="checkboxes"
+  >{t("sections.checkboxes.title")}</CategorySectionTitle
+>
 
 <ExampleCard
-  title="Checkboxes with labels"
-  description="✅ Properly labeled checkboxes. Each checkbox has a clear, accessible name that screen readers can announce."
+  title={t("examples.checkbox.withLabels.title")}
+  description={t("examples.checkbox.withLabels.desc")}
 >
   <div class="flex flex-wrap gap-3">
     <span class="flex items-center gap-1">
@@ -432,8 +442,8 @@ const formClasses =
 </ExampleCard>
 
 <ExampleCard
-  title="Checkboxes without labels"
-  description="❌ Checkboxes without proper labels. Text appears nearby but isn't programmatically associated with the checkboxes."
+  title={t("examples.checkbox.withoutLabels.title")}
+  description={t("examples.checkbox.withoutLabels.desc")}
 >
   <div class="flex flex-wrap gap-3">
     <span class="flex items-center gap-1">
@@ -456,8 +466,8 @@ const formClasses =
 </ExampleCard>
 
 <ExampleCard
-  title="Custom styled checkbox with display: none"
-  description="❌ Custom checkbox using 'display: none' which can remove the element from keyboard navigation and screen readers in some cases."
+  title={t("examples.checkbox.customDisplayNone.title")}
+  description={t("examples.checkbox.customDisplayNone.desc")}
 >
   <div class="cool-checkbox">
     <input type="checkbox" id="cool-checkbox" style="display: none;" />
@@ -501,11 +511,13 @@ const formClasses =
   </style>
 </ExampleCard>
 
-<CategorySectionTitle id="label-issues">Label Issues</CategorySectionTitle>
+<CategorySectionTitle id="label-issues"
+  >{t("sections.labelIssues.title")}</CategorySectionTitle
+>
 
 <ExampleCard
-  title="Orphaned label"
-  description="❌ Label element not associated with any form control. This can confuse screen readers and doesn't provide any functional benefit."
+  title={t("examples.labels.orphaned.title")}
+  description={t("examples.labels.orphaned.desc")}
 >
   <label class="text-zinc-700 dark:text-zinc-300 border-red-300 border p-1"
     >Orphaned Label</label
@@ -513,8 +525,8 @@ const formClasses =
 </ExampleCard>
 
 <ExampleCard
-  title="Label with non-existent ID reference"
-  description="❌ Label element referencing an ID that doesn't exist. Screen readers cannot establish the relationship between label and control."
+  title={t("examples.labels.missingId.title")}
+  description={t("examples.labels.missingId.desc")}
 >
   <label
     for="non-existent-input"
@@ -527,11 +539,13 @@ const formClasses =
   </p>
 </ExampleCard>
 
-<CategorySectionTitle id="input-states">Input States</CategorySectionTitle>
+<CategorySectionTitle id="input-states"
+  >{t("sections.inputStates.title")}</CategorySectionTitle
+>
 
 <ExampleCard
-  title="Required input"
-  description="✅ Input with required attribute. Screen readers can announce that this field is required. Consider adding visual indicators and clear error messaging."
+  title={t("examples.states.required.title")}
+  description={t("examples.states.required.desc")}
 >
   <label
     for="requiredInput"
@@ -543,8 +557,8 @@ const formClasses =
 </ExampleCard>
 
 <ExampleCard
-  title="Read-only input"
-  description="Read-only input that users cannot modify. Screen readers will announce this state. Useful for displaying non-editable information in form context."
+  title={t("examples.states.readonly.title")}
+  description={t("examples.states.readonly.desc")}
 >
   <label
     for="readonlyInput"

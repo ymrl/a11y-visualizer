@@ -10,6 +10,9 @@ import LayoutTests from "../components/tests/LayoutTests.astro";
 import LiveRegionTests from "../components/tests/LiveRegionTests.astro";
 
 export const prerender = true;
+import { createLocalT } from "../lib/i18n";
+import pageEn from "./tests.lang";
+const t = createLocalT(pageEn, pageEn);
 ---
 
 <!doctype html>
@@ -49,7 +52,7 @@ export const prerender = true;
                 <p
                   class="text-sm sm:text-base text-zinc-600 dark:text-zinc-400"
                 >
-                  Test Examples
+                  {t("header.subtitle")}
                 </p>
               </div>
             </a>
@@ -87,24 +90,12 @@ export const prerender = true;
               <h2
                 class="text-lg font-semibold text-amber-800 dark:text-amber-200"
               >
-                Test Page Notice
+                {t("notice.title")}
               </h2>
               <div class="mt-2 text-amber-700 dark:text-amber-300">
-                <p class="mb-2">
-                  This page contains <strong
-                    >intentionally problematic accessibility patterns</strong
-                  > for testing and demonstration purposes only.
-                </p>
-                <p class="mb-2">
-                  <strong
-                    >Do not use these examples in production websites.</strong
-                  > They violate accessibility guidelines and best practices.
-                </p>
-                <p>
-                  This page is designed to work with the Accessibility
-                  Visualizer browser extension to help developers identify and
-                  understand accessibility issues.
-                </p>
+                <p class="mb-2">{t("notice.p1")}</p>
+                <p class="mb-2"><strong>{t("notice.p2")}</strong></p>
+                <p>{t("notice.p3")}</p>
               </div>
             </div>
           </div>
@@ -113,14 +104,10 @@ export const prerender = true;
         <!-- Introduction -->
         <div class="mb-8">
           <h2 class="text-4xl font-bold text-zinc-900 dark:text-zinc-100 mb-4">
-            Test Examples
+            {t("intro.title")}
           </h2>
           <p class="text-lg text-zinc-700 dark:text-zinc-300 max-w-4xl">
-            This page serves as a testing ground for the Accessibility
-            Visualizer browser extension. It contains various examples of web
-            elements with accessibility issues to demonstrate how the extension
-            highlights problems and provides information about accessible
-            alternatives.
+            {t("intro.desc")}
           </p>
         </div>
 
@@ -183,15 +170,15 @@ export const prerender = true;
         <!-- Test Categories -->
         <div id="test-categories">
           <!-- Import components -->
-          <ImageTests />
-          <ButtonTests />
-          <LinkTests />
-          <FormControlTests />
-          <HeadingTests />
-          <TableTests />
-          <AriaHiddenTests />
-          <LayoutTests />
-          <LiveRegionTests />
+          <ImageTests lang="en" />
+          <ButtonTests lang="en" />
+          <LinkTests lang="en" />
+          <FormControlTests lang="en" />
+          <HeadingTests lang="en" />
+          <TableTests lang="en" />
+          <AriaHiddenTests lang="en" />
+          <LayoutTests lang="en" />
+          <LiveRegionTests lang="en" />
         </div>
       </main>
 

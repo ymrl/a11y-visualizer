@@ -2,6 +2,15 @@
 import CategoryTitle from "./CategoryTitle.astro";
 import CategorySectionTitle from "./CategorySectionTitle.astro";
 import ExampleCard from "./ExampleCard.astro";
+import { createLocalT } from "../../lib/i18n";
+import en from "./TableTests.lang.en";
+import ja from "./TableTests.lang.ja";
+
+interface Props {
+  lang?: string;
+}
+const lang = (Astro.props as Props).lang || "en";
+const t = createLocalT(lang === "ja" ? ja : en, en);
 
 const tableClasses =
   "border-collapse border border-zinc-300 dark:border-zinc-600";
@@ -9,19 +18,16 @@ const cellClasses =
   "border border-zinc-300 dark:border-zinc-600 p-2 text-zinc-900 dark:text-zinc-100";
 ---
 
-<CategoryTitle id="tables">Tables</CategoryTitle>
-<p class="text-zinc-700 dark:text-zinc-300 mb-6">
-  Tables organize data in rows and columns and must be properly structured for
-  screen readers to understand relationships between data. Proper table headers
-  and semantic markup are essential for accessibility.
-</p>
+<CategoryTitle id="tables">{t("title")}</CategoryTitle>
+<p class="text-zinc-700 dark:text-zinc-300 mb-6">{t("intro")}</p>
 
-<CategorySectionTitle id="table-structure">Table Structure</CategorySectionTitle
+<CategorySectionTitle id="table-structure"
+  >{t("sections.structure.title")}</CategorySectionTitle
 >
 
 <ExampleCard
-  title="Table with proper headers"
-  description="✅ Well-structured table with th elements for headers and proper scope attributes. Screen readers can announce column/row relationships."
+  title={t("examples.structure.properHeaders.title")}
+  description={t("examples.structure.properHeaders.desc")}
 >
   <table class={tableClasses}>
     <thead>
@@ -59,8 +65,8 @@ const cellClasses =
 </ExampleCard>
 
 <ExampleCard
-  title="Table without headers"
-  description="❌ Table using only td elements without proper th headers. Screen readers cannot establish relationships between data."
+  title={t("examples.structure.noHeaders.title")}
+  description={t("examples.structure.noHeaders.desc")}
 >
   <table class={`${tableClasses} border-red-300 dark:border-red-600`}>
     <tr>
@@ -87,11 +93,13 @@ const cellClasses =
   </table>
 </ExampleCard>
 
-<CategorySectionTitle id="table-headers">Table Headers</CategorySectionTitle>
+<CategorySectionTitle id="table-headers"
+  >{t("sections.headers.title")}</CategorySectionTitle
+>
 
 <ExampleCard
-  title="Table with row headers"
-  description="✅ Table with both column headers and row headers using appropriate scope attributes for complex data relationships."
+  title={t("examples.headers.rowHeaders.title")}
+  description={t("examples.headers.rowHeaders.desc")}
 >
   <table class={tableClasses}>
     <thead>
@@ -135,8 +143,8 @@ const cellClasses =
 </ExampleCard>
 
 <ExampleCard
-  title="Table with caption"
-  description="✅ Table with caption element providing context about the table's purpose. Helps users understand what data the table contains."
+  title={t("examples.headers.withCaption.title")}
+  description={t("examples.headers.withCaption.desc")}
 >
   <table class={tableClasses}>
     <caption
@@ -171,11 +179,13 @@ const cellClasses =
   </table>
 </ExampleCard>
 
-<CategorySectionTitle id="table-misuse">Table Misuse</CategorySectionTitle>
+<CategorySectionTitle id="table-misuse"
+  >{t("sections.misuse.title")}</CategorySectionTitle
+>
 
 <ExampleCard
-  title="Layout table (problematic)"
-  description="❌ Table used for layout purposes rather than tabular data. Modern CSS should be used for layout instead of tables."
+  title={t("examples.misuse.layoutTable.title")}
+  description={t("examples.misuse.layoutTable.desc")}
 >
   <table class="w-full border-red-300 dark:border-red-600 border-2">
     <tr>

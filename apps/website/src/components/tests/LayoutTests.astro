@@ -2,22 +2,27 @@
 import CategoryTitle from "./CategoryTitle.astro";
 import CategorySectionTitle from "./CategorySectionTitle.astro";
 import ExampleCard from "./ExampleCard.astro";
+import { createLocalT } from "../../lib/i18n";
+import en from "./LayoutTests.lang.en";
+import ja from "./LayoutTests.lang.ja";
+
+interface Props {
+  lang?: string;
+}
+const lang = (Astro.props as Props).lang || "en";
+const t = createLocalT(lang === "ja" ? ja : en, en);
 ---
 
-<CategoryTitle id="layout">Layout & Landmarks</CategoryTitle>
-<p class="text-zinc-700 dark:text-zinc-300 mb-6">
-  Semantic HTML elements and ARIA landmarks help users understand page structure
-  and navigate efficiently. These elements provide important context about
-  different sections of content.
-</p>
+<CategoryTitle id="layout">{t("title")}</CategoryTitle>
+<p class="text-zinc-700 dark:text-zinc-300 mb-6">{t("intro")}</p>
 
 <CategorySectionTitle id="semantic-sections"
-  >Semantic Sections</CategorySectionTitle
+  >{t("sections.semantic.title")}</CategorySectionTitle
 >
 
 <ExampleCard
-  title="Semantic HTML5 sections"
-  description="✅ Proper use of HTML5 semantic elements that provide clear structure and meaning to page content."
+  title={t("examples.semantic.html5.title")}
+  description={t("examples.semantic.html5.desc")}
 >
   <blockquote class="space-y-4 text-zinc-900 dark:text-zinc-100">
     <header class="bg-teal-100 dark:bg-teal-900 p-3 rounded">
@@ -38,11 +43,13 @@ import ExampleCard from "./ExampleCard.astro";
   </blockquote>
 </ExampleCard>
 
-<CategorySectionTitle id="aria-landmarks">ARIA Landmarks</CategorySectionTitle>
+<CategorySectionTitle id="aria-landmarks"
+  >{t("sections.landmarks.title")}</CategorySectionTitle
+>
 
 <ExampleCard
-  title="ARIA landmark roles"
-  description="✅ ARIA landmark roles that provide the same navigation benefits as semantic HTML elements. Use when semantic HTML isn't available."
+  title={t("examples.landmarks.roles.title")}
+  description={t("examples.landmarks.roles.desc")}
 >
   <blockquote class="space-y-4 text-zinc-900 dark:text-zinc-100">
     <div role="banner" class="bg-teal-100 dark:bg-teal-900 p-3 rounded">
@@ -67,12 +74,12 @@ import ExampleCard from "./ExampleCard.astro";
 </ExampleCard>
 
 <CategorySectionTitle id="generic-containers"
-  >Generic Containers</CategorySectionTitle
+  >{t("sections.generic.title")}</CategorySectionTitle
 >
 
 <ExampleCard
-  title="Generic div containers without semantic meaning"
-  description="❌ Using generic div elements for major page sections provides no semantic information to assistive technologies."
+  title={t("examples.generic.divs.title")}
+  description={t("examples.generic.divs.desc")}
 >
   <div class="space-y-4 text-zinc-900 dark:text-zinc-100">
     <div
@@ -86,18 +93,18 @@ import ExampleCard from "./ExampleCard.astro";
       <strong>&lt;div&gt;</strong> - Another generic container
     </div>
     <p class="text-sm text-zinc-700 dark:text-zinc-300">
-      These divs provide no information about content purpose or page structure.
+      {t("examples.generic.divs.note")}
     </p>
   </div>
 </ExampleCard>
 
 <CategorySectionTitle id="section-elements"
-  >Section Elements</CategorySectionTitle
+  >{t("sections.sectionElements.title")}</CategorySectionTitle
 >
 
 <ExampleCard
-  title="Section with heading"
-  description="✅ Proper use of section element with heading. Sections should have headings to provide context about their content."
+  title={t("examples.section.withHeading.title")}
+  description={t("examples.section.withHeading.desc")}
 >
   <section
     class="bg-zinc-50 dark:bg-zinc-800 p-4 rounded border border-zinc-200 dark:border-zinc-700"
@@ -106,14 +113,14 @@ import ExampleCard from "./ExampleCard.astro";
       About Our Services
     </h4>
     <p class="text-zinc-700 dark:text-zinc-300">
-      This section element has a clear heading that describes its content.
+      {t("examples.section.withHeading.note")}
     </p>
   </section>
 </ExampleCard>
 
 <ExampleCard
-  title="Section without heading"
-  description="❌ Section element without a heading. Sections should have headings to be meaningful landmarks for screen reader users."
+  title={t("examples.section.noHeading.title")}
+  description={t("examples.section.noHeading.desc")}
 >
   <section
     class="bg-red-50 dark:bg-red-900/20 p-4 rounded border border-red-300 dark:border-red-600"
@@ -125,12 +132,13 @@ import ExampleCard from "./ExampleCard.astro";
   </section>
 </ExampleCard>
 
-<CategorySectionTitle id="iframe-elements">iFrame Elements</CategorySectionTitle
+<CategorySectionTitle id="iframe-elements"
+  >{t("sections.iframe.title")}</CategorySectionTitle
 >
 
 <ExampleCard
-  title="iFrame with title attribute"
-  description="✅ iFrame with proper title attribute that describes the content. Essential for screen readers to understand what the frame contains."
+  title={t("examples.iframe.withTitle.title")}
+  description={t("examples.iframe.withTitle.desc")}
 >
   <iframe
     src="/a11y-visualizer/iframe-sample/"
@@ -141,8 +149,8 @@ import ExampleCard from "./ExampleCard.astro";
 </ExampleCard>
 
 <ExampleCard
-  title="iFrame without title attribute"
-  description="❌ iFrame missing title attribute. Screen readers cannot determine what content the frame contains, making it inaccessible."
+  title={t("examples.iframe.noTitle.title")}
+  description={t("examples.iframe.noTitle.desc")}
 >
   <iframe
     src="/a11y-visualizer/iframe-no-title/"
@@ -152,8 +160,8 @@ import ExampleCard from "./ExampleCard.astro";
 </ExampleCard>
 
 <ExampleCard
-  title="iFrame with loading='lazy'"
-  description="iFrame with lazy loading for performance. Still needs proper title attribute for accessibility."
+  title={t("examples.iframe.lazy.title")}
+  description={t("examples.iframe.lazy.desc")}
 >
   <iframe
     src="/a11y-visualizer/iframe-lazy/"
@@ -164,11 +172,13 @@ import ExampleCard from "./ExampleCard.astro";
   </iframe>
 </ExampleCard>
 
-<CategorySectionTitle id="dialog-modal">Dialog and Modal</CategorySectionTitle>
+<CategorySectionTitle id="dialog-modal"
+  >{t("sections.dialog.title")}</CategorySectionTitle
+>
 
 <ExampleCard
-  title="Dialog element"
-  description="Example of HTML5 dialog element. When opened with showModal(), it becomes a modal that traps focus and blocks interaction with background content."
+  title={t("examples.dialog.element.title")}
+  description={t("examples.dialog.element.desc")}
 >
   <div class="space-y-4">
     <button
@@ -202,8 +212,8 @@ import ExampleCard from "./ExampleCard.astro";
 </ExampleCard>
 
 <ExampleCard
-  title="Element with aria-modal='true'"
-  description="✅ Custom modal implementation with proper focus management - traps focus inside the modal and returns focus to the opening button when closed."
+  title={t("examples.dialog.ariaModal.title")}
+  description={t("examples.dialog.ariaModal.desc")}
 >
   <div
     role="dialog"

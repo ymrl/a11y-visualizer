@@ -2,56 +2,66 @@
 import CategoryTitle from "./CategoryTitle.astro";
 import CategorySectionTitle from "./CategorySectionTitle.astro";
 import ExampleCard from "./ExampleCard.astro";
+import { createLocalT } from "../../lib/i18n";
+import en from "./LinkTests.lang.en";
+import ja from "./LinkTests.lang.ja";
+
+interface Props {
+  lang?: string;
+}
+const lang = (Astro.props as Props).lang || "en";
+const t = createLocalT(lang === "ja" ? ja : en, en);
 
 const linkClasses =
   "text-teal-700 dark:text-teal-400 underline cursor-pointer hover:text-teal-800 dark:hover:text-teal-300";
 ---
 
-<CategoryTitle id="links">Links</CategoryTitle>
-<p class="text-zinc-700 dark:text-zinc-300 mb-6">
-  Links are essential navigation elements that allow users to move between pages
-  or sections. They must be properly implemented to ensure keyboard
-  accessibility and clear communication to screen reader users.
-</p>
+<CategoryTitle id="links">{t("title")}</CategoryTitle>
+<p class="text-zinc-700 dark:text-zinc-300 mb-6">{t("intro")}</p>
 
-<CategorySectionTitle id="a-element">&lt;a&gt; Element</CategorySectionTitle>
+<CategorySectionTitle id="a-element"
+  >{t("sections.aElement.title")}</CategorySectionTitle
+>
 
 <ExampleCard
-  title="Standard link with href"
-  description="✅ Properly implemented link with href attribute. This is keyboard accessible and clearly identified by screen readers as a navigation element."
+  title={t("examples.a.standard.title")}
+  description={t("examples.a.standard.desc")}
 >
   <a href="http://example.com" class={linkClasses}> Click Me </a>
 </ExampleCard>
 
 <ExampleCard
-  title="Anchor without href attribute"
-  description="❌ Anchor element without href attribute. This is not a functional link and won't be keyboard accessible or announced properly by screen readers."
+  title={t("examples.a.noHref.title")}
+  description={t("examples.a.noHref.desc")}
 >
   <a class={linkClasses}>Click Me</a>
 </ExampleCard>
 
-<CategorySectionTitle id="link-role">Link Role</CategorySectionTitle>
+<CategorySectionTitle id="link-role"
+  >{t("sections.linkRole.title")}</CategorySectionTitle
+>
 
 <ExampleCard
-  title='Element with role="link"'
-  description="✅ Custom link using role='link' with proper tabindex. While functional, semantic HTML links are preferred for better compatibility."
+  title={t("examples.role.withRole.title")}
+  description={t("examples.role.withRole.desc")}
 >
   <span role="link" class={linkClasses} tabindex="0"> Click Me </span>
 </ExampleCard>
 
 <ExampleCard
-  title='role="link" without tabindex'
-  description="❌ Custom link that's not keyboard accessible. Missing tabindex='0' means keyboard users cannot navigate to this element."
+  title={t("examples.role.noTabindex.title")}
+  description={t("examples.role.noTabindex.desc")}
 >
   <span role="link" class={linkClasses}> Click Me </span>
 </ExampleCard>
 
-<CategorySectionTitle id="link-variations">Link Variations</CategorySectionTitle
+<CategorySectionTitle id="link-variations"
+  >{t("sections.variations.title")}</CategorySectionTitle
 >
 
 <ExampleCard
-  title="Link with target='_blank'"
-  description="Link that opens in a new window/tab. Consider adding rel='noopener noreferrer' for security and informing users about the new window behavior."
+  title={t("examples.variations.targetBlank.title")}
+  description={t("examples.variations.targetBlank.desc")}
 >
   <a
     href="http://example.com"
@@ -63,11 +73,13 @@ const linkClasses =
   </a>
 </ExampleCard>
 
-<CategorySectionTitle id="icon-links">Icon Links</CategorySectionTitle>
+<CategorySectionTitle id="icon-links"
+  >{t("sections.iconLinks.title")}</CategorySectionTitle
+>
 
 <ExampleCard
-  title="Link with only an icon"
-  description="❌ Link containing only an icon without text or accessible name. Screen readers cannot determine the link's destination or purpose."
+  title={t("examples.icons.onlyIcon.title")}
+  description={t("examples.icons.onlyIcon.desc")}
 >
   <a
     href="http://example.com"
@@ -83,8 +95,8 @@ const linkClasses =
 </ExampleCard>
 
 <ExampleCard
-  title="Link with icon and aria-label"
-  description="✅ Icon link with proper role='img' and aria-label on the SVG element. This provides accessible naming for the icon while maintaining proper semantic structure."
+  title={t("examples.icons.withAriaLabel.title")}
+  description={t("examples.icons.withAriaLabel.desc")}
 >
   <a
     href="http://example.com"
@@ -107,8 +119,8 @@ const linkClasses =
 </ExampleCard>
 
 <ExampleCard
-  title="Link with empty text content"
-  description="❌ Link with no visible or accessible text. Screen readers cannot determine what this link does or where it leads."
+  title={t("examples.icons.emptyText.title")}
+  description={t("examples.icons.emptyText.desc")}
 >
   <a
     href="http://example.com"

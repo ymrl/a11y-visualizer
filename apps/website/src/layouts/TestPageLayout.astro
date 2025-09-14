@@ -9,9 +9,11 @@ interface Props {
   title?: string;
   description?: string;
   disabledLanguages?: string[];
+  path?: string;
 }
 
-const { lang, title, description, disabledLanguages } = Astro.props as Props;
+const { lang, title, description, disabledLanguages, path } =
+  Astro.props as Props;
 
 const layoutDict = lang === "ja" ? ja : lang === "ko" ? ko : en;
 
@@ -67,6 +69,7 @@ const t = createLocalT(layoutDict, en);
               <LanguageSelector
                 currentLang={lang}
                 disabledLanguages={disabledLanguages}
+                path={path}
                 client:load
               />
             </div>

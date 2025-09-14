@@ -7,10 +7,11 @@ import { en, ja, ko } from "./SiteLayout.lang";
 interface Props {
   lang: string;
   title?: string;
+  path?: string;
   description?: string;
 }
 
-const { lang, title, description } = Astro.props as Props;
+const { lang, title, description, path } = Astro.props as Props;
 
 const layoutDict = lang === "ja" ? ja : lang === "ko" ? ko : en;
 
@@ -58,7 +59,7 @@ const t = createLocalT(layoutDict, en);
               subtitle={t("subtitle")}
             />
             <div class="flex-shrink-0 self-end sm:self-auto">
-              <LanguageSelector currentLang={lang} client:load />
+              <LanguageSelector currentLang={lang} path={path} client:load />
             </div>
           </div>
         </div>

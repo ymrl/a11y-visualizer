@@ -1,9 +1,8 @@
 ---
 import LanguageSelector from "../components/LanguageSelector";
+import { HeaderLink } from "../components/HeaderLink";
 import { createLocalT } from "../lib/i18n";
-import enDict from "./SiteLayout.lang.en";
-import jaDict from "./SiteLayout.lang.ja";
-import koDict from "./SiteLayout.lang.ko";
+import { en, ja, ko } from "./SiteLayout.lang";
 
 // Markdown layouts receive frontmatter under Astro.props.frontmatter
 interface Frontmatter {
@@ -14,10 +13,7 @@ interface Frontmatter {
 const fm = (Astro.props as { frontmatter?: Frontmatter }).frontmatter || {};
 const lang = fm.lang || "en";
 const pageTitle = fm.title;
-const tCommon = createLocalT(
-  lang === "ja" ? jaDict : lang === "ko" ? koDict : enDict,
-  enDict,
-);
+const t = createLocalT(lang === "ja" ? ja : lang === "ko" ? ko : en, en);
 ---
 
 <!doctype html>
@@ -28,22 +24,20 @@ const tCommon = createLocalT(
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <title>
-      {pageTitle ? `${pageTitle} - ${tCommon("title")}` : tCommon("title")}
+      {pageTitle ? `${pageTitle} - ${t("title")}` : t("title")}
     </title>
-    <meta name="description" content={tCommon("description")} />
+    <meta name="description" content={t("description")} />
     <meta property="og:type" content="website" />
     <meta
       property="og:title"
-      content={pageTitle
-        ? `${pageTitle} - ${tCommon("title")}`
-        : tCommon("title")}
+      content={pageTitle ? `${pageTitle} - ${t("title")}` : t("title")}
     />
-    <meta property="og:description" content={tCommon("description")} />
+    <meta property="og:description" content={t("description")} />
     <meta
       property="og:image"
       content="https://ymrl.github.io/a11y-visualizer/images/ogp.png"
     />
-    <meta property="og:image:alt" content={tCommon("hero.imageAlt")} />
+    <meta property="og:image:alt" content={t("hero.imageAlt")} />
     <meta property="og:site_name" content="Accessibility Visualizer" />
     <meta
       property="og:locale"
@@ -62,49 +56,49 @@ const tCommon = createLocalT(
     </script>
   </head>
   <body class="bg-zinc-50 dark:bg-zinc-900 text-zinc-800 dark:text-zinc-300">
-    <header
-      class="bg-white dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-700"
-    >
-      <div class="max-w-6xl mx-auto px-4 sm:px-2 lg:px-8 py-2">
-        <div class="flex justify-between items-center">
-          <a
-            href={lang === "en"
-              ? "/a11y-visualizer/"
-              : `/a11y-visualizer/${lang}/`}
-            class="flex items-center gap-3"
-          >
-            <img src="/a11y-visualizer/icon.svg" alt="" class="w-8 h-8" />
-            <span class="text-xl font-semibold text-teal-700 dark:text-teal-200"
-              >{tCommon("title")}</span
-            >
-          </a>
-          <LanguageSelector currentLang={lang} client:load />
-        </div>
-      </div>
-    </header>
-
-    <main class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-      <article
-        class="prose prose-zinc dark:prose-invert prose-headings:scroll-mt-24 prose-h1:mb-4 prose-h2:mt-10 prose-h2:mb-4 prose-a:no-underline prose-img:rounded-lg prose-img:shadow-sm prose-hr:my-10"
+    <div class="min-h-screen">
+      <header
+        class="bg-white dark:bg-zinc-900 shadow-sm border-b border-zinc-200 dark:border-zinc-700"
       >
-        <slot />
-      </article>
-    </main>
-
-    <footer
-      class="bg-zinc-900 dark:bg-zinc-950 text-zinc-300 dark:text-zinc-400 py-8"
-    >
-      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <p>
-          {tCommon("footer.copyright")}
-          <a
-            href="https://github.com/ymrl/a11y-visualizer"
-            class="text-teal-400 dark:text-teal-300 hover:text-teal-300 dark:hover:text-teal-200 underline"
+        <div class="max-w-6xl mx-auto px-4 sm:px-2 lg:px-8 py-2">
+          <div
+            class="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-1 sm:gap-4"
           >
-            {tCommon("footer.github")}
-          </a>.
-        </p>
-      </div>
-    </footer>
+            <HeaderLink
+              lang={lang}
+              title={t("title")}
+              subtitle={t("subtitle")}
+            />
+            <div class="flex-shrink-0 self-end sm:self-auto">
+              <LanguageSelector currentLang={lang} client:load />
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <article
+          class="prose prose-zinc dark:prose-invert prose-headings:scroll-mt-24 prose-h1:mb-4 prose-h2:mt-10 prose-h2:mb-4 prose-a:no-underline prose-img:rounded-lg prose-img:shadow-sm prose-hr:my-10"
+        >
+          <slot />
+        </article>
+      </main>
+
+      <footer
+        class="bg-zinc-900 dark:bg-zinc-950 text-zinc-300 dark:text-zinc-400 py-8"
+      >
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <p>
+            {t("footer.copyright")}
+            <a
+              href="https://github.com/ymrl/a11y-visualizer"
+              class="text-teal-400 dark:text-teal-300 hover:text-teal-300 dark:hover:text-teal-200 underline"
+            >
+              {t("footer.github")}
+            </a>.
+          </p>
+        </div>
+      </footer>
+    </div>
   </body>
 </html>

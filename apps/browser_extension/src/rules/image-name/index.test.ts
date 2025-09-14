@@ -48,6 +48,34 @@ describe("image-name", () => {
     ]);
   });
 
+  test("image with title but no alt attribute", () => {
+    const element = document.createElement("img");
+    element.setAttribute("title", "image title");
+    document.body.appendChild(element);
+    const result = ImageName.evaluate(element, { enabled: true }, {});
+    expect(result).toEqual([
+      {
+        type: "error",
+        ruleName: "image-name",
+        message: "No alt attribute",
+      },
+    ]);
+  });
+
+  test("image with aria-label but no alt attribute", () => {
+    const element = document.createElement("img");
+    element.setAttribute("aria-label", "image label");
+    document.body.appendChild(element);
+    const result = ImageName.evaluate(element, { enabled: true }, {});
+    expect(result).toEqual([
+      {
+        type: "error",
+        ruleName: "image-name",
+        message: "No alt attribute",
+      },
+    ]);
+  });
+
   test("image with alt and aria-hidden", () => {
     const element = document.createElement("img");
     element.setAttribute("alt", "image");

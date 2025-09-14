@@ -50,36 +50,37 @@ export const ImageName: RuleObject = {
     // For SVG elements, we don't need to return the name here - accessible-name rule handles that
     // image-name rule is only for errors and warnings
 
-    // Handle cases where there's no accessible name
-    if (!effectiveName) {
-      if (tagName === "img") {
-        const hasAlt = element.hasAttribute("alt");
-        if (hasAlt) {
-          return [
-            {
-              type: "warning",
-              message: "Empty alt attribute",
-              ruleName,
-            },
-          ];
-        } else {
-          return [
-            {
-              type: "error",
-              message: "No alt attribute",
-              ruleName,
-            },
-          ];
-        }
-      } else if (role === "img") {
+    // Handle img elements - check for alt attribute regardless of accessible name
+    if (tagName === "img") {
+      const hasAlt = element.hasAttribute("alt");
+      if (!hasAlt) {
         return [
           {
             type: "error",
-            message: "No accessible name",
+            message: "No alt attribute",
+            ruleName,
+          },
+        ];
+      } else if (!effectiveName) {
+        return [
+          {
+            type: "warning",
+            message: "Empty alt attribute",
             ruleName,
           },
         ];
       }
+    }
+
+    // Handle other elements with img role - check for accessible name
+    else if (role === "img" && !effectiveName) {
+      return [
+        {
+          type: "error",
+          message: "No accessible name",
+          ruleName,
+        },
+      ];
     }
 
     return undefined;

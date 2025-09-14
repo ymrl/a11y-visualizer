@@ -46,6 +46,11 @@ const t = createLocalT(pageEn, pageEn);
     </h3>
     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-2">
       <a
+        href="#headings"
+        class="text-teal-700 dark:text-teal-300 hover:text-teal-800 dark:hover:text-teal-200 underline hover:no-underline font-medium"
+        >{t("categories.headings.headings")}</a
+      >
+      <a
         href="#images"
         class="text-teal-700 dark:text-teal-300 hover:text-teal-800 dark:hover:text-teal-200 underline hover:no-underline font-medium"
         >{t("categories.headings.images")}</a
@@ -64,11 +69,6 @@ const t = createLocalT(pageEn, pageEn);
         href="#form-controls"
         class="text-teal-700 dark:text-teal-300 hover:text-teal-800 dark:hover:text-teal-200 underline hover:no-underline font-medium"
         >{t("categories.headings.forms")}</a
-      >
-      <a
-        href="#headings"
-        class="text-teal-700 dark:text-teal-300 hover:text-teal-800 dark:hover:text-teal-200 underline hover:no-underline font-medium"
-        >{t("categories.headings.headings")}</a
       >
       <a
         href="#tables"
@@ -96,11 +96,11 @@ const t = createLocalT(pageEn, pageEn);
   <!-- Test Categories -->
   <div id="test-categories">
     <!-- Import components -->
+    <HeadingTests lang="en" />
     <ImageTests lang="en" />
     <ButtonTests lang="en" />
     <LinkTests lang="en" />
     <FormControlTests lang="en" />
-    <HeadingTests lang="en" />
     <TableTests lang="en" />
     <AriaHiddenTests lang="en" />
     <LayoutTests lang="en" />

@@ -3,8 +3,7 @@ import CategoryTitle from "./CategoryTitle.astro";
 import CategorySectionTitle from "./CategorySectionTitle.astro";
 import ExampleCard from "./ExampleCard.astro";
 import { createLocalT } from "../../lib/i18n";
-import en from "./HeadingTests.lang.en";
-import ja from "./HeadingTests.lang.ja";
+import { en, ja } from "./HeadingTests.lang";
 
 interface Props {
   lang?: string;
@@ -24,7 +23,7 @@ const t = createLocalT(lang === "ja" ? ja : en, en);
   title={t("examples.hierarchy.demo.title")}
   description={t("examples.hierarchy.demo.desc")}
 >
-  <div
+  <blockquote
     class="flex flex-col gap-4 p-4 border border-zinc-300 dark:border-zinc-600 rounded bg-zinc-50 dark:bg-zinc-800"
   >
     <h1 class="text-5xl font-bold text-zinc-900 dark:text-zinc-100">
@@ -52,7 +51,7 @@ const t = createLocalT(lang === "ja" ? ja : en, en);
     >
       Custom Heading (role="heading" aria-level="7")
     </div>
-  </div>
+  </blockquote>
 
   <div class="mt-4 text-sm text-zinc-700 dark:text-zinc-300">
     <p class="mb-2"><strong>{t("examples.hierarchy.best.title")}</strong></p>
@@ -60,8 +59,6 @@ const t = createLocalT(lang === "ja" ? ja : en, en);
       <li>{t("examples.hierarchy.best.item1")}</li>
       <li>{t("examples.hierarchy.best.item2")}</li>
       <li>{t("examples.hierarchy.best.item3")}</li>
-      <li>{t("examples.hierarchy.best.item4")}</li>
-      <li>{t("examples.hierarchy.best.item5")}</li>
     </ul>
   </div>
 </ExampleCard>
@@ -74,7 +71,7 @@ const t = createLocalT(lang === "ja" ? ja : en, en);
   title={t("examples.problematic.skipped.title")}
   description={t("examples.problematic.skipped.desc")}
 >
-  <div
+  <blockquote
     class="p-4 border border-red-300 dark:border-red-600 rounded bg-red-50 dark:bg-red-900/20"
   >
     <h1 class="text-2xl font-bold text-zinc-900 dark:text-zinc-100 mb-2">
@@ -86,19 +83,21 @@ const t = createLocalT(lang === "ja" ? ja : en, en);
     <p class="text-sm text-zinc-700 dark:text-zinc-300 mt-2">
       {t("examples.problematic.skipped.note")}
     </p>
-  </div>
+  </blockquote>
 </ExampleCard>
 
 <ExampleCard
   title={t("examples.problematic.empty.title")}
   description={t("examples.problematic.empty.desc")}
 >
-  <h6
-    class="border border-red-300 dark:border-red-600 p-2 bg-red-50 dark:bg-red-900/20"
-  >
-    <!-- Empty heading -->
-  </h6>
-  <p class="text-sm text-zinc-700 dark:text-zinc-300 mt-2">
-    {t("examples.problematic.empty.note")}
-  </p>
+  <blockquote>
+    <h6
+      class="border border-red-300 dark:border-red-600 p-2 bg-red-50 dark:bg-red-900/20"
+    >
+      <!-- Empty heading -->
+    </h6>
+    <p class="text-sm text-zinc-700 dark:text-zinc-300 mt-2">
+      {t("examples.problematic.empty.note")}
+    </p>
+  </blockquote>
 </ExampleCard>

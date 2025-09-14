@@ -12,6 +12,20 @@ const dict = {
     title: "テスト用ページ",
     desc: "このページは Accessibility Visualizer 拡張機能の動作確認を目的としたテストページです。アクセシビリティ上の課題がある様々な実装例を含み、拡張機能が問題点をどのように可視化し、改善の手がかりを提示するかを確認できます。",
   },
+  categories: {
+    title: "カテゴリー",
+    headings: {
+      images: "画像",
+      buttons: "ボタン",
+      links: "リンク",
+      forms: "フォームコントロール",
+      headings: "見出し",
+      tables: "テーブル",
+      ariaHidden: "ARIA Hidden",
+      landmarks: "ランドマーク",
+      liveRegions: "ライブリージョン",
+    },
+  },
 } as const;
 
 export default dict;

@@ -1,4 +1,5 @@
 ---
+import TestPageLayout from "../layouts/TestPageLayout.astro";
 import ImageTests from "../components/tests/ImageTests.astro";
 import ButtonTests from "../components/tests/ButtonTests.astro";
 import LinkTests from "../components/tests/LinkTests.astro";
@@ -16,152 +17,92 @@ import pageEn from "./tests.lang";
 const t = createLocalT(pageEn, pageEn);
 ---
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/a11y-visualizer/icon.svg" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
-    <title>Test Examples - Accessibility Visualizer</title>
-    <meta
-      name="description"
-      content="Test examples for Accessibility Visualizer browser extension with intentionally problematic accessibility patterns"
-    />
-    <meta name="robots" content="noindex, nofollow" />
-  </head>
-  <body
-    class="bg-zinc-50 dark:bg-zinc-900 text-zinc-800 dark:text-zinc-300 transition-colors"
+<TestPageLayout
+  lang="en"
+  title="Test Examples - Accessibility Visualizer"
+  description="Test examples for Accessibility Visualizer browser extension with intentionally problematic accessibility patterns"
+  disabledLanguages={["ja", "ko"]}
+>
+  <!-- Warning Section -->
+  <Warning lang="en" />
+
+  <!-- Introduction -->
+  <div class="mb-8">
+    <h2 class="text-4xl font-bold text-zinc-900 dark:text-zinc-100 mb-4">
+      {t("intro.title")}
+    </h2>
+    <p class="text-lg text-zinc-700 dark:text-zinc-300 max-w-4xl">
+      {t("intro.desc")}
+    </p>
+  </div>
+
+  <!-- Table of Contents -->
+  <div
+    class="mb-12 bg-zinc-100 dark:bg-zinc-800 p-6 rounded-lg border border-zinc-200 dark:border-zinc-700"
   >
-    <div class="min-h-screen">
-      <!-- Header -->
-      <header
-        class="bg-white dark:bg-zinc-900 shadow-sm border-b border-zinc-200 dark:border-zinc-700"
+    <h3 class="text-xl font-bold text-zinc-900 dark:text-zinc-100 mb-4">
+      {t("categories.title")}
+    </h3>
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-2">
+      <a
+        href="#images"
+        class="text-teal-700 dark:text-teal-300 hover:text-teal-800 dark:hover:text-teal-200 underline hover:no-underline font-medium"
+        >{t("categories.headings.images")}</a
       >
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div class="flex items-center">
-            <a href="/a11y-visualizer/" class="flex items-center">
-              <img
-                src="/a11y-visualizer/icon.svg"
-                alt=""
-                class="w-12 h-12 mr-4"
-              />
-              <div>
-                <h1 class="text-3xl font-bold text-teal-700 dark:text-teal-200">
-                  Accessibility Visualizer
-                </h1>
-                <p
-                  class="text-sm sm:text-base text-zinc-600 dark:text-zinc-400"
-                >
-                  {t("header.subtitle")}
-                </p>
-              </div>
-            </a>
-          </div>
-        </div>
-      </header>
-
-      <!-- Main Content -->
-      <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <!-- Warning Section -->
-        <Warning lang="en" />
-
-        <!-- Introduction -->
-        <div class="mb-8">
-          <h2 class="text-4xl font-bold text-zinc-900 dark:text-zinc-100 mb-4">
-            {t("intro.title")}
-          </h2>
-          <p class="text-lg text-zinc-700 dark:text-zinc-300 max-w-4xl">
-            {t("intro.desc")}
-          </p>
-        </div>
-
-        <!-- Table of Contents -->
-        <div
-          class="mb-12 bg-zinc-100 dark:bg-zinc-800 p-6 rounded-lg border border-zinc-200 dark:border-zinc-700"
-        >
-          <h3 class="text-xl font-bold text-zinc-900 dark:text-zinc-100 mb-4">
-            Categories
-          </h3>
-          <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-2">
-            <a
-              href="#images"
-              class="text-teal-700 dark:text-teal-300 hover:text-teal-800 dark:hover:text-teal-200 underline hover:no-underline font-medium"
-              >Images</a
-            >
-            <a
-              href="#buttons"
-              class="text-teal-700 dark:text-teal-300 hover:text-teal-800 dark:hover:text-teal-200 underline hover:no-underline font-medium"
-              >Buttons</a
-            >
-            <a
-              href="#links"
-              class="text-teal-700 dark:text-teal-300 hover:text-teal-800 dark:hover:text-teal-200 underline hover:no-underline font-medium"
-              >Links</a
-            >
-            <a
-              href="#form-controls"
-              class="text-teal-700 dark:text-teal-300 hover:text-teal-800 dark:hover:text-teal-200 underline hover:no-underline font-medium"
-              >Form Controls</a
-            >
-            <a
-              href="#headings"
-              class="text-teal-700 dark:text-teal-300 hover:text-teal-800 dark:hover:text-teal-200 underline hover:no-underline font-medium"
-              >Headings</a
-            >
-            <a
-              href="#tables"
-              class="text-teal-700 dark:text-teal-300 hover:text-teal-800 dark:hover:text-teal-200 underline hover:no-underline font-medium"
-              >Tables</a
-            >
-            <a
-              href="#aria-hidden"
-              class="text-teal-700 dark:text-teal-300 hover:text-teal-800 dark:hover:text-teal-200 underline hover:no-underline font-medium"
-              >ARIA Hidden</a
-            >
-            <a
-              href="#layout"
-              class="text-teal-700 dark:text-teal-300 hover:text-teal-800 dark:hover:text-teal-200 underline hover:no-underline font-medium"
-              >Layout & Landmarks</a
-            >
-            <a
-              href="#live-regions"
-              class="text-teal-700 dark:text-teal-300 hover:text-teal-800 dark:hover:text-teal-200 underline hover:no-underline font-medium"
-              >Live Regions</a
-            >
-          </div>
-        </div>
-
-        <!-- Test Categories -->
-        <div id="test-categories">
-          <!-- Import components -->
-          <ImageTests lang="en" />
-          <ButtonTests lang="en" />
-          <LinkTests lang="en" />
-          <FormControlTests lang="en" />
-          <HeadingTests lang="en" />
-          <TableTests lang="en" />
-          <AriaHiddenTests lang="en" />
-          <LayoutTests lang="en" />
-          <LiveRegionTests lang="en" />
-        </div>
-      </main>
-
-      <!-- Footer -->
-      <footer
-        class="bg-zinc-900 dark:bg-zinc-950 text-zinc-300 dark:text-zinc-400 py-8 mt-16"
+      <a
+        href="#buttons"
+        class="text-teal-700 dark:text-teal-300 hover:text-teal-800 dark:hover:text-teal-200 underline hover:no-underline font-medium"
+        >{t("categories.headings.buttons")}</a
       >
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p>
-            <a
-              href="/a11y-visualizer/"
-              class="text-teal-400 dark:text-teal-300 hover:text-teal-300 dark:hover:text-teal-200 underline"
-            >
-              Back to Accessibility Visualizer
-            </a>
-          </p>
-        </div>
-      </footer>
+      <a
+        href="#links"
+        class="text-teal-700 dark:text-teal-300 hover:text-teal-800 dark:hover:text-teal-200 underline hover:no-underline font-medium"
+        >{t("categories.headings.links")}</a
+      >
+      <a
+        href="#form-controls"
+        class="text-teal-700 dark:text-teal-300 hover:text-teal-800 dark:hover:text-teal-200 underline hover:no-underline font-medium"
+        >{t("categories.headings.forms")}</a
+      >
+      <a
+        href="#headings"
+        class="text-teal-700 dark:text-teal-300 hover:text-teal-800 dark:hover:text-teal-200 underline hover:no-underline font-medium"
+        >{t("categories.headings.headings")}</a
+      >
+      <a
+        href="#tables"
+        class="text-teal-700 dark:text-teal-300 hover:text-teal-800 dark:hover:text-teal-200 underline hover:no-underline font-medium"
+        >{t("categories.headings.tables")}</a
+      >
+      <a
+        href="#aria-hidden"
+        class="text-teal-700 dark:text-teal-300 hover:text-teal-800 dark:hover:text-teal-200 underline hover:no-underline font-medium"
+        >{t("categories.headings.ariaHidden")}</a
+      >
+      <a
+        href="#layout"
+        class="text-teal-700 dark:text-teal-300 hover:text-teal-800 dark:hover:text-teal-200 underline hover:no-underline font-medium"
+        >{t("categories.headings.landmarks")}</a
+      >
+      <a
+        href="#live-regions"
+        class="text-teal-700 dark:text-teal-300 hover:text-teal-800 dark:hover:text-teal-200 underline hover:no-underline font-medium"
+        >{t("categories.headings.liveRegions")}</a
+      >
     </div>
-  </body>
-</html>
+  </div>
+
+  <!-- Test Categories -->
+  <div id="test-categories">
+    <!-- Import components -->
+    <ImageTests lang="en" />
+    <ButtonTests lang="en" />
+    <LinkTests lang="en" />
+    <FormControlTests lang="en" />
+    <HeadingTests lang="en" />
+    <TableTests lang="en" />
+    <AriaHiddenTests lang="en" />
+    <LayoutTests lang="en" />
+    <LiveRegionTests lang="en" />
+  </div>
+</TestPageLayout>

@@ -22,7 +22,7 @@ const dict = {
       headings: "見出し",
       tables: "テーブル",
       ariaHidden: "ARIA Hidden",
-      landmarks: "ランドマーク",
+      landmarks: "レイアウトとランドマーク",
       liveRegions: "ライブリージョン",
     },
   },

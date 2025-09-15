@@ -3,8 +3,7 @@ import CategoryTitle from "./CategoryTitle.astro";
 import CategorySectionTitle from "./CategorySectionTitle.astro";
 import ExampleCard from "./ExampleCard.astro";
 import { createLocalT } from "../../lib/i18n";
-import en from "./LayoutTests.lang.en";
-import ja from "./LayoutTests.lang.ja";
+import { en, ja } from "./LayoutTests.lang";
 
 interface Props {
   lang?: string;
@@ -108,8 +107,12 @@ const t = createLocalT(lang === "ja" ? ja : en, en);
 >
   <section
     class="bg-zinc-50 dark:bg-zinc-800 p-4 rounded border border-zinc-200 dark:border-zinc-700"
+    aria-labelledby="landmark-sections-about-our-services-sections"
   >
-    <h4 class="text-lg font-bold text-zinc-900 dark:text-zinc-100 mb-2">
+    <h4
+      class="text-lg font-bold text-zinc-900 dark:text-zinc-100 mb-2"
+      id="landmark-sections-about-our-services-sections"
+    >
       About Our Services
     </h4>
     <p class="text-zinc-700 dark:text-zinc-300">
@@ -126,8 +129,13 @@ const t = createLocalT(lang === "ja" ? ja : en, en);
     class="bg-red-50 dark:bg-red-900/20 p-4 rounded border border-red-300 dark:border-red-600"
   >
     <p class="text-zinc-700 dark:text-zinc-300">
-      This section lacks a heading, making it unclear what this content is
-      about.
+      <h4
+        class="text-lg font-bold text-zinc-900 dark:text-zinc-100 mb-2"
+        id="landmark-sections-about-our-services-sections"
+      >
+        About Our Services
+      </h4>
+      {t("examples.section.noHeading.note")}
     </p>
   </section>
 </ExampleCard>
@@ -143,7 +151,7 @@ const t = createLocalT(lang === "ja" ? ja : en, en);
   <iframe
     src="/a11y-visualizer/iframe-sample/"
     title="Sample content iframe"
-    class="w-full h-32 border border-zinc-300 dark:border-zinc-600 rounded"
+    class="w-full h-80 border border-zinc-300 dark:border-zinc-600 rounded"
   >
   </iframe>
 </ExampleCard>
@@ -154,20 +162,7 @@ const t = createLocalT(lang === "ja" ? ja : en, en);
 >
   <iframe
     src="/a11y-visualizer/iframe-no-title/"
-    class="w-full h-32 border border-red-300 dark:border-red-600 rounded border-2"
-  >
-  </iframe>
-</ExampleCard>
-
-<ExampleCard
-  title={t("examples.iframe.lazy.title")}
-  description={t("examples.iframe.lazy.desc")}
->
-  <iframe
-    src="/a11y-visualizer/iframe-lazy/"
-    title="Lazy loaded iframe content"
-    loading="lazy"
-    class="w-full h-32 border border-zinc-300 dark:border-zinc-600 rounded"
+    class="w-full h-80 border-red-300 dark:border-red-600 rounded border-2"
   >
   </iframe>
 </ExampleCard>
@@ -194,8 +189,8 @@ const t = createLocalT(lang === "ja" ? ja : en, en);
       class="p-6 rounded-lg shadow-lg backdrop:bg-black backdrop:bg-opacity-50"
     >
       <div class="space-y-4">
-        <h3 class="text-lg font-bold text-zinc-900">Example Dialog</h3>
-        <p class="text-zinc-700">
+        <h3 class="text-lg font-bold text-zinc-700 dark:text-zinc-300">Example Dialog</h3>
+        <p class="text-zinc-700 dark:text-zinc-300">
           This is a modal dialog opened with showModal().
         </p>
         <div class="flex gap-2">

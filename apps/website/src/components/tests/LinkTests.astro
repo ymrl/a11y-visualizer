@@ -2,116 +2,131 @@
 import CategoryTitle from "./CategoryTitle.astro";
 import CategorySectionTitle from "./CategorySectionTitle.astro";
 import ExampleCard from "./ExampleCard.astro";
+import { createLocalT } from "../../lib/i18n";
+import { ja, en } from "./LinkTests.lang";
+import { IoLogoGithub } from "react-icons/io5";
+
+interface Props {
+  lang?: string;
+}
+const lang = (Astro.props as Props).lang || "en";
+const t = createLocalT(lang === "ja" ? ja : en, en);
 
 const linkClasses =
   "text-teal-700 dark:text-teal-400 underline cursor-pointer hover:text-teal-800 dark:hover:text-teal-300";
 ---
 
-<CategoryTitle id="links">Links</CategoryTitle>
-<p class="text-zinc-700 dark:text-zinc-300 mb-6">
-  Links are essential navigation elements that allow users to move between pages
-  or sections. They must be properly implemented to ensure keyboard
-  accessibility and clear communication to screen reader users.
-</p>
+<CategoryTitle id="links">{t("title")}</CategoryTitle>
+<p class="text-zinc-700 dark:text-zinc-300 mb-6">{t("intro")}</p>
 
-<CategorySectionTitle id="a-element">&lt;a&gt; Element</CategorySectionTitle>
+<CategorySectionTitle id="a-element"
+  >{t("sections.aElement.title")}</CategorySectionTitle
+>
 
 <ExampleCard
-  title="Standard link with href"
-  description="✅ Properly implemented link with href attribute. This is keyboard accessible and clearly identified by screen readers as a navigation element."
+  title={t("examples.a.standard.title")}
+  description={t("examples.a.standard.desc")}
 >
-  <a href="http://example.com" class={linkClasses}> Click Me </a>
+  <p class="text-base">
+    <a href="http://example.com" class={linkClasses}>example.com</a>
+  </p>
 </ExampleCard>
 
 <ExampleCard
-  title="Anchor without href attribute"
-  description="❌ Anchor element without href attribute. This is not a functional link and won't be keyboard accessible or announced properly by screen readers."
+  title={t("examples.a.noHref.title")}
+  description={t("examples.a.noHref.desc")}
 >
-  <a class={linkClasses}>Click Me</a>
+  <p class="text-base mb-3">
+    <a
+      class={linkClasses}
+      onclick="javascript:window.location.href='https://example.com'"
+      >example.com</a
+    >
+  </p>
+  <p class="text-zinc-700 dark:text-zinc-300 mb-1">
+    <a>example 2 ({t("examples.a.noHref.underConstruction")})</a>
+  </p>
+  <p class="text-sm text-zinc-600 dark:text-zinc-400">
+    {t("examples.a.noHref.note")}
+  </p>
 </ExampleCard>
 
-<CategorySectionTitle id="link-role">Link Role</CategorySectionTitle>
-
-<ExampleCard
-  title='Element with role="link"'
-  description="✅ Custom link using role='link' with proper tabindex. While functional, semantic HTML links are preferred for better compatibility."
->
-  <span role="link" class={linkClasses} tabindex="0"> Click Me </span>
-</ExampleCard>
-
-<ExampleCard
-  title='role="link" without tabindex'
-  description="❌ Custom link that's not keyboard accessible. Missing tabindex='0' means keyboard users cannot navigate to this element."
->
-  <span role="link" class={linkClasses}> Click Me </span>
-</ExampleCard>
-
-<CategorySectionTitle id="link-variations">Link Variations</CategorySectionTitle
+<CategorySectionTitle id="link-role"
+  >{t("sections.linkRole.title")}</CategorySectionTitle
 >
 
 <ExampleCard
-  title="Link with target='_blank'"
-  description="Link that opens in a new window/tab. Consider adding rel='noopener noreferrer' for security and informing users about the new window behavior."
+  title={t("examples.role.withRole.title")}
+  description={t("examples.role.withRole.desc")}
+>
+  <span
+    role="link"
+    class={linkClasses}
+    onclick="javascript:window.location.href='https://example.com'"
+    onkeydown="if(event.key==='Enter'){window.location.href='https://example.com'}"
+    tabindex="0"
+  >
+    example.com
+  </span>
+</ExampleCard>
+
+<CategorySectionTitle id="link-variations"
+  >{t("sections.variations.title")}</CategorySectionTitle
+>
+
+<ExampleCard
+  title={t("examples.variations.targetBlank.title")}
+  description={t("examples.variations.targetBlank.desc")}
 >
   <a
     href="http://example.com"
     target="_blank"
-    rel="noopener noreferrer"
+    rel="noreferrer"
     class={linkClasses}
   >
-    Opens in new tab
+    example.com (Open in new tab)
   </a>
 </ExampleCard>
 
-<CategorySectionTitle id="icon-links">Icon Links</CategorySectionTitle>
+<CategorySectionTitle id="icon-links"
+  >{t("sections.iconLinks.title")}</CategorySectionTitle
+>
 
 <ExampleCard
-  title="Link with only an icon"
-  description="❌ Link containing only an icon without text or accessible name. Screen readers cannot determine the link's destination or purpose."
+  title={t("examples.icons.onlyIcon.title")}
+  description={t("examples.icons.onlyIcon.desc")}
 >
   <a
-    href="http://example.com"
+    href="http://github.com/"
     class="inline-block text-teal-700 dark:text-teal-400"
   >
-    <svg width="24" height="24" viewBox="0 0 20 20" fill="currentColor">
-      <path
-        fill-rule="evenodd"
-        d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-        clip-rule="evenodd"></path>
-    </svg>
+    <IoLogoGithub size={24} />
   </a>
 </ExampleCard>
 
 <ExampleCard
-  title="Link with icon and aria-label"
-  description="✅ Icon link with proper role='img' and aria-label on the SVG element. This provides accessible naming for the icon while maintaining proper semantic structure."
+  title={t("examples.icons.withAriaLabel.title")}
+  description={t("examples.icons.withAriaLabel.desc")}
 >
   <a
-    href="http://example.com"
+    href="http://github.com"
     class="inline-block text-teal-700 dark:text-teal-400"
   >
-    <svg
-      width="24"
-      height="24"
-      viewBox="0 0 20 20"
-      fill="currentColor"
-      role="img"
-      aria-label="Go to external site"
+    <IoLogoGithub role="img" aria-label="GitHub" size={24} />
+  </a>
+</ExampleCard>
+
+<ExampleCard
+  title={t("examples.icons.withText.title")}
+  description={t("examples.icons.withText.desc")}
+>
+  <p class="text-base">
+    <a
+      href="http://github.com"
+      class="inline-flex gap-0.5 text-teal-700 dark:text-teal-400"
     >
-      <path
-        fill-rule="evenodd"
-        d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-        clip-rule="evenodd"></path>
-    </svg>
-  </a>
-</ExampleCard>
-
-<ExampleCard
-  title="Link with empty text content"
-  description="❌ Link with no visible or accessible text. Screen readers cannot determine what this link does or where it leads."
->
-  <a
-    href="http://example.com"
-    class="inline-block w-20 h-8 bg-teal-600 rounded border-red-300 border-2"
-  ></a>
+      <IoLogoGithub aria-hidden="true" size={24} />
+      GitHub
+    </a>
+  </p>
 </ExampleCard>

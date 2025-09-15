@@ -1,33 +1,32 @@
 ---
-import TestPageLayout from "../layouts/TestPageLayout.astro";
-import ImageTests from "../components/tests/ImageTests.astro";
-import ButtonTests from "../components/tests/ButtonTests.astro";
-import LinkTests from "../components/tests/LinkTests.astro";
-import FormControlTests from "../components/tests/FormControlTests.astro";
-import HeadingTests from "../components/tests/HeadingTests.astro";
-import TableTests from "../components/tests/TableTests.astro";
-import AriaHiddenTests from "../components/tests/AriaHiddenTests.astro";
-import LayoutTests from "../components/tests/LayoutTests.astro";
-import LiveRegionTests from "../components/tests/LiveRegionTests.astro";
-import Warning from "../components/tests/Warning.astro";
+import TestPageLayout from "../../layouts/TestPageLayout.astro";
+import ImageTests from "../../components/tests/ImageTests.astro";
+import ButtonTests from "../../components/tests/ButtonTests.astro";
+import LinkTests from "../../components/tests/LinkTests.astro";
+import FormControlTests from "../../components/tests/FormControlTests.astro";
+import HeadingTests from "../../components/tests/HeadingTests.astro";
+import TableTests from "../../components/tests/TableTests.astro";
+import AriaHiddenTests from "../../components/tests/AriaHiddenTests.astro";
+import LayoutTests from "../../components/tests/LayoutTests.astro";
+import LiveRegionTests from "../../components/tests/LiveRegionTests.astro";
+import Warning from "../../components/tests/Warning.astro";
 
 export const prerender = true;
-import { createLocalT } from "../lib/i18n";
-import pageEn from "./tests.lang";
-const t = createLocalT(pageEn, pageEn);
+import { createLocalT } from "../../lib/i18n";
+import pageJa from "./tests.lang";
+import pageEn from "../tests.lang";
+const t = createLocalT(pageJa, pageEn);
 ---
 
 <TestPageLayout
-  lang="en"
-  title="Test Examples - Accessibility Visualizer"
+  lang="ja"
+  title="テスト用ページ - Accessibility Visualizer"
   description="Test examples for Accessibility Visualizer browser extension with intentionally problematic accessibility patterns"
   disabledLanguages={["ko"]}
-  path="/a11y-visualizer/tests/"
+  path="/a11y-visualizer/ja/tests/"
 >
-  <!-- Warning Section -->
-  <Warning lang="en" />
+  <Warning lang="ja" />
 
-  <!-- Introduction -->
   <div class="mb-8">
     <h2 class="text-4xl font-bold text-zinc-900 dark:text-zinc-100 mb-4">
       {t("intro.title")}
@@ -92,18 +91,14 @@ const t = createLocalT(pageEn, pageEn);
       >
     </div>
   </div>
-
-  <!-- Test Categories -->
-  <div id="test-categories">
-    <!-- Import components -->
-    <HeadingTests lang="en" />
-    <ImageTests lang="en" />
-    <LinkTests lang="en" />
-    <ButtonTests lang="en" />
-    <FormControlTests lang="en" />
-    <LayoutTests lang="en" />
-    <TableTests lang="en" />
-    <AriaHiddenTests lang="en" />
-    <LiveRegionTests lang="en" />
-  </div>
+  <!-- コンポーネント（見出しのみ日本語に対応） -->
+  <HeadingTests lang="ja" />
+  <ImageTests lang="ja" />
+  <LinkTests lang="ja" />
+  <ButtonTests lang="ja" />
+  <FormControlTests lang="ja" />
+  <LayoutTests lang="ja" />
+  <TableTests lang="ja" />
+  <AriaHiddenTests lang="ja" />
+  <LiveRegionTests lang="ja" />
 </TestPageLayout>

@@ -2,6 +2,14 @@
 import CategoryTitle from "./CategoryTitle.astro";
 import CategorySectionTitle from "./CategorySectionTitle.astro";
 import ExampleCard from "./ExampleCard.astro";
+import { createLocalT } from "../../lib/i18n";
+import { en, ja } from "./TableTests.lang";
+
+interface Props {
+  lang?: string;
+}
+const lang = (Astro.props as Props).lang || "en";
+const t = createLocalT(lang === "ja" ? ja : en, en);
 
 const tableClasses =
   "border-collapse border border-zinc-300 dark:border-zinc-600";
@@ -9,19 +17,16 @@ const cellClasses =
   "border border-zinc-300 dark:border-zinc-600 p-2 text-zinc-900 dark:text-zinc-100";
 ---
 
-<CategoryTitle id="tables">Tables</CategoryTitle>
-<p class="text-zinc-700 dark:text-zinc-300 mb-6">
-  Tables organize data in rows and columns and must be properly structured for
-  screen readers to understand relationships between data. Proper table headers
-  and semantic markup are essential for accessibility.
-</p>
+<CategoryTitle id="tables">{t("title")}</CategoryTitle>
+<p class="text-zinc-700 dark:text-zinc-300 mb-6">{t("intro")}</p>
 
-<CategorySectionTitle id="table-structure">Table Structure</CategorySectionTitle
+<CategorySectionTitle id="table-structure"
+  >{t("sections.structure.title")}</CategorySectionTitle
 >
 
 <ExampleCard
-  title="Table with proper headers"
-  description="✅ Well-structured table with th elements for headers and proper scope attributes. Screen readers can announce column/row relationships."
+  title={t("examples.structure.properHeaders.title")}
+  description={t("examples.structure.properHeaders.desc")}
 >
   <table class={tableClasses}>
     <thead>
@@ -59,39 +64,31 @@ const cellClasses =
 </ExampleCard>
 
 <ExampleCard
-  title="Table without headers"
-  description="❌ Table using only td elements without proper th headers. Screen readers cannot establish relationships between data."
+  title={t("examples.structure.noHeaders.title")}
+  description={t("examples.structure.noHeaders.desc")}
 >
-  <table class={`${tableClasses} border-red-300 dark:border-red-600`}>
+  <table class={tableClasses}>
     <tr>
-      <td
-        class={`${cellClasses} bg-zinc-100 dark:bg-zinc-700 font-bold border-red-300 dark:border-red-600`}
-        >Name</td
-      >
-      <td
-        class={`${cellClasses} bg-zinc-100 dark:bg-zinc-700 font-bold border-red-300 dark:border-red-600`}
-        >Age</td
-      >
-      <td
-        class={`${cellClasses} bg-zinc-100 dark:bg-zinc-700 font-bold border-red-300 dark:border-red-600`}
-        >City</td
-      >
+      <td class={cellClasses}>Name</td>
+      <td class={cellClasses}>Age</td>
+      <td class={cellClasses}>City</td>
     </tr>
     <tr>
-      <td class={`${cellClasses} border-red-300 dark:border-red-600`}>John</td>
-      <td class={`${cellClasses} border-red-300 dark:border-red-600`}>25</td>
-      <td class={`${cellClasses} border-red-300 dark:border-red-600`}
-        >New York</td
-      >
+      <td class={cellClasses}>John</td>
+      <td class={cellClasses}>25</td>
+      <td class={cellClasses}>New York</td>
+    </tr>
+    <tr>
+      <td class={cellClasses}>Jane</td>
+      <td class={cellClasses}>30</td>
+      <td class={cellClasses}>London</td>
     </tr>
   </table>
 </ExampleCard>
 
-<CategorySectionTitle id="table-headers">Table Headers</CategorySectionTitle>
-
 <ExampleCard
-  title="Table with row headers"
-  description="✅ Table with both column headers and row headers using appropriate scope attributes for complex data relationships."
+  title={t("examples.headers.rowHeaders.title")}
+  description={t("examples.headers.rowHeaders.desc")}
 >
   <table class={tableClasses}>
     <thead>
@@ -135,8 +132,8 @@ const cellClasses =
 </ExampleCard>
 
 <ExampleCard
-  title="Table with caption"
-  description="✅ Table with caption element providing context about the table's purpose. Helps users understand what data the table contains."
+  title={t("examples.headers.withCaption.title")}
+  description={t("examples.headers.withCaption.desc")}
 >
   <table class={tableClasses}>
     <caption
@@ -169,27 +166,4 @@ const cellClasses =
       </tr>
     </tbody>
   </table>
-</ExampleCard>
-
-<CategorySectionTitle id="table-misuse">Table Misuse</CategorySectionTitle>
-
-<ExampleCard
-  title="Layout table (problematic)"
-  description="❌ Table used for layout purposes rather than tabular data. Modern CSS should be used for layout instead of tables."
->
-  <table class="w-full border-red-300 dark:border-red-600 border-2">
-    <tr>
-      <td
-        class="w-1/4 p-4 bg-zinc-100 dark:bg-zinc-800 border-red-300 dark:border-red-600 border"
-      >
-        Sidebar content
-      </td>
-      <td class="w-3/4 p-4 border-red-300 dark:border-red-600 border">
-        Main content area
-      </td>
-    </tr>
-  </table>
-  <p class="text-sm text-zinc-700 dark:text-zinc-300 mt-2">
-    Use CSS Grid or Flexbox for layout instead of tables.
-  </p>
 </ExampleCard>

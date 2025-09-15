@@ -47,7 +47,7 @@ const dict = {
     description:
       "Accessibility Visualizerの動作を確認するために、様々な実装例を用意しています",
     link: "テスト用ページへ",
-    url: "/a11y-visualizer/tests",
+    url: "/a11y-visualizer/ja/tests",
   },
 } as const;
 

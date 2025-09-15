@@ -1,15 +1,13 @@
 ---
 import SiteLayout from "../layouts/SiteLayout.astro";
 import { createLocalT } from "../lib/i18n";
-import layoutEn from "../layouts/SiteLayout.lang.en";
 import pageDict from "./index.lang";
 
 export const prerender = true;
-const tCommon = createLocalT(layoutEn, layoutEn);
 const tPage = createLocalT(pageDict, pageDict);
 ---
 
-<SiteLayout lang="en" t={tCommon} subtitle={tPage("subtitle")}>
+<SiteLayout lang="en" path="/a11y-visualizer/">
   <!-- Hero Section -->
   <section
     class="bg-gradient-to-br from-teal-50 to-zinc-50 dark:from-zinc-800 dark:to-zinc-900 py-16"

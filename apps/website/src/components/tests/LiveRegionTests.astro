@@ -2,20 +2,26 @@
 import CategoryTitle from "./CategoryTitle.astro";
 import CategorySectionTitle from "./CategorySectionTitle.astro";
 import ExampleCard from "./ExampleCard.astro";
+import { createLocalT } from "../../lib/i18n";
+import { en, ja } from "./LiveRegionTests.lang";
+
+interface Props {
+  lang?: string;
+}
+const lang = (Astro.props as Props).lang || "en";
+const t = createLocalT(lang === "ja" ? ja : en, en);
 ---
 
-<CategoryTitle id="live-regions">Live Regions</CategoryTitle>
-<p class="text-zinc-700 dark:text-zinc-300 mb-6">
-  Live regions announce dynamic content changes to screen readers. They're
-  essential for providing feedback about status updates, errors, and other
-  dynamic content that users need to be aware of immediately.
-</p>
+<CategoryTitle id="live-regions">{t("title")}</CategoryTitle>
+<p class="text-zinc-700 dark:text-zinc-300 mb-6">{t("intro")}</p>
 
-<CategorySectionTitle id="aria-live">aria-live Attribute</CategorySectionTitle>
+<CategorySectionTitle id="aria-live"
+  >{t("sections.ariaLive.title")}</CategorySectionTitle
+>
 
 <ExampleCard
-  title="aria-live='polite'"
-  description="✅ Polite live region that announces changes when the user is idle. Good for status updates that aren't urgent."
+  title={t("examples.ariaLive.polite.title")}
+  description={t("examples.ariaLive.polite.desc")}
 >
   <div class="space-y-4">
     <div
@@ -35,8 +41,8 @@ import ExampleCard from "./ExampleCard.astro";
 </ExampleCard>
 
 <ExampleCard
-  title="aria-live='assertive'"
-  description="✅ Assertive live region that immediately interrupts screen readers to announce changes. Use for critical alerts and errors."
+  title={t("examples.ariaLive.assertive.title")}
+  description={t("examples.ariaLive.assertive.desc")}
 >
   <div class="space-y-4">
     <div
@@ -62,12 +68,12 @@ import ExampleCard from "./ExampleCard.astro";
 </ExampleCard>
 
 <CategorySectionTitle id="live-region-roles"
-  >Live Region Roles</CategorySectionTitle
+  >{t("sections.roles.title")}</CategorySectionTitle
 >
 
 <ExampleCard
-  title="role='status'"
-  description="✅ Status role provides advisory information that isn't critical. Equivalent to aria-live='polite'."
+  title={t("examples.roles.status.title")}
+  description={t("examples.roles.status.desc")}
 >
   <div class="space-y-4">
     <div
@@ -87,8 +93,8 @@ import ExampleCard from "./ExampleCard.astro";
 </ExampleCard>
 
 <ExampleCard
-  title="role='alert'"
-  description="✅ Alert role for important, time-sensitive information. Equivalent to aria-live='assertive'."
+  title={t("examples.roles.alert.title")}
+  description={t("examples.roles.alert.desc")}
 >
   <div class="space-y-4">
     <div
@@ -107,11 +113,13 @@ import ExampleCard from "./ExampleCard.astro";
   </div>
 </ExampleCard>
 
-<CategorySectionTitle id="output-element">Output Element</CategorySectionTitle>
+<CategorySectionTitle id="output-element"
+  >{t("sections.output.title")}</CategorySectionTitle
+>
 
 <ExampleCard
-  title="<output> element"
-  description="✅ Output element for displaying calculation results or form output. Automatically has live region behavior."
+  title={t("examples.output.element.title")}
+  description={t("examples.output.element.desc")}
 >
   <div class="space-y-4">
     <fieldset class="border border-zinc-300 dark:border-zinc-600 rounded p-4">
@@ -157,12 +165,12 @@ import ExampleCard from "./ExampleCard.astro";
 </ExampleCard>
 
 <CategorySectionTitle id="aria-atomic"
-  >aria-atomic Attribute</CategorySectionTitle
+  >{t("sections.ariaAtomic.title")}</CategorySectionTitle
 >
 
 <ExampleCard
-  title="Live region with aria-atomic='true'"
-  description="Live region where the entire content is announced when any part changes, rather than just the changed portion."
+  title={t("examples.ariaAtomic.true.title")}
+  description={t("examples.ariaAtomic.true.desc")}
 >
   <div class="space-y-4">
     <div
@@ -192,12 +200,12 @@ import ExampleCard from "./ExampleCard.astro";
 </ExampleCard>
 
 <CategorySectionTitle id="problematic-live-regions"
-  >Problematic Live Regions</CategorySectionTitle
+  >{t("sections.problematic.title")}</CategorySectionTitle
 >
 
 <ExampleCard
-  title="Dynamic content without live region"
-  description="❌ Content that changes dynamically but isn't marked as a live region. Screen readers won't announce these changes."
+  title={t("examples.problematic.noLive.title")}
+  description={t("examples.problematic.noLive.desc")}
 >
   <div class="space-y-4">
     <div
@@ -220,12 +228,12 @@ import ExampleCard from "./ExampleCard.astro";
 </ExampleCard>
 
 <CategorySectionTitle id="priority-interactions"
-  >Live Region Priority Interactions</CategorySectionTitle
+  >{t("sections.priority.title")}</CategorySectionTitle
 >
 
 <ExampleCard
-  title="Polite and Assertive simultaneous updates"
-  description="⚠️ Demonstrates how assertive live regions interrupt polite ones. When both update simultaneously, the polite announcement may be suppressed."
+  title={t("examples.priority.simultaneous.title")}
+  description={t("examples.priority.simultaneous.desc")}
 >
   <div class="space-y-4">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -297,8 +305,8 @@ import ExampleCard from "./ExampleCard.astro";
 </ExampleCard>
 
 <ExampleCard
-  title="Sequential updates with different priorities"
-  description="Demonstrates how assertive announcements can clear pending polite announcements from the queue."
+  title={t("examples.priority.sequential.title")}
+  description={t("examples.priority.sequential.desc")}
 >
   <div class="space-y-4">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -364,12 +372,12 @@ import ExampleCard from "./ExampleCard.astro";
 </ExampleCard>
 
 <CategorySectionTitle id="aria-busy-suppression"
-  >aria-busy Suppression</CategorySectionTitle
+  >{t("sections.ariaBusy.title")}</CategorySectionTitle
 >
 
 <ExampleCard
-  title="Live region with aria-busy suppression"
-  description="⚠️ Demonstrates how aria-busy='true' suppresses live region announcements. When a region is marked as busy, content changes are not announced to screen readers."
+  title={t("examples.ariaBusy.suppression.title")}
+  description={t("examples.ariaBusy.suppression.desc")}
 >
   <div class="space-y-4">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -436,12 +444,12 @@ import ExampleCard from "./ExampleCard.astro";
 </ExampleCard>
 
 <CategorySectionTitle id="continuous-live-regions"
-  >Continuously Updating Live Regions</CategorySectionTitle
+  >{t("sections.continuous.title")}</CategorySectionTitle
 >
 
 <ExampleCard
-  title="Timer with polite announcements"
-  description="Timer that updates every second with polite live region. Good for testing extension behavior with frequent updates."
+  title={t("examples.continuous.timerPolite.title")}
+  description={t("examples.continuous.timerPolite.desc")}
 >
   <div class="space-y-4">
     <div
@@ -469,8 +477,8 @@ import ExampleCard from "./ExampleCard.astro";
 </ExampleCard>
 
 <ExampleCard
-  title="Live counter with assertive announcements"
-  description="Counter that auto-increments every 2 seconds with assertive live region. Useful for testing frequent interruptions."
+  title={t("examples.continuous.counterAssertive.title")}
+  description={t("examples.continuous.counterAssertive.desc")}
 >
   <div class="space-y-4">
     <div
@@ -498,8 +506,8 @@ import ExampleCard from "./ExampleCard.astro";
 </ExampleCard>
 
 <ExampleCard
-  title="Status updates with role='status'"
-  description="Status messages that update every 3 seconds. Tests extension handling of role-based live regions with continuous updates."
+  title={t("examples.continuous.statusUpdates.title")}
+  description={t("examples.continuous.statusUpdates.desc")}
 >
   <div class="space-y-4">
     <div

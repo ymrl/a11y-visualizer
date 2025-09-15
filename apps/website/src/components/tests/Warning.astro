@@ -1,0 +1,31 @@
+---
+import { createLocalT } from "../../lib/i18n";
+import { en, ja } from "./Warning.lang";
+import { IoWarning } from "react-icons/io5";
+
+interface Props {
+  lang?: string;
+}
+const lang = (Astro.props as Props).lang || "en";
+const t = createLocalT(lang === "ja" ? ja : en, en);
+---
+
+<div
+  class="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-6 mb-8"
+>
+  <div class="flex items-start">
+    <div class="flex-shrink-0">
+      <IoWarning className="w-8 h-8 text-amber-600 dark:text-amber-400" />
+    </div>
+    <div class="ml-3">
+      <h2 class="text-lg font-semibold text-amber-800 dark:text-amber-200">
+        {t("notice.title")}
+      </h2>
+      <div class="mt-2 text-amber-700 dark:text-amber-300">
+        <p class="mb-2">{t("notice.p1")}</p>
+        <p class="mb-2"><strong>{t("notice.p2")}</strong></p>
+        <p>{t("notice.p3")}</p>
+      </div>
+    </div>
+  </div>
+</div>

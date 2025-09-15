@@ -2,157 +2,222 @@
 import CategoryTitle from "./CategoryTitle.astro";
 import CategorySectionTitle from "./CategorySectionTitle.astro";
 import ExampleCard from "./ExampleCard.astro";
+import { createLocalT } from "../../lib/i18n";
+import { en, ja } from "./ButtonTests.lang";
+
+interface Props {
+  lang?: string;
+}
+const lang = (Astro.props as Props).lang || "en";
+const t = createLocalT(lang === "ja" ? ja : en, en);
 
 const buttonClasses =
-  "bg-teal-700 text-white p-2 rounded-lg inline-block cursor-pointer hover:bg-teal-800 transition-colors";
+  "bg-teal-700 text-white p-2 rounded-lg inline-block cursor-pointer hover:bg-teal-800 transition-colors outline-offset-2";
 ---
 
-<CategoryTitle id="buttons">Buttons</CategoryTitle>
-<p class="text-zinc-700 dark:text-zinc-300 mb-6">
-  Buttons are interactive elements that users activate to perform actions. They
-  must be accessible to keyboard users and screen readers. The following
-  examples show various button implementations and common accessibility issues.
-</p>
+<CategoryTitle id="buttons">{t("title")}</CategoryTitle>
+<p class="text-zinc-700 dark:text-zinc-300 mb-6">{t("intro")}</p>
 
 <CategorySectionTitle id="button-element"
-  >&lt;button&gt; Element</CategorySectionTitle
+  >{t("sections.buttonElement.title")}</CategorySectionTitle
 >
 
 <ExampleCard
-  title="Standard button element"
-  description="✅ The most accessible way to create a button. Semantic HTML buttons are keyboard accessible by default and announced correctly by screen readers."
+  title={t("examples.button.standard.title")}
+  description={t("examples.button.standard.desc")}
 >
-  <button class={buttonClasses}>Click Me</button>
+  <button type="button" class={buttonClasses} onclick="window.alert('Hello!')"
+    >Click Me</button
+  >
 </ExampleCard>
 
 <ExampleCard
-  title="Button with aria-hidden"
-  description="❌ Button hidden from assistive technologies. This makes the button inaccessible to screen reader users while remaining visible to sighted users."
+  title={t("examples.button.ariaHidden.title")}
+  description={t("examples.button.ariaHidden.desc")}
 >
-  <button class={buttonClasses} aria-hidden="true">Click Me</button>
+  <button
+    type="button"
+    class={buttonClasses}
+    onclick="window.alert('Hello!')"
+    aria-hidden="true">Click Me</button
+  >
 </ExampleCard>
 
 <ExampleCard
-  title="Button containing image with alt text"
-  description="✅ Button with an image that has proper alt text. The alt text becomes the accessible name of the button."
+  title={t("examples.button.imgWithAlt.title")}
+  description={t("examples.button.imgWithAlt.desc")}
 >
-  <button class="p-0 bg-transparent border-0 cursor-pointer">
+  <button
+    type="button"
+    class="p-0 bg-transparent border-0 cursor-pointer"
+    onclick="window.alert('Hello!')"
+  >
     <img
-      src="/a11y-visualizer/images/button.png"
+      src="/a11y-visualizer/images/image-button@2x.png"
       alt="Click Me"
-      width="75"
-      height="40"
+      width="112"
+      height="48"
     />
   </button>
 </ExampleCard>
 
 <ExampleCard
-  title="Button containing image without alt text"
-  description="❌ Button with an image missing alt text. Screen readers cannot determine what this button does, making it inaccessible."
+  title={t("examples.button.imgNoAlt.title")}
+  description={t("examples.button.imgNoAlt.desc")}
 >
-  <button class="p-0 bg-transparent border-0 cursor-pointer">
+  <button
+    type="button"
+    class="p-0 bg-transparent border-0 cursor-pointer"
+    onclick="window.alert('Hello!')"
+  >
     <img
-      src="/a11y-visualizer/images/button.png"
-      width="75"
-      height="40"
-      class="border border-red-300"
+      src="/a11y-visualizer/images/image-button@2x.png"
+      width="112"
+      height="48"
     />
   </button>
 </ExampleCard>
 
-<CategorySectionTitle id="button-role">Button Role</CategorySectionTitle>
+<CategorySectionTitle id="button-role"
+  >{t("sections.buttonRole.title")}</CategorySectionTitle
+>
 
 <ExampleCard
-  title="Div with button role and tabindex"
-  description="✅ Properly implemented custom button using a div. Includes role='button' and tabindex='0' to make it accessible. However, semantic HTML buttons are preferred."
+  title={t("examples.role.divWithRole.title")}
+  description={t("examples.role.divWithRole.desc")}
 >
-  <div class={buttonClasses} role="button" tabindex="0">Click Me</div>
+  <div
+    class={buttonClasses}
+    role="button"
+    tabindex="0"
+    onclick="window.alert('Hello!')"
+    onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.alert('Hello!')}"
+  >
+    Click Me
+  </div>
 </ExampleCard>
 
 <ExampleCard
-  title="Div as button without role"
-  description="❌ Custom button missing role='button'. Screen readers won't identify this as an interactive element, making it inaccessible."
+  title={t("examples.role.divNoRole.title")}
+  description={t("examples.role.divNoRole.desc")}
 >
-  <div class={buttonClasses} tabindex="0">Click Me</div>
+  <div
+    class={buttonClasses}
+    tabindex="0"
+    onclick="window.alert('Hello!')"
+    onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.alert('Hello!')}"
+  >
+    Click Me
+  </div>
 </ExampleCard>
 
 <ExampleCard
-  title="Div as button without tabindex"
-  description="❌ Custom button that can't receive keyboard focus. Keyboard users won't be able to activate this button."
+  title={t("examples.role.divNoTabindex.title")}
+  description={t("examples.role.divNoTabindex.desc")}
 >
-  <div class={buttonClasses} role="button">Click Me</div>
+  <div
+    class={buttonClasses}
+    role="button"
+    onclick="window.alert('Hello!')"
+    onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.alert('Hello!')}"
+  >
+    Click Me
+  </div>
 </ExampleCard>
 
-<CategorySectionTitle id="input-buttons">Input Elements</CategorySectionTitle>
+<CategorySectionTitle id="input-buttons"
+  >{t("sections.inputElements.title")}</CategorySectionTitle
+>
 
 <ExampleCard
-  title='Input type="button"'
-  description="✅ Input element with type='button'. Uses the value attribute to provide the button's accessible name."
+  title={t("examples.input.button.title")}
+  description={t("examples.input.button.desc")}
 >
-  <input type="button" value="Click Me" class={buttonClasses} />
+  <input
+    type="button"
+    value="Click Me"
+    class={buttonClasses}
+    onclick="window.alert('Hello!')"
+  />
 </ExampleCard>
 
 <ExampleCard
-  title='Input type="button" without value'
-  description="❌ Input button without a value attribute has no accessible name. Screen readers cannot identify what this button does."
+  title={t("examples.input.buttonNoValue.title")}
+  description={t("examples.input.buttonNoValue.desc")}
 >
-  <input type="button" class={buttonClasses} />
+  <input
+    type="button"
+    class={`${buttonClasses} w-20`}
+    onclick="window.alert('Hello!')"
+  />
 </ExampleCard>
 
 <ExampleCard
-  title='Input type="submit"'
-  description="✅ Submit button with proper value. Used within forms to submit data. Has default value of 'Submit' if none provided."
+  title={t("examples.input.submit.title")}
+  description={t("examples.input.submit.desc")}
 >
-  <input type="submit" value="Submit" class={buttonClasses} />
+  <input type="submit" value="✉️ Submit" class={buttonClasses} />
 </ExampleCard>
 
 <ExampleCard
-  title='Input type="submit" without value'
-  description="Submit button without explicit value. Browsers provide a default accessible name ('Submit'), but it's better to be explicit."
+  title={t("examples.input.submitNoValue.title")}
+  description={t("examples.input.submitNoValue.desc")}
 >
   <input type="submit" class={buttonClasses} />
 </ExampleCard>
 
 <ExampleCard
-  title='Input type="reset"'
-  description="✅ Reset button that clears form data. Has proper value attribute for accessibility."
+  title={t("examples.input.reset.title")}
+  description={t("examples.input.reset.desc")}
 >
-  <input type="reset" value="Reset" class={buttonClasses} />
+  <input type="reset" value="🧹 Reset" class={buttonClasses} />
 </ExampleCard>
 
 <ExampleCard
-  title='Input type="reset" without value'
-  description="Reset button without explicit value. Browsers provide a default accessible name ('Reset'), but explicit values are clearer."
+  title={t("examples.input.resetNoValue.title")}
+  description={t("examples.input.resetNoValue.desc")}
 >
   <input type="reset" class={buttonClasses} />
 </ExampleCard>
 
 <ExampleCard
-  title='Input type="image"'
-  description="❌ Image input without alt text. This creates an inaccessible submit button since screen readers can't determine its purpose."
+  title={t("examples.input.imageWithAlt.title")}
+  description={t("examples.input.imageWithAlt.desc")}
 >
-  <input type="image" src="/a11y-visualizer/images/button.png" />
+  <input
+    type="image"
+    src="/a11y-visualizer/images/image-button@2x.png"
+    alt="Click Me"
+    width="112"
+    height="48"
+  />
 </ExampleCard>
 
 <ExampleCard
-  title='Input type="image" with alt text'
-  description="✅ Image input with proper alt text. The alt attribute provides the accessible name for this submit button type."
+  title={t("examples.input.image.title")}
+  description={t("examples.input.image.desc")}
 >
-  <input type="image" src="/a11y-visualizer/images/button.png" alt="Click Me" />
+  <input
+    type="image"
+    src="/a11y-visualizer/images/image-button@2x.png"
+    width="112"
+    height="48"
+  />
 </ExampleCard>
 
-<CategorySectionTitle id="summary-element">Summary Element</CategorySectionTitle
+<CategorySectionTitle id="summary-element"
+  >{t("sections.summary.title")}</CategorySectionTitle
 >
 
 <ExampleCard
-  title="Summary element"
-  description="✅ Summary element within details for creating disclosure widgets. Semantically correct and accessible by default."
+  title={t("examples.summary.standard.title")}
+  description={t("examples.summary.standard.desc")}
 >
   <details
     class="border border-zinc-300 dark:border-zinc-600 rounded p-2 bg-white dark:bg-zinc-800"
   >
     <summary
-      class="cursor-pointer text-zinc-900 dark:text-zinc-100 hover:text-blue-600 dark:hover:text-blue-400 list-item"
+      class="cursor-pointer text-zinc-900 dark:text-zinc-100 hover:text-zinc-600 dark:hover:zinc-blue-400 list-item"
       >Click Me</summary
     >
     <p class="mt-2 text-zinc-700 dark:text-zinc-300">
@@ -162,8 +227,21 @@ const buttonClasses =
 </ExampleCard>
 
 <ExampleCard
-  title="Summary element without details"
-  description="❌ Summary element used outside of details. This is invalid HTML and may not work as expected across all browsers."
+  title={t("examples.summary.noSummary.title")}
+  description={t("examples.summary.noSummary.desc")}
+>
+  <details
+    class="border border-zinc-300 dark:border-zinc-600 rounded p-2 bg-white dark:bg-zinc-800"
+  >
+    <p class="mt-2 text-zinc-700 dark:text-zinc-300">
+      Details content revealed when summary is clicked.
+    </p>
+  </details>
+</ExampleCard>
+
+<ExampleCard
+  title={t("examples.summary.noDetails.title")}
+  description={t("examples.summary.noDetails.desc")}
 >
   <summary
     class="cursor-pointer text-zinc-900 dark:text-zinc-100 hover:text-blue-600 dark:hover:text-blue-400 border border-red-300 dark:border-red-600 p-1 list-item"
@@ -172,14 +250,14 @@ const buttonClasses =
 </ExampleCard>
 
 <ExampleCard
-  title="Summary without accessible name"
-  description="❌ Summary element with no text content or accessible name. Users won't know what this control does."
+  title={t("examples.summary.noName.title")}
+  description={t("examples.summary.noName.desc")}
 >
   <details
     class="border border-zinc-300 dark:border-zinc-600 rounded p-2 bg-white dark:bg-zinc-800"
   >
     <summary
-      class="w-6 h-6 cursor-pointer border-red-300 dark:border-red-600 border-2 rounded inline-block"
+      class="w-full h-6 cursor-pointer border-red-300 dark:border-red-600 border-2 rounded inline-block"
     ></summary>
     <p class="mt-2 text-zinc-700 dark:text-zinc-300">
       Details content that can't be properly accessed.

@@ -7,11 +7,13 @@ import { en, ja, ko } from "./SiteLayout.lang";
 interface Props {
   lang: string;
   title?: string;
-  path?: string;
   description?: string;
+  disabledLanguages?: string[];
+  path?: string;
 }
 
-const { lang, title, description, path } = Astro.props as Props;
+const { lang, title, description, disabledLanguages, path } =
+  Astro.props as Props;
 
 const layoutDict = lang === "ja" ? ja : lang === "ko" ? ko : en;
 
@@ -41,11 +43,16 @@ const t = createLocalT(layoutDict, en);
       content={lang === "ja" ? "ja_JP" : lang === "ko" ? "ko_KR" : "en_US"}
     />
     <meta name="color-scheme" content="light dark" />
+
+    <!-- no robot indexing -->
+    <meta name="robots" content="noindex, nofollow" />
   </head>
+
   <body
     class="bg-zinc-50 dark:bg-zinc-900 text-zinc-800 dark:text-zinc-300 transition-colors"
   >
     <div class="min-h-screen">
+      <!-- Header -->
       <header
         class="bg-white dark:bg-zinc-900 shadow-sm border-b border-zinc-200 dark:border-zinc-700"
       >
@@ -59,16 +66,23 @@ const t = createLocalT(layoutDict, en);
               subtitle={t("subtitle")}
             />
             <div class="flex-shrink-0 self-end sm:self-auto">
-              <LanguageSelector currentLang={lang} path={path} client:load />
+              <LanguageSelector
+                currentLang={lang}
+                disabledLanguages={disabledLanguages}
+                path={path}
+                client:load
+              />
             </div>
           </div>
         </div>
       </header>
 
-      <main>
+      <!-- Main Content -->
+      <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <slot />
       </main>
 
+      <!-- Footer -->
       <footer
         class="bg-zinc-900 dark:bg-zinc-950 text-zinc-300 dark:text-zinc-400 py-8"
       >

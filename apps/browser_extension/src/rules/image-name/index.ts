@@ -24,19 +24,8 @@ export const ImageName: RuleObject = {
     }
     const tagName = element.tagName.toLowerCase();
     const isAriaHidden = element.getAttribute("aria-hidden") === "true";
-    const roleAttr = element.getAttribute("role") || "";
-    // <img alt=""> has implicit role of "presentation", using role attribute.
-    const hasPresentationRole =
-      roleAttr === "presentation" || roleAttr === "none";
-
-    // Skip if aria-hidden, presentation role, or presentational children
-    if (
-      isAriaHidden ||
-      hasPresentationRole ||
-      isPresentationalChildren(element)
-    ) {
-      return undefined;
-    }
+    // Use computed role instead of role attribute for presentation check
+    const hasPresentationRole = role === "presentation" || role === "none";
 
     // For SVG elements, if they have title but no computed accessible name, use title text
     let effectiveName = name;
@@ -47,10 +36,7 @@ export const ImageName: RuleObject = {
       }
     }
 
-    // For SVG elements, we don't need to return the name here - accessible-name rule handles that
-    // image-name rule is only for errors and warnings
-
-    // Handle img elements - check for alt attribute regardless of accessible name
+    // Handle img elements - check for alt attribute regardless of aria-hidden or presentation state
     if (tagName === "img") {
       const hasAlt = element.hasAttribute("alt");
       if (!hasAlt) {
@@ -61,19 +47,33 @@ export const ImageName: RuleObject = {
             ruleName,
           },
         ];
-      } else if (!effectiveName) {
-        return [
-          {
-            type: "warning",
-            message: "Empty alt attribute",
-            ruleName,
-          },
-        ];
+      } else {
+        const altValue = element.getAttribute("alt") || "";
+        if (altValue.trim() === "") {
+          return [
+            {
+              type: "warning",
+              message: "Empty alt attribute",
+              ruleName,
+            },
+          ];
+        }
       }
+      // If alt attribute exists and has content, no need to show any error for img elements
+      return undefined;
+    }
+
+    // Skip other checks if aria-hidden, presentation role, or presentational children
+    if (
+      isAriaHidden ||
+      hasPresentationRole ||
+      isPresentationalChildren(element)
+    ) {
+      return undefined;
     }
 
     // Handle other elements with img role - check for accessible name
-    else if (role === "img" && !effectiveName) {
+    if (role === "img" && !effectiveName) {
       return [
         {
           type: "error",

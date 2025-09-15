@@ -3,8 +3,7 @@ import CategoryTitle from "./CategoryTitle.astro";
 import CategorySectionTitle from "./CategorySectionTitle.astro";
 import ExampleCard from "./ExampleCard.astro";
 import { createLocalT } from "../../lib/i18n";
-import en from "./ButtonTests.lang.en";
-import ja from "./ButtonTests.lang.ja";
+import { en, ja } from "./ButtonTests.lang";
 
 interface Props {
   lang?: string;
@@ -13,7 +12,7 @@ const lang = (Astro.props as Props).lang || "en";
 const t = createLocalT(lang === "ja" ? ja : en, en);
 
 const buttonClasses =
-  "bg-teal-700 text-white p-2 rounded-lg inline-block cursor-pointer hover:bg-teal-800 transition-colors";
+  "bg-teal-700 text-white p-2 rounded-lg inline-block cursor-pointer hover:bg-teal-800 transition-colors outline-offset-2";
 ---
 
 <CategoryTitle id="buttons">{t("title")}</CategoryTitle>
@@ -27,26 +26,37 @@ const buttonClasses =
   title={t("examples.button.standard.title")}
   description={t("examples.button.standard.desc")}
 >
-  <button class={buttonClasses}>Click Me</button>
+  <button type="button" class={buttonClasses} onclick="window.alert('Hello!')"
+    >Click Me</button
+  >
 </ExampleCard>
 
 <ExampleCard
   title={t("examples.button.ariaHidden.title")}
   description={t("examples.button.ariaHidden.desc")}
 >
-  <button class={buttonClasses} aria-hidden="true">Click Me</button>
+  <button
+    type="button"
+    class={buttonClasses}
+    onclick="window.alert('Hello!')"
+    aria-hidden="true">Click Me</button
+  >
 </ExampleCard>
 
 <ExampleCard
   title={t("examples.button.imgWithAlt.title")}
   description={t("examples.button.imgWithAlt.desc")}
 >
-  <button class="p-0 bg-transparent border-0 cursor-pointer">
+  <button
+    type="button"
+    class="p-0 bg-transparent border-0 cursor-pointer"
+    onclick="window.alert('Hello!')"
+  >
     <img
-      src="/a11y-visualizer/images/button.png"
+      src="/a11y-visualizer/images/image-button@2x.png"
       alt="Click Me"
-      width="75"
-      height="40"
+      width="112"
+      height="48"
     />
   </button>
 </ExampleCard>
@@ -55,12 +65,15 @@ const buttonClasses =
   title={t("examples.button.imgNoAlt.title")}
   description={t("examples.button.imgNoAlt.desc")}
 >
-  <button class="p-0 bg-transparent border-0 cursor-pointer">
+  <button
+    type="button"
+    class="p-0 bg-transparent border-0 cursor-pointer"
+    onclick="window.alert('Hello!')"
+  >
     <img
-      src="/a11y-visualizer/images/button.png"
-      width="75"
-      height="40"
-      class="border border-red-300"
+      src="/a11y-visualizer/images/image-button@2x.png"
+      width="112"
+      height="48"
     />
   </button>
 </ExampleCard>
@@ -73,21 +86,43 @@ const buttonClasses =
   title={t("examples.role.divWithRole.title")}
   description={t("examples.role.divWithRole.desc")}
 >
-  <div class={buttonClasses} role="button" tabindex="0">Click Me</div>
+  <div
+    class={buttonClasses}
+    role="button"
+    tabindex="0"
+    onclick="window.alert('Hello!')"
+    onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.alert('Hello!')}"
+  >
+    Click Me
+  </div>
 </ExampleCard>
 
 <ExampleCard
   title={t("examples.role.divNoRole.title")}
   description={t("examples.role.divNoRole.desc")}
 >
-  <div class={buttonClasses} tabindex="0">Click Me</div>
+  <div
+    class={buttonClasses}
+    tabindex="0"
+    onclick="window.alert('Hello!')"
+    onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.alert('Hello!')}"
+  >
+    Click Me
+  </div>
 </ExampleCard>
 
 <ExampleCard
   title={t("examples.role.divNoTabindex.title")}
   description={t("examples.role.divNoTabindex.desc")}
 >
-  <div class={buttonClasses} role="button">Click Me</div>
+  <div
+    class={buttonClasses}
+    role="button"
+    onclick="window.alert('Hello!')"
+    onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.alert('Hello!')}"
+  >
+    Click Me
+  </div>
 </ExampleCard>
 
 <CategorySectionTitle id="input-buttons"
@@ -98,21 +133,30 @@ const buttonClasses =
   title={t("examples.input.button.title")}
   description={t("examples.input.button.desc")}
 >
-  <input type="button" value="Click Me" class={buttonClasses} />
+  <input
+    type="button"
+    value="Click Me"
+    class={buttonClasses}
+    onclick="window.alert('Hello!')"
+  />
 </ExampleCard>
 
 <ExampleCard
   title={t("examples.input.buttonNoValue.title")}
   description={t("examples.input.buttonNoValue.desc")}
 >
-  <input type="button" class={buttonClasses} />
+  <input
+    type="button"
+    class={`${buttonClasses} w-20`}
+    onclick="window.alert('Hello!')"
+  />
 </ExampleCard>
 
 <ExampleCard
   title={t("examples.input.submit.title")}
   description={t("examples.input.submit.desc")}
 >
-  <input type="submit" value="Submit" class={buttonClasses} />
+  <input type="submit" value="✉️ Submit" class={buttonClasses} />
 </ExampleCard>
 
 <ExampleCard
@@ -126,7 +170,7 @@ const buttonClasses =
   title={t("examples.input.reset.title")}
   description={t("examples.input.reset.desc")}
 >
-  <input type="reset" value="Reset" class={buttonClasses} />
+  <input type="reset" value="🧹 Reset" class={buttonClasses} />
 </ExampleCard>
 
 <ExampleCard
@@ -137,17 +181,28 @@ const buttonClasses =
 </ExampleCard>
 
 <ExampleCard
-  title={t("examples.input.image.title")}
-  description={t("examples.input.image.desc")}
->
-  <input type="image" src="/a11y-visualizer/images/button.png" />
-</ExampleCard>
-
-<ExampleCard
   title={t("examples.input.imageWithAlt.title")}
   description={t("examples.input.imageWithAlt.desc")}
 >
-  <input type="image" src="/a11y-visualizer/images/button.png" alt="Click Me" />
+  <input
+    type="image"
+    src="/a11y-visualizer/images/image-button@2x.png"
+    alt="Click Me"
+    width="112"
+    height="48"
+  />
+</ExampleCard>
+
+<ExampleCard
+  title={t("examples.input.image.title")}
+  description={t("examples.input.image.desc")}
+>
+  <input
+    type="image"
+    src="/a11y-visualizer/images/image-button@2x.png"
+    width="112"
+    height="48"
+  />
 </ExampleCard>
 
 <CategorySectionTitle id="summary-element"
@@ -162,9 +217,22 @@ const buttonClasses =
     class="border border-zinc-300 dark:border-zinc-600 rounded p-2 bg-white dark:bg-zinc-800"
   >
     <summary
-      class="cursor-pointer text-zinc-900 dark:text-zinc-100 hover:text-blue-600 dark:hover:text-blue-400 list-item"
+      class="cursor-pointer text-zinc-900 dark:text-zinc-100 hover:text-zinc-600 dark:hover:zinc-blue-400 list-item"
       >Click Me</summary
     >
+    <p class="mt-2 text-zinc-700 dark:text-zinc-300">
+      Details content revealed when summary is clicked.
+    </p>
+  </details>
+</ExampleCard>
+
+<ExampleCard
+  title={t("examples.summary.noSummary.title")}
+  description={t("examples.summary.noSummary.desc")}
+>
+  <details
+    class="border border-zinc-300 dark:border-zinc-600 rounded p-2 bg-white dark:bg-zinc-800"
+  >
     <p class="mt-2 text-zinc-700 dark:text-zinc-300">
       Details content revealed when summary is clicked.
     </p>
@@ -189,7 +257,7 @@ const buttonClasses =
     class="border border-zinc-300 dark:border-zinc-600 rounded p-2 bg-white dark:bg-zinc-800"
   >
     <summary
-      class="w-6 h-6 cursor-pointer border-red-300 dark:border-red-600 border-2 rounded inline-block"
+      class="w-full h-6 cursor-pointer border-red-300 dark:border-red-600 border-2 rounded inline-block"
     ></summary>
     <p class="mt-2 text-zinc-700 dark:text-zinc-300">
       Details content that can't be properly accessed.

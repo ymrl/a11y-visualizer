@@ -3,8 +3,8 @@ import CategoryTitle from "./CategoryTitle.astro";
 import CategorySectionTitle from "./CategorySectionTitle.astro";
 import ExampleCard from "./ExampleCard.astro";
 import { createLocalT } from "../../lib/i18n";
-import en from "./LinkTests.lang.en";
-import ja from "./LinkTests.lang.ja";
+import { ja, en } from "./LinkTests.lang";
+import { IoLogoGithub } from "react-icons/io5";
 
 interface Props {
   lang?: string;
@@ -27,14 +27,28 @@ const linkClasses =
   title={t("examples.a.standard.title")}
   description={t("examples.a.standard.desc")}
 >
-  <a href="http://example.com" class={linkClasses}> Click Me </a>
+  <p class="text-base">
+    <a href="http://example.com" class={linkClasses}>example.com</a>
+  </p>
 </ExampleCard>
 
 <ExampleCard
   title={t("examples.a.noHref.title")}
   description={t("examples.a.noHref.desc")}
 >
-  <a class={linkClasses}>Click Me</a>
+  <p class="text-base mb-3">
+    <a
+      class={linkClasses}
+      onclick="javascript:window.location.href='https://example.com'"
+      >example.com</a
+    >
+  </p>
+  <p class="text-zinc-700 dark:text-zinc-300 mb-1">
+    <a>example 2 ({t("examples.a.noHref.underConstruction")})</a>
+  </p>
+  <p class="text-sm text-zinc-600 dark:text-zinc-400">
+    {t("examples.a.noHref.note")}
+  </p>
 </ExampleCard>
 
 <CategorySectionTitle id="link-role"
@@ -45,14 +59,15 @@ const linkClasses =
   title={t("examples.role.withRole.title")}
   description={t("examples.role.withRole.desc")}
 >
-  <span role="link" class={linkClasses} tabindex="0"> Click Me </span>
-</ExampleCard>
-
-<ExampleCard
-  title={t("examples.role.noTabindex.title")}
-  description={t("examples.role.noTabindex.desc")}
->
-  <span role="link" class={linkClasses}> Click Me </span>
+  <span
+    role="link"
+    class={linkClasses}
+    onclick="javascript:window.location.href='https://example.com'"
+    onkeydown="if(event.key==='Enter'){window.location.href='https://example.com'}"
+    tabindex="0"
+  >
+    example.com
+  </span>
 </ExampleCard>
 
 <CategorySectionTitle id="link-variations"
@@ -66,10 +81,10 @@ const linkClasses =
   <a
     href="http://example.com"
     target="_blank"
-    rel="noopener noreferrer"
+    rel="noreferrer"
     class={linkClasses}
   >
-    Opens in new tab
+    example.com (Open in new tab)
   </a>
 </ExampleCard>
 
@@ -82,15 +97,10 @@ const linkClasses =
   description={t("examples.icons.onlyIcon.desc")}
 >
   <a
-    href="http://example.com"
+    href="http://github.com/"
     class="inline-block text-teal-700 dark:text-teal-400"
   >
-    <svg width="24" height="24" viewBox="0 0 20 20" fill="currentColor">
-      <path
-        fill-rule="evenodd"
-        d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-        clip-rule="evenodd"></path>
-    </svg>
+    <IoLogoGithub size={24} />
   </a>
 </ExampleCard>
 
@@ -99,31 +109,24 @@ const linkClasses =
   description={t("examples.icons.withAriaLabel.desc")}
 >
   <a
-    href="http://example.com"
+    href="http://github.com"
     class="inline-block text-teal-700 dark:text-teal-400"
   >
-    <svg
-      width="24"
-      height="24"
-      viewBox="0 0 20 20"
-      fill="currentColor"
-      role="img"
-      aria-label="Go to external site"
-    >
-      <path
-        fill-rule="evenodd"
-        d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-        clip-rule="evenodd"></path>
-    </svg>
+    <IoLogoGithub role="img" aria-label="GitHub" size={24} />
   </a>
 </ExampleCard>
 
 <ExampleCard
-  title={t("examples.icons.emptyText.title")}
-  description={t("examples.icons.emptyText.desc")}
+  title={t("examples.icons.withText.title")}
+  description={t("examples.icons.withText.desc")}
 >
-  <a
-    href="http://example.com"
-    class="inline-block w-20 h-8 bg-teal-600 rounded border-red-300 border-2"
-  ></a>
+  <p class="text-base">
+    <a
+      href="http://github.com"
+      class="inline-flex gap-0.5 text-teal-700 dark:text-teal-400"
+    >
+      <IoLogoGithub aria-hidden="true" size={24} />
+      GitHub
+    </a>
+  </p>
 </ExampleCard>

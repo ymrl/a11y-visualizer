@@ -3,11 +3,10 @@ import CategoryTitle from "./CategoryTitle.astro";
 import CategorySectionTitle from "./CategorySectionTitle.astro";
 import ExampleCard from "./ExampleCard.astro";
 import { createLocalT } from "../../lib/i18n";
-import en from "./FormControlTests.lang.en";
-import ja from "./FormControlTests.lang.ja";
+import { en, ja } from "./FormControlTests.lang";
 
 const formClasses =
-  "border border-zinc-300 dark:border-zinc-600 rounded p-2 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100";
+  "border border-zinc-300 dark:border-zinc-600 rounded p-2 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 outline-offset-2";
 interface Props {
   lang?: string;
 }
@@ -37,58 +36,19 @@ const t = createLocalT(lang === "ja" ? ja : en, en);
     for="inputWithLabel"
     class="block mb-1 text-zinc-700 dark:text-zinc-300"
   >
-    Input Label
+    Name:
   </label>
   <input type="text" id="inputWithLabel" class={formClasses} />
 </ExampleCard>
 
 <ExampleCard
-  title={t("examples.textInputs.describedbyMissing.title")}
-  description={t("examples.textInputs.describedbyMissing.desc")}
+  title={t("examples.textInputs.insideLabel.title")}
+  description={t("examples.textInputs.insideLabel.desc")}
 >
-  <label
-    for="input-missing-descriptions"
-    class="block mb-1 text-zinc-700 dark:text-zinc-300"
-  >
-    Input with Missing Descriptions
+  <label class="flex flex-col justify-start items-start gap-1">
+    <span class="text-zinc-700 dark:text-zinc-300">Name:</span>
+    <input type="text" id="inputWithLabel" class={formClasses} />
   </label>
-  <input
-    id="input-missing-descriptions"
-    type="text"
-    class={`${formClasses} border-red-300 dark:border-red-600`}
-    aria-describedby="missing-help missing-error"
-  />
-  <p class="text-sm text-zinc-600 dark:text-zinc-400 mt-1">
-    This input references help text (id="missing-help") and error message
-    (id="missing-error") that don't exist.
-  </p>
-</ExampleCard>
-
-<ExampleCard
-  title={t("examples.textInputs.mixedRefs.title")}
-  description={t("examples.textInputs.mixedRefs.desc")}
->
-  <label
-    for="input-partial-references"
-    class="block mb-1 text-zinc-700 dark:text-zinc-300"
-  >
-    Input with Partial References
-  </label>
-  <input
-    id="input-partial-references"
-    type="text"
-    class={`${formClasses} border-yellow-300 dark:border-yellow-600`}
-    aria-describedby="existing-help missing-help missing-error"
-    aria-labelledby="existing-label missing-label"
-  />
-  <div id="existing-help" class="text-sm text-zinc-600 dark:text-zinc-400 mt-1">
-    This help text exists and will be announced.
-  </div>
-  <div id="existing-label" class="sr-only">Additional label text</div>
-  <p class="text-sm text-zinc-600 dark:text-zinc-400 mt-1">
-    References: existing-help ✓, missing-help ❌, missing-error ❌,
-    existing-label ✓, missing-label ❌
-  </p>
 </ExampleCard>
 
 <CategorySectionTitle id="select-elements"
@@ -100,9 +60,9 @@ const t = createLocalT(lang === "ja" ? ja : en, en);
   description={t("examples.selectElements.withoutLabel.desc")}
 >
   <select class={formClasses}>
-    <option value="1">Option 1</option>
-    <option value="2">Option 2</option>
-    <option value="3">Option 3</option>
+    <option value="apple">Apple</option>
+    <option value="banana">Banana</option>
+    <option value="cherry">Cherry</option>
   </select>
 </ExampleCard>
 
@@ -114,12 +74,12 @@ const t = createLocalT(lang === "ja" ? ja : en, en);
     for="selectWithLabel"
     class="block mb-1 text-zinc-700 dark:text-zinc-300"
   >
-    Select an Option
+    What is your favorite fruit?
   </label>
   <select id="selectWithLabel" class={formClasses}>
-    <option value="1">Option 1</option>
-    <option value="2">Option 2</option>
-    <option value="3">Option 3</option>
+    <option value="apple">Apple</option>
+    <option value="banana">Banana</option>
+    <option value="cherry">Cherry</option>
   </select>
 </ExampleCard>
 
@@ -146,275 +106,6 @@ const t = createLocalT(lang === "ja" ? ja : en, en);
     Comments
   </label>
   <textarea id="textareaWithLabel" class={formClasses}></textarea>
-</ExampleCard>
-
-<CategorySectionTitle id="editable-elements"
-  >{t("sections.editableElements.title")}</CategorySectionTitle
->
-
-<ExampleCard
-  title={t("examples.editable.noRole.title")}
-  description={t("examples.editable.noRole.desc")}
->
-  <div
-    id="contenteditable-no-role-label"
-    class="block mb-1 text-zinc-700 dark:text-zinc-300"
-  >
-    Contenteditable without role
-  </div>
-  <div
-    id="contenteditable-no-role"
-    contenteditable="true"
-    class={`${formClasses} min-h-[3rem] border-yellow-300 dark:border-yellow-600`}
-    style="outline: none;"
-    aria-labelledby="contenteditable-no-role-label"
-  >
-    Edit this text directly...
-  </div>
-</ExampleCard>
-
-<ExampleCard
-  title={t("examples.editable.textboxLabelled.title")}
-  description={t("examples.editable.textboxLabelled.desc")}
->
-  <div
-    id="contenteditable-textbox-label"
-    class="block mb-1 text-zinc-700 dark:text-zinc-300"
-  >
-    Contenteditable with textbox role
-  </div>
-  <div
-    id="contenteditable-textbox"
-    contenteditable="true"
-    role="textbox"
-    class={`${formClasses} min-h-[3rem]`}
-    style="outline: none;"
-    aria-multiline="false"
-    aria-labelledby="contenteditable-textbox-label"
-  >
-    Edit this text directly...
-  </div>
-</ExampleCard>
-
-<ExampleCard
-  title={t("examples.editable.textboxMultiline.title")}
-  description={t("examples.editable.textboxMultiline.desc")}
->
-  <div
-    id="contenteditable-multiline-label"
-    class="block mb-1 text-zinc-700 dark:text-zinc-300"
-  >
-    Multiline editable text
-  </div>
-  <div
-    id="contenteditable-multiline"
-    contenteditable="true"
-    role="textbox"
-    class={`${formClasses} min-h-[6rem]`}
-    style="outline: none;"
-    aria-multiline="true"
-    aria-labelledby="contenteditable-multiline-label"
-  >
-    This is a multiline editable area. You can press Enter to create new lines.
-    Screen readers know this supports multiple lines.
-  </div>
-</ExampleCard>
-
-<ExampleCard
-  title={t("examples.editable.noLabel.title")}
-  description={t("examples.editable.noLabel.desc")}
->
-  <div
-    contenteditable="true"
-    role="textbox"
-    class={`${formClasses} min-h-[3rem] border-red-300 dark:border-red-600`}
-    style="outline: none;"
-    aria-multiline="false"
-  >
-    Unlabeled editable text...
-  </div>
-</ExampleCard>
-
-<ExampleCard
-  title={t("examples.editable.ariaLabel.title")}
-  description={t("examples.editable.ariaLabel.desc")}
->
-  <div
-    contenteditable="true"
-    role="textbox"
-    class={`${formClasses} min-h-[3rem]`}
-    style="outline: none;"
-    aria-label="Notes editor"
-    aria-multiline="true"
-  >
-    Click to edit notes...
-  </div>
-</ExampleCard>
-
-<ExampleCard
-  title={t("examples.editable.placeholder.title")}
-  description={t("examples.editable.placeholder.desc")}
->
-  <div
-    id="contenteditable-placeholder-label"
-    class="block mb-1 text-zinc-700 dark:text-zinc-300"
-  >
-    Message
-  </div>
-  <div
-    id="contenteditable-placeholder"
-    contenteditable="true"
-    role="textbox"
-    class={`${formClasses} min-h-[4rem] text-zinc-400 dark:text-zinc-500`}
-    style="outline: none;"
-    aria-multiline="true"
-    aria-placeholder="Enter your message here..."
-    aria-labelledby="contenteditable-placeholder-label"
-    data-placeholder="Enter your message here..."
-  >
-  </div>
-
-  <script>
-    // Handle placeholder behavior for contenteditable
-    const editableWithPlaceholder = document.getElementById(
-      "contenteditable-placeholder",
-    );
-    const placeholder =
-      editableWithPlaceholder.getAttribute("data-placeholder");
-
-    // Set initial placeholder text
-    if (editableWithPlaceholder.textContent.trim() === "") {
-      editableWithPlaceholder.textContent = placeholder;
-      editableWithPlaceholder.classList.add(
-        "text-zinc-400",
-        "dark:text-zinc-500",
-      );
-    }
-
-    editableWithPlaceholder.addEventListener("focus", function () {
-      if (this.textContent === placeholder) {
-        this.textContent = "";
-        this.classList.remove("text-zinc-400", "dark:text-zinc-500");
-        this.classList.add("text-zinc-900", "dark:text-zinc-100");
-      }
-    });
-
-    editableWithPlaceholder.addEventListener("blur", function () {
-      if (this.textContent.trim() === "") {
-        this.textContent = placeholder;
-        this.classList.add("text-zinc-400", "dark:text-zinc-500");
-        this.classList.remove("text-zinc-900", "dark:text-zinc-100");
-      }
-    });
-  </script>
-
-  <style>
-    [contenteditable][data-placeholder]:empty:before {
-      content: attr(data-placeholder);
-      color: rgb(161 161 170);
-    }
-    .dark [contenteditable][data-placeholder]:empty:before {
-      color: rgb(113 113 122);
-    }
-  </style>
-</ExampleCard>
-
-<CategorySectionTitle id="radio-buttons"
-  >{t("sections.radioButtons.title")}</CategorySectionTitle
->
-
-<ExampleCard
-  title={t("examples.radio.withLabels.title")}
-  description={t("examples.radio.withLabels.desc")}
->
-  <div class="flex flex-wrap gap-3">
-    <span class="flex items-center gap-1">
-      <input type="radio" id="radio1" name="radio" />
-      <label for="radio1" class="text-zinc-700 dark:text-zinc-300"
-        >Radio 1</label
-      >
-    </span>
-    <span class="flex items-center gap-1">
-      <input type="radio" id="radio2" name="radio" />
-      <label for="radio2" class="text-zinc-700 dark:text-zinc-300"
-        >Radio 2</label
-      >
-    </span>
-  </div>
-</ExampleCard>
-
-<ExampleCard
-  title={t("examples.radio.withoutLabels.title")}
-  description={t("examples.radio.withoutLabels.desc")}
->
-  <div class="flex flex-wrap gap-3">
-    <span class="flex items-center gap-1">
-      <input
-        type="radio"
-        id="radioWithoutLabel1"
-        name="radioWithoutLabel"
-        class="border-red-300"
-      />
-      <span class="text-zinc-700 dark:text-zinc-300">Radio 1</span>
-    </span>
-    <span class="flex items-center gap-1">
-      <input
-        type="radio"
-        id="radioWithoutLabel2"
-        name="radioWithoutLabel"
-        class="border-red-300"
-      />
-      <span class="text-zinc-700 dark:text-zinc-300">Radio 2</span>
-    </span>
-  </div>
-</ExampleCard>
-
-<ExampleCard
-  title={t("examples.radio.withoutName.title")}
-  description={t("examples.radio.withoutName.desc")}
->
-  <div class="flex flex-wrap gap-3">
-    <span class="flex items-center gap-1">
-      <input type="radio" id="radioWithoutName1" />
-      <label for="radioWithoutName1" class="text-zinc-700 dark:text-zinc-300"
-        >Radio 1</label
-      >
-    </span>
-    <span class="flex items-center gap-1">
-      <input type="radio" id="radioWithoutName2" />
-      <label for="radioWithoutName2" class="text-zinc-700 dark:text-zinc-300"
-        >Radio 2</label
-      >
-    </span>
-  </div>
-</ExampleCard>
-
-<ExampleCard
-  title={t("examples.radio.differentName.title")}
-  description={t("examples.radio.differentName.desc")}
->
-  <div class="flex flex-wrap gap-3">
-    <span class="flex items-center gap-1">
-      <input
-        type="radio"
-        id="radioFailedGrouping1"
-        name="radioFailedGrouping1"
-      />
-      <label for="radioFailedGrouping1" class="text-zinc-700 dark:text-zinc-300"
-        >Radio 1</label
-      >
-    </span>
-    <span class="flex items-center gap-1">
-      <input
-        type="radio"
-        id="radioFailedGrouping2"
-        name="radioFailedGrouping2"
-      />
-      <label for="radioFailedGrouping2" class="text-zinc-700 dark:text-zinc-300"
-        >Radio 2</label
-      >
-    </span>
-  </div>
 </ExampleCard>
 
 <CategorySectionTitle id="checkboxes"
@@ -494,8 +185,8 @@ const t = createLocalT(lang === "ja" ? ja : en, en);
       border-radius: 0.25rem;
     }
     .cool-checkbox input:checked + label::before {
-      background-color: #44f;
-      border-color: #44f;
+      background-color: #474;
+      border-color: #474;
     }
     .cool-checkbox input:checked + label::after {
       content: "";
@@ -509,6 +200,121 @@ const t = createLocalT(lang === "ja" ? ja : en, en);
       rotate: -45deg;
     }
   </style>
+</ExampleCard>
+
+<CategorySectionTitle id="radio-buttons"
+  >{t("sections.radioButtons.title")}</CategorySectionTitle
+>
+
+<ExampleCard
+  title={t("examples.radio.withLabels.title")}
+  description={t("examples.radio.withLabels.desc")}
+>
+  <fieldset class="flex flex-col gap-3">
+    <legend class="text-zinc-700 dark:text-zinc-300">
+      What is your favorite color?
+    </legend>
+    <div class="flex flex-wrap gap-3">
+      <span class="flex items-center gap-1">
+        <input type="radio" id="radio1" name="radio" />
+        <label for="radio1" class="text-zinc-700 dark:text-zinc-300">red</label>
+      </span>
+      <span class="flex items-center gap-1">
+        <input type="radio" id="radio2" name="radio" />
+        <label for="radio2" class="text-zinc-700 dark:text-zinc-300"
+          >green</label
+        >
+      </span>
+      <span class="flex items-center gap-1">
+        <input type="radio" id="radio3" name="radio" />
+        <label for="radio3" class="text-zinc-700 dark:text-zinc-300">blue</label
+        >
+      </span>
+    </div>
+  </fieldset>
+</ExampleCard>
+
+<ExampleCard
+  title={t("examples.radio.withoutLabels.title")}
+  description={t("examples.radio.withoutLabels.desc")}
+>
+  <div class="flex flex-wrap gap-3">
+    <span class="flex items-center gap-1">
+      <input
+        type="radio"
+        id="radioWithoutLabel1"
+        name="radioWithoutLabel"
+        class="border-red-300"
+      />
+      <span class="text-zinc-700 dark:text-zinc-300">Radio 1</span>
+    </span>
+    <span class="flex items-center gap-1">
+      <input
+        type="radio"
+        id="radioWithoutLabel2"
+        name="radioWithoutLabel"
+        class="border-red-300"
+      />
+      <span class="text-zinc-700 dark:text-zinc-300">Radio 2</span>
+    </span>
+  </div>
+</ExampleCard>
+
+<ExampleCard
+  title={t("examples.radio.withoutName.title")}
+  description={t("examples.radio.withoutName.desc")}
+>
+  <div class="flex flex-wrap gap-3">
+    <span class="flex items-center gap-1">
+      <input type="radio" id="radioWithoutName1" />
+      <label for="radioWithoutName1" class="text-zinc-700 dark:text-zinc-300"
+        >Radio 1</label
+      >
+    </span>
+    <span class="flex items-center gap-1">
+      <input type="radio" id="radioWithoutName2" />
+      <label for="radioWithoutName2" class="text-zinc-700 dark:text-zinc-300"
+        >Radio 2</label
+      >
+    </span>
+  </div>
+</ExampleCard>
+
+<ExampleCard
+  title={t("examples.radio.differentName.title")}
+  description={t("examples.radio.differentName.desc")}
+>
+  <div class="flex flex-wrap gap-3">
+    <span class="flex items-center gap-1">
+      <input
+        type="radio"
+        id="radioFailedGrouping1"
+        name="radioFailedGrouping1"
+      />
+      <label for="radioFailedGrouping1" class="text-zinc-700 dark:text-zinc-300"
+        >Radio 1</label
+      >
+    </span>
+    <span class="flex items-center gap-1">
+      <input
+        type="radio"
+        id="radioFailedGrouping2"
+        name="radioFailedGrouping2"
+      />
+      <label for="radioFailedGrouping2" class="text-zinc-700 dark:text-zinc-300"
+        >Radio 2</label
+      >
+    </span>
+  </div>
+</ExampleCard>
+
+<ExampleCard
+  title={t("examples.radio.single.title")}
+  description={t("examples.radio.single.desc")}
+>
+  <input type="radio" id="radioSingle" name="radioSingle" />
+  <label for="radioSingle" class="text-zinc-700 dark:text-zinc-300">Radio</label
+  >
 </ExampleCard>
 
 <CategorySectionTitle id="label-issues"
@@ -573,4 +379,67 @@ const t = createLocalT(lang === "ja" ? ja : en, en);
     class={`${formClasses} bg-zinc-100 dark:bg-zinc-700`}
     readonly
   />
+</ExampleCard>
+
+<CategorySectionTitle id="editable-elements"
+  >{t("sections.editableElements.title")}</CategorySectionTitle
+>
+
+<ExampleCard
+  title={t("examples.editable.noRole.title")}
+  description={t("examples.editable.noRole.desc")}
+>
+  <div
+    id="contenteditable-no-role-label"
+    class="block mb-1 text-zinc-700 dark:text-zinc-300"
+  >
+    Contenteditable without role
+  </div>
+  <div
+    id="contenteditable-no-role"
+    contenteditable="true"
+    class={`${formClasses} min-h-[3rem] border-yellow-300 dark:border-yellow-600`}
+    style="outline: none;"
+    aria-labelledby="contenteditable-no-role-label"
+  >
+    Edit this text directly...
+  </div>
+</ExampleCard>
+
+<ExampleCard
+  title={t("examples.editable.textboxLabelled.title")}
+  description={t("examples.editable.textboxLabelled.desc")}
+>
+  <div
+    id="contenteditable-textbox-label"
+    class="block mb-1 text-zinc-700 dark:text-zinc-300"
+  >
+    Contenteditable with textbox role
+  </div>
+  <div
+    id="contenteditable-textbox"
+    contenteditable="true"
+    role="textbox"
+    class={`${formClasses} min-h-[3rem]`}
+    style="outline: none;"
+    aria-multiline="false"
+    aria-labelledby="contenteditable-textbox-label"
+  >
+    Edit this text directly...
+  </div>
+</ExampleCard>
+
+<ExampleCard
+  title={t("examples.editable.noLabel.title")}
+  description={t("examples.editable.noLabel.desc")}
+>
+  <div
+    contenteditable="true"
+    role="textbox"
+    class={`${formClasses} min-h-[3rem] border-red-300 dark:border-red-600`}
+    style="outline: none;"
+    aria-multiline="false"
+  >
+    Unlabeled editable text...
+  </div>
 </ExampleCard>

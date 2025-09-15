@@ -3,8 +3,7 @@ import CategoryTitle from "./CategoryTitle.astro";
 import CategorySectionTitle from "./CategorySectionTitle.astro";
 import ExampleCard from "./ExampleCard.astro";
 import { createLocalT } from "../../lib/i18n";
-import en from "./TableTests.lang.en";
-import ja from "./TableTests.lang.ja";
+import { en, ja } from "./TableTests.lang";
 
 interface Props {
   lang?: string;
@@ -68,34 +67,24 @@ const cellClasses =
   title={t("examples.structure.noHeaders.title")}
   description={t("examples.structure.noHeaders.desc")}
 >
-  <table class={`${tableClasses} border-red-300 dark:border-red-600`}>
+  <table class={tableClasses}>
     <tr>
-      <td
-        class={`${cellClasses} bg-zinc-100 dark:bg-zinc-700 font-bold border-red-300 dark:border-red-600`}
-        >Name</td
-      >
-      <td
-        class={`${cellClasses} bg-zinc-100 dark:bg-zinc-700 font-bold border-red-300 dark:border-red-600`}
-        >Age</td
-      >
-      <td
-        class={`${cellClasses} bg-zinc-100 dark:bg-zinc-700 font-bold border-red-300 dark:border-red-600`}
-        >City</td
-      >
+      <td class={cellClasses}>Name</td>
+      <td class={cellClasses}>Age</td>
+      <td class={cellClasses}>City</td>
     </tr>
     <tr>
-      <td class={`${cellClasses} border-red-300 dark:border-red-600`}>John</td>
-      <td class={`${cellClasses} border-red-300 dark:border-red-600`}>25</td>
-      <td class={`${cellClasses} border-red-300 dark:border-red-600`}
-        >New York</td
-      >
+      <td class={cellClasses}>John</td>
+      <td class={cellClasses}>25</td>
+      <td class={cellClasses}>New York</td>
+    </tr>
+    <tr>
+      <td class={cellClasses}>Jane</td>
+      <td class={cellClasses}>30</td>
+      <td class={cellClasses}>London</td>
     </tr>
   </table>
 </ExampleCard>
-
-<CategorySectionTitle id="table-headers"
-  >{t("sections.headers.title")}</CategorySectionTitle
->
 
 <ExampleCard
   title={t("examples.headers.rowHeaders.title")}
@@ -177,29 +166,4 @@ const cellClasses =
       </tr>
     </tbody>
   </table>
-</ExampleCard>
-
-<CategorySectionTitle id="table-misuse"
-  >{t("sections.misuse.title")}</CategorySectionTitle
->
-
-<ExampleCard
-  title={t("examples.misuse.layoutTable.title")}
-  description={t("examples.misuse.layoutTable.desc")}
->
-  <table class="w-full border-red-300 dark:border-red-600 border-2">
-    <tr>
-      <td
-        class="w-1/4 p-4 bg-zinc-100 dark:bg-zinc-800 border-red-300 dark:border-red-600 border"
-      >
-        Sidebar content
-      </td>
-      <td class="w-3/4 p-4 border-red-300 dark:border-red-600 border">
-        Main content area
-      </td>
-    </tr>
-  </table>
-  <p class="text-sm text-zinc-700 dark:text-zinc-300 mt-2">
-    Use CSS Grid or Flexbox for layout instead of tables.
-  </p>
 </ExampleCard>

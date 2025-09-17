@@ -224,7 +224,7 @@ export const ElementTypeTabs: React.FC<ElementTypeTabsProps> = ({
               aria-selected={activeTab === preset.id}
               aria-controls={`${tabPanelId}-panel`}
               tabIndex={activeTab === preset.id ? 0 : -1}
-              className={`px-3 py-2 text-xs font-medium whitespace-nowrap transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-inset border-b-2 ${
+              className={`px-3 pb-2 pt-3 -mt-1 text-xs font-medium whitespace-nowrap transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-inset border-b-2 ${
                 activeTab === preset.id
                   ? "border-teal-500 text-teal-700 dark:text-teal-400"
                   : "border-transparent text-zinc-600 hover:enabled:text-zinc-800 hover:enabled:border-zinc-300 dark:text-zinc-400 dark:hover:enabled:text-zinc-200 dark:hover:enabled:border-zinc-500"
@@ -265,7 +265,7 @@ export const ElementTypeTabs: React.FC<ElementTypeTabsProps> = ({
         >
           {/* カスタムタブの場合のみチェックボックスを表示 */}
           {activeTab === "custom" ? (
-            <div className="flex flex-row flex-wrap gap-x-3 gap-y-1 items-center">
+            <div className="flex flex-row flex-wrap gap-x-3 gap-y-2 py-1 items-center">
               <Checkbox
                 onChange={(e) =>
                   handleCheckboxChange("heading", e.target.checked)

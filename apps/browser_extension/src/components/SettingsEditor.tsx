@@ -148,7 +148,7 @@ export const SettingsEditor = ({
                   >
                     {t("settings.elementTypes")}
                   </legend>
-                  <div className="flex flex-row flex-wrap gap-x-3 gap-y-1 items-center">
+                  <div className="flex flex-row flex-wrap gap-x-3 gap-y-2 py-1 items-center">
                     <Checkbox
                       onChange={(e) =>
                         handleCategoryCheckboxChange(

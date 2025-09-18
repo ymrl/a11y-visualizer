@@ -33,12 +33,9 @@ export const ElementList = ({
       return;
     }
 
-    const handleMouseMove = (e: MouseEvent) => {
-      const mouseX = e.pageX;
-      const mouseY = e.pageY;
-
-      // Find all elements the mouse is over
-      const newHoveredIndices = list.reduce<number[]>((acc, meta, i) => {
+    const getElementIndicesAtCoordinate = (x: number, y: number): number[] => {
+      // Find all elements at the given coordinates
+      return list.reduce<number[]>((acc, meta, i) => {
         const { absoluteX, absoluteY } = meta;
         if (
           meta.rects.some((rect) => {
@@ -49,12 +46,11 @@ export const ElementList = ({
               height: rectHeight,
             } = rect;
             return (
-              mouseX >= absoluteX + relativeX - ELEMENT_SIZE_ENHANCEMENT &&
-              mouseX <=
+              x >= absoluteX + relativeX - ELEMENT_SIZE_ENHANCEMENT &&
+              x <=
                 absoluteX + relativeX + rectWidth + ELEMENT_SIZE_ENHANCEMENT &&
-              mouseY >= absoluteY + relativeY - ELEMENT_SIZE_ENHANCEMENT &&
-              mouseY <=
-                absoluteY + relativeY + rectHeight + ELEMENT_SIZE_ENHANCEMENT
+              y >= absoluteY + relativeY - ELEMENT_SIZE_ENHANCEMENT &&
+              y <= absoluteY + relativeY + rectHeight + ELEMENT_SIZE_ENHANCEMENT
             );
           })
         ) {
@@ -62,12 +58,95 @@ export const ElementList = ({
         }
         return acc;
       }, []);
-      setHoveredElementIndices(newHoveredIndices);
     };
 
-    win.addEventListener("mousemove", handleMouseMove);
+    const updateHoveredElements = (coordinates: { x: number; y: number }[]) => {
+      // Collect all element indices from all coordinates
+      const allIndices = new Set<number>();
+      coordinates.forEach(({ x, y }) => {
+        getElementIndicesAtCoordinate(x, y).forEach((index) => {
+          allIndices.add(index);
+        });
+      });
+      setHoveredElementIndices(Array.from(allIndices));
+    };
+
+    const handleMouseMove = (e: MouseEvent) => {
+      updateHoveredElements([{ x: e.pageX, y: e.pageY }]);
+    };
+
+    const handleTouchStart = (e: TouchEvent) => {
+      const coordinates = Array.from(e.touches).map((touch) => ({
+        x: touch.pageX,
+        y: touch.pageY,
+      }));
+      updateHoveredElements(coordinates);
+    };
+
+    // Debounce touchmove to reduce update frequency
+    let touchMoveTimeout: number | null = null;
+    const handleTouchMove = (e: TouchEvent) => {
+      if (touchMoveTimeout !== null) {
+        win.clearTimeout(touchMoveTimeout);
+      }
+      touchMoveTimeout = win.setTimeout(() => {
+        const coordinates = Array.from(e.touches).map((touch) => ({
+          x: touch.pageX,
+          y: touch.pageY,
+        }));
+        updateHoveredElements(coordinates);
+        touchMoveTimeout = null;
+      }, 16); // ~60fps throttling
+    };
+
+    const handleTouchEnd = (e: TouchEvent) => {
+      if (touchMoveTimeout !== null) {
+        win.clearTimeout(touchMoveTimeout);
+        touchMoveTimeout = null;
+      }
+      // When touchend occurs, e.touches is empty, so we need to check if there are any remaining touches
+      if (e.touches.length === 0) {
+        // No touches remaining, clear all highlighted elements
+        setHoveredElementIndices([]);
+      } else {
+        // Some touches remaining, update with current touches
+        const coordinates = Array.from(e.touches).map((touch) => ({
+          x: touch.pageX,
+          y: touch.pageY,
+        }));
+        updateHoveredElements(coordinates);
+      }
+    };
+
+    win.addEventListener("mousemove", handleMouseMove, { passive: true });
+    const isTouchDevice = "ontouchstart" in win || navigator.maxTouchPoints > 0;
+    if (isTouchDevice) {
+      win.addEventListener("touchstart", handleTouchStart, { passive: true });
+      win.addEventListener("touchmove", handleTouchMove, { passive: true });
+      win.addEventListener("touchend", handleTouchEnd, { passive: true });
+    }
     return () => {
-      win.removeEventListener("mousemove", handleMouseMove);
+      try {
+        win.removeEventListener("mousemove", handleMouseMove);
+        if (isTouchDevice) {
+          win.removeEventListener("touchstart", handleTouchStart);
+          win.removeEventListener("touchmove", handleTouchMove);
+          win.removeEventListener("touchend", handleTouchEnd);
+        }
+      } catch (e) {
+        // Ignore errors of same-origin policy
+        if (
+          e &&
+          typeof e === "object" &&
+          "name" in e &&
+          e.name !== "SecurityError"
+        ) {
+          throw e;
+        }
+      }
+      if (touchMoveTimeout !== null) {
+        win.clearTimeout(touchMoveTimeout);
+      }
     };
   }, [interactiveMode, list]);
   return (

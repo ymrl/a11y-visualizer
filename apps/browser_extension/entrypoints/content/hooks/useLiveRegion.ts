@@ -414,7 +414,7 @@ export const useLiveRegion = ({
       w,
       ...iframeElements.map((iframe) => iframe.contentWindow),
     ];
-    const listener = (e: KeyboardEvent) => {
+    const keyListener = (e: KeyboardEvent) => {
       if (e.key === "Shift") {
         pauseOrResumeAnnouncements();
       } else if (e.key === "Control") {
@@ -422,11 +422,16 @@ export const useLiveRegion = ({
       }
     };
 
+    const touchStartListener = () => {
+      clearAnnouncements();
+    };
+
     windows.forEach((w) => {
       if (!w) return;
       try {
-        w.addEventListener("keydown", listener);
+        w.addEventListener("keydown", keyListener);
         w.addEventListener("focusin", clearAnnouncements);
+        w.addEventListener("touchstart", touchStartListener, { passive: true });
       } catch {
         /* noop */
       }
@@ -436,8 +441,9 @@ export const useLiveRegion = ({
       windows.forEach((w) => {
         if (!w) return;
         try {
-          w.removeEventListener("keydown", listener);
+          w.removeEventListener("keydown", keyListener);
           w.removeEventListener("focusin", clearAnnouncements);
+          w.removeEventListener("touchstart", touchStartListener);
         } catch {
           /* noop */
         }

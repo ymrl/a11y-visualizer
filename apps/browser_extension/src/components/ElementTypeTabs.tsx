@@ -201,7 +201,7 @@ export const ElementTypeTabs: React.FC<ElementTypeTabsProps> = ({
     <div className="px-2 py-1 bg-zinc-100 dark:bg-zinc-800 rounded-md">
       <fieldset className="border-0 flex flex-col">
         <legend
-          className={`text-xs ${disabled ? "text-zinc-700 dark:text-zinc-300" : "text-teal-800 dark:text-teal-200"} font-bold mb-1`}
+          className={`text-xs ${disabled ? "text-zinc-700 dark:text-zinc-300" : "text-teal-800 dark:text-teal-200"} font-bold`}
           id={tabListId}
         >
           {t("settings.elementTypes")}
@@ -213,7 +213,7 @@ export const ElementTypeTabs: React.FC<ElementTypeTabsProps> = ({
           role="tablist"
           aria-labelledby={tabListId}
           aria-orientation="horizontal"
-          className="flex flex-row mb-2 overflow-x-auto border-b border-zinc-300 dark:border-zinc-600 px-1 -mx-1"
+          className="flex flex-row mb-2 border-b border-zinc-300 dark:border-zinc-600 px-1 -mx-1"
         >
           {presets.map((preset) => (
             <button
@@ -224,11 +224,14 @@ export const ElementTypeTabs: React.FC<ElementTypeTabsProps> = ({
               aria-selected={activeTab === preset.id}
               aria-controls={`${tabPanelId}-panel`}
               tabIndex={activeTab === preset.id ? 0 : -1}
-              className={`px-3 py-2 text-xs font-medium whitespace-nowrap transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-inset border-b-2 ${
-                activeTab === preset.id
-                  ? "border-teal-500 text-teal-700 dark:text-teal-400"
-                  : "border-transparent text-zinc-600 hover:enabled:text-zinc-800 hover:enabled:border-zinc-300 dark:text-zinc-400 dark:hover:enabled:text-zinc-200 dark:hover:enabled:border-zinc-500"
-              } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
+              className={`px-3 py-2 text-xs font-medium whitespace-nowrap transition-all duration-200 border-b-2 
+                focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-inset
+                relative before-content-[''] before:absolute before:-top-3 before:bottom-0 before:left-0 before:right-0 before:z-10
+                ${
+                  activeTab === preset.id
+                    ? "border-teal-500 text-teal-700 dark:text-teal-400"
+                    : "border-transparent text-zinc-600 hover:enabled:text-zinc-800 hover:enabled:border-zinc-300 dark:text-zinc-400 dark:hover:enabled:text-zinc-200 dark:hover:enabled:border-zinc-500"
+                } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
               onClick={() => handlePresetChange(preset.id)}
               onKeyDown={handleTabKeyDown}
               disabled={disabled}
@@ -265,7 +268,7 @@ export const ElementTypeTabs: React.FC<ElementTypeTabsProps> = ({
         >
           {/* カスタムタブの場合のみチェックボックスを表示 */}
           {activeTab === "custom" ? (
-            <div className="flex flex-row flex-wrap gap-x-3 gap-y-1 items-center">
+            <div className="flex flex-row flex-wrap gap-x-3 gap-y-2 py-1 items-center">
               <Checkbox
                 onChange={(e) =>
                   handleCheckboxChange("heading", e.target.checked)

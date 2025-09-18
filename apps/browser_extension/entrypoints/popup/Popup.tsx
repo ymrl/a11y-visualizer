@@ -35,6 +35,15 @@ export const Popup = () => {
   const [hostSetting, setHostSetting] = React.useState<boolean>(false);
   const { t, lang } = useLang();
 
+  // Detect Android Firefox where options page doesn't work properly
+  const isAndroidFirefox = React.useMemo(() => {
+    return (
+      typeof navigator !== "undefined" &&
+      navigator.userAgent.includes("Android") &&
+      navigator.userAgent.includes("Firefox")
+    );
+  }, []);
+
   const loadSettings = React.useCallback(async () => {
     const loadedEnabled = await loadEnabled();
     setEnabled(loadedEnabled);
@@ -75,18 +84,18 @@ export const Popup = () => {
 
   return (
     <div
-      className="w-80 font-sans text-zinc-800 bg-zinc-50 dark:bg-zinc-900 dark:text-zinc-300"
+      className="w-full min-w-80 max-w-sm mx-auto font-sans text-zinc-800 bg-zinc-50 dark:bg-zinc-900 dark:text-zinc-300 min-h-screen sm:min-h-0"
       lang={lang}
     >
       <div
-        className="p-2 relative flex flex-row items-center justify-between gap-3
+        className="p-0 relative flex flex-row items-center justify-between gap-3
       bg-zinc-100 dark:bg-zinc-800"
       >
         <div className="flex flex-row gap-1 items-center justify-start">
           <img
             src={enabled ? icon : iconDisabled}
             alt={enabled ? t("popup.iconEyesOpen") : t("popup.iconEyesClosed")}
-            className="size-8 -mt-1 -mb-1 -ml-1"
+            className="size-8 sm:size-8 mt-1 mb-1 ml-1"
             width="24"
             height="24"
           />
@@ -95,11 +104,15 @@ export const Popup = () => {
           </h1>
           <button
             type="button"
-            className="text-teal-700 bg-opacity-0 rounded-full shrink-0 p-1
+            className="text-teal-700 bg-none shrink-0 p-3 -mt-2 -mb-2
+                relative transition-colors cursor-pointer z-10
+                before:content-[''] before:absolute before:inset-2 before:rounded-full
+                before:transition-colors
                 dark:text-teal-200
-                hover:enabled:bg-zinc-200 transition-colors cursor-pointer
-                dark:hover:enabled:bg-teal-800
-                disabled:text-zinc-400 disabled:cursor-not-allowed z-10"
+                hover:enabled:before:bg-zinc-200
+                dark:hover:enabled:before:bg-teal-900
+                disabled:text-zinc-400 disabled:cursor-not-allowed
+                touch-manipulation"
             onClick={() => {
               sendMessageToActiveTab({
                 type: "applySettings",
@@ -113,48 +126,54 @@ export const Popup = () => {
             <IoReloadOutline
               role="img"
               aria-label={t("popup.rerun")}
-              className="size-4"
+              className="size-4 relative z-20"
             />
           </button>
         </div>
-        <Checkbox
-          onChange={async (e) => {
-            setEnabled(e.target.checked);
-            saveEnabled(e.target.checked);
-            browser.runtime.sendMessage({
-              type: "updateEnabled",
-              enabled: e.target.checked,
-            });
-            sendMessageToActiveTabs<SettingsMessage>({
-              type: "updateEnabled",
-              enabled: e.target.checked,
-            });
-          }}
-          checked={enabled}
-        >
-          <span
-            className="text-xs font-bold text-teal-800
-          dark:text-teal-200 shrink-0"
+        <div className="mr-2">
+          <Checkbox
+            onChange={async (e) => {
+              setEnabled(e.target.checked);
+              saveEnabled(e.target.checked);
+              browser.runtime.sendMessage({
+                type: "updateEnabled",
+                enabled: e.target.checked,
+              });
+              sendMessageToActiveTabs<SettingsMessage>({
+                type: "updateEnabled",
+                enabled: e.target.checked,
+              });
+            }}
+            checked={enabled}
           >
-            {t("popup.enabled")}
-          </span>
-          <span className="absolute inset-0" />
-        </Checkbox>
+            <span
+              className="text-xs font-bold text-teal-800
+          dark:text-teal-200 shrink-0"
+            >
+              {t("popup.enabled")}
+            </span>
+            <span className="absolute inset-0" />
+          </Checkbox>
+        </div>
       </div>
       {(host || isFile) && (
         <div className="p-2 flex flex-col gap-0 items-stretch">
-          <div className="flex flex-row gap-2 items-center mb-2 px-2">
+          <div className="flex flex-row gap-2 items-center mb-2 px-2 sm:px-2">
             <h2 className="text-sm font-bold text-teal-800 dark:text-teal-200 shrink">
               {host && t("popup.settingsForHost", { host })}
               {isFile && t("popup.settingsForFile")}
             </h2>
             <button
               type="button"
-              className="text-teal-700 bg-opacity-0 rounded-full shrink-0 p-1
-                dark:text-teal-200
-                hover:enabled:bg-zinc-100 transition-colors cursor-pointer
-                dark:hover:enabled:bg-teal-800
-                disabled:text-zinc-400 disabled:cursor-not-allowed"
+              className="text-teal-700 bg-none shrink-0 p-3 -mt-2 -mb-2
+                  relative transition-colors cursor-pointer z-10
+                  before:content-[''] before:absolute before:inset-2 before:rounded-full
+                  before:transition-colors
+                  dark:text-teal-200
+                  hover:enabled:before:bg-zinc-200
+                  dark:hover:enabled:before:bg-teal-900
+                  disabled:text-zinc-400 disabled:cursor-not-allowed
+                  touch-manipulation"
               onClick={async () => {
                 await resetUrlSettings(url);
                 const defaultSettings = await loadSettings();
@@ -173,7 +192,7 @@ export const Popup = () => {
               <IoBackspaceOutline
                 role="img"
                 aria-label={t("popup.reset")}
-                className="size-4"
+                className="size-4 relative z-20"
               />
             </button>
           </div>
@@ -184,15 +203,17 @@ export const Popup = () => {
             showDisplaySettingsCollapsed={true}
             url={url}
           />
-          <p className="text-xs text-zinc-500 dark:text-zinc-400 px-2">
+          <p className="text-xs text-zinc-500 dark:text-zinc-400 px-2 sm:px-2">
             {t("popup.hostDesc")}
-            <button
-              type="button"
-              className="link text-teal-700 underline hover:enabled:text-teal-900 transition-colors dark:text-teal-400 hover:enabled:dark:text-teal-200"
-              onClick={() => browser.runtime.openOptionsPage()}
-            >
-              {t("popup.openExtensionOptions")}
-            </button>
+            {!isAndroidFirefox && (
+              <button
+                type="button"
+                className="link text-teal-700 underline hover:enabled:text-teal-900 transition-colors dark:text-teal-400 hover:enabled:dark:text-teal-200"
+                onClick={() => browser.runtime.openOptionsPage()}
+              >
+                {t("popup.openExtensionOptions")}
+              </button>
+            )}
           </p>
         </div>
       )}

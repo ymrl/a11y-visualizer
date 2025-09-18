@@ -73,6 +73,9 @@ export default defineConfig({
       gecko: {
         id: "a11y-visualizer@ymrl.net",
       },
+      gecko_android: {
+        strict_min_version: "113.0",
+      },
     },
   },
   zip: {

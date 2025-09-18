@@ -35,6 +35,15 @@ export const Popup = () => {
   const [hostSetting, setHostSetting] = React.useState<boolean>(false);
   const { t, lang } = useLang();
 
+  // Detect Android Firefox where options page doesn't work properly
+  const isAndroidFirefox = React.useMemo(() => {
+    return (
+      typeof navigator !== "undefined" &&
+      navigator.userAgent.includes("Android") &&
+      navigator.userAgent.includes("Firefox")
+    );
+  }, []);
+
   const loadSettings = React.useCallback(async () => {
     const loadedEnabled = await loadEnabled();
     setEnabled(loadedEnabled);
@@ -194,15 +203,17 @@ export const Popup = () => {
             showDisplaySettingsCollapsed={true}
             url={url}
           />
-          <p className="text-sm sm:text-xs text-zinc-500 dark:text-zinc-400 px-2 sm:px-2">
+          <p className="text-xs text-zinc-500 dark:text-zinc-400 px-2 sm:px-2">
             {t("popup.hostDesc")}
-            <button
-              type="button"
-              className="link text-teal-700 underline hover:enabled:text-teal-900 transition-colors dark:text-teal-400 hover:enabled:dark:text-teal-200"
-              onClick={() => browser.runtime.openOptionsPage()}
-            >
-              {t("popup.openExtensionOptions")}
-            </button>
+            {!isAndroidFirefox && (
+              <button
+                type="button"
+                className="link text-teal-700 underline hover:enabled:text-teal-900 transition-colors dark:text-teal-400 hover:enabled:dark:text-teal-200"
+                onClick={() => browser.runtime.openOptionsPage()}
+              >
+                {t("popup.openExtensionOptions")}
+              </button>
+            )}
           </p>
         </div>
       )}

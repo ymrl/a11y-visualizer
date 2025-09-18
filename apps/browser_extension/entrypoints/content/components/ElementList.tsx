@@ -119,14 +119,19 @@ export const ElementList = ({
     };
 
     win.addEventListener("mousemove", handleMouseMove, { passive: true });
-    win.addEventListener("touchstart", handleTouchStart, { passive: true });
-    win.addEventListener("touchmove", handleTouchMove, { passive: true });
-    win.addEventListener("touchend", handleTouchEnd, { passive: true });
+    const isTouchDevice = 'ontouchstart' in win || navigator.maxTouchPoints > 0;
+    if (isTouchDevice) {
+      win.addEventListener("touchstart", handleTouchStart, { passive: true });
+      win.addEventListener("touchmove", handleTouchMove, { passive: true });
+      win.addEventListener("touchend", handleTouchEnd, { passive: true });
+    }
     return () => {
       win.removeEventListener("mousemove", handleMouseMove);
-      win.removeEventListener("touchstart", handleTouchStart);
-      win.removeEventListener("touchmove", handleTouchMove);
-      win.removeEventListener("touchend", handleTouchEnd);
+      if (isTouchDevice) {
+        win.removeEventListener("touchstart", handleTouchStart);
+        win.removeEventListener("touchmove", handleTouchMove);
+        win.removeEventListener("touchend", handleTouchEnd);
+      }
       if (touchMoveTimeout !== null) {
         win.clearTimeout(touchMoveTimeout);
       }

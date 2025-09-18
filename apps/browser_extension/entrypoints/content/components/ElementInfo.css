@@ -66,6 +66,7 @@
   width: max-content;
   flex-wrap: wrap;
   gap: 0.2em;
+  max-width: 100%;
 }
 
 .ElementInfo__tips--left {

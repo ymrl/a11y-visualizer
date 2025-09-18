@@ -4,6 +4,15 @@ export const DEFAULT_SETTING_KEY = "__default__";
 export const OBSOLETE_SETTING_KEY = "settings";
 export const FILE_SETTING_KEY = "__file__";
 
+// Detect Android Firefox for settings customization
+const isAndroidFirefox = (() => {
+  if (typeof navigator === "undefined") return false;
+  return (
+    navigator.userAgent.includes("Android") &&
+    navigator.userAgent.includes("Firefox")
+  );
+})();
+
 export const defaultCustomCategorySettings: CategorySettings = {
   heading: true,
   image: true,
@@ -29,7 +38,7 @@ export const initialSettings: Settings = {
   tipOpacityPercent: 30,
   liveRegionOpacityPercent: 50,
   tipFontSize: 10,
-  liveRegionFontSize: 48,
+  liveRegionFontSize: isAndroidFirefox ? 24 : 48,
   elementTypeMode: {
     mode: "preset",
     presetId: "basic",

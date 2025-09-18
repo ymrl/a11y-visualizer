@@ -133,9 +133,16 @@ export const ElementList = ({
           win.removeEventListener("touchmove", handleTouchMove);
           win.removeEventListener("touchend", handleTouchEnd);
         }
-      } catch (_e) {
+      } catch (e) {
         // Ignore errors of same-origin policy
-        // console.error(_e);
+        if (
+          e &&
+          typeof e === "object" &&
+          "name" in e &&
+          e.name !== "SecurityError"
+        ) {
+          throw e;
+        }
       }
       if (touchMoveTimeout !== null) {
         win.clearTimeout(touchMoveTimeout);

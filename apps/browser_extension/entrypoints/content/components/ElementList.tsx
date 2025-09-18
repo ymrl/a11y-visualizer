@@ -119,18 +119,23 @@ export const ElementList = ({
     };
 
     win.addEventListener("mousemove", handleMouseMove, { passive: true });
-    const isTouchDevice = 'ontouchstart' in win || navigator.maxTouchPoints > 0;
+    const isTouchDevice = "ontouchstart" in win || navigator.maxTouchPoints > 0;
     if (isTouchDevice) {
       win.addEventListener("touchstart", handleTouchStart, { passive: true });
       win.addEventListener("touchmove", handleTouchMove, { passive: true });
       win.addEventListener("touchend", handleTouchEnd, { passive: true });
     }
     return () => {
-      win.removeEventListener("mousemove", handleMouseMove);
-      if (isTouchDevice) {
-        win.removeEventListener("touchstart", handleTouchStart);
-        win.removeEventListener("touchmove", handleTouchMove);
-        win.removeEventListener("touchend", handleTouchEnd);
+      try {
+        win.removeEventListener("mousemove", handleMouseMove);
+        if (isTouchDevice) {
+          win.removeEventListener("touchstart", handleTouchStart);
+          win.removeEventListener("touchmove", handleTouchMove);
+          win.removeEventListener("touchend", handleTouchEnd);
+        }
+      } catch (_e) {
+        // Ignore errors of same-origin policy
+        // console.error(_e);
       }
       if (touchMoveTimeout !== null) {
         win.clearTimeout(touchMoveTimeout);

@@ -228,10 +228,10 @@ export const ElementTypeTabs: React.FC<ElementTypeTabsProps> = ({
                 focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-inset
                 relative before-content-[''] before:absolute before:-top-3 before:bottom-0 before:left-0 before:right-0 before:z-10
                 ${
-                activeTab === preset.id
-                  ? "border-teal-500 text-teal-700 dark:text-teal-400"
-                  : "border-transparent text-zinc-600 hover:enabled:text-zinc-800 hover:enabled:border-zinc-300 dark:text-zinc-400 dark:hover:enabled:text-zinc-200 dark:hover:enabled:border-zinc-500"
-              } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
+                  activeTab === preset.id
+                    ? "border-teal-500 text-teal-700 dark:text-teal-400"
+                    : "border-transparent text-zinc-600 hover:enabled:text-zinc-800 hover:enabled:border-zinc-300 dark:text-zinc-400 dark:hover:enabled:text-zinc-200 dark:hover:enabled:border-zinc-500"
+                } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
               onClick={() => handlePresetChange(preset.id)}
               onKeyDown={handleTabKeyDown}
               disabled={disabled}

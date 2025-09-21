@@ -153,4 +153,5 @@ export const Selectors: Record<keyof CategorySettings, string[]> = {
     "[aria-valuenow]",
     "[aria-valuetext]",
   ] as const,
+  tabIndex: ["[tabindex]"] as const,
 };

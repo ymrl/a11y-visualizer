@@ -22,6 +22,7 @@ export const presets: Preset[] = [
       table: false,
       list: false,
       waiAria: true,
+      tabIndex: true,
     },
   },
   {
@@ -39,6 +40,7 @@ export const presets: Preset[] = [
       table: false,
       list: false,
       waiAria: false,
+      tabIndex: false,
     },
   },
   {
@@ -56,6 +58,7 @@ export const presets: Preset[] = [
       table: true,
       list: true,
       waiAria: false,
+      tabIndex: false,
     },
   },
 ];

@@ -26,6 +26,7 @@
     "tables": "테이블",
     "lists": "리스트",
     "waiAria": "WAI-ARIA",
+    "tabIndex": "tabindex",
     "tipOpacityPercent": "팁의 불투명도(%)",
     "interactiveMode": "인터랙티브 모드",
     "interactive": "인터랙티브",
@@ -67,6 +68,7 @@
     "lang": "언어",
     "list": "리스트",
     "listType": "리스트 종류",
+    "tabIndex": "tabindex",
     "warning": "경고",
     "error": "오류"
   },
@@ -163,5 +165,7 @@
   "Cannot be named": "이름을 지정할 수 없음",
   "Should not be named": "이름을 지정하지 마십시오",
   "Abstract role cannot be used": "추상 역할을 사용할 수 없습니다",
-  "Inaccessible": "접근 불가능"
+  "Inaccessible": "접근 불가능",
+  "Positive tabindex": "1 이상의 tabindex",
+  "Invalid tabindex": "잘못된 tabindex"
 }

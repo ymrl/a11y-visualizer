@@ -74,6 +74,11 @@
 .Tip--lang {
   background-color: var(--base-cream);
 }
+
+.Tip--tabIndex {
+  background-color: var(--base-pink);
+}
+
 .Tip--ariaAttributes {
   background-color: var(--base-pink);
 }

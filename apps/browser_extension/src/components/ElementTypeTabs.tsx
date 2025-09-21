@@ -39,6 +39,7 @@ const getEnabledSettingsLabels = (
   if (settings.table) labels.push(t("settings.tables"));
   if (settings.list) labels.push(t("settings.lists"));
   if (settings.waiAria) labels.push(t("settings.waiAria"));
+  if (settings.tabIndex) labels.push(t("settings.tabIndex"));
   return labels;
 };
 
@@ -359,6 +360,15 @@ export const ElementTypeTabs: React.FC<ElementTypeTabsProps> = ({
                 disabled={disabled}
               >
                 <span className="text-sm">{t("settings.waiAria")}</span>
+              </Checkbox>
+              <Checkbox
+                onChange={(e) =>
+                  handleCheckboxChange("tabIndex", e.target.checked)
+                }
+                checked={currentCategorySettings.tabIndex}
+                disabled={disabled}
+              >
+                <span className="text-sm">{t("settings.tabIndex")}</span>
               </Checkbox>
               <div className="grow flex flex-row justify-end">
                 <button

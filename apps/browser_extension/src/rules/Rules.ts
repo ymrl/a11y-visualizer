@@ -27,6 +27,7 @@ import { PageTitle } from "./page-title";
 import { RadioGroup } from "./radio-group";
 import { Role } from "./role";
 import { SvgSkip } from "./svg-skip";
+import { TabIndex } from "./tab-index";
 import { TableHeader } from "./table-header";
 import { TablePosition } from "./table-position";
 import { TableSize } from "./table-size";
@@ -66,4 +67,5 @@ export const Rules = [
   AccessibleDescription,
   AbstractRole,
   AriaAttributes,
+  TabIndex,
 ] as const;

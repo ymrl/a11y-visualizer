@@ -25,6 +25,7 @@ export const defaultCustomCategorySettings: CategorySettings = {
   table: false,
   list: false,
   waiAria: false,
+  tabIndex: false,
 } as const;
 
 export const initialSettings: Settings = {

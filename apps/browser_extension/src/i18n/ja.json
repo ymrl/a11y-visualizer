@@ -26,6 +26,7 @@
     "tables": "テーブル",
     "lists": "リスト",
     "waiAria": "WAI-ARIA",
+    "tabIndex": "tabindex",
     "tipOpacityPercent": "チップの不透明度（%）",
     "interactiveMode": "インタラクティブモード",
     "interactive": "インタラクティブ",
@@ -67,6 +68,7 @@
     "lang": "言語",
     "list": "リスト",
     "listType": "リスト種別",
+    "tabIndex": "tabindex",
     "warning": "警告",
     "error": "エラー"
   },
@@ -163,5 +165,7 @@
   "Cannot be named": "名前付けできない",
   "Should not be named": "名前付けすべきではない",
   "Abstract role cannot be used": "抽象ロールは使用できません",
-  "Inaccessible": "アクセス不能"
+  "Inaccessible": "アクセス不能",
+  "Positive tabindex": "1以上のtabindex",
+  "Invalid tabindex": "不正なtabindex"
 }

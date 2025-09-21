@@ -26,6 +26,7 @@
     "tables": "Tables",
     "lists": "Lists",
     "waiAria": "WAI-ARIA",
+    "tabIndex": "tabindex",
     "tipOpacityPercent": "Tips opacity (%)",
     "interactiveMode": "Interactive mode",
     "interactive": "Interactive",
@@ -67,6 +68,7 @@
     "lang": "Language",
     "list": "List",
     "listType": "List Type",
+    "tabIndex": "tabindex",
     "warning": "Warning",
     "error": "Error"
   },
@@ -163,5 +165,7 @@
   "Cannot be named": "Cannot be named",
   "Should not be named": "Should not be named",
   "Abstract role cannot be used": "Abstract role cannot be used",
-  "Inaccessible": "Inaccessible"
+  "Inaccessible": "Inaccessible",
+  "Positive tabindex": "Positive tabindex",
+  "Invalid tabindex": "Invalid tabindex"
 }

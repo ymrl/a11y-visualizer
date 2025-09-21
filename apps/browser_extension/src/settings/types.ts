@@ -10,6 +10,7 @@ export type CategorySettings = {
   table: boolean;
   list: boolean;
   waiAria: boolean;
+  tabIndex: boolean;
 };
 
 export type PresetId = "basic" | "structure" | "content" | "custom";

@@ -37,6 +37,9 @@ function migrateLegacySettings(settings: unknown): Settings {
         (settingsObj.waiAria as boolean) ??
         (settingsObj.ariaHidden as boolean) ??
         defaultCustomCategorySettings.waiAria,
+      tabIndex:
+        (settingsObj.tabIndex as boolean) ??
+        defaultCustomCategorySettings.tabIndex,
     };
 
     return {

@@ -33,4 +33,5 @@ export type Category =
   | "group"
   | "page"
   | "wai-aria"
+  | "tabIndex"
   | "general";

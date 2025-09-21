@@ -1,6 +1,7 @@
 import {
   IoAccessibility,
   IoAlertCircle,
+  IoArrowForwardCircle,
   IoBookmark,
   IoBrowsersOutline,
   IoCodeSlash,
@@ -164,6 +165,14 @@ const Icon = ({ type }: { type: RuleResult["type"] }) => {
           className="Tip__icon"
           role="img"
           aria-label={t("tip.ariaAttribute")}
+        />
+      );
+    case "tabIndex":
+      return (
+        <IoArrowForwardCircle
+          className="Tip__icon"
+          role="img"
+          aria-label={t("tip.tabIndex")}
         />
       );
   }

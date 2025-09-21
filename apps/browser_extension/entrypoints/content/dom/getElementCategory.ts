@@ -17,6 +17,7 @@ export const getElementCategory = (
   if (isTableCell(el, role)) return "tableCell";
   if (isGroup(el)) return "group";
   if (isLang(el)) return "section";
+  if (isTabIndex(el)) return "tabIndex";
   if (isWaiAria(el, role)) return "wai-aria";
   return "general";
 };
@@ -144,6 +145,10 @@ export const isTableCell = (el: Element, role = getKnownRole(el)): boolean => {
     ["th", "td"].includes(tagName) ||
     (!!role && ["columnheader", "rowheader", "gridcell", "cell"].includes(role))
   );
+};
+
+export const isTabIndex = (el: Element): boolean => {
+  return el.hasAttribute("tabindex");
 };
 
 export const isWaiAria = (el: Element, role = getKnownRole(el)): boolean => {

@@ -61,6 +61,7 @@ function getHorizontalPosition({
   if (category === "page") return "center" as const;
   if (category === "heading") return "left" as const;
   if (category === "section") return "right" as const;
+  if (category === "group") return "right" as const;
   if (category === "image") return "left" as const;
   const left = scrollOffsetX;
   const right = rootWidth - (scrollOffsetX + width);
@@ -88,6 +89,7 @@ function getVerticalPosition(args: PositionArgs): VerticalPosition {
     "heading",
     "table",
     "list",
+    "group",
   ]);
   const bottomPreferred = new Set<Category>(["control"]);
   const outerPreferred = new Set<Category>(["heading", "control"]);

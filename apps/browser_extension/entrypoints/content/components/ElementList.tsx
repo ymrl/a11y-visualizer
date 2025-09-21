@@ -65,27 +65,15 @@ export const ElementList = ({
         setUserCoordinates(coordinates);
       };
 
-      // Debounce touchmove to reduce update frequency
-      let touchMoveTimeout: number | null = null;
       const handleTouchMove = (e: TouchEvent) => {
-        if (touchMoveTimeout !== null) {
-          win.clearTimeout(touchMoveTimeout);
-        }
-        touchMoveTimeout = win.setTimeout(() => {
-          const coordinates = Array.from(e.touches).map((touch) => ({
-            x: touch.pageX,
-            y: touch.pageY,
-          }));
-          setUserCoordinates(coordinates);
-          touchMoveTimeout = null;
-        }, 16); // ~60fps throttling
+        const coordinates = Array.from(e.touches).map((touch) => ({
+          x: touch.pageX,
+          y: touch.pageY,
+        }));
+        setUserCoordinates(coordinates);
       };
 
       const handleTouchEnd = (e: TouchEvent) => {
-        if (touchMoveTimeout !== null) {
-          win.clearTimeout(touchMoveTimeout);
-          touchMoveTimeout = null;
-        }
         // When touchend occurs, e.touches is empty, so we need to check if there are any remaining touches
         if (e.touches.length === 0) {
           setUserCoordinates([]);
@@ -124,9 +112,6 @@ export const ElementList = ({
           ) {
             throw e;
           }
-        }
-        if (touchMoveTimeout !== null) {
-          win.clearTimeout(touchMoveTimeout);
         }
       };
     },

@@ -53,3 +53,11 @@ $ pnpm --filter=@a11y-visualizer/browser-extension zip:firefox
 ```
 
 The built extensions will be in `apps/browser_extension/dist/` directory, and zip files will be created in the same location.
+
+## Privacy Policy
+
+[./PRIVACY.md](./PRIVACY.md)
+
+## License
+
+MIT License ([./LICENSE.txt](./LICENSE.txt))

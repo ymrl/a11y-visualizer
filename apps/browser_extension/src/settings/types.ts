@@ -36,6 +36,7 @@ export type Settings = {
   announcementMaxSeconds: number;
   announcementSecondsPerCharacter: number;
   tipOpacityPercent: number;
+  activeTipOpacityPercent: number;
   liveRegionOpacityPercent: number;
   tipFontSize: number;
   liveRegionFontSize: number;

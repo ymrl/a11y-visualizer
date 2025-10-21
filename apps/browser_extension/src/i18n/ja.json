@@ -28,6 +28,7 @@
     "waiAria": "WAI-ARIA",
     "tabIndex": "tabindex",
     "tipOpacityPercent": "チップの不透明度（%）",
+    "activeTipOpacityPercent": "アクティブなチップの不透明度（%）",
     "interactiveMode": "インタラクティブモード",
     "interactive": "インタラクティブ",
     "hideLabels": "ラベルを隠す",

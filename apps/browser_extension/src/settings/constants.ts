@@ -37,6 +37,7 @@ export const initialSettings: Settings = {
   announcementMaxSeconds: 10,
   announcementSecondsPerCharacter: 0.5,
   tipOpacityPercent: 30,
+  activeTipOpacityPercent: 100,
   liveRegionOpacityPercent: 50,
   tipFontSize: 10,
   liveRegionFontSize: isAndroidFirefox ? 24 : 48,

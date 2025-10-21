@@ -42,13 +42,18 @@ function migrateLegacySettings(settings: unknown): Settings {
         defaultCustomCategorySettings.tabIndex,
     };
 
+    const interactiveMode =
+      (settingsObj.interactiveMode as boolean) ??
+      initialSettings.interactiveMode;
+    const tipOpacityPercent =
+      (settingsObj.tipOpacityPercent as number) ??
+      initialSettings.tipOpacityPercent;
+
     return {
       accessibilityInfo:
         (settingsObj.accessibilityInfo as boolean) ??
         initialSettings.accessibilityInfo,
-      interactiveMode:
-        (settingsObj.interactiveMode as boolean) ??
-        initialSettings.interactiveMode,
+      interactiveMode,
       hideTips: (settingsObj.hideTips as boolean) ?? initialSettings.hideTips,
       showLiveRegions:
         (settingsObj.showLiveRegions as boolean) ??
@@ -62,9 +67,12 @@ function migrateLegacySettings(settings: unknown): Settings {
       announcementSecondsPerCharacter:
         (settingsObj.announcementSecondsPerCharacter as number) ??
         initialSettings.announcementSecondsPerCharacter,
-      tipOpacityPercent:
-        (settingsObj.tipOpacityPercent as number) ??
-        initialSettings.tipOpacityPercent,
+      tipOpacityPercent,
+      activeTipOpacityPercent:
+        (settingsObj.activeTipOpacityPercent as number) ??
+        (!interactiveMode
+          ? tipOpacityPercent
+          : initialSettings.activeTipOpacityPercent),
       liveRegionOpacityPercent:
         (settingsObj.liveRegionOpacityPercent as number) ??
         initialSettings.liveRegionOpacityPercent,
@@ -83,7 +91,19 @@ function migrateLegacySettings(settings: unknown): Settings {
     };
   }
 
-  return settingsObj as Settings;
+  // 新しい設定形式でも activeTipOpacityPercent が存在しない場合の処理
+  const newSettings: Settings = { ...settingsObj } as Settings;
+  if (typeof newSettings.activeTipOpacityPercent === "undefined") {
+    const interactiveMode =
+      newSettings.interactiveMode ?? initialSettings.interactiveMode;
+    const tipOpacityPercent =
+      newSettings.tipOpacityPercent ?? initialSettings.tipOpacityPercent;
+    newSettings.activeTipOpacityPercent = !interactiveMode
+      ? tipOpacityPercent
+      : initialSettings.activeTipOpacityPercent;
+  }
+
+  return newSettings;
 }
 
 export const loadDefaultSettings = async (): Promise<[Settings, boolean]> => {

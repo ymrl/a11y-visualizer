@@ -433,6 +433,30 @@ const DisplaySettingsSection = ({
           disabled={disabled || !settings.accessibilityInfo}
         />
       </div>
+      <div className="flex flex-col gap-1 items-stretch px-2">
+        <div className="flex flex-row gap-2 items-center justify-between">
+          <label className="text-sm shrink-0" htmlFor="activeTipOpacityPercent">
+            {t("settings.activeTipOpacityPercent")}
+          </label>
+          <span>
+            <span className="text-sm font-bold shrink">
+              {settings.activeTipOpacityPercent}
+            </span>
+            <span className="text-xs">%</span>
+          </span>
+        </div>
+        <input
+          id={`${id}-activeTipOpacityPercent`}
+          className="accent-teal-600 dark:accent-teal-400"
+          type="range"
+          min={0}
+          max={100}
+          step={1}
+          value={settings.activeTipOpacityPercent}
+          onChange={(e) => handleChangeNumber("activeTipOpacityPercent", e)}
+          disabled={disabled || !settings.accessibilityInfo}
+        />
+      </div>
       <label className="flex flex-row gap-2 items-center justify-between px-2">
         <span className="shrink text-sm">{t("settings.tipFontSize")}</span>
         <input

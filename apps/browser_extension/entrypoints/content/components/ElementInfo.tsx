@@ -80,8 +80,11 @@ export const ElementInfo = ({
       <div
         className="ElementInfo__content"
         style={{
-          opacity:
-            interactiveMode && isHovered ? 1 : settings.tipOpacityPercent / 100,
+          opacity: interactiveMode
+            ? isHovered
+              ? settings.activeTipOpacityPercent / 100
+              : settings.tipOpacityPercent / 100
+            : settings.activeTipOpacityPercent / 100,
         }}
       >
         {ruleResults.length > 0 &&

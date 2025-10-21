@@ -28,6 +28,7 @@
     "waiAria": "WAI-ARIA",
     "tabIndex": "tabindex",
     "tipOpacityPercent": "Tips opacity (%)",
+    "activeTipOpacityPercent": "Active tips opacity (%)",
     "interactiveMode": "Interactive mode",
     "interactive": "Interactive",
     "hideLabels": "Hide labels",

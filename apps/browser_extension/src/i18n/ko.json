@@ -28,6 +28,7 @@
     "waiAria": "WAI-ARIA",
     "tabIndex": "tabindex",
     "tipOpacityPercent": "팁의 불투명도(%)",
+    "activeTipOpacityPercent": "활성 팁의 불투명도(%)",
     "interactiveMode": "인터랙티브 모드",
     "interactive": "인터랙티브",
     "hideLabels": "라벨 숨기기",

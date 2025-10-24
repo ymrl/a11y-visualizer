@@ -74,11 +74,17 @@ const t = createLocalT(layoutDict, en);
       >
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <p>
-            {t("footer.copyright")}<a
+            {t("footer.copyright")}
+            <a
               href="https://github.com/ymrl/a11y-visualizer"
               class="text-teal-400 dark:text-teal-300 hover:text-teal-300 dark:hover:text-teal-200 underline"
               >{t("footer.github")}</a
-            >.
+            >
+            <a
+              href="https://github.com/ymrl/a11y-visualizer/blob/main/PRIVACY.md"
+              class="text-teal-400 dark:text-teal-300 hover:text-teal-300 dark:hover:text-teal-200 underline"
+              >{t("footer.privacy")}</a
+            >
           </p>
         </div>
       </footer>

@@ -7,7 +7,11 @@ export const en = {
     imageAlt:
       "Accessibility Visualizer's icon (Cartoon eyes on colorful blocks)",
   },
-  footer: { copyright: "© 2024 ymrl (MIT License)", github: "GitHub" },
+  footer: {
+    copyright: "© 2024 ymrl (MIT License)",
+    github: "GitHub",
+    privacy: "Privacy Policy",
+  },
 } as const;
 
 export const ja = {
@@ -19,7 +23,11 @@ export const ja = {
     imageAlt:
       "Accessibility Visualizerのアイコン (カラフルなブロックの上に描かれた漫画の目)",
   },
-  footer: { copyright: "© 2024 ymrl (MIT License)", github: "GitHub" },
+  footer: {
+    copyright: "© 2024 ymrl (MIT License)",
+    github: "GitHub",
+    privacy: "プライバシーポリシー",
+  },
 } as const;
 
 export const ko = {
@@ -31,5 +39,9 @@ export const ko = {
     imageAlt:
       "Accessibility Visualizer 아이콘 (화려한 블록 위에 그려진 만화 눈)",
   },
-  footer: { copyright: "© 2024 ymrl (MIT License)", github: "GitHub" },
+  footer: {
+    copyright: "© 2024 ymrl (MIT License)",
+    github: "GitHub",
+    privacy: "개인정보 처리방침",
+  },
 } as const;

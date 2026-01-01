@@ -1,4 +1,5 @@
 import { computeAccessibleName } from "dom-accessibility-api";
+import { collectShadowRoots } from "../../../src/dom/collectShadowRoots";
 import { getKnownRole } from "../../../src/dom/getKnownRole";
 import { isHidden } from "../../../src/dom/isHidden";
 import { isOutOfSight } from "../../../src/dom/isOutOfSight";
@@ -78,8 +79,11 @@ export const collectElements = (
   const selector = getSelector(settings);
   const internalTables: Table[] = [];
 
-  // モーダル要素を検出
-  const modals = detectModals(root);
+  // Shadow DOMを収集
+  const shadowRoots = collectShadowRoots(root);
+
+  // モーダル要素を検出（通常のDOMとShadow DOM両方）
+  const modals = [...detectModals(root), ...shadowRoots.flatMap(detectModals)];
   const hasActiveModals = modals.length > 0;
 
   return {
@@ -89,6 +93,10 @@ export const collectElements = (
       ...(settings.page && rootTagName === "body" ? [root] : []),
       ...(selector && root.matches(selector) ? [root] : []),
       ...(selector ? [...root.querySelectorAll(selector)] : []),
+      // Shadow DOM内の要素も収集
+      ...shadowRoots.flatMap((shadowRoot) =>
+        selector ? [...shadowRoot.querySelectorAll(selector)] : [],
+      ),
     ]
       .filter((el) => !isHidden(el))
       .filter((el) => !excludes.some((exclude) => exclude.contains(el)))

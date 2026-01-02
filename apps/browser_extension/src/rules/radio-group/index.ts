@@ -1,3 +1,4 @@
+import { querySelectorAllFromRoots } from "../../dom/querySelectorAllFromRoots";
 import type { RuleObject } from "../type";
 
 const ruleName = "radio-group";
@@ -8,7 +9,7 @@ export const RadioGroup: RuleObject = {
   ruleName,
   defaultOptions,
   selectors: ['input[type="radio"]'],
-  evaluate: (element, { enabled } = defaultOptions) => {
+  evaluate: (element, { enabled } = defaultOptions, { shadowRoots } = {}) => {
     if (!enabled) {
       return undefined;
     }
@@ -24,8 +25,10 @@ export const RadioGroup: RuleObject = {
       ];
     } else {
       const form = element.closest("form");
-      const radios = (form || element.ownerDocument).querySelectorAll(
+      const radios = querySelectorAllFromRoots(
         `input[type="radio"][name="${CSS.escape(nameAttr)}"]`,
+        form || element.ownerDocument,
+        shadowRoots,
       );
       if (radios.length < 2) {
         return [

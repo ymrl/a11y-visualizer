@@ -349,4 +349,207 @@ describe(TargetSize.ruleName, () => {
       window.getComputedStyle = originalGetComputedStyle;
     }
   });
+
+  // Shadow DOM tests
+  test("small button in Shadow DOM", () => {
+    const host = document.createElement("div");
+    const shadowRoot = host.attachShadow({ mode: "open" });
+    const el = document.createElement("button");
+    el.textContent = "button";
+    el.style.width = "10px";
+    el.style.height = "10px";
+    shadowRoot.appendChild(el);
+    document.body.appendChild(host);
+
+    expect(
+      TargetSize.evaluate(el, { enabled: true }, { shadowRoots: [shadowRoot] }),
+    ).toEqual([
+      {
+        type: "warning",
+        message: "Small target",
+        ruleName: "target-size",
+      },
+    ]);
+  });
+
+  test("small checkbox in Shadow DOM with label in same Shadow DOM", () => {
+    const host = document.createElement("div");
+    const shadowRoot = host.attachShadow({ mode: "open" });
+    const label = document.createElement("label");
+    label.setAttribute("for", "checkbox-in-shadow");
+    label.textContent = "Label";
+    label.style.display = "inline-block";
+    label.style.width = "24px";
+    label.style.height = "24px";
+    shadowRoot.appendChild(label);
+
+    const el = document.createElement("input");
+    el.setAttribute("type", "checkbox");
+    el.id = "checkbox-in-shadow";
+    el.style.width = "10px";
+    el.style.height = "10px";
+    shadowRoot.appendChild(el);
+    document.body.appendChild(host);
+
+    expect(
+      TargetSize.evaluate(el, { enabled: true }, { shadowRoots: [shadowRoot] }),
+    ).toBeUndefined();
+  });
+
+  test("small checkbox in Shadow DOM with label in document", () => {
+    const label = document.createElement("label");
+    label.setAttribute("for", "checkbox-in-shadow");
+    label.textContent = "Label";
+    label.style.display = "inline-block";
+    label.style.width = "24px";
+    label.style.height = "24px";
+    document.body.appendChild(label);
+
+    const host = document.createElement("div");
+    const shadowRoot = host.attachShadow({ mode: "open" });
+    const el = document.createElement("input");
+    el.setAttribute("type", "checkbox");
+    el.id = "checkbox-in-shadow";
+    el.style.width = "10px";
+    el.style.height = "10px";
+    shadowRoot.appendChild(el);
+    document.body.appendChild(host);
+
+    expect(
+      TargetSize.evaluate(el, { enabled: true }, { shadowRoots: [shadowRoot] }),
+    ).toBeUndefined();
+  });
+
+  test("small button in Shadow DOM with adequate spacing from document button", () => {
+    const container = document.createElement("div");
+    container.style.position = "absolute";
+    container.style.left = "0px";
+    container.style.top = "0px";
+    container.style.width = "300px";
+    container.style.height = "300px";
+
+    // Button in document at (50, 50)
+    const docButton = document.createElement("button");
+    docButton.textContent = "button1";
+    docButton.style.position = "absolute";
+    docButton.style.left = "50px";
+    docButton.style.top = "50px";
+    docButton.style.width = "10px";
+    docButton.style.height = "10px";
+    container.appendChild(docButton);
+
+    // Button in Shadow DOM at (150, 50) - 100px away
+    const host = document.createElement("div");
+    const shadowRoot = host.attachShadow({ mode: "open" });
+    const shadowButton = document.createElement("button");
+    shadowButton.textContent = "button2";
+    shadowButton.style.position = "absolute";
+    shadowButton.style.left = "150px";
+    shadowButton.style.top = "50px";
+    shadowButton.style.width = "10px";
+    shadowButton.style.height = "10px";
+    shadowRoot.appendChild(shadowButton);
+    container.appendChild(host);
+
+    document.body.appendChild(container);
+
+    // Both buttons should not show warnings due to adequate spacing
+    expect(
+      TargetSize.evaluate(
+        docButton,
+        { enabled: true },
+        {
+          shadowRoots: [shadowRoot],
+        },
+      ),
+    ).toBeUndefined();
+    expect(
+      TargetSize.evaluate(
+        shadowButton,
+        { enabled: true },
+        {
+          shadowRoots: [shadowRoot],
+        },
+      ),
+    ).toBeUndefined();
+  });
+
+  test("multiple Shadow DOMs with target elements", () => {
+    const container = document.createElement("div");
+    container.style.position = "absolute";
+    container.style.left = "0px";
+    container.style.top = "0px";
+    container.style.width = "300px";
+    container.style.height = "300px";
+
+    // First Shadow DOM with button at (50, 50)
+    const host1 = document.createElement("div");
+    const shadowRoot1 = host1.attachShadow({ mode: "open" });
+    const button1 = document.createElement("button");
+    button1.textContent = "button1";
+    button1.style.position = "absolute";
+    button1.style.left = "50px";
+    button1.style.top = "50px";
+    button1.style.width = "10px";
+    button1.style.height = "10px";
+    shadowRoot1.appendChild(button1);
+    container.appendChild(host1);
+
+    // Second Shadow DOM with button at (150, 50) - 100px away
+    const host2 = document.createElement("div");
+    const shadowRoot2 = host2.attachShadow({ mode: "open" });
+    const button2 = document.createElement("button");
+    button2.textContent = "button2";
+    button2.style.position = "absolute";
+    button2.style.left = "150px";
+    button2.style.top = "50px";
+    button2.style.width = "10px";
+    button2.style.height = "10px";
+    shadowRoot2.appendChild(button2);
+    container.appendChild(host2);
+
+    document.body.appendChild(container);
+
+    // Both buttons should not show warnings due to adequate spacing
+    expect(
+      TargetSize.evaluate(
+        button1,
+        { enabled: true },
+        {
+          shadowRoots: [shadowRoot1, shadowRoot2],
+        },
+      ),
+    ).toBeUndefined();
+    expect(
+      TargetSize.evaluate(
+        button2,
+        { enabled: true },
+        {
+          shadowRoots: [shadowRoot1, shadowRoot2],
+        },
+      ),
+    ).toBeUndefined();
+  });
+
+  test("isolated small button in Shadow DOM (no other targets)", () => {
+    const host = document.createElement("div");
+    const shadowRoot = host.attachShadow({ mode: "open" });
+    const el = document.createElement("button");
+    el.textContent = "button";
+    el.style.width = "10px";
+    el.style.height = "10px";
+    shadowRoot.appendChild(el);
+    document.body.appendChild(host);
+
+    // Isolated target should show warning (spacing exception doesn't apply)
+    expect(
+      TargetSize.evaluate(el, { enabled: true }, { shadowRoots: [shadowRoot] }),
+    ).toEqual([
+      {
+        type: "warning",
+        message: "Small target",
+        ruleName: "target-size",
+      },
+    ]);
+  });
 });

@@ -105,6 +105,7 @@ export type RuleEvaluationCondition = {
   elementWindow?: Window;
   tables?: Table[];
   srcdoc?: boolean;
+  shadowRoots?: ShadowRoot[];
 };
 
 export type RuleEvaluation<

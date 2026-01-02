@@ -159,6 +159,7 @@ export const collectElements = (
                 name,
                 role,
                 srcdoc: options.srcdoc,
+                shadowRoots,
               })
             : undefined;
           return result ? prev.concat(result) : prev;

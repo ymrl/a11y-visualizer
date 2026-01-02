@@ -1,3 +1,4 @@
+import { getElementByIdFromRoots } from "../../dom/getElementByIdFromRoots";
 import { getKnownRole } from "../../dom/getKnownRole";
 import type { RuleObject } from "../type";
 
@@ -65,6 +66,7 @@ export const IdReference: RuleObject = {
     {
       role = getKnownRole(element),
       elementDocument = element.ownerDocument,
+      shadowRoots,
     } = {},
   ) => {
     if (!enabled) {
@@ -78,7 +80,7 @@ export const IdReference: RuleObject = {
       const value = element.getAttribute(attribute);
       if (value) {
         const id = value.trim();
-        if (id && !elementDocument.getElementById(id)) {
+        if (id && !getElementByIdFromRoots(id, elementDocument, shadowRoots)) {
           missingIdsByAttribute[attribute] = [id];
         }
       }
@@ -101,7 +103,7 @@ export const IdReference: RuleObject = {
           .split(/\s+/)
           .filter((id) => id.length > 0);
         const missingIds = ids.filter(
-          (id) => !elementDocument.getElementById(id),
+          (id) => !getElementByIdFromRoots(id, elementDocument, shadowRoots),
         );
         if (missingIds.length > 0) {
           missingIdsByAttribute[attribute] = missingIds;

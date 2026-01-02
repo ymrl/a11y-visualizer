@@ -164,4 +164,62 @@ describe("isHidden", () => {
     document.body.appendChild(map);
     expect(isHidden(area)).toBe(false);
   });
+
+  test("Shadow DOM内の要素は表示される", () => {
+    const host = document.createElement("div");
+    const shadowRoot = host.attachShadow({ mode: "open" });
+    const shadowChild = document.createElement("div");
+    shadowRoot.appendChild(shadowChild);
+    document.body.appendChild(host);
+    expect(isHidden(shadowChild)).toBe(false);
+  });
+
+  test("Shadow DOMのhost要素がdisplay:noneの場合、内部の要素も隠れる", () => {
+    const style = document.createElement("style");
+    style.textContent = `
+      .hidden-host {
+        display: none;
+      }
+    `;
+    document.head.appendChild(style);
+    const host = document.createElement("div");
+    host.classList.add("hidden-host");
+    const shadowRoot = host.attachShadow({ mode: "open" });
+    const shadowChild = document.createElement("div");
+    shadowRoot.appendChild(shadowChild);
+    document.body.appendChild(host);
+    expect(isHidden(shadowChild)).toBe(true);
+  });
+
+  test("ネストしたShadow DOM内の要素も表示される", () => {
+    const outerHost = document.createElement("div");
+    const outerShadow = outerHost.attachShadow({ mode: "open" });
+    const innerHost = document.createElement("div");
+    const innerShadow = innerHost.attachShadow({ mode: "open" });
+    const innerChild = document.createElement("div");
+    innerShadow.appendChild(innerChild);
+    outerShadow.appendChild(innerHost);
+    document.body.appendChild(outerHost);
+    expect(isHidden(innerChild)).toBe(false);
+  });
+
+  test("ネストしたShadow DOMで外側のhost要素がdisplay:noneの場合、内側の要素も隠れる", () => {
+    const style = document.createElement("style");
+    style.textContent = `
+      .hidden-outer {
+        display: none;
+      }
+    `;
+    document.head.appendChild(style);
+    const outerHost = document.createElement("div");
+    outerHost.classList.add("hidden-outer");
+    const outerShadow = outerHost.attachShadow({ mode: "open" });
+    const innerHost = document.createElement("div");
+    const innerShadow = innerHost.attachShadow({ mode: "open" });
+    const innerChild = document.createElement("div");
+    innerShadow.appendChild(innerChild);
+    outerShadow.appendChild(innerHost);
+    document.body.appendChild(outerHost);
+    expect(isHidden(innerChild)).toBe(true);
+  });
 });

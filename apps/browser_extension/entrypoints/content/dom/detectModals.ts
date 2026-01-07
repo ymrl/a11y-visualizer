@@ -1,6 +1,6 @@
 import { isHidden } from "../../../src/dom/isHidden";
 
-export const detectModals = (root: Element): Element[] => {
+export const detectModals = (root: Element | ShadowRoot): Element[] => {
   // aria-modal="true"な要素を検出（ただし、アクセシビリティツリーにあるもののみ）
   const ariaModalElements = Array.from(
     root.querySelectorAll('[aria-modal="true"]'),

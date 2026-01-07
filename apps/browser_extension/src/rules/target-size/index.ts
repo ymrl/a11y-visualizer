@@ -1,6 +1,7 @@
 import { getElementPosition } from "../../../entrypoints/content/dom/getElementPosition";
 import { isDefaultSize } from "../../dom/isDefaultSize";
 import { isInline } from "../../dom/isInline";
+import { querySelectorAllFromRoots } from "../../dom/querySelectorAllFromRoots";
 import type { RuleObject } from "../type";
 
 const ruleName = "target-size";
@@ -48,17 +49,18 @@ export const TargetSize: RuleObject = {
     {
       elementDocument = element.ownerDocument,
       elementWindow = elementDocument.defaultView || window,
+      shadowRoots,
     },
   ) => {
     if (!enabled) {
       return undefined;
     }
     if (
-      isSmallTarget(element, elementDocument, elementWindow) &&
+      isSmallTarget(element, elementDocument, elementWindow, shadowRoots) &&
       !(
         isInline(element) ||
         isDefaultSize(element) ||
-        hasAdequateSpacing(element, elementDocument)
+        hasAdequateSpacing(element, elementDocument, shadowRoots)
       )
     ) {
       return [
@@ -77,6 +79,7 @@ const isSmallTarget = (
   element: Element,
   elementDocument: Document,
   elementWindow: Window,
+  shadowRoots?: ShadowRoot[],
 ): boolean => {
   const elementPosition = getElementPosition(element, elementWindow);
   const style = elementWindow.getComputedStyle(element);
@@ -89,11 +92,20 @@ const isSmallTarget = (
   const checkboxLabel =
     isCheckboxOrRadiobutton(element) &&
     ((element.id &&
-      elementDocument.querySelector(`[for="${CSS.escape(element.id)}"]`)) ||
+      querySelectorAllFromRoots(
+        `[for="${CSS.escape(element.id)}"]`,
+        elementDocument,
+        shadowRoots,
+      )[0]) ||
       element.closest("label"));
   // チェックボックス・ラジオボタンはラベルの大きさも見る
   if (checkboxLabel) {
-    return isSmallTarget(checkboxLabel, elementDocument, elementWindow);
+    return isSmallTarget(
+      checkboxLabel,
+      elementDocument,
+      elementWindow,
+      shadowRoots,
+    );
   }
 
   // inlineの場合は、子要素に24px以上のものがあればfalse
@@ -104,7 +116,7 @@ const isSmallTarget = (
       if (isCheckboxOrRadiobutton(child)) {
         return false;
       }
-      return !isSmallTarget(child, elementDocument, elementWindow);
+      return !isSmallTarget(child, elementDocument, elementWindow, shadowRoots);
     })
   ) {
     return false;
@@ -116,10 +128,15 @@ const isSmallTarget = (
 const hasAdequateSpacing = (
   element: Element,
   elementDocument: Document,
+  shadowRoots?: ShadowRoot[],
 ): boolean => {
   // First, check if there are any other target elements in the document
   // If not, spacing exception doesn't apply (isolated targets should show warnings)
-  const hasOtherTargets = hasOtherTargetsInDocument(element, elementDocument);
+  const hasOtherTargets = hasOtherTargetsInDocument(
+    element,
+    elementDocument,
+    shadowRoots,
+  );
   if (!hasOtherTargets) {
     return false;
   }
@@ -249,9 +266,14 @@ const isExtensionElement = (element: Element): boolean => {
 const hasOtherTargetsInDocument = (
   element: Element,
   elementDocument: Document,
+  shadowRoots?: ShadowRoot[],
 ): boolean => {
   // Use combined selector for efficient single query
-  const allTargets = elementDocument.querySelectorAll(COMBINED_SELECTOR);
+  const allTargets = querySelectorAllFromRoots(
+    COMBINED_SELECTOR,
+    elementDocument,
+    shadowRoots,
+  );
 
   // Check if any target other than the current element exists
   for (const target of allTargets) {

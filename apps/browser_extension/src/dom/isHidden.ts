@@ -10,7 +10,7 @@ export const isHidden = (el: Element): boolean => {
   const d = el.ownerDocument;
   const w = d.defaultView;
   if (!w) return true;
-  let t = el;
+  let t: Element | null = el;
   while (t && t !== el.ownerDocument.body) {
     const style = w.getComputedStyle(t);
     if (
@@ -20,8 +20,17 @@ export const isHidden = (el: Element): boolean => {
       style.getPropertyValue("content-visibility") === "hidden"
     )
       return true;
-    if (!t.parentElement) return true;
-    t = t.parentElement;
+
+    // 次の親要素を取得（Shadow DOMを考慮）
+    if (t.parentElement) {
+      t = t.parentElement;
+    } else if (t.parentNode instanceof ShadowRoot) {
+      // Shadow DOMの場合、host要素を辿る
+      t = t.parentNode.host;
+    } else {
+      // 本当に親がない場合は隠れている
+      return true;
+    }
   }
   return false;
 };

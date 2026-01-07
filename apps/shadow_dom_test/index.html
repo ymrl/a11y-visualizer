@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shadow DOM Test - Accessibility Visualizer</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+      line-height: 1.6;
+    }
+    h1 {
+      color: #0d9488;
+      border-bottom: 2px solid #0d9488;
+      padding-bottom: 0.5rem;
+    }
+    .section {
+      margin: 2rem 0;
+      padding: 1rem;
+      border: 1px solid #e5e7eb;
+      border-radius: 0.5rem;
+    }
+    .section h2 {
+      margin-top: 0;
+      color: #334155;
+    }
+  </style>
+</head>
+<body>
+  <h1>Shadow DOM テストページ</h1>
+  <p>このページはAccessibility VisualizerのShadow DOM対応をテストするためのページです。</p>
+
+  <div class="section">
+    <h2>1. ユーザープロフィールカード（Web Component）</h2>
+    <user-profile name="山田太郎" email="yamada@example.com" role="開発者"></user-profile>
+  </div>
+
+  <div class="section">
+    <h2>2. ログインフォーム（Web Component）</h2>
+    <login-form></login-form>
+  </div>
+
+  <div class="section">
+    <h2>3. タスクリスト（Web Component）</h2>
+    <task-list></task-list>
+  </div>
+
+  <div class="section">
+    <h2>4. データテーブル（Web Component）</h2>
+    <data-table></data-table>
+  </div>
+
+  <div class="section">
+    <h2>5. ネストしたShadow DOM</h2>
+    <nested-component></nested-component>
+  </div>
+
+  <div class="section">
+    <h2>6. ラジオボタングループ（Web Component）</h2>
+    <radio-group-component></radio-group-component>
+  </div>
+
+  <script>
+    // 1. ユーザープロフィールカード
+    class UserProfile extends HTMLElement {
+      constructor() {
+        super();
+        this.attachShadow({ mode: 'open' });
+      }
+
+      connectedCallback() {
+        const name = this.getAttribute('name') || 'Unknown';
+        const email = this.getAttribute('email') || '';
+        const role = this.getAttribute('role') || '';
+
+        this.shadowRoot.innerHTML = `
+          <style>
+            .profile-card {
+              border: 2px solid #0d9488;
+              border-radius: 8px;
+              padding: 1.5rem;
+              background: #f0fdfa;
+            }
+            .profile-header {
+              display: flex;
+              align-items: center;
+              gap: 1rem;
+              margin-bottom: 1rem;
+            }
+            .avatar {
+              width: 60px;
+              height: 60px;
+              background: #0d9488;
+              border-radius: 50%;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              color: white;
+              font-size: 1.5rem;
+              font-weight: bold;
+            }
+            .profile-info h3 {
+              margin: 0 0 0.25rem 0;
+              color: #0f766e;
+            }
+            .profile-info p {
+              margin: 0;
+              color: #334155;
+              font-size: 0.9rem;
+            }
+            .profile-details {
+              display: grid;
+              gap: 0.5rem;
+            }
+            .detail-row {
+              display: flex;
+              gap: 0.5rem;
+            }
+            .detail-label {
+              font-weight: bold;
+              color: #0f766e;
+            }
+          </style>
+          <div class="profile-card" role="region" aria-label="ユーザープロフィール">
+            <div class="profile-header">
+              <div class="avatar" aria-hidden="true">${name.charAt(0)}</div>
+              <div class="profile-info">
+                <h3>${name}</h3>
+                <p>${role}</p>
+              </div>
+            </div>
+            <div class="profile-details">
+              <div class="detail-row">
+                <span class="detail-label">メール:</span>
+                <span>${email}</span>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    // 2. ログインフォーム
+    class LoginForm extends HTMLElement {
+      constructor() {
+        super();
+        this.attachShadow({ mode: 'open' });
+      }
+
+      connectedCallback() {
+        this.shadowRoot.innerHTML = `
+          <style>
+            .login-form {
+              max-width: 400px;
+              padding: 2rem;
+              border: 1px solid #cbd5e1;
+              border-radius: 8px;
+              background: white;
+            }
+            h3 {
+              margin-top: 0;
+              color: #0f766e;
+            }
+            .form-group {
+              margin-bottom: 1rem;
+            }
+            label {
+              display: block;
+              margin-bottom: 0.25rem;
+              font-weight: 500;
+              color: #334155;
+            }
+            input {
+              width: 100%;
+              padding: 0.5rem;
+              border: 1px solid #cbd5e1;
+              border-radius: 4px;
+              font-size: 1rem;
+            }
+            input:focus {
+              outline: 2px solid #0d9488;
+              outline-offset: 2px;
+            }
+            button {
+              width: 100%;
+              padding: 0.75rem;
+              background: #0d9488;
+              color: white;
+              border: none;
+              border-radius: 4px;
+              font-size: 1rem;
+              font-weight: 500;
+              cursor: pointer;
+            }
+            button:hover {
+              background: #0f766e;
+            }
+            button:focus {
+              outline: 2px solid #0d9488;
+              outline-offset: 2px;
+            }
+            .error {
+              color: #dc2626;
+              font-size: 0.875rem;
+              margin-top: 0.25rem;
+              display: none;
+            }
+            .error.visible {
+              display: block;
+            }
+          </style>
+          <form class="login-form" aria-labelledby="login-title">
+            <h3 id="login-title">ログイン</h3>
+            <div class="form-group">
+              <label for="username">ユーザー名</label>
+              <input type="text" id="username" name="username" required aria-required="true">
+              <div class="error" role="alert" aria-live="polite"></div>
+            </div>
+            <div class="form-group">
+              <label for="password">パスワード</label>
+              <input type="password" id="password" name="password" required aria-required="true">
+              <div class="error" role="alert" aria-live="polite"></div>
+            </div>
+            <button type="submit">ログイン</button>
+          </form>
+        `;
+
+        this.shadowRoot.querySelector('form').addEventListener('submit', (e) => {
+          e.preventDefault();
+          alert('ログインボタンがクリックされました（デモ）');
+        });
+      }
+    }
+
+    // 3. タスクリスト
+    class TaskList extends HTMLElement {
+      constructor() {
+        super();
+        this.attachShadow({ mode: 'open' });
+      }
+
+      connectedCallback() {
+        this.shadowRoot.innerHTML = `
+          <style>
+            .task-list {
+              background: white;
+              border: 1px solid #cbd5e1;
+              border-radius: 8px;
+              padding: 1.5rem;
+            }
+            h3 {
+              margin-top: 0;
+              color: #0f766e;
+            }
+            ul {
+              list-style: none;
+              padding: 0;
+              margin: 0;
+            }
+            li {
+              padding: 0.75rem;
+              border-bottom: 1px solid #e5e7eb;
+              display: flex;
+              align-items: center;
+              gap: 0.75rem;
+            }
+            li:last-child {
+              border-bottom: none;
+            }
+            input[type="checkbox"] {
+              width: 1.25rem;
+              height: 1.25rem;
+              cursor: pointer;
+            }
+            .task-text {
+              flex: 1;
+            }
+            .completed {
+              text-decoration: line-through;
+              color: #64748b;
+            }
+          </style>
+          <div class="task-list">
+            <h3>タスクリスト</h3>
+            <ul role="list" aria-label="タスク一覧">
+              <li>
+                <input type="checkbox" id="task1" aria-label="タスクを完了としてマーク">
+                <label for="task1" class="task-text">Shadow DOMのテストを実装する</label>
+              </li>
+              <li>
+                <input type="checkbox" id="task2" aria-label="タスクを完了としてマーク">
+                <label for="task2" class="task-text">アクセシビリティをチェックする</label>
+              </li>
+              <li>
+                <input type="checkbox" id="task3" checked aria-label="タスクを完了としてマーク">
+                <label for="task3" class="task-text completed">ドキュメントを読む</label>
+              </li>
+            </ul>
+          </div>
+        `;
+
+        this.shadowRoot.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+          checkbox.addEventListener('change', (e) => {
+            const label = e.target.nextElementSibling;
+            if (e.target.checked) {
+              label.classList.add('completed');
+            } else {
+              label.classList.remove('completed');
+            }
+          });
+        });
+      }
+    }
+
+    // 4. データテーブル
+    class DataTable extends HTMLElement {
+      constructor() {
+        super();
+        this.attachShadow({ mode: 'open' });
+      }
+
+      connectedCallback() {
+        this.shadowRoot.innerHTML = `
+          <style>
+            .table-container {
+              background: white;
+              border: 1px solid #cbd5e1;
+              border-radius: 8px;
+              padding: 1.5rem;
+              overflow-x: auto;
+            }
+            h3 {
+              margin-top: 0;
+              color: #0f766e;
+            }
+            table {
+              width: 100%;
+              border-collapse: collapse;
+            }
+            th, td {
+              padding: 0.75rem;
+              text-align: left;
+              border-bottom: 1px solid #e5e7eb;
+            }
+            th {
+              background: #f0fdfa;
+              color: #0f766e;
+              font-weight: 600;
+            }
+            tbody tr:hover {
+              background: #f8fafc;
+            }
+          </style>
+          <div class="table-container">
+            <h3>ユーザーデータ</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">ID</th>
+                  <th scope="col">名前</th>
+                  <th scope="col">役割</th>
+                  <th scope="col">ステータス</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>山田太郎</td>
+                  <td>開発者</td>
+                  <td>アクティブ</td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>佐藤花子</td>
+                  <td>デザイナー</td>
+                  <td>アクティブ</td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td>鈴木一郎</td>
+                  <td>マネージャー</td>
+                  <td>休暇中</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        `;
+      }
+    }
+
+    // 5. ネストしたShadow DOM
+    class NestedComponent extends HTMLElement {
+      constructor() {
+        super();
+        this.attachShadow({ mode: 'open' });
+      }
+
+      connectedCallback() {
+        this.shadowRoot.innerHTML = `
+          <style>
+            .nested-container {
+              border: 2px dashed #0d9488;
+              border-radius: 8px;
+              padding: 1.5rem;
+              background: #ecfeff;
+            }
+            h3 {
+              margin-top: 0;
+              color: #0f766e;
+            }
+            p {
+              color: #334155;
+            }
+          </style>
+          <div class="nested-container">
+            <h3>外側のコンポーネント</h3>
+            <p>このコンポーネントは別のWeb Componentを内部に含んでいます（ネストしたShadow DOM）。</p>
+            <inner-component></inner-component>
+          </div>
+        `;
+      }
+    }
+
+    // 内側のコンポーネント（ネストしたShadow DOM）
+    class InnerComponent extends HTMLElement {
+      constructor() {
+        super();
+        this.attachShadow({ mode: 'open' });
+      }
+
+      connectedCallback() {
+        this.shadowRoot.innerHTML = `
+          <style>
+            .inner-card {
+              border: 1px solid #14b8a6;
+              border-radius: 4px;
+              padding: 1rem;
+              background: white;
+              margin-top: 1rem;
+            }
+            h4 {
+              margin-top: 0;
+              color: #0d9488;
+            }
+            button {
+              padding: 0.5rem 1rem;
+              background: #0d9488;
+              color: white;
+              border: none;
+              border-radius: 4px;
+              cursor: pointer;
+              font-size: 0.9rem;
+            }
+            button:hover {
+              background: #0f766e;
+            }
+            button:focus {
+              outline: 2px solid #0d9488;
+              outline-offset: 2px;
+            }
+          </style>
+          <div class="inner-card">
+            <h4>内側のコンポーネント（ネストしたShadow DOM）</h4>
+            <p>これは別のShadow Root内にある要素です。</p>
+            <button type="button">アクションボタン</button>
+          </div>
+        `;
+
+        this.shadowRoot.querySelector('button').addEventListener('click', () => {
+          alert('ネストしたShadow DOM内のボタンがクリックされました！');
+        });
+      }
+    }
+
+    // 6. ラジオボタングループ
+    class RadioGroupComponent extends HTMLElement {
+      constructor() {
+        super();
+        this.attachShadow({ mode: 'open' });
+      }
+
+      connectedCallback() {
+        this.shadowRoot.innerHTML = `
+          <style>
+            .radio-container {
+              background: white;
+              border: 1px solid #cbd5e1;
+              border-radius: 8px;
+              padding: 1.5rem;
+            }
+            h3 {
+              margin-top: 0;
+              color: #0f766e;
+            }
+            fieldset {
+              border: 1px solid #e5e7eb;
+              border-radius: 4px;
+              padding: 1rem;
+              margin: 1rem 0;
+            }
+            legend {
+              font-weight: 600;
+              color: #334155;
+              padding: 0 0.5rem;
+            }
+            .radio-group {
+              display: flex;
+              flex-direction: column;
+              gap: 0.75rem;
+            }
+            .radio-option {
+              display: flex;
+              align-items: center;
+              gap: 0.5rem;
+            }
+            input[type="radio"] {
+              width: 1.25rem;
+              height: 1.25rem;
+              cursor: pointer;
+            }
+            label {
+              cursor: pointer;
+              color: #334155;
+            }
+            input[type="radio"]:focus {
+              outline: 2px solid #0d9488;
+              outline-offset: 2px;
+            }
+            .error-example {
+              margin-top: 1.5rem;
+              padding: 1rem;
+              background: #fef2f2;
+              border: 1px solid #fecaca;
+              border-radius: 4px;
+            }
+            .error-example h4 {
+              margin-top: 0;
+              color: #dc2626;
+              font-size: 0.9rem;
+            }
+          </style>
+          <div class="radio-container">
+            <h3>ラジオボタングループのテスト</h3>
+
+            <!-- 正しい例: fieldsetとlegendを使用 -->
+            <fieldset>
+              <legend>好きな色を選択してください</legend>
+              <div class="radio-group">
+                <div class="radio-option">
+                  <input type="radio" id="color-red" name="color" value="red">
+                  <label for="color-red">赤</label>
+                </div>
+                <div class="radio-option">
+                  <input type="radio" id="color-blue" name="color" value="blue">
+                  <label for="color-blue">青</label>
+                </div>
+                <div class="radio-option">
+                  <input type="radio" id="color-green" name="color" value="green">
+                  <label for="color-green">緑</label>
+                </div>
+              </div>
+            </fieldset>
+
+            <!-- エラー例1: name属性なし -->
+            <div class="error-example">
+              <h4>⚠️ エラー例1: name属性なし</h4>
+              <div class="radio-group">
+                <div class="radio-option">
+                  <input type="radio" id="option-a" value="a">
+                  <label for="option-a">オプションA</label>
+                </div>
+                <div class="radio-option">
+                  <input type="radio" id="option-b" value="b">
+                  <label for="option-b">オプションB</label>
+                </div>
+              </div>
+            </div>
+
+            <!-- エラー例2: グループ化されていない（1つだけ） -->
+            <div class="error-example">
+              <h4>⚠️ エラー例2: グループ化されていない</h4>
+              <div class="radio-group">
+                <div class="radio-option">
+                  <input type="radio" id="single" name="single-radio" value="only">
+                  <label for="single">唯一のラジオボタン</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    // Web Componentsを登録
+    customElements.define('user-profile', UserProfile);
+    customElements.define('login-form', LoginForm);
+    customElements.define('task-list', TaskList);
+    customElements.define('data-table', DataTable);
+    customElements.define('nested-component', NestedComponent);
+    customElements.define('inner-component', InnerComponent);
+    customElements.define('radio-group-component', RadioGroupComponent);
+  </script>
+</body>
+</html>

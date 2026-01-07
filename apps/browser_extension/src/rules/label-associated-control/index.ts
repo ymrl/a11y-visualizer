@@ -1,3 +1,4 @@
+import { getElementByIdFromRoots } from "../../dom/getElementByIdFromRoots";
 import { isHidden } from "../../dom/isHidden";
 import type { RuleObject } from "../type";
 
@@ -19,14 +20,16 @@ export const LabelAssociatedControl: RuleObject = {
   evaluate: (
     element,
     { enabled },
-    { elementDocument = element.ownerDocument },
+    { elementDocument = element.ownerDocument, shadowRoots },
   ) => {
     if (!enabled) {
       return undefined;
     }
 
     const forAttr = element.getAttribute("for");
-    const forElement = forAttr ? elementDocument.getElementById(forAttr) : null;
+    const forElement = forAttr
+      ? getElementByIdFromRoots(forAttr, elementDocument, shadowRoots)
+      : null;
     const controlByFor = forElement?.matches(LABELABLE_SELECTOR)
       ? forElement
       : null;

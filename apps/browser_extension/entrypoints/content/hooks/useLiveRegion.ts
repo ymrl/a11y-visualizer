@@ -1,8 +1,10 @@
+import {
+  getKnownRole,
+  isHidden,
+  isInAriaHidden,
+} from "@a11y-visualizer/dom-utils";
 import { computeAccessibleName } from "dom-accessibility-api";
 import React from "react";
-import { getKnownRole } from "../../../src/dom/getKnownRole";
-import { isInAriaHidden } from "../../../src/dom/isAriaHidden";
-import { isHidden } from "../../../src/dom/isHidden";
 import { SettingsContext } from "../contexts/SettingsContext";
 import { detectModals } from "../dom/detectModals";
 

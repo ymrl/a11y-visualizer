@@ -1,6 +1,8 @@
+import {
+  getKnownRole,
+  isPresentationalChildren,
+} from "@a11y-visualizer/dom-utils";
 import { computeAccessibleName } from "dom-accessibility-api";
-import { getKnownRole } from "../../dom/getKnownRole";
-import { isPresentationalChildren } from "../../dom/isPresentationalChildren";
 import type { RuleObject } from "../type";
 
 const ruleName = "image-name";

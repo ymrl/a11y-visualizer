@@ -1,5 +1,7 @@
-import { hasInteractiveDescendant } from "../../dom/hasInteractiveDescendant";
-import { hasTabIndexDescendant } from "../../dom/hasTabIndexDescendant";
+import {
+  hasInteractiveDescendant,
+  hasTabIndexDescendant,
+} from "@a11y-visualizer/dom-utils";
 import type { RuleObject } from "../type";
 
 const ruleName = "nested-interactive";

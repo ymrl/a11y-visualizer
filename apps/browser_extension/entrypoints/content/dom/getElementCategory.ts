@@ -1,4 +1,4 @@
-import { getKnownRole } from "../../../src/dom/getKnownRole";
+import { getKnownRole } from "@a11y-visualizer/dom-utils";
 import type { Category } from "../types";
 
 export const getElementCategory = (

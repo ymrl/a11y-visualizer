@@ -1,5 +1,4 @@
-import { getElementByIdFromRoots } from "../../dom/getElementByIdFromRoots";
-import { isHidden } from "../../dom/isHidden";
+import { getElementByIdFromRoots, isHidden } from "@a11y-visualizer/dom-utils";
 import type { RuleObject } from "../type";
 
 const LABELABLE_SELECTOR = [

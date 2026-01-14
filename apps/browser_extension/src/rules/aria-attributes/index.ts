@@ -1,4 +1,4 @@
-import { isFocusable } from "../../dom/isFocusable";
+import { isFocusable } from "@a11y-visualizer/dom-utils";
 import type { RuleObject, RuleResult } from "../type";
 import { hasAnyContent } from "./hasAnyContent";
 

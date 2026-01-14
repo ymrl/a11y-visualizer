@@ -1,6 +1,8 @@
+import {
+  isInAriaHidden,
+  isPresentationalChildren,
+} from "@a11y-visualizer/dom-utils";
 import { computeAccessibleName } from "dom-accessibility-api";
-import { isInAriaHidden } from "../../dom/isAriaHidden";
-import { isPresentationalChildren } from "../../dom/isPresentationalChildren";
 import type { RuleObject } from "../type";
 
 type Options = {

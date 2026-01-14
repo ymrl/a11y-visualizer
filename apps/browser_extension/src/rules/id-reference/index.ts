@@ -1,5 +1,7 @@
-import { getElementByIdFromRoots } from "../../dom/getElementByIdFromRoots";
-import { getKnownRole } from "../../dom/getKnownRole";
+import {
+  getElementByIdFromRoots,
+  getKnownRole,
+} from "@a11y-visualizer/dom-utils";
 import type { RuleObject } from "../type";
 
 const ruleName = "id-reference";

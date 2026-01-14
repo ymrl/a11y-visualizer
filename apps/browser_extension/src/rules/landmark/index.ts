@@ -1,6 +1,5 @@
+import { getKnownRole, type KnownRole } from "@a11y-visualizer/dom-utils";
 import { computeAccessibleName } from "dom-accessibility-api";
-import { getKnownRole } from "../../dom/getKnownRole";
-import type { KnownRole } from "../../dom/KnownRole";
 import type { RuleObject } from "../type";
 
 const ruleName = "landmark";

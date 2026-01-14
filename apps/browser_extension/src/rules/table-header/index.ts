@@ -1,6 +1,6 @@
+import { getClosestByRoles } from "@a11y-visualizer/dom-utils";
+import { Table } from "@a11y-visualizer/table";
 import { computeAccessibleName } from "dom-accessibility-api";
-import { getClosestByRoles } from "../../dom/getClosestByRoles";
-import { Table } from "../../table";
 import type { RuleObject, RuleResult } from "../type";
 
 const ruleName = "table-header";

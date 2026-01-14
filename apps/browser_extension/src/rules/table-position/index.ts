@@ -1,5 +1,5 @@
-import { getClosestByRoles } from "../../dom/getClosestByRoles";
-import { Table } from "../../table";
+import { getClosestByRoles } from "@a11y-visualizer/dom-utils";
+import { Table } from "@a11y-visualizer/table";
 import type { RuleObject } from "../type";
 
 const ruleName = "table-position";

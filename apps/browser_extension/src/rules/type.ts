@@ -1,4 +1,4 @@
-import type { Table } from "../table";
+import type { Table } from "@a11y-visualizer/table";
 
 type RuleResultBase = {
   ruleName: string;

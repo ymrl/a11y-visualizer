@@ -1,4 +1,4 @@
-import { querySelectorAllFromRoots } from "../../dom/querySelectorAllFromRoots";
+import { querySelectorAllFromRoots } from "@a11y-visualizer/dom-utils";
 import type { RuleObject } from "../type";
 
 const ruleName = "radio-group";

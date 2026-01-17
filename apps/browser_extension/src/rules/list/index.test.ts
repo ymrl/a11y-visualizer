@@ -1,5 +1,5 @@
+import { getKnownRole } from "@a11y-visualizer/dom-utils";
 import { afterEach, describe, expect, test } from "vitest";
-import { getKnownRole } from "../../dom/getKnownRole";
 import { getListItems, List } from ".";
 
 describe("List", () => {

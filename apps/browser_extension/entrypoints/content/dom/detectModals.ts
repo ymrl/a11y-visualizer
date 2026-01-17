@@ -1,4 +1,4 @@
-import { isHidden } from "../../../src/dom/isHidden";
+import { isHidden } from "@a11y-visualizer/dom-utils";
 
 export const detectModals = (root: Element | ShadowRoot): Element[] => {
   // aria-modal="true"な要素を検出（ただし、アクセシビリティツリーにあるもののみ）

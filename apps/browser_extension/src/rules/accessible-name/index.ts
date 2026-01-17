@@ -1,7 +1,9 @@
+import {
+  getComputedImplictRole,
+  getKnownRole,
+  isInAriaHidden,
+} from "@a11y-visualizer/dom-utils";
 import { computeAccessibleName } from "dom-accessibility-api";
-import { getComputedImplictRole } from "../../dom/getComputedImplicitRole";
-import { getKnownRole } from "../../dom/getKnownRole";
-import { isInAriaHidden } from "../../dom/isAriaHidden";
 import type { RuleObject, RuleResult } from "../type";
 
 const NAMING_PROHIBITED_ROLES = [

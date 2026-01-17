@@ -1,4 +1,4 @@
-import { isFocusable } from "../../dom/isFocusable";
+import { isFocusable } from "@a11y-visualizer/dom-utils";
 import type { RuleObject } from "../type";
 
 const ruleName = "control-focus";

@@ -1,4 +1,4 @@
-import { FOCUSABLE_SELECTOR } from "../../dom/isFocusable";
+import { FOCUSABLE_SELECTOR } from "@a11y-visualizer/dom-utils";
 
 export const hasAnyContent = (element: Element): boolean => {
   // テキストコンテンツがある

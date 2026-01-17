@@ -1,5 +1,4 @@
-import { getKnownRole } from "../../dom/getKnownRole";
-import type { KnownRole } from "../../dom/KnownRole";
+import { getKnownRole, type KnownRole } from "@a11y-visualizer/dom-utils";
 import {
   ARIA_ATTRIBUTE_ROLES,
   ARIA_ATTRIBUTE_VALUES,

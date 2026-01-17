@@ -1,4 +1,4 @@
-import { getKnownRole } from "../../dom/getKnownRole";
+import { getKnownRole } from "@a11y-visualizer/dom-utils";
 import type { RuleObject, RuleResult } from "../type";
 import {
   ALL_ARIA_ATTRIBUTES,

@@ -1,4 +1,4 @@
-import { Table } from "../../table";
+import { Table } from "@a11y-visualizer/table";
 import type { RuleObject } from "../type";
 
 const ruleName = "table-size";

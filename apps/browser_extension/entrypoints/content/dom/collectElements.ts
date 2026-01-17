@@ -1,7 +1,7 @@
+import { getKnownRole, isHidden } from "@a11y-visualizer/dom-utils";
+import type { Table } from "@a11y-visualizer/table";
 import { computeAccessibleName } from "dom-accessibility-api";
 import { collectShadowRoots } from "../../../src/dom/collectShadowRoots";
-import { getKnownRole } from "../../../src/dom/getKnownRole";
-import { isHidden } from "../../../src/dom/isHidden";
 import { isOutOfSight } from "../../../src/dom/isOutOfSight";
 import {
   isRuleTargetElement,
@@ -9,7 +9,6 @@ import {
   Rules,
 } from "../../../src/rules";
 import type { CategorySettings } from "../../../src/settings";
-import type { Table } from "../../../src/table";
 import type { ElementMeta } from "../types";
 import { detectModals } from "./detectModals";
 import { getElementCategory } from "./getElementCategory";

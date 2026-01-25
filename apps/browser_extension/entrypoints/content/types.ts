@@ -1,4 +1,5 @@
-import type { RuleResult } from "../../src/rules";
+import type { ElementPosition } from "@a11y-visualizer/dom-utils";
+import type { RuleResult } from "@a11y-visualizer/rules";
 
 export type ElementMeta = {
   name: string;
@@ -12,14 +13,7 @@ export type ElementMeta = {
   }[];
 } & ElementPosition;
 
-export type ElementPosition = {
-  x: number;
-  y: number;
-  absoluteX: number;
-  absoluteY: number;
-  width: number;
-  height: number;
-};
+export type { ElementPosition };
 
 export type Category =
   | "image"

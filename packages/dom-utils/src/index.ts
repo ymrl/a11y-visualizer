@@ -10,6 +10,7 @@ export {
 } from "./getComputedImplicitRole";
 // Shadow DOM utilities
 export { getElementByIdFromRoots } from "./getElementByIdFromRoots";
+export { type ElementPosition, getElementPosition } from "./getElementPosition";
 // Role utilities
 export { getKnownRole } from "./getKnownRole";
 

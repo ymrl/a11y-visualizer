@@ -1,5 +1,5 @@
+import { getRuleResultIdentifier } from "@a11y-visualizer/rules";
 import React from "react";
-import { getRuleResultIdentifier } from "../../../src/rules";
 import { getTipPosition } from "../../../src/utils/getTipPosition";
 import { SettingsContext } from "../contexts/SettingsContext";
 import type { ElementMeta } from "../types";

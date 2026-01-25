@@ -1,5 +1,5 @@
+import type { RuleResult } from "@a11y-visualizer/rules";
 import { describe, expect, it } from "vitest";
-import type { RuleResult } from "../rules";
 import { getTipPosition } from "./getTipPosition";
 
 const baseArgs = {

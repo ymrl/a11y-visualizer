@@ -1,9 +1,9 @@
 import {
+  getElementPosition,
   isDefaultSize,
   isInline,
   querySelectorAllFromRoots,
 } from "@a11y-visualizer/dom-utils";
-import { getElementPosition } from "../../../entrypoints/content/dom/getElementPosition";
 import type { RuleObject } from "../type";
 
 const ruleName = "target-size";

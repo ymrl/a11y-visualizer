@@ -1,5 +1,5 @@
+import type { RuleResult } from "@a11y-visualizer/rules";
 import type { Category } from "../../entrypoints/content/types";
-import type { RuleResult } from "../rules";
 
 export type HorizontalPosition = "left" | "right" | "center";
 export type VerticalPosition =

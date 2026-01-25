@@ -29,6 +29,9 @@ importers:
       '@a11y-visualizer/dom-utils':
         specifier: workspace:*
         version: link:../../packages/dom-utils
+      '@a11y-visualizer/rules':
+        specifier: workspace:*
+        version: link:../../packages/rules
       '@a11y-visualizer/table':
         specifier: workspace:*
         version: link:../../packages/table
@@ -181,6 +184,34 @@ importers:
 
   packages/dom-utils:
     dependencies:
+      dom-accessibility-api:
+        specifier: ^0.6.3
+        version: 0.6.3
+    devDependencies:
+      '@biomejs/biome':
+        specifier: 2.2.3
+        version: 2.2.3
+      '@vitest/browser':
+        specifier: ^3.2.2
+        version: 3.2.2(playwright@1.52.0)(vite@7.3.0(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.1)(yaml@2.8.0))(vitest@3.2.2)
+      playwright:
+        specifier: ^1.52.0
+        version: 1.52.0
+      typescript:
+        specifier: ^5.2.2
+        version: 5.8.3
+      vitest:
+        specifier: ^3.2.0
+        version: 3.2.2(@types/debug@4.1.12)(@types/node@25.0.3)(@vitest/browser@3.2.2)(jiti@2.6.1)(jsdom@23.2.0)(lightningcss@1.30.1)(yaml@2.8.0)
+
+  packages/rules:
+    dependencies:
+      '@a11y-visualizer/dom-utils':
+        specifier: workspace:*
+        version: link:../dom-utils
+      '@a11y-visualizer/table':
+        specifier: workspace:*
+        version: link:../table
       dom-accessibility-api:
         specifier: ^0.6.3
         version: 0.6.3

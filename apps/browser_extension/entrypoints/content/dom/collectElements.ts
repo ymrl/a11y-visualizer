@@ -1,18 +1,21 @@
-import { getKnownRole, isHidden } from "@a11y-visualizer/dom-utils";
-import type { Table } from "@a11y-visualizer/table";
-import { computeAccessibleName } from "dom-accessibility-api";
-import { collectShadowRoots } from "../../../src/dom/collectShadowRoots";
-import { isOutOfSight } from "../../../src/dom/isOutOfSight";
+import {
+  getElementPosition,
+  getKnownRole,
+  isHidden,
+} from "@a11y-visualizer/dom-utils";
 import {
   isRuleTargetElement,
   type RuleResult,
   Rules,
-} from "../../../src/rules";
+} from "@a11y-visualizer/rules";
+import type { Table } from "@a11y-visualizer/table";
+import { computeAccessibleName } from "dom-accessibility-api";
+import { collectShadowRoots } from "../../../src/dom/collectShadowRoots";
+import { isOutOfSight } from "../../../src/dom/isOutOfSight";
 import type { CategorySettings } from "../../../src/settings";
 import type { ElementMeta } from "../types";
 import { detectModals } from "./detectModals";
 import { getElementCategory } from "./getElementCategory";
-import { getElementPosition } from "./getElementPosition";
 import { getPositionBaseElement } from "./getPositionBaseElement";
 import { getScrollBaseElement } from "./getScrollBaseElement";
 import { Selectors } from "./Selectors";

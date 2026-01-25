@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "@a11y-visualizer/dom-utils": "workspace:*",
+    "@a11y-visualizer/rules": "workspace:*",
     "@a11y-visualizer/table": "workspace:*",
     "@vitejs/plugin-react": "^4.5.0",
     "dom-accessibility-api": "^0.6.3",

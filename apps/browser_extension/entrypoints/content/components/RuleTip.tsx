@@ -1,3 +1,4 @@
+import { RAW_CONTENT_TYPES, type RuleResult } from "@a11y-visualizer/rules";
 import {
   IoAccessibility,
   IoAlertCircle,
@@ -19,7 +20,6 @@ import {
   IoPricetag,
   IoWarning,
 } from "react-icons/io5";
-import { RAW_CONTENT_TYPES, type RuleResult } from "../../../src/rules";
 import { useLang } from "../../../src/useLang";
 
 const Icon = ({ type }: { type: RuleResult["type"] }) => {

@@ -5,8 +5,10 @@ import {
 } from "@a11y-visualizer/dom-utils";
 import { computeAccessibleName } from "dom-accessibility-api";
 import React from "react";
-import { SettingsContext } from "../contexts/SettingsContext";
-import { detectModals } from "../dom/detectModals";
+import { SettingsContext } from "../../content/contexts/SettingsContext";
+import { detectModals } from "../../content/dom/detectModals";
+import { createLiveRegionMessage } from "../../content/shared/protocol";
+import type { AnnouncementItem, LiveLevel } from "../../content/types";
 
 const LIVEREGION_SELECTOR =
   "output, [role~='status'], [role~='alert'], [role~='log'], [aria-live]:not([aria-live='off'])";
@@ -14,14 +16,6 @@ const LIVEREGION_SELECTOR =
 const ALERT_SELECTOR = "[role~='alert']";
 
 const BUSY_SELECTOR = "[aria-busy='true']";
-
-export type LiveLevel = "polite" | "assertive";
-export type AnnouncementItem = {
-  content: string;
-  level: LiveLevel;
-  duration: number;
-  timestamp: number;
-};
 
 const getClosestElement = (node: Node): Element | null => {
   if (node.nodeType === Node.ELEMENT_NODE) {
@@ -47,39 +41,20 @@ const closestNodeOfSelector = (
   return element.closest(selector) || null;
 };
 
-const getLiveRegions = (
-  el: Element,
-  iframeElements: HTMLIFrameElement[],
-): Element[] => [
-  ...el.querySelectorAll<Element>(LIVEREGION_SELECTOR),
-  ...iframeElements.flatMap((iframe): Element[] => {
-    try {
-      if (iframe.contentWindow?.document?.readyState === "complete") {
-        return [
-          ...iframe.contentWindow.document.querySelectorAll<Element>(
-            LIVEREGION_SELECTOR,
-          ),
-        ];
-      }
-    } catch {
-      /* noop */
-    }
-    return [];
-  }),
-];
-
 const isBusy = (el: Element): boolean => {
   return el.matches(BUSY_SELECTOR) || el.closest(BUSY_SELECTOR) !== null;
 };
 
-export const useLiveRegion = ({
+type ForwardMode = "postMessage" | "self";
+
+export const useLiveRegionLocal = ({
   parentRef,
-  iframeElementsRef,
   renderType,
+  forwardMode,
 }: {
   parentRef: React.RefObject<Element>;
-  iframeElementsRef: React.MutableRefObject<HTMLIFrameElement[]>;
   renderType?: "initial" | "enabled" | "visibilitychange";
+  forwardMode: ForwardMode;
 }) => {
   const {
     showLiveRegions,
@@ -89,6 +64,8 @@ export const useLiveRegion = ({
   const liveRegionsRef = React.useRef<Element[]>([]);
   const liveRegionObserverRef = React.useRef<MutationObserver | null>(null);
   const processedAlertsRef = React.useRef<WeakSet<Element>>(new WeakSet());
+
+  // Self-mode state (for legacy frames)
   const [announcements, setAnnouncements] = React.useState<AnnouncementItem[]>(
     [],
   );
@@ -102,29 +79,54 @@ export const useLiveRegion = ({
     currentTimeoutRef.current = null;
   }, []);
 
-  const addAnnouncement = React.useCallback(
-    (content: string, level: LiveLevel) => {
-      const duration = Math.min(
+  const computeDuration = React.useCallback(
+    (content: string) =>
+      Math.min(
         Math.max(1, content.length) * announcementSecondsPerCharacter * 1000,
         announcementMaxSeconds * 1000,
-      );
-      const timestamp = Date.now();
-      const announcement: AnnouncementItem = {
-        content,
-        level,
-        duration,
-        timestamp,
-      };
-
-      setAnnouncements((prev) => [...prev, announcement]);
-    },
+      ),
     [announcementMaxSeconds, announcementSecondsPerCharacter],
   );
+
+  const addAnnouncement = React.useCallback(
+    (content: string, level: LiveLevel) => {
+      const duration = computeDuration(content);
+      const timestamp = Date.now();
+
+      if (forwardMode === "postMessage") {
+        const msg = createLiveRegionMessage(
+          content,
+          level,
+          duration,
+          timestamp,
+        );
+        window.parent.postMessage(msg, "*");
+      } else {
+        const announcement: AnnouncementItem = {
+          content,
+          level,
+          duration,
+          timestamp,
+        };
+        setAnnouncements((prev) => [...prev, announcement]);
+      }
+    },
+    [computeDuration, forwardMode],
+  );
+
+  const clearAnnouncements = React.useCallback(() => {
+    if (currentTimeoutRef.current) {
+      window.clearTimeout(currentTimeoutRef.current);
+      currentTimeoutRef.current = null;
+    }
+    setAnnouncements((prev) => (prev.length > 0 ? [] : prev));
+    setPausedAnnouncements((prev) => (prev.length > 0 ? [] : prev));
+  }, []);
 
   const handleAlertAppearance = React.useCallback(
     (alertElement: Element) => {
       if (processedAlertsRef.current.has(alertElement)) {
-        return; // 既に処理済み
+        return;
       }
 
       if (
@@ -132,10 +134,9 @@ export const useLiveRegion = ({
         isInAriaHidden(alertElement) ||
         isBusy(alertElement)
       ) {
-        return; // 隠されている要素とビジーな要素は処理しない
+        return;
       }
 
-      // モーダルチェック
       if (parentRef.current) {
         const modals = detectModals(parentRef.current);
         if (modals.length > 0) {
@@ -150,7 +151,6 @@ export const useLiveRegion = ({
 
       processedAlertsRef.current.add(alertElement);
 
-      // alert要素の内容を取得
       const isAtomic = alertElement.getAttribute("aria-atomic") !== "false";
 
       let content: string;
@@ -161,7 +161,6 @@ export const useLiveRegion = ({
         content = alertElement.textContent || "";
       }
 
-      // 内容が空でも通知する（スクリーンリーダーの一部実装に合わせる）
       if (content.trim() === "") {
         content = computeAccessibleName(alertElement) || "";
       }
@@ -171,60 +170,24 @@ export const useLiveRegion = ({
     [addAnnouncement, parentRef],
   );
 
-  const pauseAnnouncements = React.useCallback(() => {
-    if (currentTimeoutRef.current) {
-      window.clearTimeout(currentTimeoutRef.current);
-      currentTimeoutRef.current = null;
-    }
-
-    setPausedAnnouncements(announcements);
-    setAnnouncements([]);
-  }, [announcements]);
-
-  const resumeAnnouncements = React.useCallback(() => {
-    setAnnouncements((prev) => [...prev, ...pausedAnnouncements]);
-    setPausedAnnouncements([]);
-  }, [pausedAnnouncements]);
-
-  const pauseOrResumeAnnouncements = React.useCallback(() => {
-    if (announcements.length > 0) {
-      pauseAnnouncements();
-    } else {
-      resumeAnnouncements();
-    }
-  }, [announcements, pauseAnnouncements, resumeAnnouncements]);
-
-  const clearAnnouncements = React.useCallback(() => {
-    if (currentTimeoutRef.current) {
-      window.clearTimeout(currentTimeoutRef.current);
-      currentTimeoutRef.current = null;
-    }
-    setAnnouncements((prev) => (prev.length > 0 ? [] : prev));
-    setPausedAnnouncements((prev) => (prev.length > 0 ? [] : prev));
-  }, []);
-
-  // announcements の変化に応じてタイマーを管理
+  // Timer management for self-mode announcements
   React.useEffect(() => {
+    if (forwardMode !== "self") return;
     if (announcements.length === 0) {
-      // アナウンスがない場合はタイマーをクリア
       if (currentTimeoutRef.current) {
         window.clearTimeout(currentTimeoutRef.current);
         currentTimeoutRef.current = null;
       }
       return;
     }
-
-    // 既にタイマーが動いている場合は何もしない
     if (currentTimeoutRef.current) {
       return;
     }
-
-    // 最初のアナウンスのタイマーを開始
     const firstAnnouncement = announcements[0];
     currentTimeoutRef.current = window.setTimeout(() => {
       removeFirstAnnouncement();
     }, firstAnnouncement.duration);
-  }, [announcements, removeFirstAnnouncement]);
+  }, [forwardMode, announcements, removeFirstAnnouncement]);
 
   const connectLiveRegion = React.useCallback(
     (
@@ -239,7 +202,6 @@ export const useLiveRegion = ({
         ) {
           handleAlertAppearance(el);
         }
-        // 子要素にalert要素があるかチェック
         const alertChildren = el.querySelectorAll(ALERT_SELECTOR);
         alertChildren.forEach((alertChild) => {
           handleAlertAppearance(alertChild);
@@ -260,7 +222,10 @@ export const useLiveRegion = ({
       if (!liveRegionObserverRef.current) {
         return;
       }
-      const liveRegions = getLiveRegions(el, iframeElementsRef.current);
+      // Only scan this frame's own live regions (no iframe scanning)
+      const liveRegions = [
+        ...el.querySelectorAll<Element>(LIVEREGION_SELECTOR),
+      ];
       [...liveRegions].forEach((el) => {
         if (
           liveRegionObserverRef.current &&
@@ -271,8 +236,9 @@ export const useLiveRegion = ({
       });
       liveRegionsRef.current = Array.from(liveRegions);
     },
-    [connectLiveRegion, iframeElementsRef],
+    [connectLiveRegion],
   );
+
   React.useEffect(() => {
     if (!showLiveRegions) {
       if (liveRegionObserverRef.current) {
@@ -295,7 +261,6 @@ export const useLiveRegion = ({
             return null;
           }
 
-          // モーダルが表示されている場合、モーダル外の要素は通知しない
           if (parentRef.current) {
             const modals = detectModals(parentRef.current);
             if (modals.length > 0) {
@@ -335,14 +300,14 @@ export const useLiveRegion = ({
             atomicNode?.getAttribute?.("aria-atomic") === "true";
           if (isAtomic && atomicNode) {
             if (atomicNodes.includes(atomicNode)) {
-              return null; // 重複したアナウンスは無視
+              return null;
             }
             atomicNodes.push(atomicNode);
             const name =
               liveRegionNode && computeAccessibleName(liveRegionNode);
             const content = atomicNode.textContent;
             if (!content) {
-              return null; // 空のアナウンスは無視
+              return null;
             }
             return {
               content: [name, atomicNode.textContent].filter(Boolean).join(" "),
@@ -375,19 +340,26 @@ export const useLiveRegion = ({
         })
         .filter((e): e is { content: string; level: LiveLevel } => e !== null);
 
-      if (updates.length > 0 && pausedAnnouncements.length > 0) {
-        setPausedAnnouncements([]);
-      }
-      const hasAssertive = updates.some((u) => u.level === "assertive");
-      if (hasAssertive) {
-        clearAnnouncements();
-      }
-      updates.forEach((c) => {
-        if (hasAssertive && c.level === "polite") {
-          return; // assertiveがある場合はpoliteを無視
+      if (forwardMode === "self") {
+        if (updates.length > 0 && pausedAnnouncements.length > 0) {
+          setPausedAnnouncements([]);
         }
-        addAnnouncement(c.content, c.level);
-      });
+        const hasAssertive = updates.some((u) => u.level === "assertive");
+        if (hasAssertive) {
+          clearAnnouncements();
+        }
+        updates.forEach((c) => {
+          if (hasAssertive && c.level === "polite") {
+            return;
+          }
+          addAnnouncement(c.content, c.level);
+        });
+      } else {
+        // postMessage mode: forward all updates
+        updates.forEach((c) => {
+          addAnnouncement(c.content, c.level);
+        });
+      }
     });
     liveRegionsRef.current.forEach((el) => {
       connectLiveRegion(observer, el, {});
@@ -405,17 +377,29 @@ export const useLiveRegion = ({
     clearAnnouncements,
     pausedAnnouncements,
     parentRef,
+    forwardMode,
   ]);
 
+  // Keyboard/touch/focus listeners for self-mode
   React.useEffect(() => {
+    if (forwardMode !== "self") return;
     if (announcements.length === 0 && pausedAnnouncements.length === 0) {
       return;
     }
-    const w = parentRef.current?.ownerDocument?.defaultView;
-    const windows = [
-      w,
-      ...iframeElementsRef.current.map((iframe) => iframe.contentWindow),
-    ];
+    const pauseOrResumeAnnouncements = () => {
+      if (announcements.length > 0) {
+        if (currentTimeoutRef.current) {
+          window.clearTimeout(currentTimeoutRef.current);
+          currentTimeoutRef.current = null;
+        }
+        setPausedAnnouncements(announcements);
+        setAnnouncements([]);
+      } else {
+        setAnnouncements((prev) => [...prev, ...pausedAnnouncements]);
+        setPausedAnnouncements([]);
+      }
+    };
+
     const keyListener = (e: KeyboardEvent) => {
       if (e.key === "Shift") {
         pauseOrResumeAnnouncements();
@@ -423,42 +407,22 @@ export const useLiveRegion = ({
         clearAnnouncements();
       }
     };
-
     const touchStartListener = () => {
       clearAnnouncements();
     };
 
-    windows.forEach((w) => {
-      if (!w) return;
-      try {
-        w.addEventListener("keydown", keyListener);
-        w.addEventListener("focusin", clearAnnouncements);
-        w.addEventListener("touchstart", touchStartListener, { passive: true });
-      } catch {
-        /* noop */
-      }
+    window.addEventListener("keydown", keyListener);
+    window.addEventListener("focusin", clearAnnouncements);
+    window.addEventListener("touchstart", touchStartListener, {
+      passive: true,
     });
 
     return () => {
-      windows.forEach((w) => {
-        if (!w) return;
-        try {
-          w.removeEventListener("keydown", keyListener);
-          w.removeEventListener("focusin", clearAnnouncements);
-          w.removeEventListener("touchstart", touchStartListener);
-        } catch {
-          /* noop */
-        }
-      });
+      window.removeEventListener("keydown", keyListener);
+      window.removeEventListener("focusin", clearAnnouncements);
+      window.removeEventListener("touchstart", touchStartListener);
     };
-  }, [
-    announcements,
-    clearAnnouncements,
-    iframeElementsRef,
-    parentRef,
-    pauseOrResumeAnnouncements,
-    pausedAnnouncements,
-  ]);
+  }, [forwardMode, announcements, clearAnnouncements, pausedAnnouncements]);
 
   return {
     observeLiveRegion,

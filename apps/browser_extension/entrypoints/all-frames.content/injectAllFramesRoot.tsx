@@ -7,15 +7,10 @@ import {
   type Settings,
   type SettingsMessage,
 } from "../../src/settings";
-import { SettingsProvider } from "./components/SettingsProvider";
-import { Root, type RootOptions } from "./Root";
+import { SettingsProvider } from "../content/components/SettingsProvider";
+import { AllFramesRoot, type AllFramesRootOptions } from "./AllFramesRoot";
 
-type InjectOptions = RootOptions & {
-  mountOnce?: boolean;
-  mountType?: "initial" | "enabled";
-};
-
-const mount = (w: Window, parent: Element, options?: RootOptions) => {
+const mount = (w: Window, parent: Element, options?: AllFramesRootOptions) => {
   const rootElement = w.document.createElement("div");
   rootElement.style.display = "block";
   rootElement.style.position = "static";
@@ -32,7 +27,10 @@ const mount = (w: Window, parent: Element, options?: RootOptions) => {
     root.render(
       <React.StrictMode>
         <SettingsProvider settings={settings}>
-          <Root parentRef={parentRef} options={{ ...options, renderType }} />
+          <AllFramesRoot
+            parentRef={parentRef}
+            options={{ ...options, renderType }}
+          />
         </SettingsProvider>
       </React.StrictMode>,
     );
@@ -41,16 +39,13 @@ const mount = (w: Window, parent: Element, options?: RootOptions) => {
     parent.removeChild(rootElement);
     root.unmount();
   };
-  return {
-    render,
-    unmount,
-  };
+  return { render, unmount };
 };
 
-export const injectRoot = async (
+export const injectAllFramesRoot = async (
   w: Window,
   parent: Element,
-  { mountOnce, ...options }: InjectOptions,
+  options?: AllFramesRootOptions,
 ) => {
   if (!w.location.href.match(/^(?:https?)|(?:file):\/\//)) {
     return;
@@ -83,10 +78,8 @@ export const injectRoot = async (
       }
     }
     if (message.enabled) {
-      if (!mountOnce) {
-        mountReturn = mountReturn || mount(w, parent);
-        mountReturn.render(settings, "enabled");
-      }
+      mountReturn = mountReturn || mount(w, parent, options);
+      mountReturn.render(settings, "enabled");
     } else {
       mountReturn?.unmount();
       mountReturn = null;
@@ -100,7 +93,7 @@ export const injectRoot = async (
         type: "isEnabled",
       });
       if (enabled) {
-        mountReturn = mountReturn || mount(w, parent);
+        mountReturn = mountReturn || mount(w, parent, options);
         mountReturn.render(settings, "visibilitychange");
       } else {
         mountReturn?.unmount();

@@ -1,6 +1,6 @@
 import React from "react";
 import root from "react-shadow";
-import type { KeystrokeItem } from "../hooks/useKeystrokes";
+import type { KeystrokeItem } from "../types";
 import Styles from "./Keystrokes.css?raw";
 
 export const Keystrokes = React.memo(

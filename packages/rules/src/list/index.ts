@@ -76,7 +76,10 @@ export const List: RuleObject = {
       });
     }
 
-    if (role !== "presentation" && role !== "none") {
+    if (
+      !hasRole ||
+      (role && ["list", "directory", "menu", "menubar"].includes(role))
+    ) {
       result.push({
         type: "list",
         ruleName,
@@ -92,9 +95,10 @@ export const List: RuleObject = {
 const isItemRole = (
   role: string | null,
   listRole: (typeof roles)[number] | null,
+  listTagName?: string,
 ): boolean =>
   ((listRole === "list" || listRole === "directory") && role === "listitem") ||
-  ((listRole === "menu" || listRole === "menubar") &&
+  ((listRole === "menu" || listRole === "menubar" || listTagName === "menu") &&
     (role === "menuitem" ||
       role === "menuitemcheckbox" ||
       role === "menuitemradio"));
@@ -118,13 +122,15 @@ export const getListItems = (
         } else if (
           childRole === "presentation" ||
           childRole === "none" ||
-          ((listRole === "menu" || listRole === "menubar") &&
+          ((listRole === "menu" ||
+            listRole === "menubar" ||
+            listTagName === "menu") &&
             childRole === "group")
         ) {
           return getListItems(child, listTagName, listRole);
         } else if (
           (role !== "presentation" && role !== "none" && !childHasRole) ||
-          isItemRole(childRole, listRole)
+          isItemRole(childRole, listRole, listTagName)
         ) {
           return child;
         }
@@ -151,12 +157,17 @@ export const getListItems = (
               if (
                 grandChildRole === "presentation" ||
                 grandChildRole === "none" ||
-                ((listRole === "menu" || listRole === "menubar") &&
+                ((listRole === "menu" ||
+                  listRole === "menubar" ||
+                  listTagName === "menu") &&
                   grandChildRole === "group")
               ) {
                 return getListItems(grandchild, listTagName, listRole);
               }
-              if (!grandChildHasRole || isItemRole(grandChildRole, listRole)) {
+              if (
+                !grandChildHasRole ||
+                isItemRole(grandChildRole, listRole, listTagName)
+              ) {
                 return grandchild;
               }
               return null;
@@ -172,25 +183,29 @@ export const getListItems = (
         } else if (
           childRole === "presentation" ||
           childRole === "none" ||
-          ((listRole === "menu" || listRole === "menubar") &&
+          ((listRole === "menu" ||
+            listRole === "menubar" ||
+            listTagName === "menu") &&
             childRole === "group")
         ) {
           return getListItems(child, listTagName, listRole);
         } else if (
           (role !== "presentation" && role !== "none" && !childHasRole) ||
-          isItemRole(childRole, listRole)
+          isItemRole(childRole, listRole, listTagName)
         ) {
           return child;
         }
         return null;
       }
-      if (isItemRole(childRole, listRole)) {
+      if (isItemRole(childRole, listRole, listTagName)) {
         return child;
       }
       if (
         childRole === "presentation" ||
         childRole === "none" ||
-        ((listRole === "menu" || listRole === "menubar") &&
+        ((listRole === "menu" ||
+          listRole === "menubar" ||
+          listTagName === "menu") &&
           childRole === "group") ||
         (["div", "span"].includes(childTagName) && !childHasRole)
       ) {

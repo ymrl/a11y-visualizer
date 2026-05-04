@@ -284,6 +284,163 @@ describe("List", () => {
       },
     ]);
   });
+
+  test("menu element with li role=menuitem", () => {
+    const element = document.createElement("menu");
+    element.innerHTML = `
+      <li role="menuitem">0</li>
+      <li role="menuitem">1</li>
+      <li role="menuitem">2</li>
+    `;
+    document.body.appendChild(element);
+    const result = List.evaluate(element, { enabled: true }, {});
+    const listResult = result?.find((r) => r.type === "list");
+    expect(listResult).toEqual({
+      type: "list",
+      ruleName: "list",
+      content: "3",
+      contentLabel: "List items",
+    });
+  });
+
+  test("ul role=menu with li role=menuitem", () => {
+    const element = document.createElement("ul");
+    element.setAttribute("role", "menu");
+    element.innerHTML = `
+      <li role="menuitem">0</li>
+      <li role="menuitem">1</li>
+      <li role="menuitem">2</li>
+    `;
+    document.body.appendChild(element);
+    const result = List.evaluate(element, { enabled: true }, {});
+    expect(result).toEqual([
+      {
+        type: "listType",
+        ruleName: "list",
+        content: "listType.menu",
+      },
+      {
+        type: "list",
+        ruleName: "list",
+        content: "3",
+        contentLabel: "List items",
+      },
+    ]);
+  });
+
+  test("ul role=menu with li role=none wrapping menuitem", () => {
+    const element = document.createElement("ul");
+    element.setAttribute("role", "menu");
+    element.innerHTML = `
+      <li role="none">
+        <button role="menuitem">0</button>
+      </li>
+      <li role="none">
+        <button role="menuitem">1</button>
+      </li>
+    `;
+    document.body.appendChild(element);
+    const result = List.evaluate(element, { enabled: true }, {});
+    expect(result).toEqual([
+      {
+        type: "listType",
+        ruleName: "list",
+        content: "listType.menu",
+      },
+      {
+        type: "list",
+        ruleName: "list",
+        content: "2",
+        contentLabel: "List items",
+      },
+    ]);
+  });
+
+  test("ul role=menu with li without explicit role", () => {
+    const element = document.createElement("ul");
+    element.setAttribute("role", "menu");
+    element.innerHTML = `
+      <li>0</li>
+      <li>1</li>
+      <li>2</li>
+    `;
+    document.body.appendChild(element);
+    const result = List.evaluate(element, { enabled: true }, {});
+    expect(result).toEqual([
+      {
+        type: "listType",
+        ruleName: "list",
+        content: "listType.menu",
+      },
+      {
+        type: "list",
+        ruleName: "list",
+        content: "3",
+        contentLabel: "List items",
+      },
+    ]);
+  });
+
+  test("ul role=tablist does not show item count", () => {
+    const element = document.createElement("ul");
+    element.setAttribute("role", "tablist");
+    element.innerHTML = `
+      <li role="tab">0</li>
+      <li role="tab">1</li>
+      <li role="tab">2</li>
+    `;
+    document.body.appendChild(element);
+    const result = List.evaluate(element, { enabled: true }, {});
+    expect(result?.find((r) => r.type === "list")).toBeUndefined();
+  });
+
+  test("ul role=navigation does not show item count", () => {
+    const element = document.createElement("ul");
+    element.setAttribute("role", "navigation");
+    element.innerHTML = `
+      <li>0</li>
+      <li>1</li>
+    `;
+    document.body.appendChild(element);
+    const result = List.evaluate(element, { enabled: true }, {});
+    expect(result?.find((r) => r.type === "list")).toBeUndefined();
+  });
+
+  test("ol role=tablist does not show item count", () => {
+    const element = document.createElement("ol");
+    element.setAttribute("role", "tablist");
+    element.innerHTML = `
+      <li role="tab">0</li>
+      <li role="tab">1</li>
+    `;
+    document.body.appendChild(element);
+    const result = List.evaluate(element, { enabled: true }, {});
+    expect(result?.find((r) => r.type === "list")).toBeUndefined();
+  });
+
+  test("ul role=menubar with li role=menuitem", () => {
+    const element = document.createElement("ul");
+    element.setAttribute("role", "menubar");
+    element.innerHTML = `
+      <li role="menuitem">0</li>
+      <li role="menuitem">1</li>
+    `;
+    document.body.appendChild(element);
+    const result = List.evaluate(element, { enabled: true }, {});
+    expect(result).toEqual([
+      {
+        type: "listType",
+        ruleName: "list",
+        content: "listType.menubar",
+      },
+      {
+        type: "list",
+        ruleName: "list",
+        content: "2",
+        contentLabel: "List items",
+      },
+    ]);
+  });
 });
 
 describe("getListItems", () => {
@@ -312,7 +469,7 @@ describe("getListItems", () => {
     ]);
   });
 
-  ["ul", "ol", "menu"].forEach((tagName) => {
+  ["ul", "ol"].forEach((tagName) => {
     test(`${tagName} has presentational children`, () => {
       const element = document.createElement(tagName);
       element.innerHTML = `
@@ -340,6 +497,37 @@ describe("getListItems", () => {
         element.children[5].children[0].children[1],
       ]);
     });
+  });
+
+  test("menu has presentational children", () => {
+    const element = document.createElement("menu");
+    element.innerHTML = `
+      <li>0</li>
+      <li role="presentation">1</li>
+      <li role="none">2</li>
+      <li role="presentation">
+        <div>3-0</div>
+        <div role="listitem">3-1</div>
+        <div role="menuitem">3-2</div>
+      </li>
+      <li role="listitem">4</li>
+      <li role="menuitem">5</li>
+      <li role="presentation">
+        <ul role="presentation">
+          <li>6-0</li>
+          <li role="listitem">6-1</li>
+        </ul>
+      </li>
+      <div role="listitem">7</div>
+    `;
+    expect(getListItems(element, "menu", getKnownRole(element))).toEqual([
+      element.children[0],
+      element.children[3].children[1],
+      element.children[3].children[2],
+      element.children[4],
+      element.children[5],
+      element.children[6].children[0].children[1],
+    ]);
   });
 
   ["list", "directory"].forEach((listRole) => {
@@ -416,5 +604,83 @@ describe("getListItems", () => {
       element.children[5].children[0],
       element.children[5].children[1],
     ]);
+  });
+
+  test("ul role=menu with li role=menuitem", () => {
+    const element = document.createElement("ul");
+    element.setAttribute("role", "menu");
+    element.innerHTML = `
+      <li role="menuitem">0</li>
+      <li role="menuitem">1</li>
+      <li role="menuitemcheckbox">2</li>
+    `;
+    document.body.appendChild(element);
+    expect(getListItems(element, "ul", "menu")).toEqual([
+      element.children[0],
+      element.children[1],
+      element.children[2],
+    ]);
+  });
+
+  test("ul role=menu with li role=none wrapping menuitem", () => {
+    const element = document.createElement("ul");
+    element.setAttribute("role", "menu");
+    element.innerHTML = `
+      <li role="none">
+        <button role="menuitem">0</button>
+      </li>
+      <li role="none">
+        <button role="menuitem">1</button>
+      </li>
+    `;
+    document.body.appendChild(element);
+    expect(getListItems(element, "ul", "menu")).toEqual([
+      element.children[0].children[0],
+      element.children[1].children[0],
+    ]);
+  });
+
+  test("ul role=menu with li role=group", () => {
+    const element = document.createElement("ul");
+    element.setAttribute("role", "menu");
+    element.innerHTML = `
+      <li role="menuitem">0</li>
+      <li role="group">
+        <ul role="group">
+          <li role="menuitemcheckbox">1-0</li>
+          <li role="menuitemradio">1-1</li>
+        </ul>
+      </li>
+    `;
+    document.body.appendChild(element);
+    expect(getListItems(element, "ul", "menu")).toEqual([
+      element.children[0],
+      element.children[1].children[0].children[0],
+      element.children[1].children[0].children[1],
+    ]);
+  });
+
+  ["menu", "menubar"].forEach((menuRole) => {
+    test(`div role=${menuRole} with menuitem children`, () => {
+      const element = document.createElement("div");
+      element.setAttribute("role", menuRole);
+      element.innerHTML = `
+        <div role="menuitem">0</div>
+        <div role="menuitemcheckbox">1</div>
+        <div role="menuitemradio">2</div>
+        <div role="group">
+          <div role="menuitem">3-0</div>
+          <div role="menuitem">3-1</div>
+        </div>
+      `;
+      document.body.appendChild(element);
+      expect(getListItems(element, "div", menuRole)).toEqual([
+        element.children[0],
+        element.children[1],
+        element.children[2],
+        element.children[3].children[0],
+        element.children[3].children[1],
+      ]);
+    });
   });
 });

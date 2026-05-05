@@ -2,7 +2,7 @@ import React from "react";
 import { IoAlertCircleOutline } from "react-icons/io5";
 import root from "react-shadow";
 import { SettingsContext } from "../contexts/SettingsContext";
-import type { AnnouncementItem } from "../hooks/useLiveRegion";
+import type { AnnouncementItem } from "../types";
 import Styles from "./Announcements.css?raw";
 
 export const Announcements = ({

@@ -29,3 +29,18 @@ export type Category =
   | "wai-aria"
   | "tabIndex"
   | "general";
+
+export type LiveLevel = "polite" | "assertive";
+
+export type AnnouncementItem = {
+  content: string;
+  level: LiveLevel;
+  duration: number;
+  timestamp: number;
+};
+
+export type KeystrokeItem = {
+  id: number;
+  keys: string;
+  timestamp: number;
+};

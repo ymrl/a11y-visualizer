@@ -52,6 +52,10 @@ export const en = {
         title: "iFrame without title attribute",
         desc: "❌ iFrame missing title attribute. Accessible technologies cannot determine what content the frame contains, making it inaccessible.",
       },
+      liveRegion: {
+        title: "iFrame with live region",
+        desc: "Live regions inside iframes should also notify assistive technologies of content updates.",
+      },
     },
     dialog: {
       element: {
@@ -119,6 +123,10 @@ export const ja = {
       noTitle: {
         title: "title の無い iFrame",
         desc: "❌ title が無く、フレーム内容を支援技術が把握できません。",
+      },
+      liveRegion: {
+        title: "ライブリージョンを含む iFrame",
+        desc: "iframe内のライブリージョンも支援技術にコンテンツの更新を通知する必要がある",
       },
     },
     dialog: {

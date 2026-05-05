@@ -9,6 +9,7 @@ import { useDebouncedCallback } from "../content/hooks/useDebouncedCallback";
 import { useElementMetaLocal } from "./hooks/useElementMetaLocal";
 import { useKeystrokesLocal } from "./hooks/useKeystrokesLocal";
 import { useLiveRegionLocal } from "./hooks/useLiveRegionLocal";
+import { useMessageRelay } from "./hooks/useMessageRelay";
 
 export type AllFramesRootOptions = {
   srcdoc?: boolean;
@@ -60,6 +61,7 @@ export const AllFramesRoot = ({
     forwardMode,
   });
   const { keystrokes } = useKeystrokesLocal({ forwardMode });
+  useMessageRelay({ forwardMode });
   const { metaList, topLayers, updateMetaList } = useElementMetaLocal({
     parentRef,
     containerRef,

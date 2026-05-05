@@ -6,6 +6,7 @@ export const en = {
     form: { title: "Form in Shadow DOM" },
     image: { title: "Image in Shadow DOM" },
     nested: { title: "Nested Shadow DOM" },
+    liveRegion: { title: "Live Region in Shadow DOM" },
   },
   examples: {
     form: {
@@ -34,6 +35,12 @@ export const en = {
         desc: "✅ An outer Web Component containing an inner Web Component, both with proper accessibility attributes.",
       },
     },
+    liveRegion: {
+      polite: {
+        title: "Live region inside Shadow DOM",
+        desc: "Live regions inside Shadow DOM should also notify assistive technologies of content updates.",
+      },
+    },
   },
 } as const;
 
@@ -45,6 +52,7 @@ export const ja = {
     form: { title: "Shadow DOM内のフォーム" },
     image: { title: "Shadow DOM内の画像" },
     nested: { title: "ネストしたShadow DOM" },
+    liveRegion: { title: "Shadow DOM内のライブリージョン" },
   },
   examples: {
     form: {
@@ -71,6 +79,12 @@ export const ja = {
       accessible: {
         title: "アクセシブルなネストしたShadow DOM",
         desc: "✅ 内側にWeb Componentを含む外側のWeb Component。どちらも適切なアクセシビリティ属性を持つ",
+      },
+    },
+    liveRegion: {
+      polite: {
+        title: "Shadow DOM内のライブリージョン",
+        desc: "Shadow DOM内のライブリージョンも支援技術にコンテンツの更新を通知する必要がある",
       },
     },
   },

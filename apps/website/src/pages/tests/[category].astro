@@ -1,0 +1,66 @@
+---
+import TestPageLayout from "../../layouts/TestPageLayout.astro";
+import Warning from "../../components/tests/Warning.astro";
+import Breadcrumb from "../../components/tests/Breadcrumb.astro";
+import HeadingTests from "../../components/tests/HeadingTests.astro";
+import ImageTests from "../../components/tests/ImageTests.astro";
+import LinkTests from "../../components/tests/LinkTests.astro";
+import ButtonTests from "../../components/tests/ButtonTests.astro";
+import FormControlTests from "../../components/tests/FormControlTests.astro";
+import LayoutTests from "../../components/tests/LayoutTests.astro";
+import ListTests from "../../components/tests/ListTests.astro";
+import TableTests from "../../components/tests/TableTests.astro";
+import AriaHiddenTests from "../../components/tests/AriaHiddenTests.astro";
+import LiveRegionTests from "../../components/tests/LiveRegionTests.astro";
+import ShadowDomTests from "../../components/tests/ShadowDomTests.astro";
+import { testCategories } from "../../lib/testCategories";
+import { createLocalT } from "../../lib/i18n";
+import pageEn from "../tests.lang";
+import { en as breadcrumbEn } from "../../components/tests/Breadcrumb.lang";
+
+export const prerender = true;
+
+export function getStaticPaths() {
+  return testCategories.map((cat) => ({
+    params: { category: cat.slug },
+    props: { dictKey: cat.dictKey },
+  }));
+}
+
+const { category } = Astro.params;
+const { dictKey } = Astro.props;
+const t = createLocalT(pageEn, pageEn);
+const categoryName = t(`categories.headings.${dictKey}`);
+---
+
+<TestPageLayout
+  lang="en"
+  title={`${categoryName} - Test Examples - Accessibility Visualizer`}
+  description={`${categoryName} test examples for Accessibility Visualizer browser extension`}
+  disabledLanguages={["ko"]}
+  path={`/a11y-visualizer/tests/${category}/`}
+>
+  <Breadcrumb
+    slot="breadcrumb"
+    lang="en"
+    items={[
+      { label: breadcrumbEn.home, href: "/a11y-visualizer/" },
+      { label: breadcrumbEn.tests, href: "/a11y-visualizer/tests/" },
+      { label: categoryName },
+    ]}
+  />
+
+  <Warning lang="en" />
+
+  {category === "headings" && <HeadingTests lang="en" />}
+  {category === "images" && <ImageTests lang="en" />}
+  {category === "links" && <LinkTests lang="en" />}
+  {category === "buttons" && <ButtonTests lang="en" />}
+  {category === "form-controls" && <FormControlTests lang="en" />}
+  {category === "layout" && <LayoutTests lang="en" />}
+  {category === "lists" && <ListTests lang="en" />}
+  {category === "tables" && <TableTests lang="en" />}
+  {category === "aria-hidden" && <AriaHiddenTests lang="en" />}
+  {category === "live-regions" && <LiveRegionTests lang="en" />}
+  {category === "shadow-dom" && <ShadowDomTests lang="en" />}
+</TestPageLayout>

@@ -1,0 +1,52 @@
+---
+interface BreadcrumbItem {
+  label: string;
+  href?: string;
+}
+
+interface Props {
+  lang: string;
+  items: BreadcrumbItem[];
+}
+
+import { en, ja } from "./Breadcrumb.lang";
+
+const { lang, items } = Astro.props as Props;
+const dict = lang === "ja" ? ja : en;
+---
+
+<nav
+  aria-label={dict.label}
+  class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-4"
+>
+  <ol
+    class="flex flex-wrap items-center gap-1 text-sm text-zinc-600 dark:text-zinc-400"
+  >
+    {
+      items.map((item, index) => (
+        <li class="flex items-center gap-1">
+          {index > 0 && (
+            <span aria-hidden="true" class="text-zinc-400 dark:text-zinc-500">
+              /
+            </span>
+          )}
+          {item.href ? (
+            <a
+              href={item.href}
+              class="text-teal-700 dark:text-teal-300 hover:text-teal-800 dark:hover:text-teal-200 underline hover:no-underline"
+            >
+              {item.label}
+            </a>
+          ) : (
+            <span
+              aria-current="page"
+              class="font-medium text-zinc-900 dark:text-zinc-100"
+            >
+              {item.label}
+            </span>
+          )}
+        </li>
+      ))
+    }
+  </ol>
+</nav>

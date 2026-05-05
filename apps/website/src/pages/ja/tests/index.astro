@@ -1,0 +1,61 @@
+---
+import TestPageLayout from "../../../layouts/TestPageLayout.astro";
+import Warning from "../../../components/tests/Warning.astro";
+import Breadcrumb from "../../../components/tests/Breadcrumb.astro";
+import { testCategories } from "../../../lib/testCategories";
+
+export const prerender = true;
+import { createLocalT } from "../../../lib/i18n";
+import pageJa from "../tests.lang";
+import pageEn from "../../tests.lang";
+import { ja as breadcrumbJa } from "../../../components/tests/Breadcrumb.lang";
+const t = createLocalT(pageJa, pageEn);
+---
+
+<TestPageLayout
+  lang="ja"
+  title="テスト用ページ - Accessibility Visualizer"
+  description="Test examples for Accessibility Visualizer browser extension with intentionally problematic accessibility patterns"
+  disabledLanguages={["ko"]}
+  path="/a11y-visualizer/ja/tests/"
+>
+  <Breadcrumb
+    slot="breadcrumb"
+    lang="ja"
+    items={[
+      { label: breadcrumbJa.home, href: "/a11y-visualizer/ja/" },
+      { label: breadcrumbJa.tests },
+    ]}
+  />
+
+  <Warning lang="ja" />
+
+  <div class="mb-8">
+    <h2 class="text-4xl font-bold text-zinc-900 dark:text-zinc-100 mb-4">
+      {t("intro.title")}
+    </h2>
+    <p class="text-lg text-zinc-700 dark:text-zinc-300 max-w-4xl">
+      {t("intro.desc")}
+    </p>
+  </div>
+
+  <div
+    class="mb-12 bg-zinc-100 dark:bg-zinc-800 p-6 rounded-lg border border-zinc-200 dark:border-zinc-700"
+  >
+    <h3 class="text-xl font-bold text-zinc-900 dark:text-zinc-100 mb-4">
+      {t("categories.title")}
+    </h3>
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-2">
+      {
+        testCategories.map((cat) => (
+          <a
+            href={`/a11y-visualizer/ja/tests/${cat.slug}/`}
+            class="text-teal-700 dark:text-teal-300 hover:text-teal-800 dark:hover:text-teal-200 underline hover:no-underline font-medium"
+          >
+            {t(`categories.headings.${cat.dictKey}`)}
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</TestPageLayout>

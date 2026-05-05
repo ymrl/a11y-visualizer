@@ -1,0 +1,67 @@
+---
+import TestPageLayout from "../../../layouts/TestPageLayout.astro";
+import Warning from "../../../components/tests/Warning.astro";
+import Breadcrumb from "../../../components/tests/Breadcrumb.astro";
+import HeadingTests from "../../../components/tests/HeadingTests.astro";
+import ImageTests from "../../../components/tests/ImageTests.astro";
+import LinkTests from "../../../components/tests/LinkTests.astro";
+import ButtonTests from "../../../components/tests/ButtonTests.astro";
+import FormControlTests from "../../../components/tests/FormControlTests.astro";
+import LayoutTests from "../../../components/tests/LayoutTests.astro";
+import ListTests from "../../../components/tests/ListTests.astro";
+import TableTests from "../../../components/tests/TableTests.astro";
+import AriaHiddenTests from "../../../components/tests/AriaHiddenTests.astro";
+import LiveRegionTests from "../../../components/tests/LiveRegionTests.astro";
+import ShadowDomTests from "../../../components/tests/ShadowDomTests.astro";
+import { testCategories } from "../../../lib/testCategories";
+import { createLocalT } from "../../../lib/i18n";
+import pageJa from "../tests.lang";
+import pageEn from "../../tests.lang";
+import { ja as breadcrumbJa } from "../../../components/tests/Breadcrumb.lang";
+
+export const prerender = true;
+
+export function getStaticPaths() {
+  return testCategories.map((cat) => ({
+    params: { category: cat.slug },
+    props: { dictKey: cat.dictKey },
+  }));
+}
+
+const { category } = Astro.params;
+const { dictKey } = Astro.props;
+const t = createLocalT(pageJa, pageEn);
+const categoryName = t(`categories.headings.${dictKey}`);
+---
+
+<TestPageLayout
+  lang="ja"
+  title={`${categoryName} - テスト用ページ - Accessibility Visualizer`}
+  description={`${categoryName} test examples for Accessibility Visualizer browser extension`}
+  disabledLanguages={["ko"]}
+  path={`/a11y-visualizer/ja/tests/${category}/`}
+>
+  <Breadcrumb
+    slot="breadcrumb"
+    lang="ja"
+    items={[
+      { label: breadcrumbJa.home, href: "/a11y-visualizer/ja/" },
+      { label: breadcrumbJa.tests, href: "/a11y-visualizer/ja/tests/" },
+      { label: categoryName },
+    ]}
+  />
+
+  <Warning lang="ja" />
+
+  {category === "headings" && <HeadingTests lang="ja" />}
+  {category === "images" && <ImageTests lang="ja" />}
+  {category === "links" && <LinkTests lang="ja" />}
+  {category === "buttons" && <ButtonTests lang="ja" />}
+  {category === "form-controls" && <FormControlTests lang="ja" />}
+  {category === "layout" && <LayoutTests lang="ja" />}
+  {category === "lists" && <ListTests lang="ja" />}
+  {category === "tables" && <TableTests lang="ja" />}
+  {category === "aria-hidden" && <AriaHiddenTests lang="ja" />}
+  {category === "live-regions" && <LiveRegionTests lang="ja" />}
+  {category === "shadow-dom" && <ShadowDomTests lang="ja" />}
+</TestPageLayout>

@@ -5,7 +5,6 @@ import type { KeystrokeItem } from "../../content/types";
 import { formatKeyEvent } from "../../content/utils/formatKeyEvent";
 
 const MAX_ITEMS = 20;
-let nextId = 0;
 
 type ForwardMode = "postMessage" | "self";
 
@@ -32,18 +31,19 @@ export const useKeystrokesLocal = ({
 
     const handleKeydown = (e: KeyboardEvent) => {
       const keys = formatKeyEvent(e);
-      const id = nextId++;
       const timestamp = Date.now();
 
       if (forwardMode === "postMessage") {
-        const msg = createKeystrokeMessage(id, keys, timestamp);
+        const msg = createKeystrokeMessage(keys, timestamp);
         window.parent.postMessage(msg, "*");
       } else {
         setKeystrokes((prev) =>
-          [{ id, keys, timestamp }, ...prev].slice(0, MAX_ITEMS),
+          [{ keys, timestamp }, ...prev].slice(0, MAX_ITEMS),
         );
         setTimeout(() => {
-          setKeystrokes((prev) => prev.filter((item) => item.id !== id));
+          setKeystrokes((prev) =>
+            prev.filter((item) => item.timestamp !== timestamp),
+          );
         }, keystrokeDisplaySecondsRef.current * 1000);
       }
     };

@@ -40,7 +40,6 @@ export type AnnouncementItem = {
 };
 
 export type KeystrokeItem = {
-  id: number;
   keys: string;
   timestamp: number;
 };

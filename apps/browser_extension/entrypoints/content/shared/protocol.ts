@@ -3,7 +3,6 @@ const MESSAGE_PREFIX = "a11y-visualizer:";
 export type KeystrokeMessageData = {
   type: `${typeof MESSAGE_PREFIX}keystroke`;
   data: {
-    id: number;
     keys: string;
     timestamp: number;
   };
@@ -35,12 +34,11 @@ export const isA11yVisualizerMessage = (
 };
 
 export const createKeystrokeMessage = (
-  id: number,
   keys: string,
   timestamp: number,
 ): KeystrokeMessageData => ({
   type: `${MESSAGE_PREFIX}keystroke`,
-  data: { id, keys, timestamp },
+  data: { keys, timestamp },
 });
 
 export const createLiveRegionMessage = (

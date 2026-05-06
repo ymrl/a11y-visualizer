@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { browser } from "#imports";
+import { detectFrameType } from "../../src/dom/detectFrameType";
 import { loadEnabled } from "../../src/enabled";
 import {
   loadUrlSettings,
@@ -47,7 +48,10 @@ export const injectAllFramesRoot = async (
   parent: Element,
   options?: AllFramesRootOptions,
 ) => {
-  if (!w.location.href.match(/^(?:https?)|(?:file):\/\//)) {
+  if (
+    detectFrameType() === "top" &&
+    !w.location.href.match(/^(?:https?)|(?:file)|(?:about):\/\//)
+  ) {
     return;
   }
   let [settings] = await loadUrlSettings(location.href);

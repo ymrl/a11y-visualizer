@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { createPortal } from "react-dom";
+import { detectFrameType } from "../../src/dom/detectFrameType";
 import { Announcements } from "../content/components/Announcements";
 import { ElementList } from "../content/components/ElementList";
 import { Keystrokes } from "../content/components/Keystrokes";
@@ -14,22 +15,6 @@ import { useMessageRelay } from "./hooks/useMessageRelay";
 export type AllFramesRootOptions = {
   srcdoc?: boolean;
   renderType?: "initial" | "enabled" | "visibilitychange";
-};
-
-type FrameType = "top" | "iframe" | "legacy-frame";
-
-const detectFrameType = (): FrameType => {
-  try {
-    if (window.frameElement?.tagName === "FRAME") {
-      return "legacy-frame";
-    }
-  } catch {
-    /* cross-origin: frameElement access throws */
-  }
-  if (window.parent !== window) {
-    return "iframe";
-  }
-  return "top";
 };
 
 export const AllFramesRoot = ({

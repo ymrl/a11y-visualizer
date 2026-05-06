@@ -2,6 +2,7 @@ import { defineContentScript } from "#imports";
 export default defineContentScript({
   matches: ["<all_urls>"],
   allFrames: true,
+  matchAboutBlank: true,
   main: async () => {
     const { injectAllFramesRoot } = await import("./injectAllFramesRoot");
 

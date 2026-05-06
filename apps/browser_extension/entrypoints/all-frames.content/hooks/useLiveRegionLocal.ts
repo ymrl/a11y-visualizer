@@ -5,6 +5,7 @@ import {
 } from "@a11y-visualizer/dom-utils";
 import { computeAccessibleName } from "dom-accessibility-api";
 import React from "react";
+import { collectShadowRoots } from "../../../src/dom/collectShadowRoots";
 import { SettingsContext } from "../../content/contexts/SettingsContext";
 import { detectModals } from "../../content/dom/detectModals";
 import { createLiveRegionMessage } from "../../content/shared/protocol";
@@ -38,7 +39,16 @@ const closestNodeOfSelector = (
   if (element.matches(selector)) {
     return element;
   }
-  return element.closest(selector) || null;
+  const found = element.closest(selector);
+  if (found) {
+    return found;
+  }
+  // Shadow DOM境界を越えて探索
+  const rootNode = element.getRootNode();
+  if (rootNode instanceof ShadowRoot) {
+    return closestNodeOfSelector(rootNode.host, selector);
+  }
+  return null;
 };
 
 const isBusy = (el: Element): boolean => {
@@ -223,8 +233,12 @@ export const useLiveRegionLocal = ({
         return;
       }
       // Only scan this frame's own live regions (no iframe scanning)
+      const shadowRoots = collectShadowRoots(el);
       const liveRegions = [
         ...el.querySelectorAll<Element>(LIVEREGION_SELECTOR),
+        ...shadowRoots.flatMap((sr) => [
+          ...sr.querySelectorAll<Element>(LIVEREGION_SELECTOR),
+        ]),
       ];
       [...liveRegions].forEach((el) => {
         if (

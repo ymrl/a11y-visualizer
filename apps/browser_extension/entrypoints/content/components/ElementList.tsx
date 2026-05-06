@@ -86,7 +86,16 @@ export const ElementList = ({
           setUserCoordinates(coordinates);
         }
       };
+      const handleMouseOut = (e: MouseEvent) => {
+        if (!e.relatedTarget) {
+          setUserCoordinates([]);
+        }
+      };
+
       win.addEventListener("mousemove", handleMouseMove, { passive: true });
+      win.document.addEventListener("mouseout", handleMouseOut, {
+        passive: true,
+      });
       const isTouchDevice =
         "ontouchstart" in win || navigator.maxTouchPoints > 0;
       if (isTouchDevice) {
@@ -97,6 +106,7 @@ export const ElementList = ({
       cleanupRef.current = () => {
         try {
           win.removeEventListener("mousemove", handleMouseMove);
+          win.document.removeEventListener("mouseout", handleMouseOut);
           if (isTouchDevice) {
             win.removeEventListener("touchstart", handleTouchStart);
             win.removeEventListener("touchmove", handleTouchMove);

@@ -28,14 +28,16 @@ export const useAggregatedKeystrokes = () => {
       if (!isA11yVisualizerMessage(event.data)) return;
       if (event.data.type !== "a11y-visualizer:keystroke") return;
       const msg = event.data as KeystrokeMessageData;
-      const { id, keys, timestamp } = msg.data;
+      const { keys, timestamp } = msg.data;
 
       setKeystrokes((prev) =>
-        [{ id, keys, timestamp }, ...prev].slice(0, MAX_ITEMS),
+        [{ keys, timestamp }, ...prev].slice(0, MAX_ITEMS),
       );
 
       setTimeout(() => {
-        setKeystrokes((prev) => prev.filter((item) => item.id !== id));
+        setKeystrokes((prev) =>
+          prev.filter((item) => item.timestamp !== timestamp),
+        );
       }, keystrokeDisplaySecondsRef.current * 1000);
     };
 

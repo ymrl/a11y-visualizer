@@ -24,7 +24,7 @@ export const Keystrokes = React.memo(
           }}
         >
           {keystrokes.map((item) => (
-            <li className="Keystroke" key={item.id}>
+            <li className="Keystroke" key={`${item.timestamp}-${item.keys}`}>
               <kbd>{item.keys}</kbd>
             </li>
           ))}

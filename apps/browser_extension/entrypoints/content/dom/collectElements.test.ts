@@ -1,13 +1,5 @@
-import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
-import { isOutOfSight } from "../../../src/dom/isOutOfSight";
+import { afterEach, describe, expect, test, vi } from "vitest";
 import { collectElements } from "./collectElements";
-
-// isOutOfSightモジュールをモック
-vi.mock("../../../src/dom/isOutOfSight", () => ({
-  isOutOfSight: vi.fn(),
-}));
-
-const mockIsOutOfSight = vi.mocked(isOutOfSight);
 
 describe("collectElements()", () => {
   afterEach(() => {
@@ -126,23 +118,20 @@ describe("collectElements()", () => {
   });
 
   describe("hideOutOfSightElementTips option", () => {
-    beforeEach(() => {
-      // モックをクリア
-      vi.clearAllMocks();
-    });
-
     test("hideOutOfSightElementTips が false の場合、視覚的に見えない要素もフィルタしない", () => {
       document.body.innerHTML = `
         <img src="test.jpg" alt="Test image">
         <div style="opacity: 0;"><img src="hidden.jpg" alt="Hidden image"></div>
       `;
 
-      // isOutOfSightが呼ばれないはず
+      const mockIsOutOfSight = vi.fn();
+
+      // _isOutOfSight が呼ばれないはず
       const result = collectElements(
         document.body,
         [],
         { image: true },
-        { hideOutOfSightElementTips: false },
+        { hideOutOfSightElementTips: false, _isOutOfSight: mockIsOutOfSight },
       );
 
       expect(mockIsOutOfSight).not.toHaveBeenCalled();
@@ -156,7 +145,8 @@ describe("collectElements()", () => {
       `;
 
       // 最初の画像は見える、2番目は見えない
-      mockIsOutOfSight
+      const mockIsOutOfSight = vi
+        .fn()
         .mockReturnValueOnce(false) // 最初の画像
         .mockReturnValueOnce(true); // 2番目の画像
 
@@ -164,7 +154,7 @@ describe("collectElements()", () => {
         document.body,
         [],
         { image: true },
-        { hideOutOfSightElementTips: true },
+        { hideOutOfSightElementTips: true, _isOutOfSight: mockIsOutOfSight },
       );
 
       expect(mockIsOutOfSight).toHaveBeenCalledTimes(2);
@@ -177,11 +167,13 @@ describe("collectElements()", () => {
         <div style="opacity: 0;"><img src="hidden.jpg" alt="Hidden image"></div>
       `;
 
+      const mockIsOutOfSight = vi.fn();
+
       const result = collectElements(
         document.body,
         [],
         { image: true },
-        {}, // hideOutOfSightElementTips 未指定
+        { _isOutOfSight: mockIsOutOfSight }, // hideOutOfSightElementTips 未指定
       );
 
       expect(mockIsOutOfSight).not.toHaveBeenCalled();

@@ -44,6 +44,7 @@ export const collectElements = (
     viewportScrollY?: number;
     viewportWidth?: number;
     viewportHeight?: number;
+    _isOutOfSight?: (element: Element, excludes: Element[]) => boolean;
   } = {},
 ): ElementMeta[] => {
   const d = root.ownerDocument;
@@ -93,7 +94,8 @@ export const collectElements = (
     .filter((el) => {
       // 視覚的に見えない要素のフィルタリング
       if (options.hideOutOfSightElementTips) {
-        return !isOutOfSight(el, excludes);
+        const isOutOfSightFn = options._isOutOfSight ?? isOutOfSight;
+        return !isOutOfSightFn(el, excludes);
       }
       return true;
     })

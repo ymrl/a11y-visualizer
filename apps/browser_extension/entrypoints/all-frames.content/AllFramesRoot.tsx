@@ -74,15 +74,22 @@ export const AllFramesRoot = ({
 
   const updateSize = useDebouncedCallback(
     () => {
+      if (!containerRef.current) return;
+      const display = containerRef.current.style.display;
+      containerRef.current.style.display = "none";
+
       const { width, height } = getRootSize(parentRef.current);
       setWidth(width);
       setHeight(height);
+
+      containerRef.current.style.display = display;
+
       const w = parentRef.current?.ownerDocument.defaultView;
       viewportWidthRef.current = w?.innerWidth ?? viewportWidthRef.current;
       viewportHeightRef.current = w?.innerHeight ?? viewportHeightRef.current;
     },
     200,
-    [parentRef, updateInfo],
+    [parentRef, updateInfo, containerRef],
   );
 
   const updateScroll = useDebouncedCallback(
@@ -207,13 +214,17 @@ export const AllFramesRoot = ({
       }}
       ref={containerRef}
     >
-      <ElementList list={metaList} width={width} height={height} />
-      {topLayers.map(({ element, metaList, width, height }, i) =>
-        createPortal(
-          <ElementList list={metaList} width={width} height={height} />,
-          element,
-          `layer-${i}-${element.tagName.toLowerCase()}`,
-        ),
+      {metaList.length > 0 && (
+        <ElementList list={metaList} width={width} height={height} />
+      )}
+      {topLayers.map(
+        ({ element, metaList, width, height }, i) =>
+          metaList.length > 0 &&
+          createPortal(
+            <ElementList list={metaList} width={width} height={height} />,
+            element,
+            `layer-${i}-${element.tagName.toLowerCase()}`,
+          ),
       )}
       {showSelfAnnouncements && <Announcements announcements={announcements} />}
       {showSelfKeystrokes && (

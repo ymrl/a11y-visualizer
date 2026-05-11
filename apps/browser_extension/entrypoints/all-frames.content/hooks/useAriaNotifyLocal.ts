@@ -3,7 +3,8 @@ import { SettingsContext } from "../../content/contexts/SettingsContext";
 import type { LiveLevel } from "../../content/types";
 
 const EVENT_NAME = "a11y-visualizer:aria-notify";
-const ENABLE_EVENT_NAME = "a11y-visualizer:aria-notify-enable";
+const ENABLE_EVENT_NAME = "a11y-visualizer:aria-notify-patch-enable";
+const DISABLE_EVENT_NAME = "a11y-visualizer:aria-notify-patch-disable";
 
 export const useAriaNotifyLocal = ({
   addAnnouncement,
@@ -17,7 +18,7 @@ export const useAriaNotifyLocal = ({
 
   React.useEffect(() => {
     document.dispatchEvent(
-      new CustomEvent(ENABLE_EVENT_NAME, { detail: { enabled } }),
+      new Event(enabled ? ENABLE_EVENT_NAME : DISABLE_EVENT_NAME),
     );
 
     if (!enabled) return;
@@ -38,9 +39,7 @@ export const useAriaNotifyLocal = ({
 
     return () => {
       document.removeEventListener(EVENT_NAME, handler);
-      document.dispatchEvent(
-        new CustomEvent(ENABLE_EVENT_NAME, { detail: { enabled: false } }),
-      );
+      document.dispatchEvent(new Event(DISABLE_EVENT_NAME));
     };
   }, [enabled, addAnnouncement]);
 };

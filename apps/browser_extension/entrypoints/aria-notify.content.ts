@@ -1,7 +1,8 @@
 import { defineContentScript } from "#imports";
 
 const EVENT_NAME = "a11y-visualizer:aria-notify";
-const ENABLE_EVENT_NAME = "a11y-visualizer:aria-notify-enable";
+const ENABLE_EVENT_NAME = "a11y-visualizer:aria-notify-patch-enable";
+const DISABLE_EVENT_NAME = "a11y-visualizer:aria-notify-patch-disable";
 
 export default defineContentScript({
   matches: ["<all_urls>"],
@@ -49,13 +50,11 @@ export default defineContentScript({
       }
     };
 
-    document.addEventListener(ENABLE_EVENT_NAME, (e: Event) => {
-      const { enabled } = (e as CustomEvent).detail as { enabled: boolean };
-      if (enabled) {
-        applyPatch();
-      } else {
-        removePatch();
-      }
+    document.addEventListener(ENABLE_EVENT_NAME, () => {
+      applyPatch();
+    });
+    document.addEventListener(DISABLE_EVENT_NAME, () => {
+      removePatch();
     });
   },
 });

@@ -35,6 +35,7 @@
     "hideLabels": "Hide labels",
     "interactiveModeHideLabels": "Hide labels in interactive mode",
     "announceLiveRegions": "Announce live regions",
+    "announceAriaNotify": "Announce ariaNotify (Beta)",
     "announcement": "Announcement",
     "liveRegionDisplay": "Live region",
     "announcementSecondsPerCharacter": "speed (seconds/char)",

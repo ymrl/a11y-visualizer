@@ -355,6 +355,19 @@ export const SettingsEditor = ({
           <div className="px-2">
             <Checkbox
               onChange={(e) => {
+                handleChangeCheckbox("announceAriaNotify", e);
+              }}
+              checked={settings.announceAriaNotify}
+              disabled={disabled || !settings.showLiveRegions}
+            >
+              <span className="text-xs">
+                {t("settings.announceAriaNotify")}
+              </span>
+            </Checkbox>
+          </div>
+          <div className="px-2">
+            <Checkbox
+              onChange={(e) => {
                 handleChangeCheckbox("showKeystrokes", e);
               }}
               checked={settings.showKeystrokes}

@@ -32,6 +32,7 @@ export type Settings = {
   interactiveMode: boolean;
   hideTips: boolean;
   showLiveRegions: boolean;
+  announceAriaNotify: boolean;
   hideOutOfSightElementTips: boolean;
   announcementMaxSeconds: number;
   announcementSecondsPerCharacter: number;

@@ -35,6 +35,7 @@
     "hideLabels": "ラベルを隠す",
     "interactiveModeHideLabels": "インタラクティブモードでラベルを隠す",
     "announceLiveRegions": "ライブリージョンをアナウンス",
+    "announceAriaNotify": "ariaNotifyをアナウンス（β）",
     "announcement": "アナウンス",
     "liveRegionDisplay": "ライブリージョン",
     "announcementSecondsPerCharacter": "スピード（秒/文字）",

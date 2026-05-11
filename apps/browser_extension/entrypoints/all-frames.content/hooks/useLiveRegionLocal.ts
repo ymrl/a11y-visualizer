@@ -441,5 +441,6 @@ export const useLiveRegionLocal = ({
   return {
     observeLiveRegion,
     announcements,
+    addAnnouncement,
   };
 };

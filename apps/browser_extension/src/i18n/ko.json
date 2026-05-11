@@ -35,6 +35,7 @@
     "hideLabels": "라벨 숨기기",
     "interactiveModeHideLabels": "인터랙티브 모드에서 라벨 숨기기",
     "announceLiveRegions": "라이브 리전을 안내",
+    "announceAriaNotify": "ariaNotify 알림 (베타)",
     "announcement": "안내",
     "liveRegionDisplay": "라이브 리전",
     "announcementSecondsPerCharacter": "속도(초/문자)",

@@ -33,6 +33,7 @@ export const initialSettings: Settings = {
   interactiveMode: true,
   hideTips: true,
   showLiveRegions: true,
+  announceAriaNotify: false,
   hideOutOfSightElementTips: false,
   announcementMaxSeconds: 10,
   announcementSecondsPerCharacter: 0.5,

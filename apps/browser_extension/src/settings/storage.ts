@@ -58,6 +58,9 @@ function migrateLegacySettings(settings: unknown): Settings {
       showLiveRegions:
         (settingsObj.showLiveRegions as boolean) ??
         initialSettings.showLiveRegions,
+      announceAriaNotify:
+        (settingsObj.announceAriaNotify as boolean) ??
+        initialSettings.announceAriaNotify,
       hideOutOfSightElementTips:
         (settingsObj.hideOutOfSightElementTips as boolean) ??
         initialSettings.hideOutOfSightElementTips,

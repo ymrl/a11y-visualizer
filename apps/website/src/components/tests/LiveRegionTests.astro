@@ -534,6 +534,38 @@ const t = createLocalT(lang === "ja" ? ja : en, en);
   </div>
 </ExampleCard>
 
+<CategorySectionTitle id="aria-notify-api"
+  >{t("sections.ariaNotify.title")}</CategorySectionTitle
+>
+
+<ExampleCard
+  title={t("examples.ariaNotify.none.title")}
+  description={t("examples.ariaNotify.none.desc")}
+>
+  <div class="space-y-4">
+    <button
+      id="aria-notify-none-btn"
+      class="bg-teal-700 text-white px-4 py-2 rounded hover:bg-teal-800 transition-colors"
+    >
+      Call ariaNotify (none)
+    </button>
+  </div>
+</ExampleCard>
+
+<ExampleCard
+  title={t("examples.ariaNotify.high.title")}
+  description={t("examples.ariaNotify.high.desc")}
+>
+  <div class="space-y-4">
+    <button
+      id="aria-notify-high-btn"
+      class="bg-zinc-600 text-white px-4 py-2 rounded hover:bg-zinc-700 transition-colors"
+    >
+      Call ariaNotify (high)
+    </button>
+  </div>
+</ExampleCard>
+
 <script>
   // Timer functionality
   let timerInterval = null;
@@ -804,4 +836,23 @@ const t = createLocalT(lang === "ja" ? ja : en, en);
 
   // Update time every second for demo
   setInterval(updateTime, 1000);
+
+  // ariaNotify functionality
+  document
+    .getElementById("aria-notify-none-btn")
+    .addEventListener("click", () => {
+      if (document.ariaNotify) {
+        document.ariaNotify("Status update via ariaNotify");
+      }
+    });
+
+  document
+    .getElementById("aria-notify-high-btn")
+    .addEventListener("click", () => {
+      if (document.ariaNotify) {
+        document.ariaNotify("Urgent notification via ariaNotify", {
+          priority: "high",
+        });
+      }
+    });
 </script>

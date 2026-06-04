@@ -352,7 +352,7 @@ export const SettingsEditor = ({
               </span>
             </Checkbox>
           </div>
-          <div className="pr-2 pl-8">
+          <div className="pr-2 pl-6">
             <Checkbox
               onChange={(e) => {
                 handleChangeCheckbox("announceAriaNotify", e);

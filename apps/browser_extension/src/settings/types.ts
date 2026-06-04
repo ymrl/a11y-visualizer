@@ -33,6 +33,7 @@ export type Settings = {
   hideTips: boolean;
   showLiveRegions: boolean;
   announceAriaNotify: boolean;
+  announceOutOfModal: boolean;
   hideOutOfSightElementTips: boolean;
   announcementMaxSeconds: number;
   announcementSecondsPerCharacter: number;

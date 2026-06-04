@@ -12,6 +12,7 @@ export default {
     ariaBusy: { title: "aria-busy の抑止" },
     continuous: { title: "継続的に更新されるライブリージョン" },
     ariaNotify: { title: "ariaNotify API" },
+    modalLive: { title: "ライブリージョンとモーダルダイアログ" },
   },
   examples: {
     ariaLive: {
@@ -90,6 +91,16 @@ export default {
       high: {
         title: 'ariaNotify（priority: "high"）',
         desc: 'document.ariaNotify() を priority "high" で呼び出します。高優先度の通知は現在の読み上げを中断する可能性があります。',
+      },
+    },
+    modalLive: {
+      dialog: {
+        title: "<dialog> の内側と外側のライブリージョン",
+        desc: "showModal() で開いたモーダルダイアログ内のライブリージョンと、モーダルの外にあるライブリージョンです。",
+      },
+      ariaModal: {
+        title: "aria-modal の内側と外側のライブリージョン",
+        desc: 'role="dialog" aria-modal="true" のカスタムモーダル内のライブリージョンと、モーダルの外にあるライブリージョンです。',
       },
     },
   },

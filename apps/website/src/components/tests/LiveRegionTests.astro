@@ -566,6 +566,233 @@ const t = createLocalT(lang === "ja" ? ja : en, en);
   </div>
 </ExampleCard>
 
+<CategorySectionTitle id="modal-live-regions"
+  >{t("sections.modalLive.title")}</CategorySectionTitle
+>
+
+<ExampleCard
+  title={t("examples.modalLive.dialog.title")}
+  description={t("examples.modalLive.dialog.desc")}
+>
+  <div class="space-y-4">
+    <div
+      id="dialog-outside-region"
+      aria-live="polite"
+      class="bg-blue-50 dark:bg-blue-900/20 p-3 rounded border border-blue-200 dark:border-blue-700"
+    >
+      Outside region: Ready
+    </div>
+
+    <button
+      class="bg-teal-700 text-white px-4 py-2 rounded hover:bg-teal-800 transition-colors"
+      onclick="document.getElementById('modal-live-dialog').showModal()"
+    >
+      Open Dialog
+    </button>
+
+    <dialog
+      id="modal-live-dialog"
+      aria-labelledby="modal-live-dialog-title"
+      class="p-6 rounded-lg shadow-lg backdrop:bg-black backdrop:bg-opacity-50"
+    >
+      <div class="space-y-4">
+        <h3
+          id="modal-live-dialog-title"
+          class="text-lg font-bold text-zinc-700 dark:text-zinc-300"
+        >
+          Modal Dialog
+        </h3>
+        <div
+          id="dialog-inside-region"
+          aria-live="polite"
+          class="bg-green-50 dark:bg-green-900/20 p-3 rounded border border-green-200 dark:border-green-700"
+        >
+          Inside region: Ready
+        </div>
+        <div class="flex flex-wrap gap-2">
+          <button
+            class="bg-teal-700 text-white px-4 py-2 rounded hover:bg-teal-800 transition-colors"
+            onclick="document.getElementById('dialog-inside-region').textContent = 'Inside region updated at ' + new Date().toLocaleTimeString()"
+          >
+            Update Inside Region
+          </button>
+          <button
+            class="bg-zinc-600 text-white px-4 py-2 rounded hover:bg-zinc-700 transition-colors"
+            onclick="document.getElementById('dialog-outside-region').textContent = 'Outside region updated at ' + new Date().toLocaleTimeString()"
+          >
+            Update Outside Region
+          </button>
+          <button
+            class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition-colors"
+            onclick="document.getElementById('modal-live-dialog').close()"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </dialog>
+  </div>
+</ExampleCard>
+
+<ExampleCard
+  title={t("examples.modalLive.ariaModal.title")}
+  description={t("examples.modalLive.ariaModal.desc")}
+>
+  <div class="space-y-4">
+    <div
+      id="ariamodal-outside-region"
+      aria-live="polite"
+      class="bg-blue-50 dark:bg-blue-900/20 p-3 rounded border border-blue-200 dark:border-blue-700"
+    >
+      Outside region: Ready
+    </div>
+
+    <button
+      id="open-live-modal-btn"
+      class="bg-teal-700 text-white px-4 py-2 rounded hover:bg-teal-800 transition-colors"
+    >
+      Open Custom Modal
+    </button>
+
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="live-modal-title"
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden"
+      id="live-custom-modal"
+    >
+      <div
+        class="bg-white dark:bg-zinc-800 p-6 rounded-lg shadow-lg max-w-md w-full mx-4 space-y-4"
+      >
+        <h3
+          id="live-modal-title"
+          class="text-lg font-bold text-zinc-900 dark:text-zinc-100"
+        >
+          Custom Modal
+        </h3>
+        <div
+          id="ariamodal-inside-region"
+          aria-live="polite"
+          class="bg-green-50 dark:bg-green-900/20 p-3 rounded border border-green-200 dark:border-green-700"
+        >
+          Inside region: Ready
+        </div>
+        <div class="flex flex-wrap gap-2">
+          <button
+            id="live-modal-update-inside-btn"
+            class="bg-teal-700 text-white px-4 py-2 rounded hover:bg-teal-800 transition-colors"
+          >
+            Update Inside Region
+          </button>
+          <button
+            id="live-modal-update-outside-btn"
+            class="bg-zinc-600 text-white px-4 py-2 rounded hover:bg-zinc-700 transition-colors"
+          >
+            Update Outside Region
+          </button>
+          <button
+            id="live-modal-close-btn"
+            class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition-colors"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const modal = document.getElementById("live-custom-modal");
+      const openBtn = document.getElementById("open-live-modal-btn");
+      const closeBtn = document.getElementById("live-modal-close-btn");
+      const updateInsideBtn = document.getElementById(
+        "live-modal-update-inside-btn",
+      );
+      const updateOutsideBtn = document.getElementById(
+        "live-modal-update-outside-btn",
+      );
+      const insideRegion = document.getElementById("ariamodal-inside-region");
+      const outsideRegion = document.getElementById("ariamodal-outside-region");
+      let previousFocusElement = null;
+
+      // モーダルを開く
+      function openModal() {
+        previousFocusElement = document.activeElement;
+        modal?.classList.remove("hidden");
+
+        const firstFocusableElement = modal?.querySelector(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+        );
+        if (firstFocusableElement) {
+          firstFocusableElement.focus();
+        }
+      }
+
+      // モーダルを閉じる
+      function closeModal() {
+        modal?.classList.add("hidden");
+
+        if (previousFocusElement && previousFocusElement.focus) {
+          previousFocusElement.focus();
+        }
+      }
+
+      // フォーカストラップ
+      function trapFocus(e) {
+        if (!modal?.classList.contains("hidden")) {
+          const focusableElements = modal?.querySelectorAll(
+            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+          );
+          const firstElement = focusableElements?.[0];
+          const lastElement = focusableElements?.[focusableElements.length - 1];
+
+          if (e.key === "Tab") {
+            if (e.shiftKey) {
+              if (document.activeElement === firstElement) {
+                e.preventDefault();
+                lastElement?.focus();
+              }
+            } else {
+              if (document.activeElement === lastElement) {
+                e.preventDefault();
+                firstElement?.focus();
+              }
+            }
+          }
+
+          if (e.key === "Escape") {
+            closeModal();
+          }
+        }
+      }
+
+      openBtn?.addEventListener("click", openModal);
+      closeBtn?.addEventListener("click", closeModal);
+      updateInsideBtn?.addEventListener("click", () => {
+        if (insideRegion) {
+          insideRegion.textContent =
+            "Inside region updated at " + new Date().toLocaleTimeString();
+        }
+      });
+      updateOutsideBtn?.addEventListener("click", () => {
+        if (outsideRegion) {
+          outsideRegion.textContent =
+            "Outside region updated at " + new Date().toLocaleTimeString();
+        }
+      });
+      document.addEventListener("keydown", trapFocus);
+
+      // モーダル外クリックで閉じる
+      modal?.addEventListener("click", function (e) {
+        if (e.target === modal) {
+          closeModal();
+        }
+      });
+    })();
+  </script>
+</ExampleCard>
+
 <script>
   // Timer functionality
   let timerInterval = null;

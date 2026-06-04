@@ -68,6 +68,7 @@ export const useLiveRegionLocal = ({
 }) => {
   const {
     showLiveRegions,
+    announceOutOfModal,
     announcementMaxSeconds,
     announcementSecondsPerCharacter,
   } = React.useContext(SettingsContext);
@@ -147,7 +148,7 @@ export const useLiveRegionLocal = ({
         return;
       }
 
-      if (parentRef.current) {
+      if (!announceOutOfModal && parentRef.current) {
         const modals = detectModals(parentRef.current);
         if (modals.length > 0) {
           const isInsideModal = modals.some(
@@ -177,7 +178,7 @@ export const useLiveRegionLocal = ({
 
       addAnnouncement(content, "assertive");
     },
-    [addAnnouncement, parentRef],
+    [addAnnouncement, parentRef, announceOutOfModal],
   );
 
   // Timer management for self-mode announcements
@@ -275,7 +276,7 @@ export const useLiveRegionLocal = ({
             return null;
           }
 
-          if (parentRef.current) {
+          if (!announceOutOfModal && parentRef.current) {
             const modals = detectModals(parentRef.current);
             if (modals.length > 0) {
               const isInsideModal = modals.some(
@@ -386,6 +387,7 @@ export const useLiveRegionLocal = ({
     };
   }, [
     showLiveRegions,
+    announceOutOfModal,
     connectLiveRegion,
     addAnnouncement,
     clearAnnouncements,

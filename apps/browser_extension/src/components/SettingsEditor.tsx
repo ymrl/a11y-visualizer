@@ -355,6 +355,19 @@ export const SettingsEditor = ({
           <div className="pr-2 pl-6">
             <Checkbox
               onChange={(e) => {
+                handleChangeCheckbox("announceOutOfModal", e);
+              }}
+              checked={settings.announceOutOfModal}
+              disabled={disabled || !settings.showLiveRegions}
+            >
+              <span className="text-xs">
+                {t("settings.announceOutOfModal")}
+              </span>
+            </Checkbox>
+          </div>
+          <div className="pr-2 pl-6">
+            <Checkbox
+              onChange={(e) => {
                 handleChangeCheckbox("announceAriaNotify", e);
               }}
               checked={settings.announceAriaNotify}

@@ -12,6 +12,7 @@ export const en = {
     ariaBusy: { title: "aria-busy Suppression" },
     continuous: { title: "Continuously Updating Live Regions" },
     ariaNotify: { title: "ariaNotify API" },
+    modalLive: { title: "Live Regions and Modal Dialogs" },
   },
   examples: {
     ariaLive: {
@@ -92,6 +93,16 @@ export const en = {
         desc: 'Calls document.ariaNotify() with priority "high". High-priority notifications may interrupt current speech output.',
       },
     },
+    modalLive: {
+      dialog: {
+        title: "Live regions inside and outside <dialog>",
+        desc: "A modal dialog opened with showModal() contains a live region, and another live region sits outside the modal.",
+      },
+      ariaModal: {
+        title: "Live regions inside and outside aria-modal",
+        desc: 'A custom modal using role="dialog" aria-modal="true" contains a live region, and another live region sits outside the modal.',
+      },
+    },
   },
 } as const;
 
@@ -109,6 +120,7 @@ export const ja = {
     ariaBusy: { title: "aria-busy の抑止" },
     continuous: { title: "継続的に更新されるライブリージョン" },
     ariaNotify: { title: "ariaNotify API" },
+    modalLive: { title: "ライブリージョンとモーダルダイアログ" },
   },
   examples: {
     ariaLive: {
@@ -187,6 +199,16 @@ export const ja = {
       high: {
         title: 'ariaNotify（priority: "high"）',
         desc: 'document.ariaNotify() を priority "high" で呼び出します。高優先度の通知は現在の読み上げを中断する可能性があります。',
+      },
+    },
+    modalLive: {
+      dialog: {
+        title: "<dialog> の内側と外側のライブリージョン",
+        desc: "showModal() で開いたモーダルダイアログ内のライブリージョンと、モーダルの外にあるライブリージョンです。",
+      },
+      ariaModal: {
+        title: "aria-modal の内側と外側のライブリージョン",
+        desc: 'role="dialog" aria-modal="true" のカスタムモーダル内のライブリージョンと、モーダルの外にあるライブリージョンです。',
       },
     },
   },

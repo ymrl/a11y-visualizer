@@ -34,6 +34,7 @@ export const initialSettings: Settings = {
   hideTips: true,
   showLiveRegions: true,
   announceAriaNotify: false,
+  announceOutOfModal: false,
   hideOutOfSightElementTips: false,
   announcementMaxSeconds: 10,
   announcementSecondsPerCharacter: 0.5,

@@ -11,6 +11,8 @@ export default {
     priority: { title: "Live Region Priority Interactions" },
     ariaBusy: { title: "aria-busy Suppression" },
     continuous: { title: "Continuously Updating Live Regions" },
+    ariaNotify: { title: "ariaNotify API" },
+    modalLive: { title: "Live Regions and Modal Dialogs" },
   },
   examples: {
     ariaLive: {
@@ -79,6 +81,26 @@ export default {
       statusUpdates: {
         title: "Status updates with role='status'",
         desc: "Status messages that update every 3 seconds. Tests extension handling of role-based live regions with continuous updates.",
+      },
+    },
+    ariaNotify: {
+      none: {
+        title: "ariaNotify (none priority)",
+        desc: "Calls document.ariaNotify() with default priority (none). This API notifies assistive technologies without using DOM live region elements.",
+      },
+      high: {
+        title: "ariaNotify (high priority)",
+        desc: 'Calls document.ariaNotify() with priority "high". High-priority notifications may interrupt current speech output.',
+      },
+    },
+    modalLive: {
+      dialog: {
+        title: "Live regions inside and outside <dialog>",
+        desc: "A modal dialog opened with showModal() contains a live region, and another live region sits outside the modal.",
+      },
+      ariaModal: {
+        title: "Live regions inside and outside aria-modal",
+        desc: 'A custom modal using role="dialog" aria-modal="true" contains a live region, and another live region sits outside the modal.',
       },
     },
   },

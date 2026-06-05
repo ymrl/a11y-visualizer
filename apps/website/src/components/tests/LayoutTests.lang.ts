@@ -56,6 +56,10 @@ export const en = {
         title: "iFrame with live region",
         desc: "Live regions inside iframes should also notify assistive technologies of content updates.",
       },
+      ariaNotify: {
+        title: "iFrame with ariaNotify",
+        desc: "ariaNotify calls inside iframes should also be captured and displayed by the extension.",
+      },
     },
     dialog: {
       element: {
@@ -127,6 +131,10 @@ export const ja = {
       liveRegion: {
         title: "ライブリージョンを含む iFrame",
         desc: "iframe内のライブリージョンも支援技術にコンテンツの更新を通知する必要がある",
+      },
+      ariaNotify: {
+        title: "ariaNotify を含む iFrame",
+        desc: "iframe 内の ariaNotify 呼び出しも拡張機能によってキャプチャ・表示される",
       },
     },
     dialog: {

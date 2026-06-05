@@ -7,6 +7,7 @@ import { Keystrokes } from "../content/components/Keystrokes";
 import { SettingsContext } from "../content/contexts/SettingsContext";
 import { getRootSize } from "../content/dom/getRootSize";
 import { useDebouncedCallback } from "../content/hooks/useDebouncedCallback";
+import { useAriaNotifyLocal } from "./hooks/useAriaNotifyLocal";
 import { useElementMetaLocal } from "./hooks/useElementMetaLocal";
 import { useKeystrokesLocal } from "./hooks/useKeystrokesLocal";
 import { useLiveRegionLocal } from "./hooks/useLiveRegionLocal";
@@ -40,12 +41,14 @@ export const AllFramesRoot = ({
   // Legacy frames are self-contained; others forward via postMessage
   const forwardMode = frameType === "legacy-frame" ? "self" : "postMessage";
 
-  const { announcements, observeLiveRegion } = useLiveRegionLocal({
-    parentRef,
-    renderType: options?.renderType,
-    forwardMode,
-  });
+  const { announcements, observeLiveRegion, addAnnouncement } =
+    useLiveRegionLocal({
+      parentRef,
+      renderType: options?.renderType,
+      forwardMode,
+    });
   const { keystrokes } = useKeystrokesLocal({ forwardMode });
+  useAriaNotifyLocal({ addAnnouncement });
   useMessageRelay({ forwardMode });
   const { metaList, topLayers, updateMetaList } = useElementMetaLocal({
     parentRef,

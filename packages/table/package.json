@@ -21,7 +21,7 @@
     "@biomejs/biome": "2.2.3",
     "@vitest/browser": "^3.2.2",
     "playwright": "^1.52.0",
-    "typescript": "^5.2.2",
+    "typescript": "^6.0.3",
     "vitest": "^3.2.0"
   }
 }

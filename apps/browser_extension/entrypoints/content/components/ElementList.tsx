@@ -152,6 +152,7 @@ export const ElementList = ({
         {list.map((meta, i) => {
           return (
             <ElementInfo
+              // biome-ignore lint/suspicious/noArrayIndexKey: collected elements have no stable id; index is combined with category and name
               key={`${i}-${meta.category}-${meta.name}`}
               meta={meta}
               rootHeight={height}

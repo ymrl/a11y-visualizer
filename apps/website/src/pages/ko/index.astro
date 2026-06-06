@@ -1,8 +1,8 @@
 ---
 import SiteLayout from "../../layouts/SiteLayout.astro";
 import { createLocalT } from "../../lib/i18n";
-import pageDict from "./index.lang";
 import pageEn from "../index.lang";
+import pageDict from "./index.lang";
 
 export const prerender = true;
 const tPage = createLocalT(pageDict, pageEn);

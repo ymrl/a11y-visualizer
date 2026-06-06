@@ -1,23 +1,23 @@
 ---
-import TestPageLayout from "../../../layouts/TestPageLayout.astro";
-import Warning from "../../../components/tests/Warning.astro";
+import AriaHiddenTests from "../../../components/tests/AriaHiddenTests.astro";
 import Breadcrumb from "../../../components/tests/Breadcrumb.astro";
-import HeadingTests from "../../../components/tests/HeadingTests.astro";
-import ImageTests from "../../../components/tests/ImageTests.astro";
-import LinkTests from "../../../components/tests/LinkTests.astro";
+import { ja as breadcrumbJa } from "../../../components/tests/Breadcrumb.lang";
 import ButtonTests from "../../../components/tests/ButtonTests.astro";
 import FormControlTests from "../../../components/tests/FormControlTests.astro";
+import HeadingTests from "../../../components/tests/HeadingTests.astro";
+import ImageTests from "../../../components/tests/ImageTests.astro";
 import LayoutTests from "../../../components/tests/LayoutTests.astro";
+import LinkTests from "../../../components/tests/LinkTests.astro";
 import ListTests from "../../../components/tests/ListTests.astro";
-import TableTests from "../../../components/tests/TableTests.astro";
-import AriaHiddenTests from "../../../components/tests/AriaHiddenTests.astro";
 import LiveRegionTests from "../../../components/tests/LiveRegionTests.astro";
 import ShadowDomTests from "../../../components/tests/ShadowDomTests.astro";
-import { testCategories } from "../../../lib/testCategories";
+import TableTests from "../../../components/tests/TableTests.astro";
+import Warning from "../../../components/tests/Warning.astro";
+import TestPageLayout from "../../../layouts/TestPageLayout.astro";
 import { createLocalT } from "../../../lib/i18n";
-import pageJa from "../tests.lang";
+import { testCategories } from "../../../lib/testCategories";
 import pageEn from "../../tests.lang";
-import { ja as breadcrumbJa } from "../../../components/tests/Breadcrumb.lang";
+import pageJa from "../tests.lang";
 
 export const prerender = true;
 

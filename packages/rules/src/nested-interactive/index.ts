@@ -66,8 +66,7 @@ export const NestedInteractive: RuleObject = {
       // hrefのないa要素の先祖にa要素がないことの確認
       (tagName === "a" &&
         !element.hasAttribute("href") &&
-        element.parentElement &&
-        element.parentElement.closest("a"))
+        element.parentElement?.closest("a"))
     ) {
       return [
         {

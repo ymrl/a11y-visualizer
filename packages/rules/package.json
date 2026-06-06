@@ -21,9 +21,9 @@
   },
   "devDependencies": {
     "@biomejs/biome": "2.2.3",
-    "@vitest/browser": "^3.2.2",
+    "@vitest/browser": "^3.2.6",
     "playwright": "^1.52.0",
     "typescript": "^6.0.3",
-    "vitest": "^3.2.0"
+    "vitest": "^3.2.6"
   }
 }

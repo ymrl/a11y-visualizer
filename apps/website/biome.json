@@ -1,0 +1,7 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.4.16/schema.json",
+  "extends": ["../../biome.json"],
+  "files": {
+    "includes": ["**", "!dist", "!.astro", "!public"]
+  }
+}

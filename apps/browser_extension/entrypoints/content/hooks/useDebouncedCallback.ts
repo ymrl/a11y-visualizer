@@ -7,7 +7,7 @@ export const useDebouncedCallback = <
   deps: React.DependencyList,
 ): ((...args: Parameters<F>) => void) => {
   const timeoutIdRef = React.useRef<number | null>(null);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  // biome-ignore lint/correctness/useExhaustiveDependencies: the caller controls invalidation via deps; fn is intentionally excluded
   const callback = React.useCallback(fn, [...deps]);
 
   return React.useCallback(

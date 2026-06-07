@@ -82,7 +82,7 @@ async function main() {
           ? path.join("docs", path.dirname(withoutExt))
           : path.join("docs", lang, path.dirname(withoutExt)),
       );
-      const outPath = path.join(outDir, path.basename(withoutExt) + ".md");
+      const outPath = path.join(outDir, `${path.basename(withoutExt)}.md`);
       await fs.mkdir(outDir, { recursive: true });
 
       let raw = await fs.readFile(srcMd, "utf-8");
@@ -106,7 +106,7 @@ async function main() {
         .relative(outDir, layoutAbs)
         .split(path.sep)
         .join("/");
-      if (!layoutRel.startsWith(".")) layoutRel = "./" + layoutRel;
+      if (!layoutRel.startsWith(".")) layoutRel = `./${layoutRel}`;
 
       const frontmatter = `---\nlayout: ${layoutRel}\nlang: ${lang}\ntitle: ${titleFromH1}\n---\n\n`;
       await fs.writeFile(outPath, frontmatter + raw, "utf-8");

@@ -18,7 +18,7 @@
     "dom-accessibility-api": "^0.6.3"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.2.3",
+    "@biomejs/biome": "2.4.16",
     "@vitest/browser": "^3.2.6",
     "playwright": "^1.52.0",
     "typescript": "^6.0.3",

@@ -1,13 +1,15 @@
 ---
-import TestPageLayout from "../../layouts/TestPageLayout.astro";
-import Warning from "../../components/tests/Warning.astro";
 import Breadcrumb from "../../components/tests/Breadcrumb.astro";
+import Warning from "../../components/tests/Warning.astro";
+import TestPageLayout from "../../layouts/TestPageLayout.astro";
 import { testCategories } from "../../lib/testCategories";
 
 export const prerender = true;
+
+import { en as breadcrumbEn } from "../../components/tests/Breadcrumb.lang";
 import { createLocalT } from "../../lib/i18n";
 import pageEn from "../tests.lang";
-import { en as breadcrumbEn } from "../../components/tests/Breadcrumb.lang";
+
 const t = createLocalT(pageEn, pageEn);
 ---
 

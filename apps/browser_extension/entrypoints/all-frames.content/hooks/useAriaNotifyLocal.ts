@@ -28,7 +28,7 @@ export const useAriaNotifyLocal = ({
         announcement: string;
         priority: string;
       };
-      if (!detail || !detail.announcement) return;
+      if (!detail?.announcement) return;
 
       const level: LiveLevel =
         detail.priority === "high" ? "assertive" : "polite";

@@ -22,7 +22,7 @@ export default defineBackground({
 
     const loadEnabled = async (): Promise<boolean> => {
       const result = await browser.storage.local.get(ENABLED_KEY);
-      return result[ENABLED_KEY] ?? false;
+      return (result[ENABLED_KEY] as boolean | undefined) ?? false;
     };
 
     const saveEnabled = async (enabled: boolean): Promise<void> => {

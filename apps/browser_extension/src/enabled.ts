@@ -3,7 +3,7 @@ export const ENABLED_KEY = "__enabled__";
 
 export const loadEnabled = async (): Promise<boolean> => {
   const data = await browser.storage.local.get(ENABLED_KEY);
-  return data[ENABLED_KEY] ?? false;
+  return (data[ENABLED_KEY] as boolean | undefined) ?? false;
 };
 
 export const saveEnabled = async (enabled: boolean): Promise<void> => {

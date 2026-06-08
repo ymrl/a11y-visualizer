@@ -1,0 +1,83 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
+
+/*
+  Typography (@tailwindcss/typography) customizations.
+  Migrated from the former `theme.extend.typography` config to the CSS-first
+  approach: theming variables for what the plugin exposes, plus explicit
+  overrides for the parts that variables don't cover (per-level heading colors,
+  link hover, inline code chip styling).
+*/
+.prose {
+  --tw-prose-body: var(--color-zinc-700);
+  --tw-prose-headings: var(--color-teal-800);
+  --tw-prose-links: var(--color-teal-700);
+  --tw-prose-bold: var(--color-zinc-900);
+  --tw-prose-counters: var(--color-zinc-500);
+  --tw-prose-bullets: var(--color-zinc-500);
+  --tw-prose-hr: var(--color-zinc-200);
+  --tw-prose-quotes: var(--color-zinc-700);
+  --tw-prose-quote-borders: var(--color-teal-400);
+  --tw-prose-captions: var(--color-zinc-500);
+  --tw-prose-code: var(--color-zinc-800);
+
+  --tw-prose-invert-body: var(--color-zinc-300);
+  --tw-prose-invert-headings: var(--color-teal-200);
+  --tw-prose-invert-links: var(--color-teal-300);
+  --tw-prose-invert-bold: var(--color-zinc-100);
+  --tw-prose-invert-counters: var(--color-zinc-500);
+  --tw-prose-invert-bullets: var(--color-zinc-500);
+  --tw-prose-invert-hr: var(--color-zinc-700);
+  --tw-prose-invert-quotes: var(--color-zinc-300);
+  --tw-prose-invert-quote-borders: var(--color-teal-600);
+  --tw-prose-invert-captions: var(--color-zinc-500);
+  --tw-prose-invert-code: var(--color-zinc-100);
+}
+
+/* h1/h2 use --tw-prose-headings (teal-800); h3/h4 are one step lighter. */
+.prose :is(h3, h4) {
+  color: var(--color-teal-700);
+}
+
+.prose a:hover {
+  color: var(--color-teal-800);
+}
+
+/* Inline code rendered as a chip with background, padding and rounding. */
+.prose code {
+  background-color: var(--color-zinc-100);
+  padding: 0.15rem 0.35rem;
+  border-radius: 0.25rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  .prose :is(h3, h4) {
+    color: var(--color-teal-300);
+  }
+
+  .prose a:hover {
+    color: var(--color-teal-200);
+  }
+
+  .prose code {
+    background-color: var(--color-zinc-800);
+  }
+}

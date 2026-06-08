@@ -83,7 +83,7 @@ export const OptionsPage = () => {
             }
           }}
         >
-          <summary className="text-sm link text-teal-700 underline hover:enabled:text-teal-900 transition-colors dark:text-teal-400 hover:enabled:dark:text-teal-200 cursor-pointer">
+          <summary className="text-sm link text-teal-700 underline hover:enabled:text-teal-900 transition-colors dark:text-teal-400 dark:hover:enabled:text-teal-200 cursor-pointer">
             {t("optionsPage.resetSettings")}
           </summary>
           <div className="flex flex-col gap-2 pl-3 pt-2">
@@ -93,7 +93,7 @@ export const OptionsPage = () => {
             <div className="text-sm flex flex-row gap-2 flex-wrap">
               <button
                 type="button"
-                className="link text-teal-700 underline hover:enabled:text-teal-900 transition-colors dark:text-teal-400 hover:enabled:dark:text-teal-200"
+                className="link text-teal-700 underline hover:enabled:text-teal-900 transition-colors dark:text-teal-400 dark:hover:enabled:text-teal-200"
                 onClick={async () => {
                   await resetDefaultSettings();
                   setSettings(initialSettings);
@@ -104,7 +104,7 @@ export const OptionsPage = () => {
               </button>
               <button
                 type="button"
-                className="link text-teal-700 underline hover:enabled:text-teal-900 transition-colors dark:text-teal-400 hover:enabled:dark:text-teal-200"
+                className="link text-teal-700 underline hover:enabled:text-teal-900 transition-colors dark:text-teal-400 dark:hover:enabled:text-teal-200"
                 onClick={() => {
                   if (resetRef.current) {
                     resetRef.current.open = false;

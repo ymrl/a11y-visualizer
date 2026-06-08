@@ -6,7 +6,7 @@ import ExampleCard from "./ExampleCard.astro";
 import { en, ja } from "./FormControlTests.lang";
 
 const formClasses =
-  "border border-zinc-300 dark:border-zinc-600 rounded p-2 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 outline-offset-2";
+  "border border-zinc-300 dark:border-zinc-600 rounded-sm p-2 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 outline-offset-2";
 interface Props {
   lang?: string;
 }
@@ -398,7 +398,7 @@ const t = createLocalT(lang === "ja" ? ja : en, en);
   <div
     id="contenteditable-no-role"
     contenteditable="true"
-    class={`${formClasses} min-h-[3rem] border-yellow-300 dark:border-yellow-600`}
+    class={`${formClasses} min-h-12 border-yellow-300 dark:border-yellow-600`}
     style="outline: none;"
     aria-labelledby="contenteditable-no-role-label"
   >
@@ -420,7 +420,7 @@ const t = createLocalT(lang === "ja" ? ja : en, en);
     id="contenteditable-textbox"
     contenteditable="true"
     role="textbox"
-    class={`${formClasses} min-h-[3rem]`}
+    class={`${formClasses} min-h-12`}
     style="outline: none;"
     aria-multiline="false"
     aria-labelledby="contenteditable-textbox-label"
@@ -436,7 +436,7 @@ const t = createLocalT(lang === "ja" ? ja : en, en);
   <div
     contenteditable="true"
     role="textbox"
-    class={`${formClasses} min-h-[3rem] border-red-300 dark:border-red-600`}
+    class={`${formClasses} min-h-12 border-red-300 dark:border-red-600`}
     style="outline: none;"
     aria-multiline="false"
   >

@@ -1,4 +1,5 @@
 ---
+import "../styles/global.css";
 import { HeaderLink } from "../components/HeaderLink";
 import LanguageSelector from "../components/LanguageSelector";
 import { createLocalT } from "../lib/i18n";
@@ -47,7 +48,7 @@ const t = createLocalT(layoutDict, en);
   >
     <div class="min-h-screen">
       <header
-        class="bg-white dark:bg-zinc-900 shadow-sm border-b border-zinc-200 dark:border-zinc-700"
+        class="bg-white dark:bg-zinc-900 shadow-xs border-b border-zinc-200 dark:border-zinc-700"
       >
         <div class="max-w-6xl mx-auto px-4 sm:px-2 lg:px-8 py-2">
           <div
@@ -58,7 +59,7 @@ const t = createLocalT(layoutDict, en);
               title={t("title")}
               subtitle={t("subtitle")}
             />
-            <div class="flex-shrink-0 self-end sm:self-auto">
+            <div class="shrink-0 self-end sm:self-auto">
               <LanguageSelector currentLang={lang} path={path} client:load />
             </div>
           </div>

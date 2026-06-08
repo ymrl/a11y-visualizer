@@ -1,6 +1,7 @@
 /// <reference types="vitest" />
-import { defineConfig } from "vite";
+import { playwright } from "@vitest/browser-playwright";
 import react from "@vitejs/plugin-react";
+import { defineConfig } from "vitest/config";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -11,7 +12,7 @@ export default defineConfig({
   test: {
     browser: {
       enabled: true,
-      provider: "playwright",
+      provider: playwright(),
       headless: true,
       screenshotFailures: false,
       instances: [

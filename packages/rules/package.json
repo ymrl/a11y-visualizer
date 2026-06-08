@@ -24,6 +24,6 @@
     "@vitest/browser": "^3.2.6",
     "playwright": "^1.52.0",
     "typescript": "^6.0.3",
-    "vitest": "^3.2.6"
+    "vitest": "^4.1.0"
   }
 }

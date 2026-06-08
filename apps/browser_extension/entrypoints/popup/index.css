@@ -1,9 +1,4 @@
-/* biome-ignore lint:/suspicious/noUnknownAtRules TailwindCSS */
-@tailwind base;
-/* biome-ignore lint:/suspicious/noUnknownAtRules TailwindCSS */
-@tailwind components;
-/* biome-ignore lint:/suspicious/noUnknownAtRules TailwindCSS */
-@tailwind utilities;
+@import "tailwindcss";
 
 :root {
   color-scheme: light dark;

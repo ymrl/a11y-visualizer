@@ -24,19 +24,19 @@ const t = createLocalT(lang === "ja" ? ja : en, en);
   description={t("examples.semantic.html5.desc")}
 >
   <blockquote class="space-y-4 text-zinc-900 dark:text-zinc-100">
-    <header class="bg-teal-100 dark:bg-teal-900 p-3 rounded">
+    <header class="bg-teal-100 dark:bg-teal-900 p-3 rounded-sm">
       <strong>&lt;header&gt;</strong> - Page or section header
     </header>
-    <nav class="bg-blue-100 dark:bg-blue-900 p-3 rounded">
+    <nav class="bg-blue-100 dark:bg-blue-900 p-3 rounded-sm">
       <strong>&lt;nav&gt;</strong> - Navigation links
     </nav>
-    <main class="bg-green-100 dark:bg-green-900 p-3 rounded">
+    <main class="bg-green-100 dark:bg-green-900 p-3 rounded-sm">
       <strong>&lt;main&gt;</strong> - Main content area
     </main>
-    <aside class="bg-purple-100 dark:bg-purple-900 p-3 rounded">
+    <aside class="bg-purple-100 dark:bg-purple-900 p-3 rounded-sm">
       <strong>&lt;aside&gt;</strong> - Sidebar or supplementary content
     </aside>
-    <footer class="bg-gray-100 dark:bg-gray-900 p-3 rounded">
+    <footer class="bg-gray-100 dark:bg-gray-900 p-3 rounded-sm">
       <strong>&lt;footer&gt;</strong> - Page or section footer
     </footer>
   </blockquote>
@@ -51,22 +51,22 @@ const t = createLocalT(lang === "ja" ? ja : en, en);
   description={t("examples.landmarks.roles.desc")}
 >
   <blockquote class="space-y-4 text-zinc-900 dark:text-zinc-100">
-    <div role="banner" class="bg-teal-100 dark:bg-teal-900 p-3 rounded">
+    <div role="banner" class="bg-teal-100 dark:bg-teal-900 p-3 rounded-sm">
       <strong>role="banner"</strong> - Equivalent to &lt;header&gt;
     </div>
-    <div role="navigation" class="bg-blue-100 dark:bg-blue-900 p-3 rounded">
+    <div role="navigation" class="bg-blue-100 dark:bg-blue-900 p-3 rounded-sm">
       <strong>role="navigation"</strong> - Equivalent to &lt;nav&gt;
     </div>
-    <div role="main" class="bg-green-100 dark:bg-green-900 p-3 rounded">
+    <div role="main" class="bg-green-100 dark:bg-green-900 p-3 rounded-sm">
       <strong>role="main"</strong> - Equivalent to &lt;main&gt;
     </div>
     <div
       role="complementary"
-      class="bg-purple-100 dark:bg-purple-900 p-3 rounded"
+      class="bg-purple-100 dark:bg-purple-900 p-3 rounded-sm"
     >
       <strong>role="complementary"</strong> - Equivalent to &lt;aside&gt;
     </div>
-    <div role="contentinfo" class="bg-gray-100 dark:bg-gray-900 p-3 rounded">
+    <div role="contentinfo" class="bg-gray-100 dark:bg-gray-900 p-3 rounded-sm">
       <strong>role="contentinfo"</strong> - Equivalent to &lt;footer&gt;
     </div>
   </blockquote>
@@ -82,12 +82,12 @@ const t = createLocalT(lang === "ja" ? ja : en, en);
 >
   <div class="space-y-4 text-zinc-900 dark:text-zinc-100">
     <div
-      class="bg-red-50 dark:bg-red-900/20 border border-red-300 dark:border-red-600 p-3 rounded"
+      class="bg-red-50 dark:bg-red-900/20 border border-red-300 dark:border-red-600 p-3 rounded-sm"
     >
       <strong>&lt;div&gt;</strong> - Generic container (no semantic meaning)
     </div>
     <div
-      class="bg-red-50 dark:bg-red-900/20 border border-red-300 dark:border-red-600 p-3 rounded"
+      class="bg-red-50 dark:bg-red-900/20 border border-red-300 dark:border-red-600 p-3 rounded-sm"
     >
       <strong>&lt;div&gt;</strong> - Another generic container
     </div>
@@ -106,7 +106,7 @@ const t = createLocalT(lang === "ja" ? ja : en, en);
   description={t("examples.section.withHeading.desc")}
 >
   <section
-    class="bg-zinc-50 dark:bg-zinc-800 p-4 rounded border border-zinc-200 dark:border-zinc-700"
+    class="bg-zinc-50 dark:bg-zinc-800 p-4 rounded-sm border border-zinc-200 dark:border-zinc-700"
     aria-labelledby="landmark-sections-about-our-services-sections"
   >
     <h4
@@ -126,7 +126,7 @@ const t = createLocalT(lang === "ja" ? ja : en, en);
   description={t("examples.section.noHeading.desc")}
 >
   <section
-    class="bg-red-50 dark:bg-red-900/20 p-4 rounded border border-red-300 dark:border-red-600"
+    class="bg-red-50 dark:bg-red-900/20 p-4 rounded-sm border border-red-300 dark:border-red-600"
   >
     <p class="text-zinc-700 dark:text-zinc-300">
       <h4
@@ -151,7 +151,7 @@ const t = createLocalT(lang === "ja" ? ja : en, en);
   <iframe
     src="/a11y-visualizer/iframe-sample/"
     title="Sample content iframe"
-    class="w-full h-80 border border-zinc-300 dark:border-zinc-600 rounded"
+    class="w-full h-80 border border-zinc-300 dark:border-zinc-600 rounded-sm"
   >
   </iframe>
 </ExampleCard>
@@ -162,7 +162,7 @@ const t = createLocalT(lang === "ja" ? ja : en, en);
 >
   <iframe
     src="/a11y-visualizer/iframe-no-title/"
-    class="w-full h-80 border-red-300 dark:border-red-600 rounded border-2"
+    class="w-full h-80 border-red-300 dark:border-red-600 rounded-sm border-2"
   >
   </iframe>
 </ExampleCard>
@@ -174,7 +174,7 @@ const t = createLocalT(lang === "ja" ? ja : en, en);
   <iframe
     src="/a11y-visualizer/iframe-live-region/"
     title="iFrame containing a live region"
-    class="w-full h-80 border border-zinc-300 dark:border-zinc-600 rounded"
+    class="w-full h-80 border border-zinc-300 dark:border-zinc-600 rounded-sm"
   >
   </iframe>
 </ExampleCard>
@@ -186,7 +186,7 @@ const t = createLocalT(lang === "ja" ? ja : en, en);
   <iframe
     src="/a11y-visualizer/iframe-aria-notify/"
     title="iFrame containing ariaNotify"
-    class="w-full h-80 border border-zinc-300 dark:border-zinc-600 rounded"
+    class="w-full h-80 border border-zinc-300 dark:border-zinc-600 rounded-sm"
   >
   </iframe>
 </ExampleCard>
@@ -202,7 +202,7 @@ const t = createLocalT(lang === "ja" ? ja : en, en);
   <div class="space-y-4">
     <button
       id="open-dialog-btn"
-      class="bg-teal-700 text-white px-4 py-2 rounded hover:bg-teal-800 transition-colors"
+      class="bg-teal-700 text-white px-4 py-2 rounded-sm hover:bg-teal-800 transition-colors"
       onclick="document.getElementById('example-dialog').showModal()"
     >
       Open Dialog
@@ -221,7 +221,7 @@ const t = createLocalT(lang === "ja" ? ja : en, en);
         </p>
         <div class="flex gap-2">
           <button
-            class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition-colors"
+            class="bg-gray-500 text-white px-4 py-2 rounded-sm hover:bg-gray-600 transition-colors"
             onclick="document.getElementById('example-dialog').close()"
           >
             Close
@@ -258,13 +258,13 @@ const t = createLocalT(lang === "ja" ? ja : en, en);
       <div class="flex gap-2">
         <button
           id="modal-action-btn"
-          class="bg-teal-700 text-white px-4 py-2 rounded hover:bg-teal-800 transition-colors"
+          class="bg-teal-700 text-white px-4 py-2 rounded-sm hover:bg-teal-800 transition-colors"
         >
           Action
         </button>
         <button
           id="modal-close-btn"
-          class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition-colors"
+          class="bg-gray-500 text-white px-4 py-2 rounded-sm hover:bg-gray-600 transition-colors"
         >
           Close
         </button>
@@ -274,7 +274,7 @@ const t = createLocalT(lang === "ja" ? ja : en, en);
 
   <button
     id="open-custom-modal-btn"
-    class="bg-teal-700 text-white px-4 py-2 rounded hover:bg-teal-800 transition-colors"
+    class="bg-teal-700 text-white px-4 py-2 rounded-sm hover:bg-teal-800 transition-colors"
   >
     Open Custom Modal
   </button>

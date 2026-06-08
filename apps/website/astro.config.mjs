@@ -1,12 +1,11 @@
 import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
-import tailwind from "@astrojs/tailwind";
+import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "astro/config";
 
 export default defineConfig({
   site: "https://ymrl.github.io/a11y-visualizer/",
   integrations: [
-    tailwind(),
     react(),
     sitemap({
       filter: (page) => !page.includes("/iframe-"),
@@ -19,5 +18,8 @@ export default defineConfig({
   },
   build: {
     assets: "assets",
+  },
+  vite: {
+    plugins: [tailwindcss()],
   },
 });

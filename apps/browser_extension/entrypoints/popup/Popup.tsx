@@ -208,7 +208,7 @@ export const Popup = () => {
             {!isAndroidFirefox && (
               <button
                 type="button"
-                className="link text-teal-700 underline hover:enabled:text-teal-900 transition-colors dark:text-teal-400 hover:enabled:dark:text-teal-200"
+                className="link text-teal-700 underline hover:enabled:text-teal-900 transition-colors dark:text-teal-400 dark:hover:enabled:text-teal-200"
                 onClick={() => browser.runtime.openOptionsPage()}
               >
                 {t("popup.openExtensionOptions")}

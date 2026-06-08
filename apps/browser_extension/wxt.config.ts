@@ -1,3 +1,4 @@
+import { playwright } from "@vitest/browser-playwright";
 import { defineConfig } from "wxt";
 import pkg from "./package.json";
 
@@ -15,7 +16,7 @@ export default defineConfig({
     test: {
       browser: {
         enabled: true,
-        provider: "playwright",
+        provider: playwright(),
         headless: true,
         instances: [
           {

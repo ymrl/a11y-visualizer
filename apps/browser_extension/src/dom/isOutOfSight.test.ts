@@ -13,7 +13,8 @@ describe("isOutOfSight", () => {
     mockGetComputedStyle = vi.fn();
 
     // Mock getBoundingClientRect for elements
-    Element.prototype.getBoundingClientRect = mockGetBoundingClientRect;
+    Element.prototype.getBoundingClientRect =
+      mockGetBoundingClientRect as typeof Element.prototype.getBoundingClientRect;
 
     // Mock getComputedStyle and elementsFromPoint for window
     const mockWindow = {

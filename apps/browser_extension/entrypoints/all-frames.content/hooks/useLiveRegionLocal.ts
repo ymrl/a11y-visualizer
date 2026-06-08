@@ -7,7 +7,7 @@ import { computeAccessibleName } from "dom-accessibility-api";
 import React from "react";
 import { collectShadowRoots } from "../../../src/dom/collectShadowRoots";
 import { SettingsContext } from "../../content/contexts/SettingsContext";
-import { detectModals } from "../../content/dom/detectModals";
+import { isAnnouncementSuppressedByModal } from "../../content/dom/detectModals";
 import { createLiveRegionMessage } from "../../content/shared/protocol";
 import type { AnnouncementItem, LiveLevel } from "../../content/types";
 
@@ -148,16 +148,15 @@ export const useLiveRegionLocal = ({
         return;
       }
 
-      if (!announceOutOfModal && parentRef.current) {
-        const modals = detectModals(parentRef.current);
-        if (modals.length > 0) {
-          const isInsideModal = modals.some(
-            (modal) => modal.contains(alertElement) || modal === alertElement,
-          );
-          if (!isInsideModal) {
-            return;
-          }
-        }
+      if (
+        parentRef.current &&
+        isAnnouncementSuppressedByModal(
+          alertElement,
+          parentRef.current,
+          announceOutOfModal,
+        )
+      ) {
+        return;
       }
 
       processedAlertsRef.current.add(alertElement);
@@ -276,17 +275,15 @@ export const useLiveRegionLocal = ({
             return null;
           }
 
-          if (!announceOutOfModal && parentRef.current) {
-            const modals = detectModals(parentRef.current);
-            if (modals.length > 0) {
-              const isInsideModal = modals.some(
-                (modal) =>
-                  modal.contains(targetElement) || modal === targetElement,
-              );
-              if (!isInsideModal) {
-                return null;
-              }
-            }
+          if (
+            parentRef.current &&
+            isAnnouncementSuppressedByModal(
+              targetElement,
+              parentRef.current,
+              announceOutOfModal,
+            )
+          ) {
+            return null;
           }
 
           const liveRegionNode = closestNodeOfSelector(

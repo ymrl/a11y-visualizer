@@ -566,6 +566,35 @@ const t = createLocalT(lang === "ja" ? ja : en, en);
   </div>
 </ExampleCard>
 
+<ExampleCard
+  title={t("examples.ariaNotify.element.title")}
+  description={t("examples.ariaNotify.element.desc")}
+>
+  <div class="space-y-4">
+    <button
+      id="aria-notify-element-btn"
+      class="bg-teal-700 text-white px-4 py-2 rounded-sm hover:bg-teal-800 transition-colors"
+    >
+      Call element.ariaNotify
+    </button>
+  </div>
+</ExampleCard>
+
+<ExampleCard
+  title={t("examples.ariaNotify.hidden.title")}
+  description={t("examples.ariaNotify.hidden.desc")}
+>
+  <div class="space-y-4">
+    <button
+      id="aria-notify-hidden-btn"
+      class="bg-zinc-600 text-white px-4 py-2 rounded-sm hover:bg-zinc-700 transition-colors"
+    >
+      Call element.ariaNotify (excluded element)
+    </button>
+    <div id="aria-notify-hidden-target" aria-hidden="true" hidden></div>
+  </div>
+</ExampleCard>
+
 <CategorySectionTitle id="modal-live-regions"
   >{t("sections.modalLive.title")}</CategorySectionTitle
 >
@@ -1080,6 +1109,24 @@ const t = createLocalT(lang === "ja" ? ja : en, en);
         document.ariaNotify("Urgent notification via ariaNotify", {
           priority: "high",
         });
+      }
+    });
+
+  document
+    .getElementById("aria-notify-element-btn")
+    .addEventListener("click", (e) => {
+      const target = e.currentTarget;
+      if (typeof target.ariaNotify === "function") {
+        target.ariaNotify("Notification via element.ariaNotify");
+      }
+    });
+
+  document
+    .getElementById("aria-notify-hidden-btn")
+    .addEventListener("click", () => {
+      const target = document.getElementById("aria-notify-hidden-target");
+      if (target && typeof target.ariaNotify === "function") {
+        target.ariaNotify("This should NOT be announced (excluded element)");
       }
     });
 </script>

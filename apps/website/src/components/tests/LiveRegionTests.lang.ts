@@ -92,6 +92,14 @@ export const en = {
         title: "ariaNotify (high priority)",
         desc: 'Calls document.ariaNotify() with priority "high". High-priority notifications may interrupt current speech output.',
       },
+      element: {
+        title: "element.ariaNotify()",
+        desc: "Calls ariaNotify() on a specific element. Element.prototype.ariaNotify() notifies assistive technologies in the context of that element.",
+      },
+      hidden: {
+        title: "element.ariaNotify() on an excluded element",
+        desc: "Calls ariaNotify() on an element that is excluded from the accessibility tree (display:none / aria-hidden). It should NOT be announced, just like live regions in hidden elements.",
+      },
     },
     modalLive: {
       dialog: {
@@ -199,6 +207,15 @@ export const ja = {
       high: {
         title: 'ariaNotify（priority: "high"）',
         desc: 'document.ariaNotify() を priority "high" で呼び出します。高優先度の通知は現在の読み上げを中断する可能性があります。',
+      },
+      element: {
+        title: "element.ariaNotify()",
+        desc: "特定の要素に対して ariaNotify() を呼び出します。Element.prototype.ariaNotify() はその要素の文脈で支援技術へ通知します。",
+      },
+      hidden: {
+        title:
+          "アクセシビリティツリーから除外された要素での element.ariaNotify()",
+        desc: "アクセシビリティツリーから除外された要素（display:none / aria-hidden）に対して ariaNotify() を呼び出します。隠れた要素内のライブリージョンと同様に、通知されないはずです。",
       },
     },
     modalLive: {

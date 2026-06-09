@@ -36,7 +36,7 @@
     "interactiveModeHideLabels": "インタラクティブモードでラベルを隠す",
     "announceLiveRegions": "ライブリージョンをアナウンス",
     "announceAriaNotify": "ariaNotifyをアナウンス（β）",
-    "announceOutOfModal": "モーダル外のライブリージョンも通知",
+    "announceOutOfModal": "aria-modal外のライブリージョンも通知",
     "announcement": "アナウンス",
     "liveRegionDisplay": "ライブリージョン",
     "announcementSecondsPerCharacter": "スピード（秒/文字）",

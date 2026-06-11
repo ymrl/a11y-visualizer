@@ -2,6 +2,7 @@ import {
   getKnownRole,
   isHidden,
   isInAriaHidden,
+  isInInert,
 } from "@a11y-visualizer/dom-utils";
 import { computeAccessibleName } from "dom-accessibility-api";
 import React from "react";
@@ -143,6 +144,7 @@ export const useLiveRegionLocal = ({
       if (
         isHidden(alertElement) ||
         isInAriaHidden(alertElement) ||
+        isInInert(alertElement) ||
         isBusy(alertElement)
       ) {
         return;
@@ -270,6 +272,7 @@ export const useLiveRegionLocal = ({
             !targetElement ||
             isHidden(targetElement) ||
             isInAriaHidden(targetElement) ||
+            isInInert(targetElement) ||
             isBusy(targetElement)
           ) {
             return null;

@@ -23,6 +23,7 @@ export { isAriaHidden, isInAriaHidden } from "./isAriaHidden";
 export { isDefaultSize } from "./isDefaultSize";
 export { FOCUSABLE_SELECTOR, isFocusable } from "./isFocusable";
 export { isHidden } from "./isHidden";
+export { isInert, isInInert } from "./isInert";
 export { isInline } from "./isInline";
 export { isPresentationalChildren } from "./isPresentationalChildren";
 export { type KnownRole, knownRoles } from "./KnownRole";

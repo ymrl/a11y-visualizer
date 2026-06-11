@@ -1,0 +1,175 @@
+---
+import { createLocalT } from "../../lib/i18n";
+import CategorySectionTitle from "./CategorySectionTitle.astro";
+import CategoryTitle from "./CategoryTitle.astro";
+import ExampleCard from "./ExampleCard.astro";
+import { en, ja } from "./InertTests.lang";
+
+interface Props {
+  lang?: string;
+}
+const lang = (Astro.props as Props).lang || "en";
+const t = createLocalT(lang === "ja" ? ja : en, en);
+---
+
+<CategoryTitle id="inert">{t("title")}</CategoryTitle>
+<p class="text-zinc-700 dark:text-zinc-300 mb-6">{t("intro")}</p>
+
+<CategorySectionTitle id="inert-interactive"
+  >{t("sections.interactive.title")}</CategorySectionTitle
+>
+
+<ExampleCard
+  title={t("examples.interactive.link.title")}
+  description={t("examples.interactive.link.desc")}
+>
+  <div
+    inert
+    class="border border-zinc-300 dark:border-zinc-600 rounded-sm p-3"
+  >
+    <a
+      href="https://github.com/ymrl/a11y-visualizer"
+      class="text-teal-700 dark:text-teal-400 underline"
+    >
+      Accessibility Visualizer
+    </a>
+  </div>
+</ExampleCard>
+
+<ExampleCard
+  title={t("examples.interactive.button.title")}
+  description={t("examples.interactive.button.desc")}
+>
+  <div
+    inert
+    class="border border-zinc-300 dark:border-zinc-600 rounded-sm p-3"
+  >
+    <button
+      type="button"
+      class="bg-teal-700 text-white px-4 py-2 rounded-sm hover:bg-teal-800 transition-colors"
+    >
+      {t("examples.interactive.button.button")}
+    </button>
+  </div>
+</ExampleCard>
+
+<ExampleCard
+  title={t("examples.interactive.form.title")}
+  description={t("examples.interactive.form.desc")}
+>
+  <form
+    inert
+    class="border border-zinc-300 dark:border-zinc-600 rounded-sm p-3 space-y-3"
+  >
+    <div class="flex flex-col gap-1">
+      <label for="inert-form-name" class="text-zinc-900 dark:text-zinc-100">
+        {t("examples.interactive.form.nameLabel")}
+      </label>
+      <input
+        id="inert-form-name"
+        type="text"
+        class="border border-zinc-300 dark:border-zinc-600 rounded-sm p-2 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100"
+      />
+    </div>
+    <div class="flex items-center gap-2">
+      <input id="inert-form-agree" type="checkbox" />
+      <label for="inert-form-agree" class="text-zinc-900 dark:text-zinc-100">
+        {t("examples.interactive.form.agreeLabel")}
+      </label>
+    </div>
+    <button
+      type="submit"
+      class="bg-teal-700 text-white px-4 py-2 rounded-sm hover:bg-teal-800 transition-colors"
+    >
+      {t("examples.interactive.form.submit")}
+    </button>
+  </form>
+</ExampleCard>
+
+<CategorySectionTitle id="inert-live-regions"
+  >{t("sections.liveRegions.title")}</CategorySectionTitle
+>
+
+<ExampleCard
+  title={t("examples.attribute.liveRegion.title")}
+  description={t("examples.attribute.liveRegion.desc")}
+>
+  <div class="space-y-4">
+    <div
+      inert
+      class="border border-zinc-300 dark:border-zinc-600 rounded-sm p-3 space-y-3"
+    >
+      <p class="text-sm text-zinc-700 dark:text-zinc-300">
+        {t("examples.attribute.liveRegion.label")}
+      </p>
+      <div
+        id="inert-attr-region"
+        aria-live="polite"
+        class="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-sm border border-blue-200 dark:border-blue-700"
+      >
+        Ready
+      </div>
+    </div>
+    <button
+      class="bg-teal-700 text-white px-4 py-2 rounded-sm hover:bg-teal-800 transition-colors"
+      onclick="document.getElementById('inert-attr-region').textContent = 'Updated at ' + new Date().toLocaleTimeString()"
+    >
+      {t("examples.attribute.liveRegion.button")}
+    </button>
+  </div>
+</ExampleCard>
+
+<ExampleCard
+  title={t("examples.style.liveRegion.title")}
+  description={t("examples.style.liveRegion.desc")}
+>
+  <div class="space-y-4">
+    <div
+      style="interactivity: inert"
+      class="border border-zinc-300 dark:border-zinc-600 rounded-sm p-3 space-y-3"
+    >
+      <p class="text-sm text-zinc-700 dark:text-zinc-300">
+        {t("examples.style.liveRegion.label")}
+      </p>
+      <div
+        id="inert-style-region"
+        aria-live="polite"
+        class="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-sm border border-blue-200 dark:border-blue-700"
+      >
+        Ready
+      </div>
+    </div>
+    <button
+      class="bg-teal-700 text-white px-4 py-2 rounded-sm hover:bg-teal-800 transition-colors"
+      onclick="document.getElementById('inert-style-region').textContent = 'Updated at ' + new Date().toLocaleTimeString()"
+    >
+      {t("examples.style.liveRegion.button")}
+    </button>
+  </div>
+</ExampleCard>
+
+<ExampleCard
+  title={t("examples.ariaNotify.element.title")}
+  description={t("examples.ariaNotify.element.desc")}
+>
+  <div class="space-y-4">
+    <button
+      id="inert-aria-notify-btn"
+      class="bg-teal-700 text-white px-4 py-2 rounded-sm hover:bg-teal-800 transition-colors"
+    >
+      {t("examples.ariaNotify.element.button")}
+    </button>
+    <div id="inert-aria-notify-target" inert></div>
+  </div>
+</ExampleCard>
+
+<script>
+  document
+    .getElementById("inert-aria-notify-btn")
+    ?.addEventListener("click", () => {
+      const target = document.getElementById("inert-aria-notify-target");
+      if (target && typeof (target as any).ariaNotify === "function") {
+        (target as any).ariaNotify("Notification from an inert element");
+      }
+    });
+</script>

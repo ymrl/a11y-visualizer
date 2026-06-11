@@ -1,4 +1,8 @@
-import { isHidden, isInAriaHidden } from "@a11y-visualizer/dom-utils";
+import {
+  isHidden,
+  isInAriaHidden,
+  isInInert,
+} from "@a11y-visualizer/dom-utils";
 import { defineContentScript } from "#imports";
 
 const EVENT_NAME = "a11y-visualizer:aria-notify";
@@ -56,7 +60,7 @@ export default defineContentScript({
       ) {
         // aria-liveなどのライブリージョンと同様に、アクセシビリティツリーから
         // 除外されている要素では通知しない
-        if (!isHidden(this) && !isInAriaHidden(this)) {
+        if (!isHidden(this) && !isInAriaHidden(this) && !isInInert(this)) {
           dispatch(announcement, options);
         }
         if (origElementNotify) {

@@ -16,6 +16,7 @@
   max-height: 90vh;
   overflow: auto;
   list-style: none;
+  border: 0;
 }
 .Announcement {
   margin: 0;

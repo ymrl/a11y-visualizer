@@ -12,6 +12,15 @@ export const Announcements = ({
 }) => {
   const { liveRegionOpacityPercent, liveRegionFontSize } =
     React.useContext(SettingsContext);
+  const listRef = React.useRef<HTMLUListElement>(null);
+  React.useEffect(() => {
+    if (listRef.current) {
+      announcements.length > 0
+        ? listRef.current.showPopover()
+        : listRef.current.hidePopover();
+    }
+  }, [announcements.length]);
+
   return (
     <root.div mode="closed">
       <style>{Styles}</style>
@@ -22,6 +31,8 @@ export const Announcements = ({
           opacity:
             announcements.length > 0 ? liveRegionOpacityPercent / 100 : 0,
         }}
+        {...{ popover: "manual" }}
+        ref={listRef}
       >
         {announcements.map((announcement) => (
           <li

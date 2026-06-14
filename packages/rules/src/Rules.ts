@@ -14,6 +14,7 @@ import { Hgroup } from "./hgroup";
 import { IdReference } from "./id-reference";
 import { IframeName } from "./iframe-name";
 import { ImageName } from "./image-name";
+import { Inert } from "./inert";
 import { LabelAssociatedControl } from "./label-associated-control";
 import { Landmark } from "./landmark";
 import { Lang } from "./lang";
@@ -68,4 +69,5 @@ export const Rules = [
   AbstractRole,
   AriaAttributes,
   TabIndex,
+  Inert,
 ] as const;

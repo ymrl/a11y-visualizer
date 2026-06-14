@@ -6,6 +6,7 @@ import ButtonTests from "../../../components/tests/ButtonTests.astro";
 import FormControlTests from "../../../components/tests/FormControlTests.astro";
 import HeadingTests from "../../../components/tests/HeadingTests.astro";
 import ImageTests from "../../../components/tests/ImageTests.astro";
+import InertTests from "../../../components/tests/InertTests.astro";
 import LayoutTests from "../../../components/tests/LayoutTests.astro";
 import LinkTests from "../../../components/tests/LinkTests.astro";
 import ListTests from "../../../components/tests/ListTests.astro";
@@ -63,5 +64,6 @@ const categoryName = t(`categories.headings.${dictKey}`);
   {category === "tables" && <TableTests lang="ja" />}
   {category === "aria-hidden" && <AriaHiddenTests lang="ja" />}
   {category === "live-regions" && <LiveRegionTests lang="ja" />}
+  {category === "inert" && <InertTests lang="ja" />}
   {category === "shadow-dom" && <ShadowDomTests lang="ja" />}
 </TestPageLayout>

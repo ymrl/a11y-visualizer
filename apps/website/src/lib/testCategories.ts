@@ -9,6 +9,7 @@ export const testCategories = [
   { slug: "tables", dictKey: "tables" },
   { slug: "aria-hidden", dictKey: "ariaHidden" },
   { slug: "live-regions", dictKey: "liveRegions" },
+  { slug: "inert", dictKey: "inert" },
   { slug: "shadow-dom", dictKey: "shadowDom" },
 ] as const;
 

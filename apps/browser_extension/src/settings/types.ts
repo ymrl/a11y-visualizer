@@ -40,6 +40,7 @@ export type Settings = {
   tipOpacityPercent: number;
   activeTipOpacityPercent: number;
   liveRegionOpacityPercent: number;
+  liveRegionTextOpacityPercent: number;
   tipFontSize: number;
   liveRegionFontSize: number;
   elementTypeMode: ElementTypeMode;

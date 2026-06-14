@@ -10,8 +10,11 @@ export const Announcements = ({
 }: {
   announcements: AnnouncementItem[];
 }) => {
-  const { liveRegionOpacityPercent, liveRegionFontSize } =
-    React.useContext(SettingsContext);
+  const {
+    liveRegionOpacityPercent,
+    liveRegionTextOpacityPercent,
+    liveRegionFontSize,
+  } = React.useContext(SettingsContext);
   const listRef = React.useRef<HTMLUListElement>(null);
   React.useEffect(() => {
     if (listRef.current) {
@@ -28,8 +31,8 @@ export const Announcements = ({
         className="AnouncementsList"
         style={{
           fontSize: `${liveRegionFontSize}px`,
-          opacity:
-            announcements.length > 0 ? liveRegionOpacityPercent / 100 : 0,
+          backgroundColor: `rgba(0, 0, 0, ${liveRegionOpacityPercent / 100})`,
+          color: `rgba(255, 255, 255, ${liveRegionTextOpacityPercent / 100})`,
         }}
         {...{ popover: "manual" }}
         ref={listRef}

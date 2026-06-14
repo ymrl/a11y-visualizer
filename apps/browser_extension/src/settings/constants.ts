@@ -41,6 +41,7 @@ export const initialSettings: Settings = {
   tipOpacityPercent: 30,
   activeTipOpacityPercent: 100,
   liveRegionOpacityPercent: 50,
+  liveRegionTextOpacityPercent: 100,
   tipFontSize: 10,
   liveRegionFontSize: isAndroidFirefox ? 24 : 48,
   elementTypeMode: {

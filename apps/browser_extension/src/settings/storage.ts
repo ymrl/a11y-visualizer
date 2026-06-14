@@ -82,6 +82,9 @@ function migrateLegacySettings(settings: unknown): Settings {
       liveRegionOpacityPercent:
         (settingsObj.liveRegionOpacityPercent as number) ??
         initialSettings.liveRegionOpacityPercent,
+      liveRegionTextOpacityPercent:
+        (settingsObj.liveRegionTextOpacityPercent as number) ??
+        initialSettings.liveRegionTextOpacityPercent,
       tipFontSize:
         (settingsObj.tipFontSize as number) ?? initialSettings.tipFontSize,
       liveRegionFontSize:

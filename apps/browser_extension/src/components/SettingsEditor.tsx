@@ -560,6 +560,35 @@ const DisplaySettingsSection = ({
               disabled={disabled}
             />
           </div>
+          <div className="flex flex-col gap-1 items-stretch">
+            <div className="flex flex-row gap-2 items-center justify-between">
+              <label
+                className="text-xs shrink-0"
+                htmlFor={`${id}-liveRegionTextOpacityPercent`}
+              >
+                {t("settings.liveRegionTextOpacityPercent")}
+              </label>
+              <span>
+                <span className="text-sm font-bold shrink">
+                  {settings.liveRegionTextOpacityPercent}
+                </span>
+                <span className="text-xs">%</span>
+              </span>
+            </div>
+            <input
+              id={`${id}-liveRegionTextOpacityPercent`}
+              className="accent-teal-600 dark:accent-teal-400"
+              type="range"
+              min={0}
+              max={100}
+              step={1}
+              value={settings.liveRegionTextOpacityPercent}
+              onChange={(e) =>
+                handleChangeNumber("liveRegionTextOpacityPercent", e)
+              }
+              disabled={disabled}
+            />
+          </div>
           <label className="flex flex-row gap-1 items-center justify-between">
             <span className="shrink text-xs">
               {t("settings.liveRegionFontSize")}

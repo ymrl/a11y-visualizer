@@ -607,6 +607,101 @@ describe("Table", () => {
       expect(headers_5_1.find((c) => c.id === "cell-0-1")).toBeDefined();
       expect(headers_5_1).toHaveLength(1);
     });
+
+    test("rowgroup header is excluded from cells to its left (WHATWG example)", () => {
+      // https://html.spec.whatwg.org/multipage/tables.html
+      // 行グループヘッダー(scope=rowgroup)は、自分より左の列(最初のID列)には適用されない
+      const table = document.createElement("table");
+      table.innerHTML = `
+        <thead>
+          <tr> <th id="h-id">ID</th> <th id="h-meas">Measurement</th> <th id="h-avg">Average</th> <th id="h-max">Maximum</th> </tr>
+        </thead>
+        <tbody>
+          <tr> <td id="c-cats-id"></td> <th id="h-cats" scope="rowgroup">Cats</th> <td></td> <td></td> </tr>
+          <tr> <td id="c-93">93</td> <th id="h-legs1" scope="row">Legs</th> <td id="c-35">3.5</td> <td id="c-4">4</td> </tr>
+          <tr> <td id="c-10">10</td> <th id="h-tails1" scope="row">Tails</th> <td id="c-1a">1</td> <td id="c-1b">1</td> </tr>
+        </tbody>
+        <tbody>
+          <tr> <td id="c-eng-id"></td> <th id="h-eng" scope="rowgroup">English speakers</th> <td></td> <td></td> </tr>
+          <tr> <td id="c-32">32</td> <th id="h-legs2" scope="row">Legs</th> <td id="c-267">2.67</td> <td id="c-4b">4</td> </tr>
+          <tr> <td id="c-35b">35</td> <th id="h-tails2" scope="row">Tails</th> <td id="c-033">0.33</td> <td id="c-1c">1</td> </tr>
+        </tbody>
+      `;
+      const result = new Table(table);
+      const byId = (id: string) =>
+        result.getCell(table.querySelector(`#${id}`) as Element) as NonNullable<
+          ReturnType<typeof result.getCell>
+        >;
+
+      // ID列(x=0)のセルには rowgroup ヘッダー "Cats" は適用されない。
+      // 行ヘッダー "Legs"(x=1, scope=row) も右方向にしか効かないので適用されず、列ヘッダー "ID" のみ。
+      const headers93 = result.getHeaderElements(byId("c-93")).map((e) => e.id);
+      expect(headers93).not.toContain("h-cats");
+      expect(headers93).not.toContain("h-legs1");
+      expect(headers93).toContain("h-id");
+      expect(headers93).toHaveLength(1);
+
+      // Average列(x=2)のセルには "Cats" が適用される
+      const headers35 = result.getHeaderElements(byId("c-35")).map((e) => e.id);
+      expect(headers35).toContain("h-cats");
+      expect(headers35).toContain("h-avg");
+      expect(headers35).toContain("h-legs1");
+      expect(headers35).toHaveLength(3);
+
+      // 2つ目の行グループのヘッダー "English speakers" は1つ目の行グループのセルには適用されない
+      expect(headers35).not.toContain("h-eng");
+      const headers267 = result
+        .getHeaderElements(byId("c-267"))
+        .map((e) => e.id);
+      expect(headers267).toContain("h-eng");
+      expect(headers267).not.toContain("h-cats");
+    });
+
+    test("colgroup header is excluded from cells to its left", () => {
+      // 列グループヘッダー(scope=colgroup)も、自分より左の列には適用されない
+      const table = document.createElement("table");
+      table.innerHTML = `
+        <colgroup span="1"></colgroup>
+        <colgroup span="3"></colgroup>
+        <thead>
+          <tr>
+            <th id="h-0-0">0-0</th>
+            <td id="c-0-1"></td>
+            <th id="h-0-2" scope="colgroup">grp</th>
+            <td id="c-0-3"></td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td id="c-1-0">1-0</td>
+            <td id="c-1-1">1-1</td>
+            <td id="c-1-2">1-2</td>
+            <td id="c-1-3">1-3</td>
+          </tr>
+        </tbody>
+      `;
+      const result = new Table(table);
+      const byId = (id: string) =>
+        result.getCell(table.querySelector(`#${id}`) as Element) as NonNullable<
+          ReturnType<typeof result.getCell>
+        >;
+
+      // x=1 のセルは colgroup ヘッダー(x=2)より左なので適用されない
+      const headers11 = result
+        .getHeaderElements(byId("c-1-1"))
+        .map((e) => e.id);
+      expect(headers11).not.toContain("h-0-2");
+
+      // x=2 / x=3 のセルには colgroup ヘッダーが適用される
+      const headers12 = result
+        .getHeaderElements(byId("c-1-2"))
+        .map((e) => e.id);
+      expect(headers12).toContain("h-0-2");
+      const headers13 = result
+        .getHeaderElements(byId("c-1-3"))
+        .map((e) => e.id);
+      expect(headers13).toContain("h-0-2");
+    });
   });
 });
 

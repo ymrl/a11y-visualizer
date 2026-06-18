@@ -326,7 +326,7 @@ export class Table {
   };
 
   getRowGroupHeaderElements = (cell: Cell): Element[] => {
-    const { positionY, element } = cell;
+    const { positionY, positionX, sizeX, sizeY, element } = cell;
     const rowGroup = this.rowGroups.find(
       (group) =>
         group.positionY <= positionY &&
@@ -338,8 +338,12 @@ export class Table {
         row.filter(
           (c) =>
             c.headerScope === "rowgroup" &&
+            // 同じ行グループに属するヘッダー
             c.positionY < rowGroup.positionY + rowGroup.sizeY &&
-            c.positionY + c.sizeY > rowGroup.positionY,
+            c.positionY + c.sizeY > rowGroup.positionY &&
+            // 仕様の座標制約: ヘッダーは対象セルの右端・下端より右下にはみ出さない
+            c.positionX <= positionX + sizeX - 1 &&
+            c.positionY <= positionY + sizeY - 1,
         ),
       )
       .map((c) => c.element)
@@ -388,7 +392,7 @@ export class Table {
   };
 
   getColGroupHeaderElements = (cell: Cell): Element[] => {
-    const { positionY, positionX, element } = cell;
+    const { positionY, positionX, sizeX, sizeY, element } = cell;
     const colGroup = this.colGroups.find(
       (group) =>
         group.positionX <= positionX &&
@@ -399,10 +403,13 @@ export class Table {
       .flatMap((row) =>
         row.filter(
           (c) =>
-            c.positionY < positionY &&
             c.headerScope === "colgroup" &&
+            // 同じ列グループに属するヘッダー
             c.positionX < colGroup.positionX + colGroup.sizeX &&
-            c.positionX + c.sizeX > colGroup.positionX,
+            c.positionX + c.sizeX > colGroup.positionX &&
+            // 仕様の座標制約: ヘッダーは対象セルの右端・下端より右下にはみ出さない
+            c.positionX <= positionX + sizeX - 1 &&
+            c.positionY <= positionY + sizeY - 1,
         ),
       )
       .map((c) => c.element)

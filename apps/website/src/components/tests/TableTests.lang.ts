@@ -32,6 +32,8 @@ export const en = {
       rowGroupHeaders: {
         title: 'Row group headers (scope="rowgroup")',
         desc: '✅ scope="rowgroup" headers (Cats, English speakers) apply to every cell in their row group except cells in the columns to their left. Note that the row headers (Legs, Tails) are placed in the second column, not the leftmost one.',
+        credit:
+          'This table is from the <a href="https://html.spec.whatwg.org/multipage/tables.html" class="underline" target="_blank" rel="noopener noreferrer">HTML Standard</a> by WHATWG, used under <a href="https://creativecommons.org/licenses/by/4.0/" class="underline" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>.',
       },
       colGroupHeaders: {
         title: 'Column group headers (scope="colgroup")',
@@ -79,6 +81,8 @@ export const ja = {
       rowGroupHeaders: {
         title: '行グループの見出し（scope="rowgroup"）',
         desc: '✅ scope="rowgroup" の見出し（Cats、English speakers）は、その行グループ内で自分より左の列を除くすべてのセルに適用されます。行見出し（Legs、Tails）が左端ではなく2列目に置かれている点にも注目してください。',
+        credit:
+          'この表は WHATWG による <a href="https://html.spec.whatwg.org/multipage/tables.html" class="underline" target="_blank" rel="noopener noreferrer">HTML Standard</a> から引用したもので、<a href="https://creativecommons.org/licenses/by/4.0/" class="underline" target="_blank" rel="noopener noreferrer">CC BY 4.0</a> のもとで利用しています。',
       },
       colGroupHeaders: {
         title: '列グループの見出し（scope="colgroup"）',

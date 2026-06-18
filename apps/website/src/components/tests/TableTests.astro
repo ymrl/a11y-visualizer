@@ -15,6 +15,8 @@ const tableClasses =
   "border-collapse border border-zinc-300 dark:border-zinc-600";
 const cellClasses =
   "border border-zinc-300 dark:border-zinc-600 p-2 text-zinc-900 dark:text-zinc-100";
+const colHeaderClasses = `${cellClasses} bg-zinc-100 dark:bg-zinc-700 font-bold`;
+const rowHeaderClasses = `${cellClasses} bg-zinc-50 dark:bg-zinc-800 font-bold`;
 ---
 
 <CategoryTitle id="tables">{t("title")}</CategoryTitle>
@@ -163,6 +165,126 @@ const cellClasses =
       <tr>
         <td class={cellClasses}>Bob</td>
         <td class={cellClasses}>Marketing</td>
+      </tr>
+    </tbody>
+  </table>
+</ExampleCard>
+
+<CategorySectionTitle id="table-complex"
+  >{t("sections.complex.title")}</CategorySectionTitle
+>
+
+<ExampleCard
+  title={t("examples.complex.rowGroupHeaders.title")}
+  description={t("examples.complex.rowGroupHeaders.desc")}
+>
+  <table class={tableClasses}>
+    <thead>
+      <tr>
+        <th scope="col" class={colHeaderClasses}>ID</th>
+        <th scope="col" class={colHeaderClasses}>Measurement</th>
+        <th scope="col" class={colHeaderClasses}>Average</th>
+        <th scope="col" class={colHeaderClasses}>Maximum</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class={cellClasses}></td>
+        <th scope="rowgroup" class={rowHeaderClasses}>Cats</th>
+        <td class={cellClasses}></td>
+        <td class={cellClasses}></td>
+      </tr>
+      <tr>
+        <td class={cellClasses}>93</td>
+        <th scope="row" class={rowHeaderClasses}>Legs</th>
+        <td class={cellClasses}>3.5</td>
+        <td class={cellClasses}>4</td>
+      </tr>
+      <tr>
+        <td class={cellClasses}>10</td>
+        <th scope="row" class={rowHeaderClasses}>Tails</th>
+        <td class={cellClasses}>1</td>
+        <td class={cellClasses}>1</td>
+      </tr>
+    </tbody>
+    <tbody>
+      <tr>
+        <td class={cellClasses}></td>
+        <th scope="rowgroup" class={rowHeaderClasses}>English speakers</th>
+        <td class={cellClasses}></td>
+        <td class={cellClasses}></td>
+      </tr>
+      <tr>
+        <td class={cellClasses}>32</td>
+        <th scope="row" class={rowHeaderClasses}>Legs</th>
+        <td class={cellClasses}>2.67</td>
+        <td class={cellClasses}>4</td>
+      </tr>
+      <tr>
+        <td class={cellClasses}>35</td>
+        <th scope="row" class={rowHeaderClasses}>Tails</th>
+        <td class={cellClasses}>0.33</td>
+        <td class={cellClasses}>1</td>
+      </tr>
+    </tbody>
+  </table>
+</ExampleCard>
+
+<ExampleCard
+  title={t("examples.complex.colGroupHeaders.title")}
+  description={t("examples.complex.colGroupHeaders.desc")}
+>
+  <table class={tableClasses}>
+    <colgroup></colgroup>
+    <colgroup span="2"></colgroup>
+    <thead>
+      <tr>
+        <td class={cellClasses}></td>
+        <th scope="colgroup" colspan="2" class={colHeaderClasses}>Sales</th>
+      </tr>
+      <tr>
+        <th scope="col" class={colHeaderClasses}>Month</th>
+        <th scope="col" class={colHeaderClasses}>Online</th>
+        <th scope="col" class={colHeaderClasses}>Store</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row" class={rowHeaderClasses}>January</th>
+        <td class={cellClasses}>120</td>
+        <td class={cellClasses}>340</td>
+      </tr>
+      <tr>
+        <th scope="row" class={rowHeaderClasses}>February</th>
+        <td class={cellClasses}>150</td>
+        <td class={cellClasses}>310</td>
+      </tr>
+    </tbody>
+  </table>
+</ExampleCard>
+
+<ExampleCard
+  title={t("examples.complex.rowHeaderNotFirst.title")}
+  description={t("examples.complex.rowHeaderNotFirst.desc")}
+>
+  <table class={tableClasses}>
+    <thead>
+      <tr>
+        <th scope="col" class={colHeaderClasses}>Rank</th>
+        <th scope="col" class={colHeaderClasses}>Country</th>
+        <th scope="col" class={colHeaderClasses}>Capital</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class={cellClasses}>1</td>
+        <th scope="row" class={rowHeaderClasses}>Japan</th>
+        <td class={cellClasses}>Tokyo</td>
+      </tr>
+      <tr>
+        <td class={cellClasses}>2</td>
+        <th scope="row" class={rowHeaderClasses}>France</th>
+        <td class={cellClasses}>Paris</td>
       </tr>
     </tbody>
   </table>

@@ -609,7 +609,10 @@ describe("Table", () => {
     });
 
     test("rowgroup header is excluded from cells to its left (WHATWG example)", () => {
+      // この表は WHATWG による HTML Standard から引用したもので、CC BY 4.0 のもとで利用している
+      // This table is from the HTML Standard by WHATWG, used under CC BY 4.0.
       // https://html.spec.whatwg.org/multipage/tables.html
+      // https://creativecommons.org/licenses/by/4.0/
       // 行グループヘッダー(scope=rowgroup)は、自分より左の列(最初のID列)には適用されない
       const table = document.createElement("table");
       table.innerHTML = `

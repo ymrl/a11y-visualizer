@@ -46,7 +46,7 @@
     "postcss": "^8.5.10",
     "tailwindcss": "^4.3.0",
     "typescript": "^6.0.3",
-    "vite": "^6.4.2",
+    "vite": "^6.4.3",
     "vitest": "^4.1.8",
     "wxt": "^0.20.13"
   }

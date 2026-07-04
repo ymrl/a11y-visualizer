@@ -11,6 +11,7 @@ import { SettingsContext } from "../../content/contexts/SettingsContext";
 import { isAnnouncementSuppressedByModal } from "../../content/dom/detectModals";
 import { createLiveRegionMessage } from "../../content/shared/protocol";
 import type { AnnouncementItem, LiveLevel } from "../../content/types";
+import { getAnnounceableText, resolveLiveLevel } from "./liveRegion";
 
 const LIVEREGION_SELECTOR =
   "output, [role~='status'], [role~='alert'], [role~='log'], [aria-live]:not([aria-live='off'])";
@@ -150,6 +151,13 @@ export const useLiveRegionLocal = ({
         return;
       }
 
+      // 明示的な aria-live がロールの暗黙値を上書きする。実効ロールが
+      // ライブリージョンでない場合や off の場合は通知しない
+      const level = resolveLiveLevel(alertElement);
+      if (level === "off") {
+        return;
+      }
+
       if (
         parentRef.current &&
         isAnnouncementSuppressedByModal(
@@ -168,16 +176,18 @@ export const useLiveRegionLocal = ({
       let content: string;
       if (isAtomic) {
         const name = computeAccessibleName(alertElement);
-        content = [name, alertElement.textContent].filter(Boolean).join(" ");
+        content = [name, getAnnounceableText(alertElement)]
+          .filter(Boolean)
+          .join(" ");
       } else {
-        content = alertElement.textContent || "";
+        content = getAnnounceableText(alertElement);
       }
 
       if (content.trim() === "") {
         content = computeAccessibleName(alertElement) || "";
       }
 
-      addAnnouncement(content, "assertive");
+      addAnnouncement(content, level);
     },
     [addAnnouncement, parentRef, announceOutOfModal],
   );
@@ -296,15 +306,13 @@ export const useLiveRegionLocal = ({
           if (!liveRegionNode) {
             return null;
           }
-          const ariaLiveAttribute = liveRegionNode?.getAttribute("aria-live");
-          if (ariaLiveAttribute === "off") {
+          // 明示的な aria-live がロールの暗黙値を上書きする。無効値や
+          // 実効ロールがライブリージョンでないものは off として扱う
+          const level = resolveLiveLevel(liveRegionNode);
+          if (level === "off") {
             return null;
           }
-          const role = liveRegionNode && getKnownRole(liveRegionNode);
-          const isAssertive =
-            liveRegionNode &&
-            (ariaLiveAttribute === "assertive" || role === "alert");
-          const level = isAssertive ? "assertive" : "polite";
+          const role = getKnownRole(liveRegionNode);
           const atomicNode =
             role === "alert" || role === "status"
               ? liveRegionNode
@@ -318,14 +326,14 @@ export const useLiveRegionLocal = ({
               return null;
             }
             atomicNodes.push(atomicNode);
-            const name =
-              liveRegionNode && computeAccessibleName(liveRegionNode);
-            const content = atomicNode.textContent;
-            if (!content) {
+            // 読み上げ対象は atomicNode なので名前も atomicNode から取る
+            const name = computeAccessibleName(atomicNode);
+            const text = getAnnounceableText(atomicNode);
+            if (!text) {
               return null;
             }
             return {
-              content: [name, atomicNode.textContent].filter(Boolean).join(" "),
+              content: [name, text].filter(Boolean).join(" "),
               level,
             };
           }
@@ -340,13 +348,14 @@ export const useLiveRegionLocal = ({
           const contents = [
             (r.removedNodes.length === 0 &&
               r.addedNodes.length === 0 &&
-              targetNode?.textContent) ||
+              targetNode &&
+              getAnnounceableText(targetNode)) ||
               "",
-            ...[...(removals ? r.removedNodes : [])].map(
-              (n) => n.textContent || "",
+            ...[...(removals ? r.removedNodes : [])].map((n) =>
+              getAnnounceableText(n),
             ),
-            ...[...(additions ? r.addedNodes : [])].map(
-              (n) => n.textContent || "",
+            ...[...(additions ? r.addedNodes : [])].map((n) =>
+              getAnnounceableText(n),
             ),
           ].filter(Boolean);
           return contents.length > 0

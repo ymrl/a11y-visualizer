@@ -179,7 +179,9 @@ export const ARIA_ATTRIBUTE_ROLES: Record<AriaAttribute, string[] | "all"> = {
     "rowheader",
     "searchbox",
     "select",
+    "spinbutton",
     "tablist",
+    "toolbar",
     "tree",
     "treegrid",
     "treeitem",
@@ -246,7 +248,24 @@ export const ARIA_ATTRIBUTE_ROLES: Record<AriaAttribute, string[] | "all"> = {
     "treeitem",
   ],
   "aria-dropeffect": "all", // global (deprecated)
-  "aria-errormessage": "all", // global
+  // Not global in ARIA 1.2; supported on the same roles as aria-invalid
+  "aria-errormessage": [
+    "application",
+    "checkbox",
+    "combobox",
+    "gridcell",
+    "listbox",
+    "radiogroup",
+    "slider",
+    "spinbutton",
+    "textbox",
+    "tree",
+    "columnheader",
+    "rowheader",
+    "searchbox",
+    "switch",
+    "treegrid",
+  ],
   "aria-expanded": [
     "application",
     "button",
@@ -267,7 +286,24 @@ export const ARIA_ATTRIBUTE_ROLES: Record<AriaAttribute, string[] | "all"> = {
   ],
   "aria-flowto": "all", // global
   "aria-grabbed": "all", // global (deprecated)
-  "aria-haspopup": "all", // global
+  // Not global in ARIA 1.2; supported on widget-like roles that can trigger popups
+  "aria-haspopup": [
+    "application",
+    "button",
+    "columnheader",
+    "combobox",
+    "gridcell",
+    "link",
+    "menuitem",
+    "menuitemcheckbox",
+    "menuitemradio",
+    "rowheader",
+    "searchbox",
+    "slider",
+    "tab",
+    "textbox",
+    "treeitem",
+  ],
   "aria-hidden": "all", // global
   "aria-invalid": [
     "application",
@@ -291,7 +327,7 @@ export const ARIA_ATTRIBUTE_ROLES: Record<AriaAttribute, string[] | "all"> = {
   "aria-labelledby": "all", // global
   "aria-level": ["heading", "listitem", "row", "treeitem"],
   "aria-live": "all", // global
-  "aria-modal": ["dialog"],
+  "aria-modal": ["dialog", "alertdialog"],
   "aria-multiline": ["textbox", "searchbox"],
   "aria-multiselectable": ["grid", "listbox", "tablist", "tree", "treegrid"],
   "aria-orientation": [
@@ -383,6 +419,7 @@ export const ARIA_ATTRIBUTE_ROLES: Record<AriaAttribute, string[] | "all"> = {
   ],
   "aria-sort": ["columnheader", "rowheader"],
   "aria-valuemax": [
+    "meter",
     "progressbar",
     "scrollbar",
     "separator",
@@ -390,6 +427,7 @@ export const ARIA_ATTRIBUTE_ROLES: Record<AriaAttribute, string[] | "all"> = {
     "spinbutton",
   ],
   "aria-valuemin": [
+    "meter",
     "progressbar",
     "scrollbar",
     "separator",
@@ -397,6 +435,7 @@ export const ARIA_ATTRIBUTE_ROLES: Record<AriaAttribute, string[] | "all"> = {
     "spinbutton",
   ],
   "aria-valuenow": [
+    "meter",
     "progressbar",
     "scrollbar",
     "separator",
@@ -404,6 +443,7 @@ export const ARIA_ATTRIBUTE_ROLES: Record<AriaAttribute, string[] | "all"> = {
     "spinbutton",
   ],
   "aria-valuetext": [
+    "meter",
     "progressbar",
     "scrollbar",
     "separator",
@@ -417,6 +457,16 @@ export const ARIA_ATTRIBUTE_ROLES: Record<AriaAttribute, string[] | "all"> = {
 // ============================================================================
 
 /**
+ * Integer attributes whose value may be -1 to indicate that the total is unknown.
+ * (ARIA 1.2: aria-colcount / aria-rowcount / aria-setsize)
+ */
+const INTEGER_ATTRIBUTES_ALLOWING_UNKNOWN: AriaAttribute[] = [
+  "aria-colcount",
+  "aria-rowcount",
+  "aria-setsize",
+];
+
+/**
  * Validates the value of any ARIA attribute.
  */
 export const validateAriaAttributeValue = (
@@ -426,8 +476,16 @@ export const validateAriaAttributeValue = (
   const validValues = ARIA_ATTRIBUTE_VALUES[attribute];
 
   if (validValues === "integer") {
-    const num = parseInt(value.trim(), 10);
-    return !Number.isNaN(num) && num.toString() === value.trim() && num >= 1;
+    const trimmed = value.trim();
+    const num = parseInt(trimmed, 10);
+    if (Number.isNaN(num) || num.toString() !== trimmed) {
+      return false;
+    }
+    // -1 is a valid "unknown total" value for count / setsize attributes
+    if (num === -1 && INTEGER_ATTRIBUTES_ALLOWING_UNKNOWN.includes(attribute)) {
+      return true;
+    }
+    return num >= 1;
   }
 
   if (validValues === "number") {

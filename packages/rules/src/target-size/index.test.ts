@@ -223,9 +223,21 @@ describe(TargetSize.ruleName, () => {
 
     document.body.appendChild(container);
 
-    // Both buttons should not show warnings due to adequate spacing
-    expect(TargetSize.evaluate(el1, { enabled: true }, {})).toBeUndefined();
-    expect(TargetSize.evaluate(el2, { enabled: true }, {})).toBeUndefined();
+    // Adequately spaced but still small → "Small target" warning
+    expect(TargetSize.evaluate(el1, { enabled: true }, {})).toEqual([
+      {
+        type: "warning",
+        message: "Small target",
+        ruleName: "target-size",
+      },
+    ]);
+    expect(TargetSize.evaluate(el2, { enabled: true }, {})).toEqual([
+      {
+        type: "warning",
+        message: "Small target",
+        ruleName: "target-size",
+      },
+    ]);
   });
 
   test("small button with inadequate spacing", () => {
@@ -258,18 +270,18 @@ describe(TargetSize.ruleName, () => {
 
     document.body.appendChild(container);
 
-    // Both buttons should show warnings due to inadequate spacing
+    // Both buttons are small and crowded → "Crowded small targets" warning
     expect(TargetSize.evaluate(el1, { enabled: true }, {})).toEqual([
       {
         type: "warning",
-        message: "Small target",
+        message: "Crowded small targets",
         ruleName: "target-size",
       },
     ]);
     expect(TargetSize.evaluate(el2, { enabled: true }, {})).toEqual([
       {
         type: "warning",
-        message: "Small target",
+        message: "Crowded small targets",
         ruleName: "target-size",
       },
     ]);
@@ -305,11 +317,11 @@ describe(TargetSize.ruleName, () => {
 
     document.body.appendChild(container);
 
-    // Small button should show warning due to inadequate spacing with large button
+    // Small button should show crowded warning due to inadequate spacing with large button
     expect(TargetSize.evaluate(smallButton, { enabled: true }, {})).toEqual([
       {
         type: "warning",
-        message: "Small target",
+        message: "Crowded small targets",
         ruleName: "target-size",
       },
     ]);
@@ -453,7 +465,7 @@ describe(TargetSize.ruleName, () => {
 
     document.body.appendChild(container);
 
-    // Both buttons should not show warnings due to adequate spacing
+    // Adequately spaced but still small → "Small target" warning
     expect(
       TargetSize.evaluate(
         docButton,
@@ -462,7 +474,13 @@ describe(TargetSize.ruleName, () => {
           shadowRoots: [shadowRoot],
         },
       ),
-    ).toBeUndefined();
+    ).toEqual([
+      {
+        type: "warning",
+        message: "Small target",
+        ruleName: "target-size",
+      },
+    ]);
     expect(
       TargetSize.evaluate(
         shadowButton,
@@ -471,7 +489,13 @@ describe(TargetSize.ruleName, () => {
           shadowRoots: [shadowRoot],
         },
       ),
-    ).toBeUndefined();
+    ).toEqual([
+      {
+        type: "warning",
+        message: "Small target",
+        ruleName: "target-size",
+      },
+    ]);
   });
 
   test("multiple Shadow DOMs with target elements", () => {
@@ -510,7 +534,7 @@ describe(TargetSize.ruleName, () => {
 
     document.body.appendChild(container);
 
-    // Both buttons should not show warnings due to adequate spacing
+    // Adequately spaced but still small → "Small target" warning
     expect(
       TargetSize.evaluate(
         button1,
@@ -519,7 +543,13 @@ describe(TargetSize.ruleName, () => {
           shadowRoots: [shadowRoot1, shadowRoot2],
         },
       ),
-    ).toBeUndefined();
+    ).toEqual([
+      {
+        type: "warning",
+        message: "Small target",
+        ruleName: "target-size",
+      },
+    ]);
     expect(
       TargetSize.evaluate(
         button2,
@@ -528,7 +558,13 @@ describe(TargetSize.ruleName, () => {
           shadowRoots: [shadowRoot1, shadowRoot2],
         },
       ),
-    ).toBeUndefined();
+    ).toEqual([
+      {
+        type: "warning",
+        message: "Small target",
+        ruleName: "target-size",
+      },
+    ]);
   });
 
   test("isolated small button in Shadow DOM (no other targets)", () => {
@@ -541,7 +577,7 @@ describe(TargetSize.ruleName, () => {
     shadowRoot.appendChild(el);
     document.body.appendChild(host);
 
-    // Isolated target should show warning (spacing exception doesn't apply)
+    // Isolated small target is adequately spaced → "Small target" warning
     expect(
       TargetSize.evaluate(el, { enabled: true }, { shadowRoots: [shadowRoot] }),
     ).toEqual([

@@ -58,22 +58,30 @@ export const TargetSize: RuleObject = {
       return undefined;
     }
     if (
-      isSmallTarget(element, elementDocument, elementWindow, shadowRoots) &&
-      !(
-        isInline(element) ||
-        isDefaultSize(element) ||
-        hasAdequateSpacing(element, elementDocument, shadowRoots)
-      )
+      !isSmallTarget(element, elementDocument, elementWindow, shadowRoots) ||
+      isInline(element) ||
+      isDefaultSize(element)
     ) {
+      return undefined;
+    }
+    // 周囲に他のターゲットがある(間隔が不十分)場合は「密集」として警告し、
+    // 単独で十分な間隔がある場合は「小さい」として警告する
+    if (!hasAdequateSpacing(element, elementDocument)) {
       return [
         {
           type: "warning",
-          message: "Small target",
+          message: "Crowded small targets",
           ruleName,
         },
       ];
     }
-    return undefined;
+    return [
+      {
+        type: "warning",
+        message: "Small target",
+        ruleName,
+      },
+    ];
   },
 };
 
@@ -130,19 +138,9 @@ const isSmallTarget = (
 const hasAdequateSpacing = (
   element: Element,
   elementDocument: Document,
-  shadowRoots?: ShadowRoot[],
 ): boolean => {
-  // First, check if there are any other target elements in the document
-  // If not, spacing exception doesn't apply (isolated targets should show warnings)
-  const hasOtherTargets = hasOtherTargetsInDocument(
-    element,
-    elementDocument,
-    shadowRoots,
-  );
-  if (!hasOtherTargets) {
-    return false;
-  }
-
+  // 周囲24px内に他のターゲットがなければ間隔は十分(孤立したターゲットは
+  // 自明に間隔を満たす)。他のターゲットが交差する場合のみ間隔不十分とする。
   // Use getBoundingClientRect for viewport coordinates (matches elementFromPoint)
   const rect = element.getBoundingClientRect();
 
@@ -262,28 +260,6 @@ const isExtensionElement = (element: Element): boolean => {
     }
     current = current.parentElement;
   }
-  return false;
-};
-
-const hasOtherTargetsInDocument = (
-  element: Element,
-  elementDocument: Document,
-  shadowRoots?: ShadowRoot[],
-): boolean => {
-  // Use combined selector for efficient single query
-  const allTargets = querySelectorAllFromRoots(
-    COMBINED_SELECTOR,
-    elementDocument,
-    shadowRoots,
-  );
-
-  // Check if any target other than the current element exists
-  for (const target of allTargets) {
-    if (target !== element) {
-      return true;
-    }
-  }
-
   return false;
 };
 

@@ -1,23 +1,38 @@
 name: Release Workflow
 
+# Release flow (see RELEASE.md for details):
+# 1. Feature PRs include changeset files (created with `pnpm changeset`).
+# 2. On every push to main, the changesets job creates or updates the
+#    "Version Packages" PR, which applies pending changesets to package
+#    versions and changelogs.
+# 3. Because that PR is created with GITHUB_TOKEN, it does not trigger the
+#    normal PR workflows. The lint / test / build / build_website jobs below
+#    run against its head commit and report commit statuses instead.
+# 4. When the "Version Packages" PR is merged, main no longer has pending
+#    changesets. If the browser extension version has no v* tag yet, the
+#    release job builds the extension zips and creates a draft GitHub
+#    Release with the artifacts attached.
+
 on:
+  push:
+    branches:
+      - main
   workflow_dispatch:
-    inputs:
-      release_type:
-        description: "Release type (patch, minor, major)"
-        required: true
-        default: "patch"
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+permissions:
+  contents: write
+  pull-requests: write
+  statuses: write
 
 jobs:
-  bump_version:
+  changesets:
     runs-on: ubuntu-latest
 
     outputs:
-      VERSION: ${{ steps.get_version.outputs.VERSION }}
-      SHA: ${{ steps.get_commit_sha.outputs.SHA }}
-
-    env:
-      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      hasChangesets: ${{ steps.changesets.outputs.hasChangesets }}
+      versionPrSha: ${{ steps.version_pr_sha.outputs.SHA }}
 
     steps:
       - name: Checkout code
@@ -32,61 +47,36 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version-file: .tool-versions
+          cache: "pnpm"
 
       - name: Install dependencies
         run: pnpm install
 
-      - name: Git config
-        run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
-
-      - name: Bump version
-        run: |
-          pnpm bump_version:packages ${{ github.event.inputs.release_type }}
-          pnpm bump_version ${{ github.event.inputs.release_type }}
-
-      - name: Get version
-        id: get_version
-        run: echo "VERSION=$(jq -r .version package.json)" >> $GITHUB_OUTPUT
-
-      - name: Commit changes
-        run: |
-          git add .
-          git commit -m "Bump version to ${{ steps.get_version.outputs.VERSION }}"
-          git tag v${{ steps.get_version.outputs.VERSION }}
-
-      - name: Get commit SHA
-        id: get_commit_sha
-        run: echo "SHA=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
-
-      - name: Switch Branch
-        run: git checkout -b release_${{ steps.get_version.outputs.VERSION }}
-
-      - name: Push changes
-        uses: ad-m/github-push-action@v0.8.0
+      - name: Create or update Version Packages PR
+        id: changesets
+        uses: changesets/action@v1
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: release_${{ steps.get_version.outputs.VERSION }}
-          tags: true
+          version: pnpm changeset:version
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Create Pull Request
+      - name: Get Version Packages PR head SHA
+        id: version_pr_sha
+        if: steps.changesets.outputs.hasChangesets == 'true'
         run: |
-          gh pr create \
-            --title "Release v${{ steps.get_version.outputs.VERSION }}" \
-            --body "This PR bumps the version to v${{ steps.get_version.outputs.VERSION }}." \
-            --base main \
-            --head release_${{ steps.get_version.outputs.VERSION }}
+          git fetch origin changeset-release/main
+          echo "SHA=$(git rev-parse origin/changeset-release/main)" >> $GITHUB_OUTPUT
 
   lint:
     runs-on: ubuntu-latest
-    needs: bump_version
+    needs: changesets
+    if: needs.changesets.outputs.hasChangesets == 'true'
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          ref: ${{ needs.bump_version.outputs.SHA }}
+          ref: ${{ needs.changesets.outputs.versionPrSha }}
 
       - name: Set Commit Status Pending
         uses: myrotvorets/set-commit-status-action@v2.0.1
@@ -95,7 +85,7 @@ jobs:
           status: pending
           context: lint
           description: "Running lint"
-          sha: ${{ needs.bump_version.outputs.SHA }}
+          sha: ${{ needs.changesets.outputs.versionPrSha }}
 
       - name: Install pnpm
         uses: pnpm/action-setup@v4
@@ -105,7 +95,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version-file: .tool-versions
           cache: "pnpm"
 
       - name: Install dependencies
@@ -121,17 +111,18 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           status: ${{ job.status }}
           context: lint
-          sha: ${{ needs.bump_version.outputs.SHA }}
+          sha: ${{ needs.changesets.outputs.versionPrSha }}
 
   test:
     runs-on: ubuntu-latest
-    needs: bump_version
+    needs: changesets
+    if: needs.changesets.outputs.hasChangesets == 'true'
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          ref: ${{ needs.bump_version.outputs.SHA }}
+          ref: ${{ needs.changesets.outputs.versionPrSha }}
 
       - name: Set Commit Status Pending
         uses: myrotvorets/set-commit-status-action@v2.0.1
@@ -140,7 +131,7 @@ jobs:
           status: pending
           context: test
           description: "Running test"
-          sha: ${{ needs.bump_version.outputs.SHA }}
+          sha: ${{ needs.changesets.outputs.versionPrSha }}
 
       - name: Install pnpm
         uses: pnpm/action-setup@v4
@@ -150,7 +141,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version-file: .tool-versions
           cache: "pnpm"
 
       - name: Install dependencies
@@ -181,17 +172,18 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           status: ${{ job.status }}
           context: test
-          sha: ${{ needs.bump_version.outputs.SHA }}
+          sha: ${{ needs.changesets.outputs.versionPrSha }}
 
   build:
     runs-on: ubuntu-latest
-    needs: bump_version
+    needs: changesets
+    if: needs.changesets.outputs.hasChangesets == 'true'
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          ref: ${{ needs.bump_version.outputs.SHA }}
+          ref: ${{ needs.changesets.outputs.versionPrSha }}
 
       - name: Set Commit Status Pending
         uses: myrotvorets/set-commit-status-action@v2.0.1
@@ -200,7 +192,7 @@ jobs:
           status: pending
           context: build
           description: "Running build"
-          sha: ${{ needs.bump_version.outputs.SHA }}
+          sha: ${{ needs.changesets.outputs.versionPrSha }}
 
       - name: Install pnpm
         uses: pnpm/action-setup@v4
@@ -210,7 +202,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version-file: .tool-versions
           cache: "pnpm"
 
       - name: Install dependencies
@@ -229,17 +221,18 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           status: ${{ job.status }}
           context: build
-          sha: ${{ needs.bump_version.outputs.SHA }}
+          sha: ${{ needs.changesets.outputs.versionPrSha }}
 
   build_website:
     runs-on: ubuntu-latest
-    needs: bump_version
+    needs: changesets
+    if: needs.changesets.outputs.hasChangesets == 'true'
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          ref: ${{ needs.bump_version.outputs.SHA }}
+          ref: ${{ needs.changesets.outputs.versionPrSha }}
 
       - name: Set Commit Status Pending
         uses: myrotvorets/set-commit-status-action@v2.0.1
@@ -248,7 +241,7 @@ jobs:
           status: pending
           context: build_website
           description: "Running website build"
-          sha: ${{ needs.bump_version.outputs.SHA }}
+          sha: ${{ needs.changesets.outputs.versionPrSha }}
 
       - name: Install pnpm
         uses: pnpm/action-setup@v4
@@ -258,7 +251,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version-file: .tool-versions
           cache: "pnpm"
 
       - name: Install dependencies
@@ -274,19 +267,42 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           status: ${{ job.status }}
           context: build_website
-          sha: ${{ needs.bump_version.outputs.SHA }}
+          sha: ${{ needs.changesets.outputs.versionPrSha }}
 
-  release:
+  check_release:
     runs-on: ubuntu-latest
+    needs: changesets
+    if: needs.changesets.outputs.hasChangesets == 'false'
 
-    needs:
-      - bump_version
+    outputs:
+      VERSION: ${{ steps.get_version.outputs.VERSION }}
+      TAG_EXISTS: ${{ steps.check_tag.outputs.TAG_EXISTS }}
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          ref: ${{ needs.bump_version.outputs.SHA }}
+
+      - name: Get browser extension version
+        id: get_version
+        run: echo "VERSION=$(jq -r .version apps/browser_extension/package.json)" >> $GITHUB_OUTPUT
+
+      - name: Check whether the release tag already exists
+        id: check_tag
+        run: |
+          if git ls-remote --exit-code origin "refs/tags/v${{ steps.get_version.outputs.VERSION }}" > /dev/null; then
+            echo "TAG_EXISTS=true" >> $GITHUB_OUTPUT
+          else
+            echo "TAG_EXISTS=false" >> $GITHUB_OUTPUT
+          fi
+
+  release:
+    runs-on: ubuntu-latest
+    needs: check_release
+    if: needs.check_release.outputs.TAG_EXISTS == 'false'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Install pnpm
         uses: pnpm/action-setup@v4
@@ -296,7 +312,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version-file: .tool-versions
           cache: "pnpm"
 
       - name: Install dependencies
@@ -312,6 +328,7 @@ jobs:
         with:
           artifacts: "apps/browser_extension/dist/a11y-visualizer-*.zip"
           generateReleaseNotes: true
-          name: "Release v${{ needs.bump_version.outputs.VERSION }}"
-          tag: v${{ needs.bump_version.outputs.VERSION }}
+          name: "Release v${{ needs.check_release.outputs.VERSION }}"
+          tag: v${{ needs.check_release.outputs.VERSION }}
+          commit: ${{ github.sha }}
           draft: true

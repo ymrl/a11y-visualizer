@@ -1,6 +1,7 @@
 {
   "name": "@a11y-visualizer/dom-utils",
   "version": "1.0.0",
+  "private": true,
   "type": "module",
   "exports": {
     ".": {

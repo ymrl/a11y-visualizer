@@ -19,8 +19,7 @@
     "test:jsdom": "vitest run --config vite.test.jsdom.config.ts",
     "test:jsdom:watch": "vitest --config vite.test.jsdom.config.ts",
     "test:watch": "vitest --config vite.test.config.ts",
-    "postinstall": "wxt prepare",
-    "bump_version": "pnpm version --no-git-tag-version"
+    "postinstall": "wxt prepare"
   },
   "dependencies": {
     "@a11y-visualizer/dom-utils": "workspace:*",

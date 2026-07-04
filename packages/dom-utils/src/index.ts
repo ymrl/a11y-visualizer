@@ -5,7 +5,7 @@ export {
   COMPUTED_ROLES,
   type ComputedRole,
   computedRoleToKnownRole,
-  getComputedImplictRole,
+  getComputedImplicitRole,
   getImplicitRole,
 } from "./getComputedImplicitRole";
 // Shadow DOM utilities

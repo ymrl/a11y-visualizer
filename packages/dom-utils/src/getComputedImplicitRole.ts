@@ -8,6 +8,13 @@ const isScopedToMainOrSectioningContent = (el: Element) => {
   return el.closest("main,article,aside,nav,section") !== null;
 };
 
+/**
+ * 対応するWAI-ARIAロールが存在しないHTML要素を表す、このパッケージ独自の擬似ロールの一覧
+ *
+ * ブラウザがアクセシビリティツリー上で独自の内部ロールとして扱う要素
+ * （iframe、日付入力など）を `html-` プレフィックス付きで識別する。
+ * {@link computedRoleToKnownRole} でWAI-ARIAロールに近似変換できる
+ */
 export const COMPUTED_ROLES = [
   "html-abbr",
   "html-audio",
@@ -35,17 +42,40 @@ export const COMPUTED_ROLES = [
   "html-var",
 ] as const;
 
+/**
+ * {@link getComputedImplicitRole} が返しうるロール。
+ * WAI-ARIAロール（{@link KnownRole}）または `html-` プレフィックス付きの擬似ロール
+ */
 export type ComputedRole = KnownRole | (typeof COMPUTED_ROLES)[number];
 
+/**
+ * 要素の暗黙のWAI-ARIAロールを取得する
+ *
+ * {@link getComputedImplicitRole} の結果を {@link computedRoleToKnownRole} で
+ * WAI-ARIAロールに変換したもの。role属性は参照しない
+ *
+ * @param el - 対象の要素
+ * @returns 暗黙のロール、対応するロールがない場合はnull
+ */
 export const getImplicitRole = (el: Element): KnownRole | null => {
-  const computedRole = getComputedImplictRole(el);
+  const computedRole = getComputedImplicitRole(el);
   if (computedRole) {
     return computedRoleToKnownRole(computedRole);
   }
   return null;
 };
 
-export const getComputedImplictRole = (el: Element): ComputedRole | null => {
+/**
+ * ARIA in HTML仕様に基づいて、要素の暗黙のロールをタグ名・属性から求める
+ *
+ * role属性は参照しない。対応するWAI-ARIAロールがない要素については
+ * `html-` プレフィックス付きの擬似ロール（{@link COMPUTED_ROLES}）を返す。
+ * accessible-nameルールなどで、role属性のない要素の命名可否判定に使われる
+ *
+ * @param el - 対象の要素
+ * @returns 暗黙のロール、対応するロールがない場合はnull
+ */
+export const getComputedImplicitRole = (el: Element): ComputedRole | null => {
   const tagName = el.tagName.toLowerCase();
   switch (tagName) {
     // HTML
@@ -406,6 +436,16 @@ export const getComputedImplictRole = (el: Element): ComputedRole | null => {
   }
 };
 
+/**
+ * {@link ComputedRole} をWAI-ARIAロール（{@link KnownRole}）に変換する
+ *
+ * `html-` プレフィックス付きの擬似ロールは、主要ブラウザの
+ * アクセシビリティツリー上での扱いをもとに近いWAI-ARIAロールへ近似する
+ * （例: `html-input-date` → `textbox`）。近似できないものはnullになる
+ *
+ * @param role - 変換するロール
+ * @returns 対応するWAI-ARIAロール、対応するものがない場合はnull
+ */
 export const computedRoleToKnownRole = (
   role: ComputedRole,
 ): KnownRole | null => {

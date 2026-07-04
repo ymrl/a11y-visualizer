@@ -1,3 +1,9 @@
+/**
+ * ページ内での要素の位置とサイズ
+ *
+ * `x`/`y` はオフセット（オーバーレイの配置基準となる要素の位置）を差し引いた座標、
+ * `absoluteX`/`absoluteY` はドキュメント左上を原点とした絶対座標
+ */
 export type ElementPosition = {
   x: number;
   y: number;
@@ -7,6 +13,19 @@ export type ElementPosition = {
   height: number;
 };
 
+/**
+ * 要素のページ内での位置とサイズを取得する
+ *
+ * スクロール量を加味したドキュメント座標系で返す。拡張機能が要素に
+ * オーバーレイ表示を重ねる際の座標計算に使う。area要素の場合は
+ * shape/coords属性と対応するimg要素から描画領域を計算する
+ *
+ * @param el - 対象の要素
+ * @param w - 要素が属するWindow
+ * @param offsetX - `x` から差し引くX座標（配置基準要素のX座標）
+ * @param offsetY - `y` から差し引くY座標（配置基準要素のY座標）
+ * @returns 要素の位置とサイズ
+ */
 export const getElementPosition = (
   el: Element,
   w: Window,

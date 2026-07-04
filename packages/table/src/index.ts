@@ -22,12 +22,31 @@ type Cell = {
   headerScope: Scope;
 };
 
+/**
+ * テーブルの構造を解析し、セルの位置関係やヘッダーの対応を扱えるようにするクラス
+ *
+ * table要素またはtable/grid/treegridロールを持つ要素を、HTML仕様の
+ * テーブルモデルに準じて解析する。colspan/rowspanやaria-colindex/
+ * aria-rowindexなどのARIA属性も考慮して、各セルの座標・サイズ・
+ * ヘッダーとしてのスコープを求める。
+ *
+ * 拡張機能では、テーブル系ルール（table-header・table-position・table-size）が
+ * セルに対応するヘッダーやセルの位置・テーブルの大きさを表示するために使う。
+ * 解析コストが高いため、同じテーブルへの複数セルの評価ではインスタンスを
+ * 使い回すことが想定されている（`RuleEvaluationCondition` の `tables`）
+ */
 export class Table {
+  /** 解析対象のテーブル要素 */
   element: Element;
+  /** 行グループ（thead/tbody/tfootまたはrowgroupロール）の一覧 */
   rowGroups: RowGroup[];
+  /** 列グループ（colgroup要素）の一覧 */
   colGroups: ColGroup[];
+  /** 行ごとのセルの二次元配列 */
   cells: Cell[][];
+  /** テーブルの行数（aria-rowcountがあればその値） */
   rowCount: number;
+  /** テーブルの列数（aria-colcountがあればその値） */
   colCount: number;
 
   constructor(table: Element) {
@@ -211,6 +230,12 @@ export class Table {
     this.colCount = colCount;
   }
 
+  /**
+   * セル要素に対応するセル情報（座標・サイズ・ヘッダーのスコープ）を取得する
+   *
+   * @param el - テーブル内のセル要素
+   * @returns セル情報、テーブル内に見つからない場合はnull
+   */
   getCell = (el: Element): Cell | null => {
     const cell = this.cells
       .map((row) => row.find((cell) => cell.element === el))
@@ -218,6 +243,16 @@ export class Table {
     return cell ? cell[0] : null;
   };
 
+  /**
+   * セルに対応するヘッダーセル要素の一覧を取得する
+   *
+   * headers属性があればその参照先を、なければHTML仕様のヘッダー割り当て
+   * アルゴリズムに準じて行・列・行グループ・列グループのヘッダーを集める。
+   * 空のセルと自分自身は除外される
+   *
+   * @param cell - 対象のセル（{@link getCell} で取得したもの）
+   * @returns ヘッダーセル要素の配列（重複なし）
+   */
   getHeaderElements = (cell: Cell): Element[] => {
     const tagName = cell.element.tagName.toLowerCase();
     return (
@@ -238,6 +273,15 @@ export class Table {
     }, [] as Element[]);
   };
 
+  /**
+   * 指定した座標（スロット）を占めるセルの一覧を取得する
+   *
+   * colspan/rowspanで広がっているセルも、その範囲に座標が含まれれば返される
+   *
+   * @param x - 列位置（0始まり）
+   * @param y - 行位置（0始まり）
+   * @returns 座標を占めるセルの配列
+   */
   getSlotCells = (x: number, y: number): Cell[] => {
     return this.cells
       .map((row) =>
@@ -252,6 +296,15 @@ export class Table {
       .filter((cell): cell is Cell => !!cell);
   };
 
+  /**
+   * セルが列ヘッダーとして働くかどうかを判定する
+   *
+   * scope属性がcolの場合に加え、scopeがautoの場合はHTML仕様の
+   * ヘッダー割り当てアルゴリズムに準じて周囲のセルから推定する
+   *
+   * @param cell - 対象のセル
+   * @returns 列ヘッダーの場合はtrue
+   */
   isColHeader = (cell: Cell): boolean => {
     const { headerScope } = cell;
     return (
@@ -268,6 +321,15 @@ export class Table {
     );
   };
 
+  /**
+   * セルが行ヘッダーとして働くかどうかを判定する
+   *
+   * scope属性がrowの場合に加え、scopeがautoの場合はHTML仕様の
+   * ヘッダー割り当てアルゴリズムに準じて周囲のセルから推定する
+   *
+   * @param cell - 対象のセル
+   * @returns 行ヘッダーの場合はtrue
+   */
   isRowHeader = (cell: Cell): boolean => {
     const { headerScope } = cell;
     return (
@@ -285,6 +347,14 @@ export class Table {
     );
   };
 
+  /**
+   * セルの行ヘッダー（同じ行の左方向にあるヘッダーセル）の要素を取得する
+   *
+   * 通常は {@link getHeaderElements} を使う。空のセルと自分自身は除外される
+   *
+   * @param cell - 対象のセル
+   * @returns 行ヘッダーの要素の配列
+   */
   getRowHeaderElements = (cell: Cell): Element[] => {
     const { positionY, sizeY, positionX, element } = cell;
     const headers: Element[] = [];
@@ -325,6 +395,14 @@ export class Table {
     return headers.filter((el) => el !== element && !isEmptyCellElement(el));
   };
 
+  /**
+   * セルが属する行グループのヘッダー（scope="rowgroup"のセル）の要素を取得する
+   *
+   * 通常は {@link getHeaderElements} を使う。空のセルと自分自身は除外される
+   *
+   * @param cell - 対象のセル
+   * @returns 行グループヘッダーの要素の配列
+   */
   getRowGroupHeaderElements = (cell: Cell): Element[] => {
     const { positionY, positionX, sizeX, sizeY, element } = cell;
     const rowGroup = this.rowGroups.find(
@@ -350,6 +428,14 @@ export class Table {
       .filter((el) => el !== element && !isEmptyCellElement(el));
   };
 
+  /**
+   * セルの列ヘッダー（同じ列の上方向にあるヘッダーセル）の要素を取得する
+   *
+   * 通常は {@link getHeaderElements} を使う。空のセルと自分自身は除外される
+   *
+   * @param cell - 対象のセル
+   * @returns 列ヘッダーの要素の配列
+   */
   getColHeaderElements = (cell: Cell): Element[] => {
     const { positionY, positionX, sizeX, element } = cell;
     const headers: Element[] = [];
@@ -391,6 +477,14 @@ export class Table {
     return headers.filter((el) => el !== element && !isEmptyCellElement(el));
   };
 
+  /**
+   * セルが属する列グループのヘッダー（scope="colgroup"のセル）の要素を取得する
+   *
+   * 通常は {@link getHeaderElements} を使う。空のセルと自分自身は除外される
+   *
+   * @param cell - 対象のセル
+   * @returns 列グループヘッダーの要素の配列
+   */
   getColGroupHeaderElements = (cell: Cell): Element[] => {
     const { positionY, positionX, sizeX, sizeY, element } = cell;
     const colGroup = this.colGroups.find(
@@ -416,6 +510,15 @@ export class Table {
       .filter((el) => el !== element && !isEmptyCellElement(el));
   };
 
+  /**
+   * セルのheaders属性が参照するヘッダーセル要素を取得する
+   *
+   * th/td要素のみが対象。通常は {@link getHeaderElements} を使う。
+   * 空のセルと自分自身は除外される
+   *
+   * @param cell - 対象のセル
+   * @returns headers属性で参照されているセル要素の配列
+   */
   getAttributeHeaderElements = (cell: Cell): Element[] => {
     const { element } = cell;
     const tagName = element.tagName.toLowerCase();
@@ -436,6 +539,16 @@ export class Table {
   };
 }
 
+/**
+ * テーブル要素から行要素（tr要素またはrowロールの要素）の一覧を取得する
+ *
+ * table要素またはtable/grid/treegridロールの要素が対象。行グループや
+ * presentationロールの要素の中の行も収集する。tfoot要素はHTML仕様に
+ * 準じて最後に並べる
+ *
+ * @param el - テーブル要素
+ * @returns 行要素の配列（テーブルでない要素の場合は空配列）
+ */
 export const getRowElements = (el: Element): Element[] => {
   const tagName = el.tagName.toLowerCase();
   const role = getKnownRole(el);
@@ -481,6 +594,16 @@ const getRowElementsInElement = (
   return [];
 };
 
+/**
+ * テーブル要素から行グループ要素（thead/tbody/tfoot要素または
+ * rowgroupロールの要素）の一覧を取得する
+ *
+ * table要素またはtable/grid/treegridロールの要素が対象。tfoot要素は
+ * HTML仕様に準じて最後に並べる
+ *
+ * @param el - テーブル要素
+ * @returns 行グループ要素の配列（テーブルでない要素の場合は空配列）
+ */
 export const getRowGroupElements = (el: Element): Element[] => {
   const tagName = el.tagName.toLowerCase();
   const role = getKnownRole(el);
@@ -529,6 +652,16 @@ const getRowGroupElementsInElement = (
   return [];
 };
 
+/**
+ * 行要素からセル要素の一覧を取得する
+ *
+ * tr要素の場合はth/td要素を、rowロールの要素の場合はcell/gridcell/
+ * columnheader/rowheaderロールの子要素を収集する。presentationロールの
+ * 要素は透過して中のセルを収集する
+ *
+ * @param el - 行要素（{@link getRowElements} で取得したもの）
+ * @returns セル要素の配列（行でない要素の場合は空配列）
+ */
 export const getCellElements = (el: Element): Element[] => {
   const tagName = el.tagName.toLowerCase();
   const role = getKnownRole(el);
@@ -556,5 +689,13 @@ export const getCellElements = (el: Element): Element[] => {
   return [];
 };
 
+/**
+ * セル要素が空（子要素がなく、テキストも空白のみ）かどうかを判定する
+ *
+ * 空のセルはヘッダーの割り当て対象から除外される
+ *
+ * @param el - 対象のセル要素
+ * @returns 空のセルの場合はtrue
+ */
 export const isEmptyCellElement = (el: Element): boolean =>
   el.children.length === 0 && (!el.textContent || el.textContent.trim() === "");

@@ -211,6 +211,18 @@ const getDefaultStyle = (el: Element): SizeDeclaration | undefined => {
   return DefaultStyles[type];
 };
 
+/**
+ * フォームコントロール（button要素・input要素）がブラウザデフォルトの
+ * サイズのまま表示されているかどうかを判定する
+ *
+ * 同種のデフォルト状態の要素を一時的にDOMに生成してサイズ関連のスタイルを
+ * 比較する。WCAG 2.5.8 Target Size (Minimum) の「User agent control」例外
+ * （ブラウザ標準のサイズならターゲットサイズ不足を問わない）の判定として
+ * target-sizeルールで使う
+ *
+ * @param el - 対象の要素
+ * @returns デフォルトサイズの場合はtrue（button/input以外の要素は常にfalse）
+ */
 export const isDefaultSize = (el: Element): boolean => {
   const defaultStyle = getDefaultStyle(el);
 

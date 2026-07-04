@@ -1,3 +1,10 @@
+/**
+ * このパッケージおよびAccessibility Visualizerが扱う既知のWAI-ARIAロールの一覧
+ *
+ * WAI-ARIA 1.2のロール（抽象ロールを含む）に加えて、ARIA 1.3で追加予定の
+ * ロールとWAI-ARIA Graphics Module（graphics-*）のロールを含む。
+ * {@link getKnownRole} はこの一覧に含まれるロールのみを返す
+ */
 export const knownRoles = [
   "alert",
   "alertdialog",
@@ -103,4 +110,5 @@ export const knownRoles = [
   "graphics-symbol",
 ] as const;
 
+/** 既知のWAI-ARIAロール（{@link knownRoles} の要素） */
 export type KnownRole = (typeof knownRoles)[number];

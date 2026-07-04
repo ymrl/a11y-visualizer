@@ -1,6 +1,20 @@
 import { getRole } from "dom-accessibility-api";
 import { type KnownRole, knownRoles } from "./KnownRole";
 
+/**
+ * 要素のロール（role属性による明示的なロール、なければ暗黙のロール）を取得する
+ *
+ * dom-accessibility-apiの `getRole()` をベースに、結果を既知のロール
+ * （{@link knownRoles}）に限定する。role属性に未知の値が指定されている場合は
+ * スペース区切りのフォールバックを考慮して既知のロールを探す。
+ * input要素・svg要素については、ARIA in HTMLで暗黙のロールが未定義のものにも
+ * ブラウザの実際の挙動に近いロールを仮定して返す。
+ *
+ * 要素のカテゴリ分類や、各ルールが対象要素かどうかの判定に広く使われる
+ *
+ * @param el - 対象の要素
+ * @returns 要素のロール、判定できない場合はnull
+ */
 export const getKnownRole = (el: Element): KnownRole | null => {
   const role = getRole(el);
   if (role && knownRoles.includes(role as KnownRole)) {

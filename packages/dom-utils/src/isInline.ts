@@ -28,6 +28,18 @@ const hasPreviousInlineSibling = (el: Element): boolean => {
   return false;
 };
 
+/**
+ * 要素が文中のインライン要素として（テキストの流れの中に）表示されているか
+ * どうかを判定する
+ *
+ * displayがinline系であることに加えて、前にテキストやインラインの兄弟が
+ * あるか、自身がテキストを含むかなど、実際に文中に位置しているかを判定する。
+ * WCAG 2.5.8 Target Size (Minimum) の「Inline」例外（文中のリンクなどは
+ * ターゲットサイズ不足を問わない）の判定としてtarget-sizeルールで使う
+ *
+ * @param el - 対象の要素
+ * @returns 文中のインライン要素として表示されている場合はtrue
+ */
 export const isInline = (el: Element): boolean => {
   if (!el.parentElement) {
     return false;

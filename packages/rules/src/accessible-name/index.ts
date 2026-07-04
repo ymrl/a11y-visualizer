@@ -1,5 +1,5 @@
 import {
-  getComputedImplictRole,
+  getComputedImplicitRole,
   getKnownRole,
   isInAriaHidden,
 } from "@a11y-visualizer/dom-utils";
@@ -47,7 +47,7 @@ export const AccessibleName: RuleObject = {
       return undefined;
     }
     const computedRole =
-      role || element.getAttribute("role") || getComputedImplictRole(element);
+      role || element.getAttribute("role") || getComputedImplicitRole(element);
     const isNamingProhibited =
       computedRole && NAMING_PROHIBITED_ROLES.includes(computedRole);
     if (

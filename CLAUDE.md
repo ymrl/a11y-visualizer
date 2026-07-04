@@ -81,6 +81,15 @@ pnpm --filter=@a11y-visualizer/browser-extension test
 pnpm test src/rules/rule-name/index.test.ts
 ```
 
+### Versioning & Release
+
+Versions are managed with [Changesets](https://github.com/changesets/changesets). See RELEASE.md for the full release process.
+
+```bash
+# Add a changeset for user-facing changes (do this in the same PR as the change)
+pnpm changeset
+```
+
 ## Architecture
 
 ### Monorepo Structure

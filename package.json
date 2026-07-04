@@ -1,7 +1,6 @@
 {
   "name": "a11y-visualizer",
   "private": true,
-  "version": "7.2.0",
   "type": "module",
   "scripts": {
     "dev": "pnpm --filter @a11y-visualizer/browser-extension run dev",
@@ -18,12 +17,13 @@
     "lint:packages": "pnpm --filter @a11y-visualizer/* lint",
     "lint-fix": "run-p lint-fix:*",
     "lint-fix:packages": "pnpm --filter @a11y-visualizer/* lint-fix",
-    "bump_version:packages": "pnpm --filter @a11y-visualizer/* --no-git-tag-version bump_version",
-    "bump_version": "pnpm version --no-git-tag-version",
+    "changeset": "changeset",
+    "changeset:version": "changeset version",
     "install-playwright": "playwright install chromium firefox"
   },
   "devDependencies": {
     "@biomejs/biome": "2.4.16",
+    "@changesets/cli": "^2.31.0",
     "npm-run-all": "^4.1.5",
     "playwright": "^1.60.0"
   }

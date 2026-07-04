@@ -1,0 +1,14 @@
+{
+  "changelog": "@changesets/cli/changelog",
+  "commit": false,
+  "fixed": [],
+  "linked": [],
+  "access": "public",
+  "baseBranch": "main",
+  "updateInternalDependencies": "patch",
+  "ignore": ["@a11y-visualizer/website"],
+  "privatePackages": {
+    "version": true,
+    "tag": false
+  }
+}

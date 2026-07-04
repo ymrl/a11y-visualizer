@@ -13,6 +13,13 @@ export default defineConfig({
     css: {
       postcss: "./postcss.config.js",
     },
+    optimizeDeps: {
+      // Vite のデフォルトでは `**/*.html` をスキャンするため、過去の build /
+      // test / zip で生成された `dist/` 配下の古い HTML まで対象になり、
+      // ファイルが欠落していると ENOENT で dev サーバーが失敗する。
+      // ソースの entrypoints のみをスキャン対象にして dist を除外する。
+      entries: ["entrypoints/**/*.html"],
+    },
     test: {
       browser: {
         enabled: true,

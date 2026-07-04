@@ -155,6 +155,59 @@ describe("aria-state", () => {
     ]);
   });
 
+  test("not disabled inside the first legend of a disabled fieldset", () => {
+    const fieldset = document.createElement("fieldset");
+    fieldset.setAttribute("disabled", "disabled");
+    document.body.appendChild(fieldset);
+    const legend = document.createElement("legend");
+    fieldset.appendChild(legend);
+    const element = document.createElement("button");
+    legend.appendChild(element);
+    const result = AriaState.evaluate(element, { enabled: true }, {});
+    expect(result).toBeUndefined();
+  });
+
+  test("disabled inside a legend that is not the first legend", () => {
+    const fieldset = document.createElement("fieldset");
+    fieldset.setAttribute("disabled", "disabled");
+    document.body.appendChild(fieldset);
+    const firstLegend = document.createElement("legend");
+    fieldset.appendChild(firstLegend);
+    const secondLegend = document.createElement("legend");
+    fieldset.appendChild(secondLegend);
+    const element = document.createElement("button");
+    secondLegend.appendChild(element);
+    const result = AriaState.evaluate(element, { enabled: true }, {});
+    expect(result).toEqual([
+      {
+        type: "state",
+        ruleName: "aria-state",
+        state: "Disabled: true",
+      },
+    ]);
+  });
+
+  test("disabled by an outer fieldset even when inside an inner legend", () => {
+    const outer = document.createElement("fieldset");
+    outer.setAttribute("disabled", "disabled");
+    document.body.appendChild(outer);
+    const inner = document.createElement("fieldset");
+    inner.setAttribute("disabled", "disabled");
+    outer.appendChild(inner);
+    const legend = document.createElement("legend");
+    inner.appendChild(legend);
+    const element = document.createElement("button");
+    legend.appendChild(element);
+    const result = AriaState.evaluate(element, { enabled: true }, {});
+    expect(result).toEqual([
+      {
+        type: "state",
+        ruleName: "aria-state",
+        state: "Disabled: true",
+      },
+    ]);
+  });
+
   test('aria-expanded="true"', () => {
     const element = document.createElement("div");
     element.setAttribute("role", "button");

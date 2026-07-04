@@ -297,7 +297,7 @@ export const getComputedImplicitRole = (el: Element): ComputedRole | null => {
       return "html-object";
     case "ol":
       return "list";
-    case "optgrouop":
+    case "optgroup":
       return "group";
     case "option":
       return "option";

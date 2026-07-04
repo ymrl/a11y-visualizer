@@ -34,6 +34,13 @@ import { TablePosition } from "./table-position";
 import { TableSize } from "./table-size";
 import { TargetSize } from "./target-size";
 
+/**
+ * すべてのアクセシビリティルールの一覧
+ *
+ * 拡張機能のコンテンツスクリプトはページ内の各要素に対してこの一覧を走査し、
+ * `isRuleTargetElement` で対象と判定されたルールの `evaluate` を呼び出して
+ * 評価結果を収集する。新しいルールを追加する場合はここに登録する
+ */
 export const Rules = [
   HeadingLevel,
   AccessibleName,

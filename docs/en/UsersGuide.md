@@ -160,7 +160,7 @@ When "Headings" is checked, tips are displayed for `<h1>` to `<h6>` elements and
 - Heading level tips display heading levels. Check if appropriate levels are used.
   - `<h1>` to `<h6>` elements are used to indicate heading levels
   - For elements with `role="heading"` attribute, `aria-level` attribute is used to indicate heading level
-- For elements with `role="heading"` attribute without `aria-level` attribute, **an error tip "No heading level"** is displayed. In this case, assistive technologies such as screen readers cannot perceive heading levels. **Correction is required**
+- For elements with `role="heading"` attribute without `aria-level` attribute, **a warning tip "No heading level"** is displayed. The implicit heading level is 2, so it is treated as level 2, but **explicitly specifying the `aria-level` attribute is recommended**
 - Name tips display heading text. Check for completeness and appropriate text.
 - If no name is given to headings, **an error tip "No name (label)"** is displayed. In this case, assistive technologies such as screen readers cannot perceive headings. **Correction is required**
 

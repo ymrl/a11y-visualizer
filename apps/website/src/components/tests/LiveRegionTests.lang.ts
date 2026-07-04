@@ -34,6 +34,10 @@ export const en = {
         title: "role='alert'",
         desc: "Alert role for important, time-sensitive information. Equivalent to aria-live='assertive'.",
       },
+      alertVisibility: {
+        title: "Alert revealed by toggling visibility",
+        desc: "An alert element that exists in the DOM from page load but is hidden with display:none. Revealing it by toggling visibility is a common pattern for form errors. Screen readers announce the alert content when it becomes visible.",
+      },
     },
     output: {
       element: {
@@ -149,6 +153,10 @@ export const ja = {
       alert: {
         title: 'role="alert"',
         desc: '時間に敏感な重要情報を伝えるロール。aria-live="assertive" と似た挙動です。',
+      },
+      alertVisibility: {
+        title: "表示切り替えで現れる alert",
+        desc: "ページ読み込み時から DOM に存在し、display:none で隠されている alert 要素です。表示を切り替えて見せるのはフォームエラーなどでよくあるパターンで、スクリーンリーダーは要素が表示されたときに内容を読み上げます。",
       },
     },
     output: {

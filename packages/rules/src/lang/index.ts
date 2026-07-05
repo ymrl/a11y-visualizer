@@ -1,3 +1,4 @@
+import { isWellFormedLanguageTag } from "../bcp47";
 import type { RuleObject } from "../type";
 
 const ruleName = "lang";
@@ -24,7 +25,17 @@ export const Lang: RuleObject = {
         },
       ];
     } else if (lang || xmlLang) {
-      return [{ type: "lang", ruleName, content: `${lang || xmlLang}` }];
+      const value = `${lang || xmlLang}`;
+      if (!isWellFormedLanguageTag(value)) {
+        return [
+          {
+            type: "error",
+            ruleName,
+            message: "Invalid language tag format",
+          },
+        ];
+      }
+      return [{ type: "lang", ruleName, content: value }];
     }
     return undefined;
   },

@@ -120,6 +120,7 @@
   "Empty title attribute": "빈 title 속성",
   "Not associated with any control": "폼 컨트롤 등과 연결되지 없음",
   "lang and xml:lang attributes must have the same value": "lang and xml:lang attributes must have the same value",
+  "Invalid language tag format": "잘못된 언어 태그 형식",
   "No href attribute": "href속성 없음",
   "Nested interactive element": "Nested interactive element",
   "No lang attribute on <html>": "No lang attribute on <html>",

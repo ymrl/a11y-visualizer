@@ -120,6 +120,7 @@
   "Empty title attribute": "title属性が空",
   "Not associated with any control": "入力欄等と紐付けされていない",
   "lang and xml:lang attributes must have the same value": "lang属性とxml:lang属性の値が異なる",
+  "Invalid language tag format": "言語タグ形式が不正",
   "No href attribute": "href属性なし",
   "Nested interactive element": "インタラクティブ要素の入れ子",
   "No lang attribute on <html>": "<html>要素にlang属性なし",

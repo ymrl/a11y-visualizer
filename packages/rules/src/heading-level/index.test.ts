@@ -36,9 +36,24 @@ describe("heading-level", () => {
     });
   });
 
-  test("h1 with aria-level", () => {
+  test("h2 with aria-level overrides the tag level", () => {
+    const element = document.createElement("h2");
+    element.setAttribute("aria-level", "4");
+    document.body.appendChild(element);
+    const result = HeadingLevel.evaluate(element, { enabled: true }, {});
+    expect(result).toEqual([
+      {
+        type: "heading",
+        content: "4",
+        contentLabel: "Heading level",
+        ruleName: "heading-level",
+      },
+    ]);
+  });
+
+  test("h1 with empty aria-level falls back to the tag level", () => {
     const element = document.createElement("h1");
-    element.setAttribute("aria-level", "2");
+    element.setAttribute("aria-level", "");
     document.body.appendChild(element);
     const result = HeadingLevel.evaluate(element, { enabled: true }, {});
     expect(result).toEqual([
@@ -51,15 +66,21 @@ describe("heading-level", () => {
     ]);
   });
 
-  test("div with role=heading", () => {
+  test("div with role=heading defaults to level 2 with a warning", () => {
     const element = document.createElement("div");
     element.setAttribute("role", "heading");
     document.body.appendChild(element);
     const result = HeadingLevel.evaluate(element, { enabled: true }, {});
     expect(result).toEqual([
       {
-        type: "error",
+        type: "warning",
         message: "No heading level",
+        ruleName: "heading-level",
+      },
+      {
+        type: "heading",
+        content: "2",
+        contentLabel: "Heading level",
         ruleName: "heading-level",
       },
     ]);

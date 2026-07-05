@@ -167,14 +167,9 @@ export const AllFramesRoot = ({
 
     const resizeEvents = ["resize"];
     const scrollEvents = ["scroll"];
-    const events = [
-      "scroll",
-      "keydown",
-      "mousedown",
-      "mousemove",
-      "mousewheel",
-      "change",
-    ];
+    // mousemoveは含めない。マウス移動だけでページ全体の再収集が走って
+    // しまうため。hoverなどによるDOMの変化はMutationObserverが検知する
+    const events = ["scroll", "keydown", "mousedown", "mousewheel", "change"];
 
     resizeEvents.forEach((event) => {
       w.addEventListener(event, onResize);

@@ -86,6 +86,32 @@ describe("createAlertTracker", () => {
     expect(announce).toHaveBeenCalledTimes(1);
   });
 
+  it("一度表示されたalertを非表示にして再度表示すると再announceされる", () => {
+    const tracker = createAlertTracker();
+    const announce = vi.fn();
+    const el = createAlert();
+    let renderable = true;
+    const options = {
+      isRenderable: () => renderable,
+      announce,
+    };
+
+    // 初回表示でannounceされる
+    tracker.handle(el, options);
+    expect(announce).toHaveBeenCalledTimes(1);
+
+    // 非表示にする（display:noneやhidden属性などを想定）
+    renderable = false;
+    tracker.recheckPending(options);
+    expect(announce).toHaveBeenCalledTimes(1);
+
+    // 再度表示すると再announceされる
+    renderable = true;
+    tracker.recheckPending(options);
+    expect(announce).toHaveBeenCalledTimes(2);
+    expect(announce).toHaveBeenLastCalledWith(el);
+  });
+
   it("非表示のまま再チェックしてもannounceしない", () => {
     const tracker = createAlertTracker();
     const announce = vi.fn();

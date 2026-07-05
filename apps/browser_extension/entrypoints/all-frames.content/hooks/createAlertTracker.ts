@@ -4,52 +4,61 @@ export type AlertHandlerOptions = {
    * suppressed by a modal, etc.).
    */
   isRenderable: (element: Element) => boolean;
-  /** Announce the alert. Called at most once per element. */
+  /** Announce the alert. Called at most once per renderable transition. */
   announce: (element: Element) => void;
 };
 
 export type AlertTracker = {
   /**
    * Evaluate an alert element. Announces it when it is renderable and has not
-   * been announced yet. When it is not renderable yet, the element is kept as
-   * pending so it can be re-evaluated later via {@link recheckPending}.
+   * been announced since it last became renderable. When it is not renderable
+   * yet, the element is kept tracked so it can be re-evaluated later via
+   * {@link recheckPending}.
    */
   handle: (element: Element, options: AlertHandlerOptions) => void;
   /**
-   * Re-evaluate all pending alerts (those previously skipped because they were
-   * not renderable). Attribute/style changes such as toggling `display:none`
-   * do not reach a childList/characterData observer, so visibility must be
-   * re-checked on each scan. Disconnected elements are discarded.
+   * Re-evaluate every tracked alert. Attribute/style changes such as toggling
+   * `display:none` do not reach a childList/characterData observer, so
+   * visibility must be re-checked on each scan. An alert that has become
+   * non-renderable has its announced state reset so it will be announced again
+   * once it becomes renderable — mirroring screen readers, which re-announce a
+   * `role="alert"` element each time it (re)appears. Disconnected elements are
+   * discarded.
    */
   recheckPending: (options: AlertHandlerOptions) => void;
 };
 
 export const createAlertTracker = (): AlertTracker => {
-  const processed = new WeakSet<Element>();
-  const pending = new Set<Element>();
+  // All alert elements currently being tracked. The boolean records whether the
+  // alert has already been announced while in its current renderable state.
+  // When an alert becomes non-renderable, the flag is reset to `false` so a
+  // later hidden→visible transition re-announces it.
+  const tracked = new Map<Element, boolean>();
+
+  const evaluate = (element: Element, options: AlertHandlerOptions) => {
+    if (options.isRenderable(element)) {
+      if (!tracked.get(element)) {
+        tracked.set(element, true);
+        options.announce(element);
+      }
+      return;
+    }
+    // Not renderable yet: keep watching so it can be announced once it becomes
+    // renderable, and reset the announced flag for hidden→visible transitions.
+    tracked.set(element, false);
+  };
 
   const handle = (element: Element, options: AlertHandlerOptions) => {
-    if (processed.has(element)) {
-      pending.delete(element);
-      return;
-    }
-    if (!options.isRenderable(element)) {
-      // Keep watching so it can be announced once it becomes renderable.
-      pending.add(element);
-      return;
-    }
-    processed.add(element);
-    pending.delete(element);
-    options.announce(element);
+    evaluate(element, options);
   };
 
   const recheckPending = (options: AlertHandlerOptions) => {
-    pending.forEach((element) => {
+    tracked.forEach((_announced, element) => {
       if (!element.isConnected) {
-        pending.delete(element);
+        tracked.delete(element);
         return;
       }
-      handle(element, options);
+      evaluate(element, options);
     });
   };
 

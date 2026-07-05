@@ -3,6 +3,7 @@ export const testCategories = [
   { slug: "images", dictKey: "images" },
   { slug: "links", dictKey: "links" },
   { slug: "buttons", dictKey: "buttons" },
+  { slug: "target-size", dictKey: "targetSize" },
   { slug: "form-controls", dictKey: "forms" },
   { slug: "layout", dictKey: "landmarks" },
   { slug: "lists", dictKey: "lists" },

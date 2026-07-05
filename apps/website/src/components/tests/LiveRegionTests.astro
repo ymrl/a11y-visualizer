@@ -113,6 +113,35 @@ const t = createLocalT(lang === "ja" ? ja : en, en);
   </div>
 </ExampleCard>
 
+<ExampleCard
+  title={t("examples.roles.alertVisibility.title")}
+  description={t("examples.roles.alertVisibility.desc")}
+>
+  <div class="space-y-4">
+    <div
+      id="toggle-visibility-alert"
+      role="alert"
+      class="hidden bg-orange-50 dark:bg-orange-900/20 p-3 rounded-sm border border-orange-200 dark:border-orange-700"
+    >
+      Error: Please fill in all required fields!
+    </div>
+    <div class="flex flex-wrap gap-2">
+      <button
+        class="bg-zinc-600 text-white px-4 py-2 rounded-sm hover:bg-zinc-700 transition-colors"
+        onclick="document.getElementById('toggle-visibility-alert').classList.remove('hidden')"
+      >
+        Show Alert
+      </button>
+      <button
+        class="bg-gray-500 text-white px-4 py-2 rounded-sm hover:bg-gray-600 transition-colors"
+        onclick="document.getElementById('toggle-visibility-alert').classList.add('hidden')"
+      >
+        Hide Alert
+      </button>
+    </div>
+  </div>
+</ExampleCard>
+
 <CategorySectionTitle id="output-element"
   >{t("sections.output.title")}</CategorySectionTitle
 >

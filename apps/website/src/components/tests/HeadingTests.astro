@@ -101,3 +101,41 @@ const t = createLocalT(lang === "ja" ? ja : en, en);
     </p>
   </blockquote>
 </ExampleCard>
+
+<ExampleCard
+  title={t("examples.problematic.noAriaLevel.title")}
+  description={t("examples.problematic.noAriaLevel.desc")}
+>
+  <blockquote
+    class="p-4 border border-yellow-300 dark:border-yellow-600 rounded-sm bg-yellow-50 dark:bg-yellow-900/20"
+  >
+    <div
+      class="text-lg font-bold text-zinc-800 dark:text-zinc-200"
+      role="heading"
+    >
+      Custom Heading (role="heading" without aria-level)
+    </div>
+    <p class="text-sm text-zinc-700 dark:text-zinc-300 mt-2">
+      {t("examples.problematic.noAriaLevel.note")}
+    </p>
+  </blockquote>
+</ExampleCard>
+
+<ExampleCard
+  title={t("examples.problematic.ariaLevelOverride.title")}
+  description={t("examples.problematic.ariaLevelOverride.desc")}
+>
+  <blockquote
+    class="p-4 border border-yellow-300 dark:border-yellow-600 rounded-sm bg-yellow-50 dark:bg-yellow-900/20"
+  >
+    <h2
+      aria-level="4"
+      class="text-xl font-bold text-zinc-800 dark:text-zinc-200"
+    >
+      h2 element with aria-level="4"
+    </h2>
+    <p class="text-sm text-zinc-700 dark:text-zinc-300 mt-2">
+      {t("examples.problematic.ariaLevelOverride.note")}
+    </p>
+  </blockquote>
+</ExampleCard>

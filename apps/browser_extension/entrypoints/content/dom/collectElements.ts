@@ -65,6 +65,8 @@ export const collectElements = (
 
   const selector = getSelector(settings);
   const internalTables: Table[] = [];
+  // 同じ祖先を持つ要素間でスクロール基準の判定結果を使い回す
+  const scrollBaseCache = new WeakMap<Element, Element | null>();
 
   // Shadow DOMを収集
   const shadowRoots = collectShadowRoots(root);
@@ -100,10 +102,6 @@ export const collectElements = (
       return true;
     })
     .map((el: Element) => {
-      const scrollBaseElement = getScrollBaseElement(el, d, w);
-      const scrollBasePosition = scrollBaseElement
-        ? getElementPosition(scrollBaseElement, w, 0, 0)
-        : undefined;
       const elementPosition = getElementPosition(el, w, offsetX, offsetY);
       if (
         elementPosition.absoluteX + elementPosition.width < visibleX ||
@@ -113,6 +111,12 @@ export const collectElements = (
       ) {
         return null;
       }
+      // スクロール基準の探索は祖先のgetComputedStyleを伴い高コストなので、
+      // ビューポートによる絞り込みを通過した要素にだけ行う
+      const scrollBaseElement = getScrollBaseElement(el, d, w, scrollBaseCache);
+      const scrollBasePosition = scrollBaseElement
+        ? getElementPosition(scrollBaseElement, w, 0, 0)
+        : undefined;
       if (
         scrollBasePosition &&
         (elementPosition.absoluteX + elementPosition.width <
@@ -152,6 +156,7 @@ export const collectElements = (
 
       return {
         ...elementPosition,
+        element: el,
         rects,
         name: name || "",
         category: getElementCategory(el, role),

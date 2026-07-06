@@ -4,6 +4,7 @@ import { browser } from "#imports";
 import i18n from "./i18n";
 import { loadDefaultSettings } from "./settings";
 import type { Settings, SupportedLanguage } from "./settings/types";
+import { createExternalStore } from "./utils/createExternalStore";
 
 const getLanguageFromBrowser = (): SupportedLanguage => {
   const browserLang = browser.i18n.getUILanguage();
@@ -19,46 +20,53 @@ const resolveLanguage = (settingLang: SupportedLanguage): SupportedLanguage => {
   return settingLang;
 };
 
-export const useLang = () => {
-  const [lang, setLang] = React.useState<string>("en");
+// 言語の状態はモジュールスコープで一元管理する。useLangはチップごとなど
+// 多数のコンポーネントから呼ばれるため、フックのマウントごとにストレージの
+// 読み込みやリスナー登録を行うと重い
+const langStore = createExternalStore<string>("en");
+let langInitialized = false;
 
-  React.useEffect(() => {
-    loadDefaultSettings().then(([settings]) => {
-      const resolvedLang = resolveLanguage(settings.language);
-      setLang(resolvedLang);
-      i18n.changeLanguage(resolvedLang);
-    });
+const applyLanguage = (settingLang: SupportedLanguage) => {
+  const resolvedLang = resolveLanguage(settingLang);
+  langStore.set(resolvedLang);
+  i18n.changeLanguage(resolvedLang);
+};
 
-    // ストレージ変更の監視
-    const handleStorageChange = (
-      changes: Record<string, { newValue?: unknown; oldValue?: unknown }>,
-    ) => {
-      if (changes.__default__?.newValue) {
-        const newSettings = changes.__default__.newValue as Settings;
-        if (newSettings.language) {
-          const resolvedLang = resolveLanguage(newSettings.language);
-          setLang(resolvedLang);
-          i18n.changeLanguage(resolvedLang);
-        }
+const initializeLang = () => {
+  if (langInitialized) return;
+  langInitialized = true;
+
+  loadDefaultSettings().then(([settings]) => {
+    applyLanguage(settings.language);
+  });
+
+  // ストレージ変更の監視
+  const handleStorageChange = (
+    changes: Record<string, { newValue?: unknown; oldValue?: unknown }>,
+  ) => {
+    if (changes.__default__?.newValue) {
+      const newSettings = changes.__default__.newValue as Settings;
+      if (newSettings.language) {
+        applyLanguage(newSettings.language);
       }
-    };
+    }
+  };
+  browser.storage.local.onChanged.addListener(handleStorageChange);
+};
 
-    browser.storage.local.onChanged.addListener(handleStorageChange);
-
-    return () => {
-      browser.storage.local.onChanged.removeListener(handleStorageChange);
-    };
+export const useLang = () => {
+  React.useEffect(() => {
+    initializeLang();
   }, []);
 
+  const lang = React.useSyncExternalStore(langStore.subscribe, langStore.get);
   const { t } = useTranslation();
 
   return {
     t,
     lang,
     updateLanguage: (newLang: SupportedLanguage) => {
-      const resolvedLang = resolveLanguage(newLang);
-      setLang(resolvedLang);
-      i18n.changeLanguage(resolvedLang);
+      applyLanguage(newLang);
     },
   };
 };

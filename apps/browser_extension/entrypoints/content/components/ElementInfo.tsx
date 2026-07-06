@@ -6,7 +6,10 @@ import type { ElementMeta } from "../types";
 import { RuleTip } from "./RuleTip";
 
 const TIP_SIDE_MARGIN = 8;
-export const ElementInfo = ({
+// インタラクティブモードではポインタ移動のたびに親が再レンダリングされる
+// ため、メモ化してprops(メタ情報とホバー状態)が変わらないチップの
+// 再レンダリングを省略する
+export const ElementInfo = React.memo(function ElementInfo({
   meta: {
     x,
     y,
@@ -26,7 +29,7 @@ export const ElementInfo = ({
   rootWidth: number;
   rootHeight: number;
   isHovered: boolean;
-}) => {
+}) {
   const { interactiveMode, hideTips, tipFontSize, ...settings } =
     React.useContext(SettingsContext);
   const selfRef = React.useRef<HTMLDivElement>(null);
@@ -145,4 +148,4 @@ export const ElementInfo = ({
       </div>
     </div>
   );
-};
+});

@@ -350,9 +350,12 @@ export const useLiveRegionLocal = ({
             ...[...(removals ? r.removedNodes : [])].map(
               (n) => n.textContent || "",
             ),
-            ...[...(additions ? r.addedNodes : [])].map(
-              (n) => n.textContent || "",
-            ),
+            // 要素ノードの追加は additions、テキストノードの追加は text で判定する。
+            // 空の aria-relevant="additions" リージョンへのテキスト挿入は
+            // テキストノードの追加であり、NVDA では通知されないため通知しない。
+            ...[...r.addedNodes]
+              .filter((n) => (n.nodeType === Node.TEXT_NODE ? text : additions))
+              .map((n) => n.textContent || ""),
           ].filter(Boolean);
           return contents.length > 0
             ? { content: contents.join(" "), level }

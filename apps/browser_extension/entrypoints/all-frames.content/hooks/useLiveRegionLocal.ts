@@ -11,6 +11,11 @@ import { SettingsContext } from "../../content/contexts/SettingsContext";
 import { isAnnouncementSuppressedByModal } from "../../content/dom/detectModals";
 import { createLiveRegionMessage } from "../../content/shared/protocol";
 import type { AnnouncementItem, LiveLevel } from "../../content/types";
+import {
+  type AlertHandlerOptions,
+  type AlertTracker,
+  createAlertTracker,
+} from "./createAlertTracker";
 
 const LIVEREGION_SELECTOR =
   "output, [role~='status'], [role~='alert'], [role~='log'], [aria-live]:not([aria-live='off'])";
@@ -75,7 +80,14 @@ export const useLiveRegionLocal = ({
   } = React.useContext(SettingsContext);
   const liveRegionsRef = React.useRef<Element[]>([]);
   const liveRegionObserverRef = React.useRef<MutationObserver | null>(null);
-  const processedAlertsRef = React.useRef<WeakSet<Element>>(new WeakSet());
+  // Tracks which alerts have already been announced and which ones were
+  // skipped because they were not renderable yet (hidden, aria-hidden, inert,
+  // busy, or suppressed by a modal). The latter are re-checked on every scan
+  // so they can be announced once they become visible.
+  const alertTrackerRef = React.useRef<AlertTracker | null>(null);
+  if (!alertTrackerRef.current) {
+    alertTrackerRef.current = createAlertTracker();
+  }
 
   // Self-mode state (for legacy frames)
   const [announcements, setAnnouncements] = React.useState<AnnouncementItem[]>(
@@ -135,51 +147,49 @@ export const useLiveRegionLocal = ({
     setPausedAnnouncements((prev) => (prev.length > 0 ? [] : prev));
   }, []);
 
+  const alertHandlerOptions = React.useMemo<AlertHandlerOptions>(
+    () => ({
+      isRenderable: (alertElement) =>
+        !(
+          isHidden(alertElement) ||
+          isInAriaHidden(alertElement) ||
+          isInInert(alertElement) ||
+          isBusy(alertElement)
+        ) &&
+        !(
+          parentRef.current &&
+          isAnnouncementSuppressedByModal(
+            alertElement,
+            parentRef.current,
+            announceOutOfModal,
+          )
+        ),
+      announce: (alertElement) => {
+        const isAtomic = alertElement.getAttribute("aria-atomic") !== "false";
+
+        let content: string;
+        if (isAtomic) {
+          const name = computeAccessibleName(alertElement);
+          content = [name, alertElement.textContent].filter(Boolean).join(" ");
+        } else {
+          content = alertElement.textContent || "";
+        }
+
+        if (content.trim() === "") {
+          content = computeAccessibleName(alertElement) || "";
+        }
+
+        addAnnouncement(content, "assertive");
+      },
+    }),
+    [addAnnouncement, parentRef, announceOutOfModal],
+  );
+
   const handleAlertAppearance = React.useCallback(
     (alertElement: Element) => {
-      if (processedAlertsRef.current.has(alertElement)) {
-        return;
-      }
-
-      if (
-        isHidden(alertElement) ||
-        isInAriaHidden(alertElement) ||
-        isInInert(alertElement) ||
-        isBusy(alertElement)
-      ) {
-        return;
-      }
-
-      if (
-        parentRef.current &&
-        isAnnouncementSuppressedByModal(
-          alertElement,
-          parentRef.current,
-          announceOutOfModal,
-        )
-      ) {
-        return;
-      }
-
-      processedAlertsRef.current.add(alertElement);
-
-      const isAtomic = alertElement.getAttribute("aria-atomic") !== "false";
-
-      let content: string;
-      if (isAtomic) {
-        const name = computeAccessibleName(alertElement);
-        content = [name, alertElement.textContent].filter(Boolean).join(" ");
-      } else {
-        content = alertElement.textContent || "";
-      }
-
-      if (content.trim() === "") {
-        content = computeAccessibleName(alertElement) || "";
-      }
-
-      addAnnouncement(content, "assertive");
+      alertTrackerRef.current?.handle(alertElement, alertHandlerOptions);
     },
-    [addAnnouncement, parentRef, announceOutOfModal],
+    [alertHandlerOptions],
   );
 
   // Timer management for self-mode announcements
@@ -229,11 +239,19 @@ export const useLiveRegionLocal = ({
     [handleAlertAppearance, renderType],
   );
 
+  // Re-evaluate alerts that were previously skipped while not renderable.
+  // Attribute/style changes (e.g. toggling display:none) do not reach the
+  // childList/characterData observer, so visibility is re-checked on each scan.
+  const recheckPendingAlerts = React.useCallback(() => {
+    alertTrackerRef.current?.recheckPending(alertHandlerOptions);
+  }, [alertHandlerOptions]);
+
   const observeLiveRegion = React.useCallback(
     (el: Element, { firstTime }: { firstTime?: boolean }) => {
       if (!liveRegionObserverRef.current) {
         return;
       }
+      recheckPendingAlerts();
       // Only scan this frame's own live regions (no iframe scanning)
       const shadowRoots = collectShadowRoots(el);
       const liveRegions = [
@@ -252,7 +270,7 @@ export const useLiveRegionLocal = ({
       });
       liveRegionsRef.current = Array.from(liveRegions);
     },
-    [connectLiveRegion],
+    [connectLiveRegion, recheckPendingAlerts],
   );
 
   React.useEffect(() => {

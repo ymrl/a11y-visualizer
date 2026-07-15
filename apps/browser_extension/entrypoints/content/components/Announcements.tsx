@@ -17,10 +17,16 @@ export const Announcements = ({
   } = React.useContext(SettingsContext);
   const listRef = React.useRef<HTMLUListElement>(null);
   React.useEffect(() => {
-    if (listRef.current) {
-      announcements.length > 0
-        ? listRef.current.showPopover()
-        : listRef.current.hidePopover();
+    const list = listRef.current;
+    if (!list) {
+      return;
+    }
+    if (announcements.length > 0) {
+      if (!list.matches(":popover-open")) {
+        list.showPopover();
+      }
+    } else if (list.matches(":popover-open")) {
+      list.hidePopover();
     }
   }, [announcements.length]);
 

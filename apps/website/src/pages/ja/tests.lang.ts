@@ -17,6 +17,7 @@ const dict = {
     headings: {
       images: "画像",
       buttons: "ボタン",
+      targetSize: "ターゲットサイズ",
       links: "リンク",
       forms: "フォームコントロール",
       headings: "見出し",

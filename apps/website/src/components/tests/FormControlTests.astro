@@ -345,6 +345,23 @@ const t = createLocalT(lang === "ja" ? ja : en, en);
   </p>
 </ExampleCard>
 
+<ExampleCard
+  title={t("examples.labels.missingIdWithControl.title")}
+  description={t("examples.labels.missingIdWithControl.desc")}
+>
+  <label
+    for="non-existent-input-with-control"
+    class="text-zinc-700 dark:text-zinc-300 border-red-300 border p-1 block mb-2"
+  >
+    Nickname
+    <input type="text" class={formClasses} />
+  </label>
+  <p class="text-sm text-zinc-600 dark:text-zinc-400">
+    The for attribute points to an id that doesn't exist, so the wrapped input
+    is not associated with this label.
+  </p>
+</ExampleCard>
+
 <CategorySectionTitle id="input-states"
   >{t("sections.inputStates.title")}</CategorySectionTitle
 >

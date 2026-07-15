@@ -30,6 +30,16 @@ export const en = {
         desc: "❌ Heading element with no text content. Assistive technology users cannot predict the content about the part with this heading.",
         note: "This h6 element contains no text and provides no value to users.",
       },
+      noAriaLevel: {
+        title: 'role="heading" without aria-level',
+        desc: '⚠️ A custom heading using role="heading" but without an aria-level attribute. Assistive technologies treat it as a level 2 heading by default, which may not match the intended document structure. Specify aria-level explicitly.',
+        note: "Without aria-level, this heading defaults to level 2.",
+      },
+      ariaLevelOverride: {
+        title: "aria-level overriding a native heading tag",
+        desc: '⚠️ An h2 element with aria-level="4". The ARIA attribute overrides the tag\'s native level, so assistive technologies treat it as a level 4 heading even though the markup says h2. This mismatch is confusing; prefer using the matching heading tag.',
+        note: "Assistive technologies expose this h2 as a level 4 heading.",
+      },
     },
   },
 } as const;
@@ -65,6 +75,16 @@ export const ja = {
         title: "空の見出し",
         desc: "❌ テキストのない見出し要素です。支援技術のユーザーは、この見出しのついた部分に何があるのか予想できません。",
         note: "この h6 要素にはテキストがなく、利用者に価値を提供しません。",
+      },
+      noAriaLevel: {
+        title: 'aria-level のない role="heading"',
+        desc: '⚠️ role="heading" を使いながら aria-level 属性を指定していないカスタム見出しです。支援技術はデフォルトでレベル 2 の見出しとして扱うため、意図した文書構造と一致しない場合があります。aria-level を明示しましょう。',
+        note: "aria-level がない場合、この見出しはレベル 2 として扱われます。",
+      },
+      ariaLevelOverride: {
+        title: "ネイティブの見出しタグを上書きする aria-level",
+        desc: '⚠️ aria-level="4" を指定した h2 要素です。ARIA 属性がタグ本来のレベルを上書きするため、マークアップ上は h2 でも支援技術はレベル 4 の見出しとして扱います。紛らわしいため、適切なレベルの見出しタグを使うことが望ましいです。',
+        note: "支援技術はこの h2 をレベル 4 の見出しとして扱います。",
       },
     },
   },

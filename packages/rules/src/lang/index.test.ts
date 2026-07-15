@@ -53,6 +53,44 @@ describe("lang", () => {
     ]);
   });
 
+  test("span with invalid lang tag", () => {
+    const element = document.createElement("span");
+    element.setAttribute("lang", "japanese");
+    document.body.appendChild(element);
+    const result = Lang.evaluate(element, { enabled: true }, {});
+    expect(result).toEqual([
+      {
+        type: "error",
+        ruleName: "lang",
+        message: "Invalid language tag format",
+      },
+    ]);
+  });
+
+  test("span with invalid xml:lang tag", () => {
+    const element = document.createElement("span");
+    element.setAttribute("xml:lang", "en_US");
+    document.body.appendChild(element);
+    const result = Lang.evaluate(element, { enabled: true }, {});
+    expect(result).toEqual([
+      {
+        type: "error",
+        ruleName: "lang",
+        message: "Invalid language tag format",
+      },
+    ]);
+  });
+
+  test("span with region subtag", () => {
+    const element = document.createElement("span");
+    element.setAttribute("lang", "en-US");
+    document.body.appendChild(element);
+    const result = Lang.evaluate(element, { enabled: true }, {});
+    expect(result).toEqual([
+      { type: "lang", ruleName: "lang", content: "en-US" },
+    ]);
+  });
+
   test("disabled", () => {
     const element = document.createElement("span");
     element.setAttribute("lang", "en");

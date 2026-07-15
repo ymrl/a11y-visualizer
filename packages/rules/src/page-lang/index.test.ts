@@ -72,6 +72,31 @@ describe("page-lang", () => {
     ]);
   });
 
+  test("html with invalid lang tag", () => {
+    document.documentElement.setAttribute("lang", "japanese");
+    const result = PageLang.evaluate(document.body, { enabled: true }, {});
+    expect(result).toEqual([
+      {
+        type: "error",
+        ruleName: "page-lang",
+        message: "Invalid language tag format",
+      },
+    ]);
+  });
+
+  test("html with region subtag", () => {
+    document.documentElement.setAttribute("lang", "en-US");
+    const result = PageLang.evaluate(document.body, { enabled: true }, {});
+    expect(result).toEqual([
+      {
+        type: "lang",
+        ruleName: "page-lang",
+        content: "en-US",
+        contentLabel: "Page language",
+      },
+    ]);
+  });
+
   test("disabled", () => {
     document.documentElement.setAttribute("lang", "en");
     const result = PageLang.evaluate(document.body, { enabled: false }, {});

@@ -92,6 +92,10 @@ export const en = {
         title: "Label with non-existent ID reference",
         desc: "⚠️ Label references an ID that doesn't exist. Is the ID you meant to reference incorrect?",
       },
+      missingIdWithControl: {
+        title: "Label wrapping a control, with a non-existent ID reference",
+        desc: "❌ The label wraps an input, but its for attribute references an ID that doesn't exist. When the for attribute cannot be resolved, the wrapped control is not associated with the label.",
+      },
     },
     states: {
       required: {
@@ -213,6 +217,10 @@ export const ja = {
       missingId: {
         title: "存在しない ID を参照する label",
         desc: "⚠️ 対応する入力が存在していません。指定する ID を間違えていませんか？",
+      },
+      missingIdWithControl: {
+        title: "コントロールを内包しつつ、存在しない ID を参照する label",
+        desc: "❌ label は input を内包していますが、for 属性が存在しない ID を参照しています。for 属性が解決できない場合、内包するコントロールへの関連付けは行われません。",
       },
     },
     states: {

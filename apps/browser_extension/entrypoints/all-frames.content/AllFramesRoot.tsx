@@ -186,11 +186,16 @@ export const AllFramesRoot = ({
 
     const resizeEvents = ["resize"];
     const scrollEvents = ["scroll"];
+    // mousemoveは含めない。ポインタが同じ要素の上で動くだけでもページ全体の
+    // 再収集が走ってしまうため。:hoverで表示されるメニューなどDOMの変化を
+    // 伴わないCSSだけの変化はMutationObserverでは検知できないので、要素の
+    // 境界をまたいだときだけ発火するmouseover/mouseoutで再収集する
     const events = [
       "scroll",
       "keydown",
       "mousedown",
-      "mousemove",
+      "mouseover",
+      "mouseout",
       "mousewheel",
       "change",
     ];

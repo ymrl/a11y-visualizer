@@ -327,10 +327,13 @@ export const useLiveRegionLocal = ({
             role === "alert" || role === "status"
               ? liveRegionNode
               : closestNodeOfSelector(targetNode, "[aria-atomic]");
+          const atomicAttribute = atomicNode?.getAttribute?.("aria-atomic");
+          // alert / status の aria-atomic の暗黙値は true だが、
+          // 明示的な aria-atomic="false" があれば上書きできる
           const isAtomic =
-            role === "alert" ||
-            role === "status" ||
-            atomicNode?.getAttribute?.("aria-atomic") === "true";
+            ((role === "alert" || role === "status") &&
+              atomicAttribute !== "false") ||
+            atomicAttribute === "true";
           if (isAtomic && atomicNode) {
             if (atomicNodes.includes(atomicNode)) {
               return null;
@@ -354,18 +357,23 @@ export const useLiveRegionLocal = ({
             relevant.includes("removals") || relevant.includes("all");
           const additions =
             relevant.includes("additions") || relevant.includes("all");
+          const text = relevant.includes("text") || relevant.includes("all");
 
           const contents = [
-            (r.removedNodes.length === 0 &&
+            (text &&
+              r.removedNodes.length === 0 &&
               r.addedNodes.length === 0 &&
               targetNode?.textContent) ||
               "",
             ...[...(removals ? r.removedNodes : [])].map(
               (n) => n.textContent || "",
             ),
-            ...[...(additions ? r.addedNodes : [])].map(
-              (n) => n.textContent || "",
-            ),
+            // 要素ノードの追加は additions、テキストノードの追加は text で判定する。
+            // 空の aria-relevant="additions" リージョンへのテキスト挿入は
+            // テキストノードの追加であり、NVDA では通知されないため通知しない。
+            ...[...r.addedNodes]
+              .filter((n) => (n.nodeType === Node.TEXT_NODE ? text : additions))
+              .map((n) => n.textContent || ""),
           ].filter(Boolean);
           return contents.length > 0
             ? { content: contents.join(" "), level }

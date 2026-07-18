@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { createPortal } from "react-dom";
+import { collectShadowRoots } from "../../src/dom/collectShadowRoots";
 import { detectFrameType } from "../../src/dom/detectFrameType";
 import { Announcements } from "../content/components/Announcements";
 import { ElementList } from "../content/components/ElementList";
@@ -140,6 +141,24 @@ export const AllFramesRoot = ({
       [...parentRef.current.children].forEach((el) => {
         if (el.contains(containerRef.current)) return;
         observer.observe(el, {
+          childList: true,
+          subtree: true,
+          attributes: true,
+        });
+      });
+      // Shadow DOM 内に後から追加されるライブリージョンを検出できるよう、
+      // 通常のDOMツリーを越えないMutationObserverの代わりにShadow Rootも監視する
+      const extensionRoot = containerRef.current;
+      collectShadowRoots(parentRef.current).forEach((shadowRoot) => {
+        // 拡張機能自身が描画したShadow DOMは監視しない（無限ループ防止）
+        if (
+          extensionRoot &&
+          (shadowRoot.contains(extensionRoot) ||
+            extensionRoot.contains(shadowRoot.host))
+        ) {
+          return;
+        }
+        observer.observe(shadowRoot, {
           childList: true,
           subtree: true,
           attributes: true,

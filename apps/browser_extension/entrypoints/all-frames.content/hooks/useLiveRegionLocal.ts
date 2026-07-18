@@ -16,6 +16,7 @@ import {
   type AlertTracker,
   createAlertTracker,
 } from "./createAlertTracker";
+import { getAnnounceableText, resolveLiveLevel } from "./liveRegion";
 
 const LIVEREGION_SELECTOR =
   "output, [role~='status'], [role~='alert'], [role~='log'], [aria-live]:not([aria-live='off'])";
@@ -150,6 +151,9 @@ export const useLiveRegionLocal = ({
   const alertHandlerOptions = React.useMemo<AlertHandlerOptions>(
     () => ({
       isRenderable: (alertElement) =>
+        // 実効ロールがライブリージョンでない、または aria-live が off の場合は
+        // 読み上げ対象ではない
+        resolveLiveLevel(alertElement) !== "off" &&
         !(
           isHidden(alertElement) ||
           isInAriaHidden(alertElement) ||
@@ -165,21 +169,28 @@ export const useLiveRegionLocal = ({
           )
         ),
       announce: (alertElement) => {
+        // 明示的な aria-live がロールの暗黙値を上書きする
+        // （isRenderable で off は除外済みなので polite / assertive のいずれか）
+        const level = resolveLiveLevel(alertElement);
+        const liveLevel: LiveLevel =
+          level === "assertive" ? "assertive" : "polite";
         const isAtomic = alertElement.getAttribute("aria-atomic") !== "false";
 
         let content: string;
         if (isAtomic) {
           const name = computeAccessibleName(alertElement);
-          content = [name, alertElement.textContent].filter(Boolean).join(" ");
+          content = [name, getAnnounceableText(alertElement)]
+            .filter(Boolean)
+            .join(" ");
         } else {
-          content = alertElement.textContent || "";
+          content = getAnnounceableText(alertElement);
         }
 
         if (content.trim() === "") {
           content = computeAccessibleName(alertElement) || "";
         }
 
-        addAnnouncement(content, "assertive");
+        addAnnouncement(content, liveLevel);
       },
     }),
     [addAnnouncement, parentRef, announceOutOfModal],
@@ -314,15 +325,13 @@ export const useLiveRegionLocal = ({
           if (!liveRegionNode) {
             return null;
           }
-          const ariaLiveAttribute = liveRegionNode?.getAttribute("aria-live");
-          if (ariaLiveAttribute === "off") {
+          // 明示的な aria-live がロールの暗黙値を上書きする。無効値や
+          // 実効ロールがライブリージョンでないものは off として扱う
+          const level = resolveLiveLevel(liveRegionNode);
+          if (level === "off") {
             return null;
           }
-          const role = liveRegionNode && getKnownRole(liveRegionNode);
-          const isAssertive =
-            liveRegionNode &&
-            (ariaLiveAttribute === "assertive" || role === "alert");
-          const level = isAssertive ? "assertive" : "polite";
+          const role = getKnownRole(liveRegionNode);
           const atomicNode =
             role === "alert" || role === "status"
               ? liveRegionNode
@@ -339,14 +348,14 @@ export const useLiveRegionLocal = ({
               return null;
             }
             atomicNodes.push(atomicNode);
-            const name =
-              liveRegionNode && computeAccessibleName(liveRegionNode);
-            const content = atomicNode.textContent;
-            if (!content) {
+            // 読み上げ対象は atomicNode なので名前も atomicNode から取る
+            const name = computeAccessibleName(atomicNode);
+            const text = getAnnounceableText(atomicNode);
+            if (!text) {
               return null;
             }
             return {
-              content: [name, atomicNode.textContent].filter(Boolean).join(" "),
+              content: [name, text].filter(Boolean).join(" "),
               level,
             };
           }
@@ -363,17 +372,18 @@ export const useLiveRegionLocal = ({
             (text &&
               r.removedNodes.length === 0 &&
               r.addedNodes.length === 0 &&
-              targetNode?.textContent) ||
+              targetNode &&
+              getAnnounceableText(targetNode)) ||
               "",
-            ...[...(removals ? r.removedNodes : [])].map(
-              (n) => n.textContent || "",
+            ...[...(removals ? r.removedNodes : [])].map((n) =>
+              getAnnounceableText(n),
             ),
             // 要素ノードの追加は additions、テキストノードの追加は text で判定する。
             // 空の aria-relevant="additions" リージョンへのテキスト挿入は
             // テキストノードの追加であり、NVDA では通知されないため通知しない。
             ...[...r.addedNodes]
               .filter((n) => (n.nodeType === Node.TEXT_NODE ? text : additions))
-              .map((n) => n.textContent || ""),
+              .map((n) => getAnnounceableText(n)),
           ].filter(Boolean);
           return contents.length > 0
             ? { content: contents.join(" "), level }

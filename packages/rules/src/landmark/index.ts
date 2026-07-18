@@ -96,6 +96,9 @@ export const Landmark: RuleObject = {
     }
 
     if (tagToRole[tagName]) {
+      // HTML-AAM上はアクセシブルな名前のない<form>はformランドマークとして
+      // 露出されないが、ここでは名前の有無によらずランドマークとして表示する。
+      // <form>であることをユーザーに明示することが目的
       return [
         {
           type: "landmark",

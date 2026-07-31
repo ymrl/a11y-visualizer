@@ -1,5 +1,12 @@
 # @a11y-visualizer/rules
 
+## 1.0.2
+
+### Patch Changes
+
+- Updated dependencies [4fb39b9]
+  - @a11y-visualizer/table@1.0.2
+
 ## 1.0.1
 
 ### Patch Changes

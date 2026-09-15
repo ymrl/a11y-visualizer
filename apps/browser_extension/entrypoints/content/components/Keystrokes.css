@@ -1,7 +1,6 @@
 .KeystrokesList {
   position: fixed;
-  top: 8px;
-  right: 8px;
+  inset: 8px 8px auto auto;
   z-index: 2147483647;
   pointer-events: none;
   display: flex;
@@ -11,6 +10,9 @@
   list-style: none;
   margin: 0;
   padding: 0;
+  border: 0;
+  background: transparent;
+  overflow: visible;
   font-family: sans-serif;
 }
 

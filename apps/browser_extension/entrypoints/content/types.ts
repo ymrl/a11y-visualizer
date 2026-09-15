@@ -2,6 +2,7 @@ import type { ElementPosition } from "@a11y-visualizer/dom-utils";
 import type { RuleResult } from "@a11y-visualizer/rules";
 
 export type ElementMeta = {
+  element: Element;
   name: string;
   category: Category;
   ruleResults: RuleResult[];

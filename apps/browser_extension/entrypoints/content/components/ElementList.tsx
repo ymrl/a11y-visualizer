@@ -1,5 +1,7 @@
 import React from "react";
 import root from "react-shadow";
+import { getElementKey } from "../../../src/utils/getElementKey";
+import { rafThrottle } from "../../../src/utils/rafThrottle";
 import { SettingsContext } from "../contexts/SettingsContext";
 import type { ElementMeta } from "../types";
 import { ElementInfo } from "./ElementInfo";
@@ -53,42 +55,45 @@ export const ElementList = ({
       const win = node?.ownerDocument?.defaultView;
       if (!win) return;
 
+      // 高頻度イベントによる全チップの再レンダリングを1フレーム1回に抑える
+      const updateCoordinates = rafThrottle(
+        (coordinates: { x: number; y: number }[]) =>
+          setUserCoordinates(coordinates),
+      );
+      const clearCoordinates = () => {
+        updateCoordinates.cancel();
+        setUserCoordinates([]);
+      };
+      const touchesToCoordinates = (touches: TouchList) =>
+        Array.from(touches).map((touch) => ({
+          x: touch.pageX,
+          y: touch.pageY,
+        }));
+
       const handleMouseMove = (e: MouseEvent) => {
-        setUserCoordinates([{ x: e.pageX, y: e.pageY }]);
+        updateCoordinates([{ x: e.pageX, y: e.pageY }]);
       };
 
       const handleTouchStart = (e: TouchEvent) => {
-        const coordinates = Array.from(e.touches).map((touch) => ({
-          x: touch.pageX,
-          y: touch.pageY,
-        }));
-        setUserCoordinates(coordinates);
+        updateCoordinates(touchesToCoordinates(e.touches));
       };
 
       const handleTouchMove = (e: TouchEvent) => {
-        const coordinates = Array.from(e.touches).map((touch) => ({
-          x: touch.pageX,
-          y: touch.pageY,
-        }));
-        setUserCoordinates(coordinates);
+        updateCoordinates(touchesToCoordinates(e.touches));
       };
 
       const handleTouchEnd = (e: TouchEvent) => {
         // When touchend occurs, e.touches is empty, so we need to check if there are any remaining touches
         if (e.touches.length === 0) {
-          setUserCoordinates([]);
+          clearCoordinates();
         } else {
           // Some touches remaining, update with current touches
-          const coordinates = Array.from(e.touches).map((touch) => ({
-            x: touch.pageX,
-            y: touch.pageY,
-          }));
-          setUserCoordinates(coordinates);
+          updateCoordinates(touchesToCoordinates(e.touches));
         }
       };
       const handleMouseOut = (e: MouseEvent) => {
         if (!e.relatedTarget) {
-          setUserCoordinates([]);
+          clearCoordinates();
         }
       };
 
@@ -104,6 +109,7 @@ export const ElementList = ({
         win.addEventListener("touchend", handleTouchEnd, { passive: true });
       }
       cleanupRef.current = () => {
+        updateCoordinates.cancel();
         try {
           win.removeEventListener("mousemove", handleMouseMove);
           win.document.removeEventListener("mouseout", handleMouseOut);
@@ -149,11 +155,10 @@ export const ElementList = ({
         }}
         ref={setCallbacks}
       >
-        {list.map((meta, i) => {
+        {list.map((meta) => {
           return (
             <ElementInfo
-              // biome-ignore lint/suspicious/noArrayIndexKey: collected elements have no stable id; index is combined with category and name
-              key={`${i}-${meta.category}-${meta.name}`}
+              key={getElementKey(meta.element)}
               meta={meta}
               rootHeight={height}
               rootWidth={width}

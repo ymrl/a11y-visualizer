@@ -1,0 +1,171 @@
+---
+import { createLocalT } from "../../lib/i18n";
+import CategorySectionTitle from "./CategorySectionTitle.astro";
+import CategoryTitle from "./CategoryTitle.astro";
+import ExampleCard from "./ExampleCard.astro";
+import { en, ja } from "./TargetSizeTests.lang";
+
+interface Props {
+  lang?: string;
+}
+const lang = (Astro.props as Props).lang || "en";
+const t = createLocalT(lang === "ja" ? ja : en, en);
+
+// Base button style without a fixed size, so each example can set its own size.
+const btnBase =
+  "bg-teal-700 text-white rounded-md inline-flex items-center justify-center cursor-pointer hover:bg-teal-800 transition-colors leading-none";
+---
+
+<CategoryTitle id="target-size">{t("title")}</CategoryTitle>
+<p class="text-zinc-700 dark:text-zinc-300 mb-6">{t("intro")}</p>
+
+<CategorySectionTitle id="single-target"
+  >{t("sections.singleTarget.title")}</CategorySectionTitle
+>
+
+<ExampleCard
+  title={t("examples.standard.title")}
+  description={t("examples.standard.desc")}
+>
+  <button
+    type="button"
+    class={`${btnBase} h-11 px-4`}
+    onclick="window.alert('Hello!')">設定</button
+  >
+</ExampleCard>
+
+<ExampleCard
+  title={t("examples.minimum.title")}
+  description={t("examples.minimum.desc")}
+>
+  <button
+    type="button"
+    class={btnBase}
+    style="width:24px;height:24px;font-size:14px"
+    aria-label="お気に入り"
+    onclick="window.alert('Hello!')">♥</button
+  >
+</ExampleCard>
+
+<ExampleCard
+  title={t("examples.tooSmall.title")}
+  description={t("examples.tooSmall.desc")}
+>
+  <button
+    type="button"
+    class={btnBase}
+    style="width:16px;height:16px;font-size:10px"
+    aria-label="削除"
+    onclick="window.alert('Hello!')">✕</button
+  >
+</ExampleCard>
+
+<CategorySectionTitle id="target-spacing"
+  >{t("sections.spacing.title")}</CategorySectionTitle
+>
+
+<ExampleCard
+  title={t("examples.dense.title")}
+  description={t("examples.dense.desc")}
+>
+  <div class="flex">
+    <button
+      type="button"
+      class={btnBase}
+      style="width:20px;height:20px;font-size:12px"
+      aria-label="ダイヤ"
+      onclick="window.alert('Hello!')">◆</button
+    >
+    <button
+      type="button"
+      class={btnBase}
+      style="width:20px;height:20px;font-size:12px"
+      aria-label="スペード"
+      onclick="window.alert('Hello!')">♠</button
+    >
+    <button
+      type="button"
+      class={btnBase}
+      style="width:20px;height:20px;font-size:12px"
+      aria-label="ハート"
+      onclick="window.alert('Hello!')">❤</button
+    >
+    <button
+      type="button"
+      class={btnBase}
+      style="width:20px;height:20px;font-size:12px"
+      aria-label="クラブ"
+      onclick="window.alert('Hello!')">♣</button
+    >
+    <button
+      type="button"
+      class={btnBase}
+      style="width:20px;height:20px;font-size:12px"
+      aria-label="スター"
+      onclick="window.alert('Hello!')">★</button
+    >
+  </div>
+</ExampleCard>
+
+<ExampleCard
+  title={t("examples.adjacent.title")}
+  description={t("examples.adjacent.desc")}
+>
+  <div class="flex items-center">
+    <button
+      type="button"
+      class={`${btnBase} h-11 px-4`}
+      onclick="window.alert('Hello!')">保存</button
+    >
+    <button
+      type="button"
+      class={btnBase}
+      style="width:16px;height:16px;font-size:10px"
+      aria-label="キャンセル"
+      onclick="window.alert('Hello!')">✕</button
+    >
+  </div>
+</ExampleCard>
+
+<ExampleCard
+  title={t("examples.mitigated.title")}
+  description={t("examples.mitigated.desc")}
+>
+  <div class="flex gap-3">
+    <button
+      type="button"
+      class={btnBase}
+      style="width:20px;height:20px;font-size:12px"
+      aria-label="ダイヤ"
+      onclick="window.alert('Hello!')">◆</button
+    >
+    <button
+      type="button"
+      class={btnBase}
+      style="width:20px;height:20px;font-size:12px"
+      aria-label="スペード"
+      onclick="window.alert('Hello!')">♠</button
+    >
+    <button
+      type="button"
+      class={btnBase}
+      style="width:20px;height:20px;font-size:12px"
+      aria-label="ハート"
+      onclick="window.alert('Hello!')">❤</button
+    >
+    <button
+      type="button"
+      class={btnBase}
+      style="width:20px;height:20px;font-size:12px"
+      aria-label="クラブ"
+      onclick="window.alert('Hello!')">♣</button
+    >
+    <button
+      type="button"
+      class={btnBase}
+      style="width:20px;height:20px;font-size:12px"
+      aria-label="スター"
+      onclick="window.alert('Hello!')">★</button
+    >
+  </div>
+</ExampleCard>

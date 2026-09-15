@@ -26,18 +26,21 @@ export const LabelAssociatedControl: RuleObject = {
     }
 
     const forAttr = element.getAttribute("for");
-    const forElement = forAttr
-      ? getElementByIdFromRoots(forAttr, elementDocument, shadowRoots)
-      : null;
-    const controlByFor = forElement?.matches(LABELABLE_SELECTOR)
-      ? forElement
-      : null;
-    const controlInside = element.querySelector(LABELABLE_SELECTOR);
-    if (
-      (!controlByFor && !controlInside) ||
-      (controlByFor && isHidden(controlByFor)) ||
-      (controlInside && isHidden(controlInside))
-    ) {
+    // HTML仕様上、for属性が指定されている場合は参照先のIDで関連コントロールが
+    // 決まり、参照が解決できなくても内包コントロールへのフォールバックは
+    // 発生しない。for属性がない場合のみ内包コントロールが関連付けられる
+    let control: Element | null;
+    if (forAttr !== null) {
+      const forElement = getElementByIdFromRoots(
+        forAttr,
+        elementDocument,
+        shadowRoots,
+      );
+      control = forElement?.matches(LABELABLE_SELECTOR) ? forElement : null;
+    } else {
+      control = element.querySelector(LABELABLE_SELECTOR);
+    }
+    if (!control || isHidden(control)) {
       return [
         {
           type: "warning",

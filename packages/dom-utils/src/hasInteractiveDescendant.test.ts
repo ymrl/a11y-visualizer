@@ -14,4 +14,28 @@ describe("hasInteractiveDescendant", () => {
     el.appendChild(link);
     expect(hasInteractiveDescendant(el)).toBe(true);
   });
+
+  test("descendant with interactive role but no tabindex", () => {
+    const el = document.createElement("button");
+    const widget = document.createElement("div");
+    widget.setAttribute("role", "button");
+    el.appendChild(widget);
+    expect(hasInteractiveDescendant(el)).toBe(true);
+  });
+
+  test("descendant with interactive role as a token", () => {
+    const el = document.createElement("button");
+    const widget = document.createElement("div");
+    widget.setAttribute("role", "invalidrole checkbox");
+    el.appendChild(widget);
+    expect(hasInteractiveDescendant(el)).toBe(true);
+  });
+
+  test("descendant with non-interactive role", () => {
+    const el = document.createElement("button");
+    const child = document.createElement("div");
+    child.setAttribute("role", "presentation");
+    el.appendChild(child);
+    expect(hasInteractiveDescendant(el)).toBe(false);
+  });
 });

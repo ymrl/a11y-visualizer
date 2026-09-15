@@ -17,6 +17,7 @@ const dict = {
     headings: {
       images: "Images",
       buttons: "Buttons",
+      targetSize: "Target Size",
       links: "Links",
       forms: "Form Controls",
       headings: "Headings",

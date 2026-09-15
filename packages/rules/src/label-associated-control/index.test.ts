@@ -73,6 +73,49 @@ describe("label-associated-control", () => {
     expect(result).toBeUndefined();
   });
 
+  test("label with unresolved for does not fall back to a contained control", () => {
+    const element = document.createElement("label");
+    element.setAttribute("for", "missing");
+    const input = document.createElement("input");
+    element.appendChild(input);
+    document.body.appendChild(element);
+    const result = LabelAssociatedControl.evaluate(
+      element,
+      { enabled: true },
+      {},
+    );
+    expect(result).toEqual([
+      {
+        type: "warning",
+        ruleName: "label-associated-control",
+        message: "Not associated with any control",
+      },
+    ]);
+  });
+
+  test("label with for pointing to non-labelable element does not fall back", () => {
+    const element = document.createElement("label");
+    element.setAttribute("for", "target");
+    const div = document.createElement("div");
+    div.id = "target";
+    const input = document.createElement("input");
+    element.appendChild(input);
+    document.body.appendChild(element);
+    document.body.appendChild(div);
+    const result = LabelAssociatedControl.evaluate(
+      element,
+      { enabled: true },
+      {},
+    );
+    expect(result).toEqual([
+      {
+        type: "warning",
+        ruleName: "label-associated-control",
+        message: "Not associated with any control",
+      },
+    ]);
+  });
+
   test("iframe: label[for] resolves inside iframe document", () => {
     const iframe = document.createElement("iframe");
     document.body.appendChild(iframe);

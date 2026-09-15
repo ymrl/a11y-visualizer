@@ -395,10 +395,8 @@ describe("getComputedImplicitRole", () => {
     const meter = document.createElement("meter");
     expect(getComputedImplicitRole(meter)).toBe("meter");
 
-    // Note: There's a typo in the implementation "optgrouop" instead of "optgroup"
-    // So optgroup elements return null, not "group"
     const optgroup = document.createElement("optgroup");
-    expect(getComputedImplicitRole(optgroup)).toBe(null);
+    expect(getComputedImplicitRole(optgroup)).toBe("group");
 
     const option = document.createElement("option");
     expect(getComputedImplicitRole(option)).toBe("option");

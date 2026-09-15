@@ -13,6 +13,7 @@ import ListTests from "../../components/tests/ListTests.astro";
 import LiveRegionTests from "../../components/tests/LiveRegionTests.astro";
 import ShadowDomTests from "../../components/tests/ShadowDomTests.astro";
 import TableTests from "../../components/tests/TableTests.astro";
+import TargetSizeTests from "../../components/tests/TargetSizeTests.astro";
 import Warning from "../../components/tests/Warning.astro";
 import TestPageLayout from "../../layouts/TestPageLayout.astro";
 import { createLocalT } from "../../lib/i18n";
@@ -57,6 +58,7 @@ const categoryName = t(`categories.headings.${dictKey}`);
   {category === "images" && <ImageTests lang="en" />}
   {category === "links" && <LinkTests lang="en" />}
   {category === "buttons" && <ButtonTests lang="en" />}
+  {category === "target-size" && <TargetSizeTests lang="en" />}
   {category === "form-controls" && <FormControlTests lang="en" />}
   {category === "layout" && <LayoutTests lang="en" />}
   {category === "lists" && <ListTests lang="en" />}

@@ -60,6 +60,24 @@ const getNativeCheckedValue = (element: Element) => {
   return null;
 };
 
+/**
+ * disabled属性を持つfieldsetの子孫であることによって無効化されているかを判定する。
+ * HTML仕様上、fieldsetの最初のlegend要素の子孫は無効化の対象外になる
+ */
+const isDisabledByFieldset = (element: Element): boolean => {
+  let fieldset = element.closest("fieldset[disabled]");
+  while (fieldset) {
+    const legend = fieldset.querySelector(":scope > legend");
+    if (!legend?.contains(element)) {
+      return true;
+    }
+    // 最初のlegend内にあるためこのfieldsetでは無効化されないが、
+    // さらに上位のdisabledなfieldsetによって無効化される可能性を確認する
+    fieldset = fieldset.parentElement?.closest("fieldset[disabled]") ?? null;
+  }
+  return false;
+};
+
 const getNativeDisabledValue = (element: Element) => {
   const tagName = element.tagName.toLowerCase();
   if (
@@ -75,7 +93,7 @@ const getNativeDisabledValue = (element: Element) => {
   ) {
     return (element as HTMLInputElement).disabled
       ? "true"
-      : element.closest("fieldset[disabled]")
+      : isDisabledByFieldset(element)
         ? "true"
         : null;
   }

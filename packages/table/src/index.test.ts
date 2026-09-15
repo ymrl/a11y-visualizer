@@ -37,6 +37,102 @@ describe("Table", () => {
     expect(colCount).toBe(2);
   });
 
+  test("table with no rows", () => {
+    const table = document.createElement("table");
+    const result = new Table(table);
+    const { cells, rowCount, colCount } = result;
+    expect(cells).toHaveLength(0);
+    expect(rowCount).toBe(0);
+    expect(colCount).toBe(0);
+  });
+
+  test("table whose rows have no cells", () => {
+    const table = document.createElement("table");
+    table.innerHTML = `<tr></tr><tr></tr>`;
+    const result = new Table(table);
+    const { cells, rowCount, colCount } = result;
+    expect(cells).toEqual([[], []]);
+    expect(rowCount).toBe(0);
+    expect(colCount).toBe(0);
+  });
+
+  test("table whose last row has no cells", () => {
+    const table = document.createElement("table");
+    table.innerHTML = `
+      <tr><td>0-0</td><td>0-1</td></tr>
+      <tr></tr>
+    `;
+    const result = new Table(table);
+    const { rowCount, colCount } = result;
+    expect(rowCount).toBe(1);
+    expect(colCount).toBe(2);
+  });
+
+  test("invalid rowspan/colspan values fall back to 1", () => {
+    const table = document.createElement("table");
+    table.innerHTML = `
+      <tr><th scope="col" id="h">h</th><th scope="col">h2</th></tr>
+      <tr><td rowspan="abc" colspan="-5">a</td><td>b</td></tr>
+    `;
+    const result = new Table(table);
+    const cell = result.cells[1][0];
+    expect(cell.sizeX).toBe(1);
+    expect(cell.sizeY).toBe(1);
+    expect(result.rowCount).toBe(2);
+    expect(result.colCount).toBe(2);
+    // NaN/負のサイズだとArray(size)がRangeErrorを投げていた
+    expect(result.getColHeaderElements(cell)).toEqual([
+      table.querySelector("#h"),
+    ]);
+    expect(() => result.getRowHeaderElements(cell)).not.toThrow();
+  });
+
+  test("invalid aria-colindex falls back to positional order", () => {
+    const div = document.createElement("div");
+    div.setAttribute("role", "grid");
+    div.innerHTML = `
+      <div role="row">
+        <div role="columnheader" aria-colindex="abc" id="h">h</div>
+        <div role="gridcell" aria-colindex="0">b</div>
+      </div>
+    `;
+    const result = new Table(div);
+    expect(result.cells[0][0].positionX).toBe(0);
+    expect(result.cells[0][1].positionX).toBe(1);
+    expect(result.colCount).toBe(2);
+    expect(() => result.getRowHeaderElements(result.cells[0][1])).not.toThrow();
+  });
+
+  test("aria-rowspan is clamped so header lookup stays bounded", () => {
+    const div = document.createElement("div");
+    div.setAttribute("role", "grid");
+    div.innerHTML = `
+      <div role="row"><div role="columnheader">h</div></div>
+      <div role="row"><div role="gridcell" aria-rowspan="99999999">a</div></div>
+    `;
+    const result = new Table(div);
+    expect(result.cells[1][0].sizeY).toBe(65534);
+  });
+
+  test("getCell returns null for an element outside the table", () => {
+    const table = document.createElement("table");
+    table.innerHTML = `<tr><td>a</td></tr>`;
+    const result = new Table(table);
+    expect(result.getCell(document.createElement("td"))).toBeNull();
+  });
+
+  test("rowspan extending past the last row", () => {
+    const table = document.createElement("table");
+    table.innerHTML = `
+      <tr><td rowspan="3">0-0</td><td>0-1</td></tr>
+      <tr><td>1-1</td></tr>
+    `;
+    const result = new Table(table);
+    const { rowCount, colCount } = result;
+    expect(rowCount).toBe(3);
+    expect(colCount).toBe(2);
+  });
+
   test("table has thead, tbody, tfoot", () => {
     const table = document.createElement("table");
     table.innerHTML = `

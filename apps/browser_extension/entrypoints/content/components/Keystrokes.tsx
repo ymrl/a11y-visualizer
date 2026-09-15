@@ -13,6 +13,21 @@ export const Keystrokes = React.memo(
     opacityPercent: number;
     fontSize: number;
   }) => {
+    const listRef = React.useRef<HTMLUListElement>(null);
+    React.useEffect(() => {
+      const list = listRef.current;
+      if (!list) {
+        return;
+      }
+      if (keystrokes.length > 0) {
+        if (!list.matches(":popover-open")) {
+          list.showPopover();
+        }
+      } else if (list.matches(":popover-open")) {
+        list.hidePopover();
+      }
+    }, [keystrokes.length]);
+
     return (
       <root.div mode="closed">
         <style>{Styles}</style>
@@ -22,6 +37,8 @@ export const Keystrokes = React.memo(
             opacity: opacityPercent / 100,
             fontSize: `${fontSize}px`,
           }}
+          {...{ popover: "manual" }}
+          ref={listRef}
         >
           {keystrokes.map((item) => (
             <li className="Keystroke" key={`${item.timestamp}-${item.keys}`}>

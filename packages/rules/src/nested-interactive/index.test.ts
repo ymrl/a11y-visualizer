@@ -113,6 +113,16 @@ describe("nested-interactive", () => {
     expect(childResult).toEqual(errorResult);
   });
 
+  test("interactive role without tabindex in button", () => {
+    const element = document.createElement("button");
+    const child = document.createElement("div");
+    child.setAttribute("role", "button");
+    element.appendChild(child);
+    document.body.appendChild(element);
+    const result = NestedInteractive.evaluate(element, { enabled: true }, {});
+    expect(result).toEqual(errorResult);
+  });
+
   test("input in button", () => {
     const element = document.createElement("button");
     const child = document.createElement("input");

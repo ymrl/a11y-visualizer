@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { createPortal } from "react-dom";
+import { collectShadowRoots } from "../../src/dom/collectShadowRoots";
 import { detectFrameType } from "../../src/dom/detectFrameType";
 import { Announcements } from "../content/components/Announcements";
 import { ElementList } from "../content/components/ElementList";
@@ -145,6 +146,24 @@ export const AllFramesRoot = ({
           attributes: true,
         });
       });
+      // Shadow DOM 内に後から追加されるライブリージョンを検出できるよう、
+      // 通常のDOMツリーを越えないMutationObserverの代わりにShadow Rootも監視する
+      const extensionRoot = containerRef.current;
+      collectShadowRoots(parentRef.current).forEach((shadowRoot) => {
+        // 拡張機能自身が描画したShadow DOMは監視しない（無限ループ防止）
+        if (
+          extensionRoot &&
+          (shadowRoot.contains(extensionRoot) ||
+            extensionRoot.contains(shadowRoot.host))
+        ) {
+          return;
+        }
+        observer.observe(shadowRoot, {
+          childList: true,
+          subtree: true,
+          attributes: true,
+        });
+      });
     }
     return () => {
       childrenObserver.disconnect();
@@ -167,11 +186,16 @@ export const AllFramesRoot = ({
 
     const resizeEvents = ["resize"];
     const scrollEvents = ["scroll"];
+    // mousemoveは含めない。ポインタが同じ要素の上で動くだけでもページ全体の
+    // 再収集が走ってしまうため。:hoverで表示されるメニューなどDOMの変化を
+    // 伴わないCSSだけの変化はMutationObserverでは検知できないので、要素の
+    // 境界をまたいだときだけ発火するmouseover/mouseoutで再収集する
     const events = [
       "scroll",
       "keydown",
       "mousedown",
-      "mousemove",
+      "mouseover",
+      "mouseout",
       "mousewheel",
       "change",
     ];

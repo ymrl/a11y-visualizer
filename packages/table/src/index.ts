@@ -13,6 +13,41 @@ type ColGroup = {
 };
 
 type Scope = "row" | "col" | "rowgroup" | "colgroup" | "auto" | "none";
+
+/** colspanの上限（HTML仕様） */
+const MAX_COL_SPAN = 1000;
+/** rowspanの上限（HTML仕様） */
+const MAX_ROW_SPAN = 65534;
+
+/**
+ * colspan/rowspan（およびaria-colspan/aria-rowspan）の属性値を解釈する
+ *
+ * 数値として解釈できない値や負の値は、HTML仕様に準じて既定値の1として扱う。
+ * NaNや負の値がそのままセルのサイズになると、ヘッダー探索の`Array(size)`が
+ * RangeErrorを投げるため、ここで正規化しておく必要がある。
+ * aria-*にも上限を適用するのは、極端に大きな値でヘッダー探索が
+ * 長時間ブロックするのを防ぐため
+ */
+const parseSpanAttribute = (value: string | null, max: number): number => {
+  if (!value) return 1;
+  const parsed = parseInt(value, 10);
+  if (!Number.isFinite(parsed) || parsed < 0) return 1;
+  return Math.min(parsed, max);
+};
+
+/**
+ * aria-colindex/aria-rowindexの属性値を0始まりの位置に変換する
+ *
+ * 1始まりの整数として解釈できない値はnullを返す。呼び出し側では
+ * 属性がない場合と同様に、並び順からの位置の計算にフォールバックする
+ */
+const parseIndexAttribute = (value: string | null): number | null => {
+  if (!value) return null;
+  const parsed = parseInt(value, 10);
+  if (!Number.isFinite(parsed) || parsed < 1) return null;
+  return parsed - 1;
+};
+
 type Cell = {
   element: Element;
   sizeX: number;
@@ -57,29 +92,25 @@ export class Table {
       const cellElements = getCellElements(row);
       const prevRow = rows.length > 0 ? rows[rows.length - 1] : null;
       const prevFirstCell = prevRow ? prevRow[0] : null;
-      const ariaRowIndex = row.getAttribute("aria-rowindex");
-      const rowPositionY = ariaRowIndex
-        ? parseInt(ariaRowIndex, 10) - 1
-        : prevFirstCell
-          ? prevFirstCell.positionY + 1
-          : rowIndex;
+      const rowIndexPosition = parseIndexAttribute(
+        row.getAttribute("aria-rowindex"),
+      );
+      const rowPositionY =
+        rowIndexPosition ??
+        (prevFirstCell ? prevFirstCell.positionY + 1 : rowIndex);
       rows.push(
         cellElements.reduce((cells, cell) => {
           const cellTagName = cell.tagName.toLowerCase();
           const cellRole = getKnownRole(cell);
-          const ariaRowIndex = row.getAttribute("aria-rowindex");
-          const ariaColIndex = cell.getAttribute("aria-colindex");
-          const positionY = ariaRowIndex
-            ? parseInt(ariaRowIndex, 10) - 1
-            : rowPositionY;
+          const colIndexPosition = parseIndexAttribute(
+            cell.getAttribute("aria-colindex"),
+          );
+          const positionY = rowIndexPosition ?? rowPositionY;
           const leftCell = cells.length > 0 ? cells[cells.length - 1] : null;
-          let positionX = ariaColIndex
-            ? parseInt(ariaColIndex, 10) - 1
-            : leftCell
-              ? leftCell.positionX + leftCell.sizeX
-              : 0;
-          // let positionX: number = dx;
-          if (!ariaColIndex && rowIndex > 0) {
+          let positionX =
+            colIndexPosition ??
+            (leftCell ? leftCell.positionX + leftCell.sizeX : 0);
+          if (colIndexPosition === null && rowIndex > 0) {
             let dy = rowIndex - 1;
             while (dy >= 0) {
               for (let i = 0; i < rows[dy].length; i++) {
@@ -102,20 +133,14 @@ export class Table {
             }
           }
           const isNativeTag = ["th", "td"].includes(cellTagName);
-          const ariaColSpan = !isNativeTag && cell.getAttribute("aria-colspan");
-          const ariaRowSpan = !isNativeTag && cell.getAttribute("aria-rowspan");
-          const nativeColSpan = isNativeTag && cell.getAttribute("colspan");
-          const nativeRowSpan = isNativeTag && cell.getAttribute("rowspan");
-          const sizeX = ariaColSpan
-            ? parseInt(ariaColSpan, 10)
-            : nativeColSpan
-              ? Math.min(parseInt(nativeColSpan, 10), 1000)
-              : 1;
-          const sizeY = ariaRowSpan
-            ? parseInt(ariaRowSpan, 10)
-            : nativeRowSpan
-              ? Math.min(parseInt(nativeRowSpan, 10), 65534)
-              : 1;
+          const sizeX = parseSpanAttribute(
+            cell.getAttribute(isNativeTag ? "colspan" : "aria-colspan"),
+            MAX_COL_SPAN,
+          );
+          const sizeY = parseSpanAttribute(
+            cell.getAttribute(isNativeTag ? "rowspan" : "aria-rowspan"),
+            MAX_ROW_SPAN,
+          );
           const scopeAttr = cell.getAttribute("scope")?.toLowerCase();
           const headerScope: Scope =
             cellTagName === "th"
@@ -145,8 +170,12 @@ export class Table {
     const ariaColCount = table.getAttribute("aria-colcount");
     const rowCount = ariaRowCount
       ? parseInt(ariaRowCount, 10)
-      : cells[cells.length - 1].reduce(
-          (prev, cell) => Math.max(prev, cell.positionY + cell.sizeY),
+      : cells.reduce(
+          (prev, row) =>
+            row.reduce(
+              (prev, cell) => Math.max(prev, cell.positionY + cell.sizeY),
+              prev,
+            ),
           0,
         );
     const colCount = ariaColCount
@@ -170,7 +199,7 @@ export class Table {
           prevGroup &&
           (prevGroup.element?.contains(row) ||
             (!prevGroup.element && !rowGroupElements[0]) ||
-            (!prevGroup.element && !groupElements[0].contains(row)))
+            (!prevGroup.element && !groupElements[0]?.contains(row)))
         ) {
           prevGroup.sizeY += 1;
           return prev;
@@ -237,10 +266,10 @@ export class Table {
    * @returns セル情報、テーブル内に見つからない場合はnull
    */
   getCell = (el: Element): Cell | null => {
-    const cell = this.cells
+    const found = this.cells
       .map((row) => row.find((cell) => cell.element === el))
       .filter((cell): cell is Cell => !!cell);
-    return cell ? cell[0] : null;
+    return found[0] ?? null;
   };
 
   /**

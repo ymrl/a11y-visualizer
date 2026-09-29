@@ -1,3 +1,8 @@
 packages:
   - apps/*
   - packages/*
+
+overrides:
+  # GHSA-w7jw-789q-3m8p (critical), GHSA-395f-4hp3-45gv
+  # 推移的な dev 依存 (npm-run-all, web-ext 経由の fx-runner) の脆弱性対応
+  shell-quote: ^1.11.0

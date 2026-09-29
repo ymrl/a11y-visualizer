@@ -1,5 +1,5 @@
 ---
-"@a11y-visualizer/browser-extension": patch
+"@a11y-visualizer/browser-extension": minor
 ---
 
 Complete the Korean (ko) translation and fix wording inconsistencies in the UI texts:

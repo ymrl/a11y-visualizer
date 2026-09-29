@@ -38,7 +38,7 @@ There is an "Enabled" checkbox in the popup. If you uncheck it, no information w
 
 When you check the "Show tips" checkbox, various information will be displayed as "tips" on the web page you are viewing.
 
-!["Komaru City" logo and the heading "Global Warming Prevention Division." The logo is surrounded by a green dotted line and covered by a red chip that says "Image without alt attribute." The logo and headline are surrounded by a blue dotted line, and above them are a blue tip for "Heading level 1" and a green tip for "Global Warming Prevention Division"](./images/tip_example_komaru_city.png)
+!["Komaru City" logo and the heading "Global Warming Prevention Division." The logo is surrounded by a green dotted line and covered by a red chip that says "No alt attribute." The logo and headline are surrounded by a blue dotted line, and above them are a blue tip for "Heading level 1" and a green tip for "Global Warming Prevention Division"](./images/tip_example_komaru_city.png)
 
 (The screenshots is from [たいへんな駒瑠市 (Very difficult Komaru City)](https://a11yc.com/city-komaru/practice/?preset=ng-terrible1&wcagver=22) of [駒瑠市〜アクセシビリティ上の問題の体験サイト〜 (Komaru City - Experience site for accessibility issues -)](https://a11yc.com/city-komaru/))
 
@@ -123,15 +123,15 @@ When "Images" is checked, tips are displayed for `<img>` elements, `<svg>` eleme
   - For `<img>` elements, the `alt` attribute is typically used
   - For `<svg>` elements, `<title>` elements, `aria-label` attributes, or `aria-labelledby` attributes may be used
   - For elements with `role="img"` attribute, `aria-label` attributes or `aria-labelledby` attributes may be used
-- For `<img>` elements with `alt=""`, a warning tip "Image with alt=\"\"" is displayed. Images in this state cannot be perceived by assistive technologies such as screen readers. **Unless this image is placed for decorative purposes, add alt text**
-- If no alt text is specified and it's not `aria-hidden` or `alt=""`, **an error tip "Image without alt attribute" or "No name (label)"** is displayed. In this case, **correction is required**
+- For `<img>` elements with `alt=""`, a warning tip "Empty alt attribute" is displayed. Images in this state cannot be perceived by assistive technologies such as screen readers. **Unless this image is placed for decorative purposes, add alt text**
+- If no alt text is specified and it's not `aria-hidden` or `alt=""`, **an error tip "No alt attribute" or "No accessible name"** is displayed. In this case, **correction is required**
 
 ### Buttons
 
 When "Buttons" is checked, tips are displayed for `<button>` elements, `<input>` elements with `type` attribute of `button`, `submit`, `reset`, or `image`, and elements with `role="button"` attribute.
 
 - Name tips display button labels. Check for completeness and appropriate labeling.
-- If no name is given, **an error tip "No name (label)"** is displayed. In this case, assistive technologies such as screen readers cannot predict button behavior. **Correction is required**
+- If no name is given, **an error tip "No accessible name"** is displayed. In this case, assistive technologies such as screen readers cannot predict button behavior. **Correction is required**
 - For elements with `role="button"` attribute that are not focusable by default and have no `tabindex` attribute specified, **an error tip "Not focusable"** is displayed. In this state, keyboard operation is not possible, so **correction is required**
 
 ### Links
@@ -139,7 +139,7 @@ When "Buttons" is checked, tips are displayed for `<button>` elements, `<input>`
 When "Links" is checked, tips are displayed for `<a>` elements, `<area>` elements, and elements with `role="link"` attribute.
 
 - Name tips display link text. Check for completeness and appropriate text.
-- If the link name becomes empty, **an error tip "No name (label)"** is displayed. In this case, assistive technologies such as screen readers cannot perceive the link purpose. **Correction is required**
+- If the link name becomes empty, **an error tip "No accessible name"** is displayed. In this case, assistive technologies such as screen readers cannot perceive the link purpose. **Correction is required**
 - For `<a>` or `<area>` elements without `href` attribute, browsers don't treat them as links. A warning tip "No href attribute" is displayed. If click interactions are set on `<a>` elements in this state, there may be issues with keyboard operation or users of assistive technologies may not recognize them as interactive targets. **In such cases, correction is required**
 
 ### Form Controls
@@ -148,10 +148,10 @@ When "Form Controls" is checked, tips are displayed for `<input>` elements with 
 
 - Name tips display form control labels. Check for completeness and appropriate labeling.
   - Typically, `<label>` elements are used for `<input>`, `<select>`, `<textarea>` elements
-- If no name is given, **an error tip "No name (label)"** is displayed. In this case, assistive technologies such as screen readers cannot perceive the form control purpose. **Correction is required**
+- If no name is given, **an error tip "No accessible name"** is displayed. In this case, assistive technologies such as screen readers cannot perceive the form control purpose. **Correction is required**
 - For elements that are not focusable by default and have no `tabindex` attribute specified, **an error tip "Not focusable"** is displayed. In this state, keyboard operation is not possible, so **correction is required**
-- For radio buttons (`<input type="radio">`) without the same `name` attribute, **an error tip "No name attribute"** is displayed. If there are no radio buttons with the same `name` attribute within the same `<form>` element or document, **an error tip "No radio button group"** is displayed. These indicate that radio button grouping is not done properly, which may prevent keyboard selection, make Tab key navigation unpredictable, and make it impossible to recognize which radio buttons are in the same group. **Correction is required**
-- For `<label>` elements where the associated form control doesn't exist or is hidden, **a warning tip "Label without form control"** is displayed. Especially when hiding for styling checkboxes or radio buttons, there's a high possibility of making them non-keyboard operable. **Check** if `display:none`, `visibility:hidden`, etc. are being used
+- For radio buttons (`<input type="radio">`) without the same `name` attribute, **an error tip "No name attribute"** is displayed. If there are no radio buttons with the same `name` attribute within the same `<form>` element or document, **an error tip "Ungrouped radio button"** is displayed. These indicate that radio button grouping is not done properly, which may prevent keyboard selection, make Tab key navigation unpredictable, and make it impossible to recognize which radio buttons are in the same group. **Correction is required**
+- For `<label>` elements where the associated form control doesn't exist or is hidden, **a warning tip "Not associated with any control"** is displayed. Especially when hiding for styling checkboxes or radio buttons, there's a high possibility of making them non-keyboard operable. **Check** if `display:none`, `visibility:hidden`, etc. are being used
 
 ### Headings
 
@@ -162,7 +162,7 @@ When "Headings" is checked, tips are displayed for `<h1>` to `<h6>` elements and
   - For elements with `role="heading"` attribute, `aria-level` attribute is used to indicate heading level
 - For elements with `role="heading"` attribute without `aria-level` attribute, **a warning tip "No heading level"** is displayed. The implicit heading level is 2, so it is treated as level 2, but **explicitly specifying the `aria-level` attribute is recommended**
 - Name tips display heading text. Check for completeness and appropriate text.
-- If no name is given to headings, **an error tip "No name (label)"** is displayed. In this case, assistive technologies such as screen readers cannot perceive headings. **Correction is required**
+- If no name is given to headings, **an error tip "No accessible name"** is displayed. In this case, assistive technologies such as screen readers cannot perceive headings. **Correction is required**
 
 ### Sections
 

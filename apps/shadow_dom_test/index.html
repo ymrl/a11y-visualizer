@@ -126,20 +126,25 @@
           </style>
           <div class="profile-card" role="region" aria-label="ユーザープロフィール">
             <div class="profile-header">
-              <div class="avatar" aria-hidden="true">${name.charAt(0)}</div>
+              <div class="avatar" aria-hidden="true" data-field="avatar-initial"></div>
               <div class="profile-info">
-                <h3>${name}</h3>
-                <p>${role}</p>
+                <h3 data-field="name"></h3>
+                <p data-field="role"></p>
               </div>
             </div>
             <div class="profile-details">
               <div class="detail-row">
                 <span class="detail-label">メール:</span>
-                <span>${email}</span>
+                <span data-field="email"></span>
               </div>
             </div>
           </div>
         `;
+
+        this.shadowRoot.querySelector('[data-field="avatar-initial"]').textContent = name.charAt(0);
+        this.shadowRoot.querySelector('[data-field="name"]').textContent = name;
+        this.shadowRoot.querySelector('[data-field="role"]').textContent = role;
+        this.shadowRoot.querySelector('[data-field="email"]').textContent = email;
       }
     }
 

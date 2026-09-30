@@ -6,3 +6,18 @@ overrides:
   # GHSA-w7jw-789q-3m8p (critical), GHSA-395f-4hp3-45gv
   # 推移的な dev 依存 (npm-run-all, web-ext 経由の fx-runner) の脆弱性対応
   shell-quote: ^1.11.0
+
+  # 以下はいずれも推移的な dev 依存の脆弱性対応。
+  # 依存元が古いバージョン範囲を指定しているため、override で引き上げる。
+
+  # wxt → web-ext-run → firefox-profile 経由。DoS / パストラバーサル / SUID 保持など
+  adm-zip: ^0.6.1
+
+  # wxt → web-ext-run 経由。prefix/postfix 未サニタイズによるパストラバーサル
+  tmp: ^0.2.6
+
+  # vite の optional peer 経由。深くネストしたコレクションによるスタックオーバーフロー
+  yaml: ^2.8.3
+
+  # wxt → web-ext-run → node-notifier 経由。v3/v5/v6 の buf 境界チェック漏れ
+  uuid: ^11.1.1

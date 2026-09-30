@@ -93,7 +93,7 @@ async function main() {
       // Rewrite relative image links to served copies under /public/docs.
       // Matches ](images/... | ./images/... | ../images/... etc)
       raw = raw.replace(
-        /\]\((?:\.?\.\/?)*images\//g,
+        /\]\((?:(?:\.\.\/)+|(?:\.\/)+)?images\//g,
         `](/a11y-visualizer/docs/${lang}/images/`,
       );
 

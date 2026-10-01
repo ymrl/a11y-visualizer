@@ -99,6 +99,11 @@ const isSmallTarget = (
     return false;
   }
 
+  // ::before / ::after で当たり判定を広げている場合は、疑似要素の大きさも見る
+  if (hasLargePseudoElement(element, elementWindow)) {
+    return false;
+  }
+
   const checkboxLabel =
     isCheckboxOrRadiobutton(element) &&
     ((element.id &&
@@ -134,6 +139,28 @@ const isSmallTarget = (
 
   return true;
 };
+
+const hasLargePseudoElement = (
+  element: Element,
+  elementWindow: Window,
+): boolean =>
+  ["::before", "::after"].some((pseudo) => {
+    const style = elementWindow.getComputedStyle(element, pseudo);
+    // content がない、または表示・クリックされない疑似要素はターゲットにならない
+    if (
+      style.content === "none" ||
+      style.content === "normal" ||
+      style.display === "none" ||
+      style.visibility === "hidden" ||
+      style.pointerEvents === "none"
+    ) {
+      return false;
+    }
+    // 描画されている疑似要素の width / height は実際の大きさ(px)で取得できる
+    const width = Number.parseFloat(style.width);
+    const height = Number.parseFloat(style.height);
+    return width >= 24 && height >= 24;
+  });
 
 const hasAdequateSpacing = (
   element: Element,

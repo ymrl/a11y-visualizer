@@ -60,6 +60,19 @@ const btnBase =
   >
 </ExampleCard>
 
+<ExampleCard
+  title={t("examples.pseudoExpanded.title")}
+  description={t("examples.pseudoExpanded.desc")}
+>
+  <button
+    type="button"
+    class={`${btnBase} relative before:absolute before:top-1/2 before:left-1/2 before:h-6 before:w-6 before:-translate-x-1/2 before:-translate-y-1/2 before:content-['']`}
+    style="width:16px;height:16px;font-size:10px"
+    aria-label="削除"
+    onclick="window.alert('Hello!')">✕</button
+  >
+</ExampleCard>
+
 <CategorySectionTitle id="target-spacing"
   >{t("sections.spacing.title")}</CategorySectionTitle
 >

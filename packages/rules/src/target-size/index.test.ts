@@ -588,4 +588,100 @@ describe(TargetSize.ruleName, () => {
       },
     ]);
   });
+
+  describe("hit area expanded by pseudo-elements", () => {
+    const createSmallButton = (css: string) => {
+      const style = document.createElement("style");
+      style.textContent = css;
+      document.body.appendChild(style);
+      const el = document.createElement("button");
+      el.className = "expanded";
+      el.textContent = "x";
+      el.style.position = "relative";
+      el.style.width = "16px";
+      el.style.height = "16px";
+      el.style.padding = "0";
+      el.style.border = "none";
+      document.body.appendChild(el);
+      return el;
+    };
+    const smallTarget = [
+      { type: "warning", message: "Small target", ruleName: "target-size" },
+    ];
+
+    test("::before of 24x24px", () => {
+      const el = createSmallButton(
+        `.expanded::before { content: ""; position: absolute; top: -4px; left: -4px; width: 24px; height: 24px; }`,
+      );
+      expect(TargetSize.evaluate(el, { enabled: true }, {})).toBeUndefined();
+    });
+
+    test("::after of 24x24px", () => {
+      const el = createSmallButton(
+        `.expanded::after { content: ""; position: absolute; top: -4px; left: -4px; width: 24px; height: 24px; }`,
+      );
+      expect(TargetSize.evaluate(el, { enabled: true }, {})).toBeUndefined();
+    });
+
+    test("::before expanded with negative inset", () => {
+      const el = createSmallButton(
+        `.expanded::before { content: ""; position: absolute; inset: -4px; }`,
+      );
+      expect(TargetSize.evaluate(el, { enabled: true }, {})).toBeUndefined();
+    });
+
+    test("::before smaller than 24x24px", () => {
+      const el = createSmallButton(
+        `.expanded::before { content: ""; position: absolute; top: -2px; left: -2px; width: 20px; height: 20px; }`,
+      );
+      expect(TargetSize.evaluate(el, { enabled: true }, {})).toEqual(
+        smallTarget,
+      );
+    });
+
+    test("::before 24px wide but not tall enough", () => {
+      const el = createSmallButton(
+        `.expanded::before { content: ""; position: absolute; top: 0; left: -4px; width: 24px; height: 16px; }`,
+      );
+      expect(TargetSize.evaluate(el, { enabled: true }, {})).toEqual(
+        smallTarget,
+      );
+    });
+
+    test("::before without content is not rendered", () => {
+      const el = createSmallButton(
+        `.expanded::before { position: absolute; top: -4px; left: -4px; width: 24px; height: 24px; }`,
+      );
+      expect(TargetSize.evaluate(el, { enabled: true }, {})).toEqual(
+        smallTarget,
+      );
+    });
+
+    test("::before with display: none", () => {
+      const el = createSmallButton(
+        `.expanded::before { content: ""; display: none; position: absolute; top: -4px; left: -4px; width: 24px; height: 24px; }`,
+      );
+      expect(TargetSize.evaluate(el, { enabled: true }, {})).toEqual(
+        smallTarget,
+      );
+    });
+
+    test("::before with pointer-events: none", () => {
+      const el = createSmallButton(
+        `.expanded::before { content: ""; pointer-events: none; position: absolute; top: -4px; left: -4px; width: 24px; height: 24px; }`,
+      );
+      expect(TargetSize.evaluate(el, { enabled: true }, {})).toEqual(
+        smallTarget,
+      );
+    });
+
+    test("::before with visibility: hidden", () => {
+      const el = createSmallButton(
+        `.expanded::before { content: ""; visibility: hidden; position: absolute; top: -4px; left: -4px; width: 24px; height: 24px; }`,
+      );
+      expect(TargetSize.evaluate(el, { enabled: true }, {})).toEqual(
+        smallTarget,
+      );
+    });
+  });
 });

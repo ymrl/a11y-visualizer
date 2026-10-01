@@ -19,6 +19,11 @@ export const en = {
       title: "Too small button (16×16px)",
       desc: "❌ A 16×16 CSS pixel button is below the 24×24px minimum. It is hard to tap accurately and fails WCAG 2.5.8.",
     },
+    pseudoExpanded: {
+      title:
+        "Small button with target expanded by ::before (16×16px → 24×24px)",
+      desc: "✅ The button itself is 16×16 CSS pixels, but an invisible 24×24px ::before pseudo-element centered on it expands the clickable area. The target size meets the WCAG 2.5.8 minimum even though the visible button is small. Making the target 44×44px is still preferable.",
+    },
     dense: {
       title: "Too small buttons packed together",
       desc: "❌ Several undersized buttons placed right next to each other with no spacing. Each target is too small and too close to its neighbors, making them easy to mis-tap.",
@@ -54,6 +59,10 @@ export const ja = {
     tooSmall: {
       title: "小さすぎるボタン（16×16px）",
       desc: "❌ 16×16 CSS ピクセルのボタンは最小の 24×24px を下回っています。正確にタップしづらく、WCAG 2.5.8 を満たしません。",
+    },
+    pseudoExpanded: {
+      title: "::before でターゲットを広げた小さなボタン（16×16px → 24×24px）",
+      desc: "✅ ボタン自体は 16×16 CSS ピクセルですが、中央に配置した透明な 24×24px の ::before 疑似要素によってクリック可能な領域を広げています。見た目は小さくても、ターゲットサイズは WCAG 2.5.8 の最小要件を満たします。ターゲットを 44×44px にできればより望ましいです。",
     },
     dense: {
       title: "小さすぎるボタンが密集した状態",

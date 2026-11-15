@@ -1,5 +1,13 @@
 # @a11y-visualizer/rules
 
+## 1.0.2
+
+### Patch Changes
+
+- f21ecac: Target size: a small control whose clickable area is expanded to at least 24×24px by a `::before` or `::after` pseudo-element is no longer reported as a small target. Pseudo-elements without content, or with `display: none`, `visibility: hidden` or `pointer-events: none`, are not counted.
+- Updated dependencies [4fb39b9]
+  - @a11y-visualizer/table@1.0.2
+
 ## 1.0.1
 
 ### Patch Changes

@@ -46,8 +46,8 @@ importers:
         specifier: ^0.6.3
         version: 0.6.3
       i18next:
-        specifier: ^23.10.1
-        version: 23.16.8
+        specifier: ^26.3.4
+        version: 26.7.2(typescript@6.0.3)
       react:
         specifier: ^18.2.0
         version: 18.3.1
@@ -56,7 +56,7 @@ importers:
         version: 18.3.1(react@18.3.1)
       react-i18next:
         specifier: ^14.1.0
-        version: 14.1.3(i18next@23.16.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 14.1.3(i18next@26.7.2(typescript@6.0.3))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react-icons:
         specifier: ^5.0.1
         version: 5.5.0(react@18.3.1)
@@ -99,7 +99,7 @@ importers:
         version: 6.4.3(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.33.0)
       vitest:
         specifier: ^4.1.11
-        version: 4.1.11(@types/node@25.0.3)(@vitest/browser-playwright@4.1.11)(jsdom@23.2.0)(vite@6.4.3(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.33.0))
+        version: 4.1.11(@types/node@25.0.3)(@vitest/browser-playwright@4.1.11)(jsdom@23.2.0(supports-color@5.5.0))(vite@6.4.3(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.33.0))
       wxt:
         specifier: ^0.20.13
         version: 0.20.13(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.33.0)(rollup@4.62.2)(supports-color@5.5.0)
@@ -121,7 +121,7 @@ importers:
     devDependencies:
       '@astrojs/react':
         specifier: ^4.3.0
-        version: 4.3.0(@types/node@25.0.3)(@types/react-dom@18.3.7(@types/react@18.3.23))(@types/react@18.3.23)(jiti@2.6.1)(lightningcss@1.33.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 4.3.0(@types/node@25.0.3)(@types/react-dom@18.3.7(@types/react@18.3.23))(@types/react@18.3.23)(jiti@2.6.1)(lightningcss@1.33.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(supports-color@5.5.0)
       '@biomejs/biome':
         specifier: 2.4.16
         version: 2.4.16
@@ -148,7 +148,7 @@ importers:
         version: 6.4.3(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.33.0)
       vitest:
         specifier: ^4.1.11
-        version: 4.1.11(@types/node@25.0.3)(@vitest/browser-playwright@4.1.11)(jsdom@23.2.0)(vite@6.4.3(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.33.0))
+        version: 4.1.11(@types/node@25.0.3)(@vitest/browser-playwright@4.1.11)(jsdom@23.2.0(supports-color@5.5.0))(vite@6.4.3(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.33.0))
 
   packages/dom-utils:
     dependencies:
@@ -170,7 +170,7 @@ importers:
         version: 6.0.3
       vitest:
         specifier: ^4.1.11
-        version: 4.1.11(@types/node@25.0.3)(@vitest/browser-playwright@4.1.11)(jsdom@23.2.0)(vite@8.3.0(@types/node@25.0.3)(esbuild@0.28.2)(jiti@2.6.1))
+        version: 4.1.11(@types/node@25.0.3)(@vitest/browser-playwright@4.1.11)(jsdom@23.2.0(supports-color@5.5.0))(vite@8.3.0(@types/node@25.0.3)(esbuild@0.28.2)(jiti@2.6.1))
 
   packages/rules:
     dependencies:
@@ -198,7 +198,7 @@ importers:
         version: 6.0.3
       vitest:
         specifier: ^4.1.11
-        version: 4.1.11(@types/node@25.0.3)(@vitest/browser-playwright@4.1.11)(jsdom@23.2.0)(vite@8.3.0(@types/node@25.0.3)(esbuild@0.28.2)(jiti@2.6.1))
+        version: 4.1.11(@types/node@25.0.3)(@vitest/browser-playwright@4.1.11)(jsdom@23.2.0(supports-color@5.5.0))(vite@8.3.0(@types/node@25.0.3)(esbuild@0.28.2)(jiti@2.6.1))
 
   packages/table:
     dependencies:
@@ -220,7 +220,7 @@ importers:
         version: 6.0.3
       vitest:
         specifier: ^4.1.11
-        version: 4.1.11(@types/node@25.0.3)(@vitest/browser-playwright@4.1.11)(jsdom@23.2.0)(vite@8.3.0(@types/node@25.0.3)(esbuild@0.28.2)(jiti@2.6.1))
+        version: 4.1.11(@types/node@25.0.3)(@vitest/browser-playwright@4.1.11)(jsdom@23.2.0(supports-color@5.5.0))(vite@8.3.0(@types/node@25.0.3)(esbuild@0.28.2)(jiti@2.6.1))
 
 packages:
 
@@ -2906,8 +2906,13 @@ packages:
   humps@2.0.1:
     resolution: {integrity: sha512-E0eIbrFWUhwfXJmsbdjRQFQPrl5pTEoKlz163j1mTqqUnU9PgR4AgB8AIITzuB3vLBdxZXyZ9TDIrwB2OASz4g==}
 
-  i18next@23.16.8:
-    resolution: {integrity: sha512-06r/TitrM88Mg5FdUXAKL96dJMzgqLE5dv3ryBAra4KCwD9mJ4ndOTS95ZuymIGoE+2hzfdaMak2X11/es7ZWg==}
+  i18next@26.7.2:
+    resolution: {integrity: sha512-RsOY3BeaCDdkk52NeJSFAXELQ2rQXBO/tOub6L8ue2ICPfR/FRDWDOfEDg4xMPd1SqO5goVYQ6i72qWEUB/PPw==}
+    peerDependencies:
+      typescript: ^5 || ^6 || ^7
+    peerDependenciesMeta:
+      typescript:
+        optional: true
 
   iconv-lite@0.6.3:
     resolution: {integrity: sha512-4fCk79wshMdzMp2rH06qWrJE4iolqLhCUH+OiuIgU++RB0+94NlDL81atO7GX55uUKueo0txHNtvEyI6D7WdMw==}
@@ -5120,11 +5125,11 @@ snapshots:
     dependencies:
       prismjs: 1.30.0
 
-  '@astrojs/react@4.3.0(@types/node@25.0.3)(@types/react-dom@18.3.7(@types/react@18.3.23))(@types/react@18.3.23)(jiti@2.6.1)(lightningcss@1.33.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@astrojs/react@4.3.0(@types/node@25.0.3)(@types/react-dom@18.3.7(@types/react@18.3.23))(@types/react@18.3.23)(jiti@2.6.1)(lightningcss@1.33.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(supports-color@5.5.0)':
     dependencies:
       '@types/react': 18.3.23
       '@types/react-dom': 18.3.7(@types/react@18.3.23)
-      '@vitejs/plugin-react': 4.5.1(vite@6.4.3(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.33.0))
+      '@vitejs/plugin-react': 4.5.1(supports-color@5.5.0)(vite@6.4.3(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.33.0))
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
       ultrahtml: 1.6.0
@@ -5169,26 +5174,6 @@ snapshots:
       picocolors: 1.1.1
 
   '@babel/compat-data@7.29.7': {}
-
-  '@babel/core@7.29.7':
-    dependencies:
-      '@babel/code-frame': 7.29.7
-      '@babel/generator': 7.29.8
-      '@babel/helper-compilation-targets': 7.29.7
-      '@babel/helper-module-transforms': 7.29.7(@babel/core@7.29.7)
-      '@babel/helpers': 7.29.7
-      '@babel/parser': 7.29.9
-      '@babel/template': 7.29.7
-      '@babel/traverse': 7.29.8(supports-color@5.5.0)
-      '@babel/types': 7.29.8
-      '@jridgewell/remapping': 2.3.5
-      convert-source-map: 2.0.0
-      debug: 4.4.1(supports-color@5.5.0)
-      gensync: 1.0.0-beta.2
-      json5: 2.2.3
-      semver: 6.3.1
-    transitivePeerDependencies:
-      - supports-color
 
   '@babel/core@7.29.7(supports-color@5.5.0)':
     dependencies:
@@ -5244,15 +5229,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@babel/helper-module-transforms@7.29.7(@babel/core@7.29.7)':
-    dependencies:
-      '@babel/core': 7.29.7
-      '@babel/helper-module-imports': 7.29.7(supports-color@5.5.0)
-      '@babel/helper-validator-identifier': 7.29.7
-      '@babel/traverse': 7.29.8(supports-color@5.5.0)
-    transitivePeerDependencies:
-      - supports-color
-
   '@babel/helper-plugin-utils@7.27.1': {}
 
   '@babel/helper-string-parser@7.27.1': {}
@@ -5287,19 +5263,9 @@ snapshots:
       '@babel/core': 7.29.7(supports-color@5.5.0)
       '@babel/helper-plugin-utils': 7.27.1
 
-  '@babel/plugin-transform-react-jsx-self@7.27.1(@babel/core@7.29.7)':
-    dependencies:
-      '@babel/core': 7.29.7
-      '@babel/helper-plugin-utils': 7.27.1
-
   '@babel/plugin-transform-react-jsx-source@7.27.1(@babel/core@7.29.7(supports-color@5.5.0))':
     dependencies:
       '@babel/core': 7.29.7(supports-color@5.5.0)
-      '@babel/helper-plugin-utils': 7.27.1
-
-  '@babel/plugin-transform-react-jsx-source@7.27.1(@babel/core@7.29.7)':
-    dependencies:
-      '@babel/core': 7.29.7
       '@babel/helper-plugin-utils': 7.27.1
 
   '@babel/runtime@7.27.6': {}
@@ -6423,18 +6389,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@vitejs/plugin-react@4.5.1(vite@6.4.3(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.33.0))':
-    dependencies:
-      '@babel/core': 7.29.7
-      '@babel/plugin-transform-react-jsx-self': 7.27.1(@babel/core@7.29.7)
-      '@babel/plugin-transform-react-jsx-source': 7.27.1(@babel/core@7.29.7)
-      '@rolldown/pluginutils': 1.0.0-beta.9
-      '@types/babel__core': 7.20.5
-      react-refresh: 0.17.0
-      vite: 6.4.3(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.33.0)
-    transitivePeerDependencies:
-      - supports-color
-
   '@vitest/browser-playwright@4.1.11(playwright@1.60.0)(vite@6.4.3(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.33.0))(vitest@4.1.11)':
     dependencies:
       '@vitest/browser': 4.1.11(vite@6.4.3(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.33.0))(vitest@4.1.11)
@@ -6454,7 +6408,7 @@ snapshots:
       '@vitest/mocker': 4.1.11(vite@8.3.0(@types/node@25.0.3)(esbuild@0.28.2)(jiti@2.6.1))
       playwright: 1.60.0
       tinyrainbow: 3.1.0
-      vitest: 4.1.11(@types/node@25.0.3)(@vitest/browser-playwright@4.1.11)(jsdom@23.2.0)(vite@8.3.0(@types/node@25.0.3)(esbuild@0.28.2)(jiti@2.6.1))
+      vitest: 4.1.11(@types/node@25.0.3)(@vitest/browser-playwright@4.1.11)(jsdom@23.2.0(supports-color@5.5.0))(vite@8.3.0(@types/node@25.0.3)(esbuild@0.28.2)(jiti@2.6.1))
     transitivePeerDependencies:
       - bufferutil
       - msw
@@ -6487,7 +6441,7 @@ snapshots:
       pngjs: 7.0.0
       sirv: 3.0.2
       tinyrainbow: 3.1.0
-      vitest: 4.1.11(@types/node@25.0.3)(@vitest/browser-playwright@4.1.11)(jsdom@23.2.0)(vite@8.3.0(@types/node@25.0.3)(esbuild@0.28.2)(jiti@2.6.1))
+      vitest: 4.1.11(@types/node@25.0.3)(@vitest/browser-playwright@4.1.11)(jsdom@23.2.0(supports-color@5.5.0))(vite@8.3.0(@types/node@25.0.3)(esbuild@0.28.2)(jiti@2.6.1))
       ws: 8.21.3
     transitivePeerDependencies:
       - bufferutil
@@ -7740,9 +7694,9 @@ snapshots:
 
   humps@2.0.1: {}
 
-  i18next@23.16.8:
-    dependencies:
-      '@babel/runtime': 7.27.6
+  i18next@26.7.2(typescript@6.0.3):
+    optionalDependencies:
+      typescript: 6.0.3
 
   iconv-lite@0.6.3:
     dependencies:
@@ -8710,11 +8664,11 @@ snapshots:
       react: 18.3.1
       scheduler: 0.23.2
 
-  react-i18next@14.1.3(i18next@23.16.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+  react-i18next@14.1.3(i18next@26.7.2(typescript@6.0.3))(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
       '@babel/runtime': 7.27.6
       html-parse-stringify: 3.0.1
-      i18next: 23.16.8
+      i18next: 26.7.2(typescript@6.0.3)
       react: 18.3.1
     optionalDependencies:
       react-dom: 18.3.1(react@18.3.1)
@@ -9621,36 +9575,7 @@ snapshots:
     transitivePeerDependencies:
       - msw
 
-  vitest@4.1.11(@types/node@25.0.3)(@vitest/browser-playwright@4.1.11)(jsdom@23.2.0)(vite@6.4.3(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.33.0)):
-    dependencies:
-      '@vitest/expect': 4.1.11
-      '@vitest/mocker': 4.1.11(vite@6.4.3(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.33.0))
-      '@vitest/pretty-format': 4.1.11
-      '@vitest/runner': 4.1.11
-      '@vitest/snapshot': 4.1.11
-      '@vitest/spy': 4.1.11
-      '@vitest/utils': 4.1.11
-      es-module-lexer: 2.1.0
-      expect-type: 1.3.0
-      magic-string: 0.30.21
-      obug: 2.1.3
-      pathe: 2.0.3
-      picomatch: 4.0.7
-      std-env: 4.1.0
-      tinybench: 2.9.0
-      tinyexec: 1.2.4
-      tinyglobby: 0.2.17
-      tinyrainbow: 3.1.0
-      vite: 6.4.3(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.33.0)
-      why-is-node-running: 2.3.0
-    optionalDependencies:
-      '@types/node': 25.0.3
-      '@vitest/browser-playwright': 4.1.11(playwright@1.60.0)(vite@6.4.3(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.33.0))(vitest@4.1.11)
-      jsdom: 23.2.0(supports-color@5.5.0)
-    transitivePeerDependencies:
-      - msw
-
-  vitest@4.1.11(@types/node@25.0.3)(@vitest/browser-playwright@4.1.11)(jsdom@23.2.0)(vite@8.3.0(@types/node@25.0.3)(esbuild@0.28.2)(jiti@2.6.1)):
+  vitest@4.1.11(@types/node@25.0.3)(@vitest/browser-playwright@4.1.11)(jsdom@23.2.0(supports-color@5.5.0))(vite@8.3.0(@types/node@25.0.3)(esbuild@0.28.2)(jiti@2.6.1)):
     dependencies:
       '@vitest/expect': 4.1.11
       '@vitest/mocker': 4.1.11(vite@8.3.0(@types/node@25.0.3)(esbuild@0.28.2)(jiti@2.6.1))
